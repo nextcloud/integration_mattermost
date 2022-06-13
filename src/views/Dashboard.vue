@@ -1,0 +1,316 @@
+<template>
+	<DashboardWidget :items="items"
+		:show-more-url="showMoreUrl"
+		:show-more-text="title"
+		:loading="state === 'loading'"
+		:item-menu="itemMenu"
+		@markDone="onMarkDone">
+		<template #empty-content>
+			<EmptyContent
+				v-if="emptyContentMessage"
+				:icon="emptyContentIcon">
+				<template #desc>
+					{{ emptyContentMessage }}
+					<div v-if="state === 'no-token' || state === 'error'" class="connect-button">
+						<a class="button" :href="settingsUrl">
+							{{ t('integration_mattermost', 'Connect to Mattermost') }}
+						</a>
+					</div>
+				</template>
+			</EmptyContent>
+		</template>
+	</DashboardWidget>
+</template>
+
+<script>
+import axios from '@nextcloud/axios'
+import { generateUrl, imagePath } from '@nextcloud/router'
+import { DashboardWidget } from '@nextcloud/vue-dashboard'
+import { showError } from '@nextcloud/dialogs'
+import '@nextcloud/dialogs/styles/toast.scss'
+import moment from '@nextcloud/moment'
+import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
+
+export default {
+	name: 'Dashboard',
+
+	components: {
+		DashboardWidget, EmptyContent,
+	},
+
+	props: {
+		title: {
+			type: String,
+			required: true,
+		},
+	},
+
+	data() {
+		return {
+			mattermostUrl: null,
+			notifications: [],
+			loop: null,
+			state: 'loading',
+			settingsUrl: generateUrl('/settings/user/connected-accounts'),
+			themingColor: OCA.Theming ? OCA.Theming.color.replace('#', '') : '0082C9',
+			itemMenu: {
+				  markDone: {
+					  text: t('integration_mattermost', 'Mark as done'),
+					  icon: 'icon-checkmark',
+				  },
+			  },
+			windowVisibility: true,
+		}
+	},
+
+	computed: {
+		showMoreUrl() {
+			return this.mattermostUrl + '/dashboard/todos'
+		},
+		items() {
+			return this.notifications.map((n) => {
+				return {
+					id: this.getUniqueKey(n),
+					targetUrl: this.getNotificationTarget(n),
+					avatarUrl: this.getNotificationImage(n),
+					avatarUsername: this.getRepositoryName(n),
+					avatarIsNoUser: true,
+					overlayIconUrl: this.getNotificationTypeImage(n),
+					mainText: this.getTargetTitle(n),
+					subText: this.getSubline(n),
+				}
+			})
+		},
+		lastDate() {
+			const nbNotif = this.notifications.length
+			return (nbNotif > 0) ? this.notifications[0].updated_at : null
+		},
+		lastMoment() {
+			return moment(this.lastDate)
+		},
+		emptyContentMessage() {
+			if (this.state === 'no-token') {
+				return t('integration_mattermost', 'No Mattermost account connected')
+			} else if (this.state === 'error') {
+				return t('integration_mattermost', 'Error connecting to Mattermost')
+			} else if (this.state === 'ok') {
+				return t('integration_mattermost', 'No Mattermost notifications!')
+			}
+			return ''
+		},
+		emptyContentIcon() {
+			if (this.state === 'no-token') {
+				return 'icon-mattermost'
+			} else if (this.state === 'error') {
+				return 'icon-close'
+			} else if (this.state === 'ok') {
+				return 'icon-checkmark'
+			}
+			return 'icon-checkmark'
+		},
+	},
+
+	watch: {
+		windowVisibility(newValue) {
+			if (newValue) {
+				this.launchLoop()
+			} else {
+				this.stopLoop()
+			}
+		},
+	},
+
+	beforeDestroy() {
+		document.removeEventListener('visibilitychange', this.changeWindowVisibility)
+	},
+
+	beforeMount() {
+		this.launchLoop()
+		document.addEventListener('visibilitychange', this.changeWindowVisibility)
+	},
+
+	mounted() {
+	},
+
+	methods: {
+		changeWindowVisibility() {
+			this.windowVisibility = !document.hidden
+		},
+		stopLoop() {
+			clearInterval(this.loop)
+		},
+		async launchLoop() {
+			// get mattermost URL first
+			try {
+				const response = await axios.get(generateUrl('/apps/integration_mattermost/url'))
+				this.mattermostUrl = response.data.replace(/\/+$/, '')
+				if (this.mattermostUrl === '') {
+					this.mattermostUrl = 'https://mattermost.com'
+				}
+			} catch (error) {
+				console.debug(error)
+			}
+			// then launch the loop
+			this.fetchNotifications()
+			this.loop = setInterval(() => this.fetchNotifications(), 60000)
+		},
+		fetchNotifications() {
+			const req = {}
+			if (this.lastDate) {
+				req.params = {
+					since: this.lastDate,
+				}
+			}
+			axios.get(generateUrl('/apps/integration_mattermost/todos'), req).then((response) => {
+				this.processNotifications(response.data)
+				this.state = 'ok'
+			}).catch((error) => {
+				clearInterval(this.loop)
+				if (error.response && error.response.status === 400) {
+					this.state = 'no-token'
+				} else if (error.response && error.response.status === 401) {
+					showError(t('integration_mattermost', 'Failed to get Mattermost notifications'))
+					this.state = 'error'
+				} else {
+					// there was an error in notif processing
+					console.debug(error)
+				}
+			})
+		},
+		processNotifications(newNotifications) {
+			if (this.lastDate) {
+				// just add those which are more recent than our most recent one
+				let i = 0
+				while (i < newNotifications.length && this.lastMoment.isBefore(newNotifications[i].updated_at)) {
+					i++
+				}
+				if (i > 0) {
+					const toAdd = this.filter(newNotifications.slice(0, i))
+					this.notifications = toAdd.concat(this.notifications)
+				}
+			} else {
+				// first time we don't check the date
+				this.notifications = this.filter(newNotifications)
+			}
+		},
+		filter(notifications) {
+			return notifications.filter((n) => {
+				return n.action_name !== 'marked'
+			})
+		},
+		getNotificationTarget(n) {
+			return n.target_url
+		},
+		getUniqueKey(n) {
+			return n.id + ':' + n.updated_at
+		},
+		getNotificationImage(n) {
+			return (n.project && n.project.id && n.project.visibility !== 'private')
+				? generateUrl('/apps/integration_mattermost/avatar/project?') + encodeURIComponent('projectId') + '=' + encodeURIComponent(n.project.id)
+				: undefined
+		},
+		getAuthorFullName(n) {
+			return n.author.name
+				? (n.author.name + ' (@' + n.author.username + ')')
+				: n.author.username
+		},
+		getAuthorAvatarUrl(n) {
+			return (n.author && n.author.id)
+				? generateUrl('/apps/integration_mattermost/avatar/user?') + encodeURIComponent('userId') + '=' + encodeURIComponent(n.author.id)
+				: ''
+		},
+		getRepositoryName(n) {
+			return n.project.path
+				? n.project.path
+				: ''
+		},
+		getNotificationProjectName(n) {
+			return n.project.path_with_namespace
+		},
+		getNotificationContent(n) {
+			if (n.action_name === 'mentioned') {
+				return t('integration_mattermost', 'You were mentioned')
+			} else if (n.action_name === 'approval_required') {
+				return t('integration_mattermost', 'Your approval is required')
+			} else if (n.action_name === 'assigned') {
+				return t('integration_mattermost', 'You were assigned')
+			} else if (n.action_name === 'build_failed') {
+				return t('integration_mattermost', 'A build has failed')
+			} else if (n.action_name === 'marked') {
+				return t('integration_mattermost', 'Marked')
+			} else if (n.action_name === 'directly_addressed') {
+				return t('integration_mattermost', 'You were directly addressed')
+			}
+			return ''
+		},
+		getNotificationTypeImage(n) {
+			if (n.target_type === 'MergeRequest') {
+				return imagePath('integration_mattermost', 'merge_request.svg')
+			} else if (n.target_type === 'Issue') {
+				return imagePath('integration_mattermost', 'issues.svg')
+			}
+			return imagePath('integration_mattermost', 'sound-border.svg')
+		},
+		getNotificationActionChar(n) {
+			if (['Issue', 'MergeRequest'].includes(n.target_type)) {
+				if (['approval_required', 'assigned'].includes(n.action_name)) {
+					return '👁'
+				} else if (['directly_addressed', 'mentioned'].includes(n.action_name)) {
+					return '🗨'
+				} else if (n.action_name === 'marked') {
+					return '✅'
+				} else if (['build_failed', 'unmergeable'].includes(n.action_name)) {
+					return '❎'
+				}
+			}
+			return ''
+		},
+		getSubline(n) {
+			return this.getNotificationActionChar(n) + ' ' + n.project.path_with_namespace + this.getTargetIdentifier(n)
+		},
+		getTargetContent(n) {
+			return n.body
+		},
+		getTargetTitle(n) {
+			return n.target.title
+		},
+		getProjectPath(n) {
+			return n.project.path_with_namespace
+		},
+		getTargetIdentifier(n) {
+			if (n.target_type === 'MergeRequest') {
+				return '!' + n.target.iid
+			} else if (n.target_type === 'Issue') {
+				return '#' + n.target.iid
+			}
+			return ''
+		},
+		getFormattedDate(n) {
+			return moment(n.updated_at).format('LLL')
+		},
+		onMarkDone(item) {
+			// TODO adapt vue-dashboard to give ID in item and use following line
+			// const i = this.notifications.findIndex((n) => this.getUniqueKey(n) === item.id)
+			const i = this.notifications.findIndex((n) => n.target_url === item.targetUrl)
+			if (i !== -1) {
+				const id = this.notifications[i].id
+				this.notifications.splice(i, 1)
+				this.editTodo(id, 'mark-done')
+			}
+		},
+		editTodo(id, action) {
+			axios.put(generateUrl('/apps/integration_mattermost/todos/' + id + '/' + action)).then((response) => {
+			}).catch((error) => {
+				showError(t('integration_mattermost', 'Failed to edit Mattermost todo'))
+				console.debug(error)
+			})
+		},
+	},
+}
+</script>
+
+<style scoped lang="scss">
+::v-deep .connect-button {
+	margin-top: 10px;
+}
+</style>

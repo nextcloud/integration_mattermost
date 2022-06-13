@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<info>
+    <id>integration_mattermost</id>
+    <name>Mattermost integration</name>
+    <summary>Integration of Mattermost</summary>
+    <description><![CDATA[Mattermost integration provides a dashboard widget displaying your most important notifications
+    and a unified search provider for messages.]]></description>
+    <version>1.0.0</version>
+    <licence>agpl</licence>
+    <author>Julien Veyssier</author>
+    <namespace>Mattermost</namespace>
+    <documentation>
+        <developer>https://github.com/nextcloud/integration_mattermost</developer>
+    </documentation>
+    <category>integration</category>
+    <category>dashboard</category>
+    <website>https://github.com/nextcloud/integration_mattermost</website>
+    <bugs>https://github.com/nextcloud/integration_mattermost/issues</bugs>
+    <screenshot>https://github.com/nextcloud/integration_mattermost/raw/master/img/screenshot1.jpg</screenshot>
+    <dependencies>
+        <nextcloud min-version="22" max-version="25"/>
+    </dependencies>
+    <settings>
+        <admin>OCA\Mattermost\Settings\Admin</admin>
+        <admin-section>OCA\Mattermost\Settings\AdminSection</admin-section>
+        <personal>OCA\Mattermost\Settings\Personal</personal>
+        <personal-section>OCA\Mattermost\Settings\PersonalSection</personal-section>
+    </settings>
+</info>
