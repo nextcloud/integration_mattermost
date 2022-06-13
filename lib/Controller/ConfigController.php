@@ -69,6 +69,10 @@ class ConfigController extends Controller {
 	 * @return DataResponse
 	 */
 	public function setConfig(array $values): DataResponse {
+		if (isset($values['url'], $values['login'], $values['password'])) {
+			return $this->loginWithCredentials($values['url'], $values['login'], $values['password']);
+		}
+
 		foreach ($values as $key => $value) {
 			$this->config->setUserValue($this->userId, Application::APP_ID, $key, $value);
 		}
@@ -76,8 +80,7 @@ class ConfigController extends Controller {
 
 		if (isset($values['token'])) {
 			if ($values['token'] && $values['token'] !== '') {
-				$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', 'https://mattermost.com');
-				$mattermostUrl = $mattermostUrl && $mattermostUrl !== '' ? $mattermostUrl : 'https://mattermost.com';
+				$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url');
 				$userName = $this->storeUserInfo($mattermostUrl, $values['token']);
 				$result['user_name'] = $userName;
 			} else {
@@ -91,6 +94,23 @@ class ConfigController extends Controller {
 			$this->config->deleteUserValue($this->userId, Application::APP_ID, 'token_expires_at');
 		}
 		return new DataResponse($result);
+	}
+
+	private function loginWithCredentials(string $url, string $login, string $password): DataResponse {
+		$result = $this->mattermostAPIService->login($url, $login, $password);
+		if (isset($result['token'])) {
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $result['token']);
+			$userName = $login;
+			if (isset($result['info'], $result['info']['first_name'], $result['info']['last_name'])) {
+				$userName = $result['info']['first_name'] . ' ' . $result['info']['last_name'];
+			}
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $login);
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', $userName);
+			return new DataResponse([
+				'user_name' => $userName,
+			]);
+		}
+		return new DataResponse(['user_name' => '']);
 	}
 
 	/**
@@ -166,8 +186,13 @@ class ConfigController extends Controller {
 	 * @return string
 	 */
 	private function storeUserInfo(string $mattermostUrl, string $accessToken, ?string $refreshToken = null): string {
-		$info = $this->mattermostAPIService->request($this->userId, $mattermostUrl, 'user');
-		if (isset($info['username']) && isset($info['id'])) {
+		$info = $this->mattermostAPIService->request($this->userId, $mattermostUrl, 'users/me');
+		if (isset($info['first_name'], $info['last_name'], $info['id'])) {
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $info['id']);
+			$userName = $info['first_name'] . ' ' . $info['last_name'];
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', $userName);
+			return $userName;
+		} elseif (isset($info['username'], $info['id'])) {
 			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $info['id']);
 			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', $info['username']);
 			return $info['username'];

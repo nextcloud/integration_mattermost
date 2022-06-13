@@ -291,7 +291,7 @@ class MattermostAPIService {
 	 */
 	public function requestOAuthAccessToken(string $url, array $params = [], string $method = 'GET'): array {
 		try {
-			$url = $url . '/oauth/token';
+			$url = $url . '/oauth/access_token';
 			$options = [
 				'headers' => [
 					'User-Agent'  => 'Nextcloud Mattermost integration',
@@ -328,6 +328,41 @@ class MattermostAPIService {
 			}
 		} catch (Exception $e) {
 			$this->logger->warning('Mattermost OAuth error : '.$e->getMessage(), array('app' => $this->appName));
+			return ['error' => $e->getMessage()];
+		}
+	}
+
+	public function login(string $baseUrl, string $login, string $password): array {
+		try {
+			$url = $baseUrl . '/api/v4/users/login';
+			$options = [
+				'headers' => [
+					'User-Agent'  => 'Nextcloud Mattermost integration',
+					'Content-Type' => 'application/x-www-form-urlencoded',
+				],
+				'json' => [
+					'login_id' => $login,
+					'password' => $password,
+				],
+			];
+			$response = $this->client->post($url, $options);
+			$body = $response->getBody();
+			$respCode = $response->getStatusCode();
+
+			if ($respCode >= 400) {
+				return ['error' => $this->l10n->t('Invalid credentials')];
+			} else {
+				$token = $response->getHeader('Token');
+				if ($token) {
+					return [
+						'token' => $token,
+						'info' => json_decode($body, true),
+					];
+				}
+				return ['error' => $this->l10n->t('Invalid response')];
+			}
+		} catch (Exception $e) {
+			$this->logger->warning('Mattermost login error : '.$e->getMessage(), ['app' => $this->appName]);
 			return ['error' => $e->getMessage()];
 		}
 	}

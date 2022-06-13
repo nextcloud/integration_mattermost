@@ -51,11 +51,10 @@ export default {
 			notifications: [],
 			loop: null,
 			state: 'loading',
-			settingsUrl: generateUrl('/settings/user/connected-accounts'),
-			themingColor: OCA.Theming ? OCA.Theming.color.replace('#', '') : '0082C9',
+			settingsUrl: generateUrl('/settings/user/connected-accounts#mattermost_prefs'),
 			itemMenu: {
 				  markDone: {
-					  text: t('integration_mattermost', 'Mark as done'),
+					  text: t('integration_mattermost', 'Mark as seen'),
 					  icon: 'icon-checkmark',
 				  },
 			  },

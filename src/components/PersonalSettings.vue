@@ -15,7 +15,7 @@
 		</div>
 		<br><br>
 		<p v-if="!showOAuth && !connected" class="settings-hint">
-			{{ t('integration_mattermost', 'When you create an access token yourself, give it at least "read_user", "read_api" and "read_repository" permissions. Optionally "api" instead.') }}
+			{{ t('integration_mattermost', 'If you are allowed to, You can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens') }}
 		</p>
 		<div id="mattermost-content">
 			<div class="mattermost-grid-form">
@@ -41,24 +41,48 @@
 					:disabled="connected === true"
 					:placeholder="t('integration_mattermost', 'Mattermost personal access token')"
 					@input="onInput">
+				<label v-show="!showOAuth && !connected"
+					for="mattermost-login">
+					<a class="icon icon-user" />
+					{{ t('integration_mattermost', 'Login') }}
+				</label>
+				<input v-show="!showOAuth && !connected"
+					id="mattermost-login"
+					v-model="login"
+					type="text"
+					:placeholder="t('integration_mattermost', 'Mattermost login')">
+				<label v-show="!showOAuth && !connected"
+					for="mattermost-password">
+					<a class="icon icon-password" />
+					{{ t('integration_mattermost', 'Password') }}
+				</label>
+				<input v-show="!showOAuth && !connected"
+					id="mattermost-password"
+					v-model="password"
+					type="password"
+					:placeholder="t('integration_mattermost', 'Mattermost password')">
 			</div>
-			<button v-if="showOAuth && !connected"
-				id="mattermost-oauth"
+			<Button v-if="!connected && (showOAuth || (login && password))"
+				id="mattermost-connect"
 				:disabled="loading === true"
 				:class="{ loading }"
-				@click="onOAuthClick">
-				<span class="icon icon-external" />
+				@click="onConnectClick">
+				<template #icon>
+					<OpenInNewIcon />
+				</template>
 				{{ t('integration_mattermost', 'Connect to Mattermost') }}
-			</button>
+			</Button>
 			<div v-if="connected" class="mattermost-grid-form">
 				<label class="mattermost-connected">
 					<a class="icon icon-checkmark-color" />
 					{{ t('integration_mattermost', 'Connected as {user}', { user: state.user_name }) }}
 				</label>
-				<button id="mattermost-rm-cred" @click="onLogoutClick">
-					<span class="icon icon-close" />
+				<Button id="mattermost-rm-cred" @click="onLogoutClick">
+					<template #icon>
+						<CloseIcon />
+					</template>
 					{{ t('integration_mattermost', 'Disconnect from Mattermost') }}
-				</button>
+				</Button>
 				<span />
 			</div>
 			<br>
@@ -67,22 +91,11 @@
 					id="search-mattermost"
 					type="checkbox"
 					class="checkbox"
-					:checked="state.search_enabled"
+					:checked="state.search_messages_enabled"
 					@input="onSearchChange">
-				<label for="search-mattermost">{{ t('integration_mattermost', 'Enable searching for repositories') }}</label>
+				<label for="search-mattermost">{{ t('integration_mattermost', 'Enable searching for messages') }}</label>
 				<br><br>
-				<input
-					id="search-issues-mattermost"
-					type="checkbox"
-					class="checkbox"
-					:checked="state.search_issues_enabled"
-					@input="onSearchIssuesChange">
-				<label for="search-issues-mattermost">
-					{{ t('integration_mattermost', 'Enable searching for issues and merge requests') }}
-					{{ t('integration_mattermost', '(This may be slow or even fail on some Mattermost instances)') }}
-				</label>
-				<br><br>
-				<p v-if="state.search_enabled || state.search_issues_enabled" class="settings-hint">
+				<p v-if="state.search_messages_enabled" class="settings-hint">
 					<span class="icon icon-details" />
 					{{ t('integration_mattermost', 'Warning, everything you type in the search bar will be sent to Mattermost.') }}
 				</p>
@@ -92,6 +105,9 @@
 </template>
 
 <script>
+import OpenInNewIcon from 'vue-material-design-icons/OpenInNew'
+import CloseIcon from 'vue-material-design-icons/Close'
+import Button from '@nextcloud/vue/dist/Components/Button'
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
@@ -103,6 +119,9 @@ export default {
 	name: 'PersonalSettings',
 
 	components: {
+		Button,
+		OpenInNewIcon,
+		CloseIcon,
 	},
 
 	props: [],
@@ -112,6 +131,8 @@ export default {
 			state: loadState('integration_mattermost', 'user-config'),
 			loading: false,
 			redirect_uri: window.location.protocol + '//' + window.location.host + generateUrl('/apps/integration_mattermost/oauth-redirect'),
+			login: '',
+			password: '',
 		}
 	},
 
@@ -144,15 +165,13 @@ export default {
 	methods: {
 		onLogoutClick() {
 			this.state.token = ''
+			this.login = ''
+			this.password = ''
 			this.saveOptions({ token: '' })
 		},
 		onSearchChange(e) {
-			this.state.search_enabled = e.target.checked
-			this.saveOptions({ search_enabled: this.state.search_enabled ? '1' : '0' })
-		},
-		onSearchIssuesChange(e) {
-			this.state.search_issues_enabled = e.target.checked
-			this.saveOptions({ search_issues_enabled: this.state.search_issues_enabled ? '1' : '0' })
+			this.state.search_messages_enabled = e.target.checked
+			this.saveOptions({ search_messages_enabled: this.state.search_messages_enabled ? '1' : '0' })
 		},
 		onNavigationChange(e) {
 			this.state.navigation_enabled = e.target.checked
@@ -168,7 +187,10 @@ export default {
 				}
 			}
 			delay(() => {
-				this.saveOptions({ token: this.state.token, url: this.state.url })
+				this.saveOptions({
+					token: this.state.token,
+					url: this.state.url,
+				})
 			}, 2000)()
 		},
 		saveOptions(values) {
@@ -181,9 +203,13 @@ export default {
 					if (response.data.user_name !== undefined) {
 						this.state.user_name = response.data.user_name
 						if (this.state.token && response.data.user_name === '') {
-							showError(t('integration_mattermost', 'Incorrect access token'))
+							showError(t('integration_mattermost', 'Invalid access token'))
+							this.state.token = ''
+						} else if (this.login && this.password && response.data.user_name === '') {
+							showError(t('integration_mattermost', 'Invalid login/password'))
 						} else if (response.data.user_name) {
 							showSuccess(t('integration_mattermost', 'Successfully connected to Mattermost!'))
+							this.state.token = 'dumdum'
 						}
 					} else {
 						showSuccess(t('integration_mattermost', 'Mattermost options saved'))
@@ -194,13 +220,28 @@ export default {
 						t('integration_mattermost', 'Failed to save Mattermost options')
 						+ ': ' + (error.response?.request?.responseText ?? '')
 					)
-					console.debug(error)
+					console.error(error)
 				})
 				.then(() => {
 					this.loading = false
 				})
 		},
-		onOAuthClick() {
+		onConnectClick() {
+			if (this.showOAuth) {
+				this.connectWithOauth()
+			} else {
+				this.connectWithCredentials()
+			}
+		},
+		connectWithCredentials() {
+			this.loading = true
+			this.saveOptions({
+				login: this.login,
+				password: this.password,
+				url: this.state.url,
+			})
+		},
+		connectWithOauth() {
 			const oauthState = Math.random().toString(36).substring(3)
 			const requestUrl = this.state.url + '/oauth/authorize'
 				+ '?client_id=' + encodeURIComponent(this.state.client_id)

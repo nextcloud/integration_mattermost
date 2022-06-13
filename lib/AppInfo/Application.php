@@ -22,8 +22,7 @@ use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 
 use OCA\Mattermost\Dashboard\MattermostWidget;
-use OCA\Mattermost\Search\MattermostSearchIssuesProvider;
-use OCA\Mattermost\Search\MattermostSearchReposProvider;
+use OCA\Mattermost\Search\MattermostSearchMessagesProvider;
 use OCP\Util;
 
 /**
@@ -52,8 +51,7 @@ class Application extends App implements IBootstrap {
 
 	public function register(IRegistrationContext $context): void {
 		$context->registerDashboardWidget(MattermostWidget::class);
-		$context->registerSearchProvider(MattermostSearchIssuesProvider::class);
-		$context->registerSearchProvider(MattermostSearchReposProvider::class);
+		$context->registerSearchProvider(MattermostSearchMessagesProvider::class);
 	}
 
 	public function boot(IBootContext $context): void {
@@ -68,24 +66,18 @@ class Application extends App implements IBootstrap {
 			$container = $this->getContainer();
 
 			if ($this->config->getUserValue($userId, self::APP_ID, 'navigation_enabled', '0') === '1') {
-				$mattermostUrl = $this->config->getUserValue($userId, self::APP_ID, 'url', '') ?: 'https://mattermost.com';
+				$mattermostUrl = $this->config->getUserValue($userId, self::APP_ID, 'url');
+				if ($mattermostUrl === '') {
+					return;
+				}
 				$container->get(INavigationManager::class)->add(function () use ($container, $mattermostUrl) {
 					$urlGenerator = $container->get(IURLGenerator::class);
 					$l10n = $container->get(IL10N::class);
 					return [
 						'id' => self::APP_ID,
-
 						'order' => 10,
-
-						// the route that will be shown on startup
 						'href' => $mattermostUrl,
-
-						// the icon that will be shown in the navigation
-						// this file needs to exist in img/
 						'icon' => $urlGenerator->imagePath(self::APP_ID, 'app.svg'),
-
-						// the title of your application. This will be used in the
-						// navigation or on the settings page of your app
 						'name' => $l10n->t('Mattermost'),
 					];
 				});

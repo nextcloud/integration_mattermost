@@ -1,6 +1,7 @@
 <?php
 namespace OCA\Mattermost\Settings;
 
+use OCA\Mattermost\Service\MattermostAPIService;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\IConfig;
@@ -22,13 +23,16 @@ class Personal implements ISettings {
 	 * @var string|null
 	 */
 	private $userId;
+	private MattermostAPIService $mattermostAPIService;
 
 	public function __construct(IConfig $config,
 								IInitialState $initialStateService,
+								MattermostAPIService $mattermostAPIService,
 								?string $userId) {
 		$this->config = $config;
 		$this->initialStateService = $initialStateService;
 		$this->userId = $userId;
+		$this->mattermostAPIService = $mattermostAPIService;
 	}
 
 	/**
@@ -36,10 +40,16 @@ class Personal implements ISettings {
 	 */
 	public function getForm(): TemplateResponse {
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
+
+		if ($token) {
+//			$this->mattermostAPIService->checkToken();
+		}
+
+		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
 		$searchMessagesEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'search_messages_enabled', '0');
 		$navigationEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'navigation_enabled', '0');
 		$userName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_name');
-		$url = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', 'https://mattermost.com') ?: 'https://mattermost.com';
+		$url = $this->config->getUserValue($this->userId, Application::APP_ID, 'url');
 
 		// for OAuth
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
