@@ -23,7 +23,9 @@
 
 namespace OCA\Mattermost\Dashboard;
 
+use OCP\AppFramework\Services\IInitialState;
 use OCP\Dashboard\IWidget;
+use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\Util;
@@ -38,11 +40,20 @@ class MattermostWidget implements IWidget {
 	 * @var IURLGenerator
 	 */
 	private $url;
+	private IInitialState $initialStateService;
+	private IConfig $config;
+	private ?string $userId;
 
-	public function __construct(IL10N $l10n,
-								IURLGenerator $url) {
+	public function __construct(IL10N         $l10n,
+								IConfig       $config,
+								IURLGenerator $url,
+								IInitialState $initialStateService,
+								?string       $userId) {
 		$this->l10n = $l10n;
 		$this->url = $url;
+		$this->initialStateService = $initialStateService;
+		$this->config = $config;
+		$this->userId = $userId;
 	}
 
 	/**
@@ -84,6 +95,18 @@ class MattermostWidget implements IWidget {
 	 * @inheritDoc
 	 */
 	public function load(): void {
+		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
+		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+		$oauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$userMMUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url');
+		$oauthPossible = $clientID !== '' && $clientSecret !== '' && $oauthUrl === $userMMUrl;
+
+		$userConfig = [
+			'oauth_is_possible' => $oauthPossible,
+			'url' => $userMMUrl,
+			'client_id' => $clientID,
+		];
+		$this->initialStateService->provideInitialState('user-config', $userConfig);
 		Util::addScript(Application::APP_ID, Application::APP_ID . '-dashboard');
 		Util::addStyle(Application::APP_ID, 'dashboard');
 	}

@@ -162,6 +162,9 @@ class MattermostAPIService {
 			'time_zone_offset' => 7200,
 		];
 		$result = $this->request($userId, $mattermostUrl, 'posts/search', $params, 'POST');
+		if (isset($result['error'])) {
+			return $result;
+		}
 		$posts = $result['posts'] ?? [];
 
 		// since filter

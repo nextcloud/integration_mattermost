@@ -10,9 +10,18 @@
 				<template #desc>
 					{{ emptyContentMessage }}
 					<div v-if="state === 'no-token' || state === 'error'" class="connect-button">
-						<a class="button" :href="settingsUrl">
+						<a v-if="!initialState.oauth_is_possible"
+							class="button"
+							:href="settingsUrl">
 							{{ t('integration_mattermost', 'Connect to Mattermost') }}
 						</a>
+						<Button v-else
+							@click="onOauthClick">
+							<template #icon>
+								<LoginVariantIcon />
+							</template>
+							{{ t('integration_mattermost', 'Connect to Mattermost') }}
+						</Button>
 					</div>
 				</template>
 			</EmptyContent>
@@ -25,15 +34,21 @@ import axios from '@nextcloud/axios'
 import { generateUrl, imagePath } from '@nextcloud/router'
 import { DashboardWidget } from '@nextcloud/vue-dashboard'
 import { showError } from '@nextcloud/dialogs'
+import { loadState } from '@nextcloud/initial-state'
 import '@nextcloud/dialogs/styles/toast.scss'
 import moment from '@nextcloud/moment'
 import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
+import LoginVariantIcon from 'vue-material-design-icons/LoginVariant'
+import Button from '@nextcloud/vue/dist/Components/Button'
 
 export default {
 	name: 'Dashboard',
 
 	components: {
-		DashboardWidget, EmptyContent,
+		DashboardWidget,
+		EmptyContent,
+		Button,
+		LoginVariantIcon,
 	},
 
 	props: {
@@ -45,18 +60,21 @@ export default {
 
 	data() {
 		return {
-			mattermostUrl: null,
 			notifications: [],
 			loop: null,
 			state: 'loading',
 			settingsUrl: generateUrl('/settings/user/connected-accounts#mattermost_prefs'),
+			initialState: loadState('integration_mattermost', 'user-config'),
 			windowVisibility: true,
 		}
 	},
 
 	computed: {
+		mattermostUrl() {
+			return this.initialState?.url?.replace(/\/+$/, '')
+		},
 		showMoreUrl() {
-			return this.mattermostUrl + '/dashboard/todos'
+			return this.mattermostUrl
 		},
 		items() {
 			return this.notifications.map((n) => {
@@ -124,6 +142,35 @@ export default {
 	},
 
 	methods: {
+		onOauthClick() {
+			const redirectUri = window.location.protocol + '//' + window.location.host + generateUrl('/apps/integration_mattermost/oauth-redirect')
+
+			const oauthState = Math.random().toString(36).substring(3)
+			const requestUrl = this.mattermostUrl + '/oauth/authorize'
+				+ '?client_id=' + encodeURIComponent(this.initialState.client_id)
+				+ '&redirect_uri=' + encodeURIComponent(redirectUri)
+				+ '&response_type=code'
+				+ '&state=' + encodeURIComponent(oauthState)
+			// + '&scope=' + encodeURIComponent('read_user read_api read_repository')
+
+			const req = {
+				values: {
+					oauth_state: oauthState,
+					redirect_uri: redirectUri,
+					oauth_origin: 'dashboard',
+				},
+			}
+			const url = generateUrl('/apps/integration_mattermost/config')
+			axios.put(url, req).then((response) => {
+				window.location.replace(requestUrl)
+			}).catch((error) => {
+				showError(
+					t('integration_mattermost', 'Failed to save Mattermost OAuth state')
+					+ ': ' + (error.response?.request?.responseText ?? '')
+				)
+				console.debug(error)
+			})
+		},
 		changeWindowVisibility() {
 			this.windowVisibility = !document.hidden
 		},
@@ -131,14 +178,6 @@ export default {
 			clearInterval(this.loop)
 		},
 		async launchLoop() {
-			// get mattermost URL first
-			try {
-				const response = await axios.get(generateUrl('/apps/integration_mattermost/url'))
-				this.mattermostUrl = response.data.replace(/\/+$/, '')
-			} catch (error) {
-				console.debug(error)
-			}
-			// then launch the loop
 			this.fetchNotifications()
 			this.loop = setInterval(() => this.fetchNotifications(), 60000)
 		},

@@ -272,12 +272,13 @@ export default {
 				+ '&redirect_uri=' + encodeURIComponent(this.redirect_uri)
 				+ '&response_type=code'
 				+ '&state=' + encodeURIComponent(oauthState)
-				+ '&scope=' + encodeURIComponent('read_user read_api read_repository')
+			// + '&scope=' + encodeURIComponent('read_user read_api read_repository')
 
 			const req = {
 				values: {
 					oauth_state: oauthState,
 					redirect_uri: this.redirect_uri,
+					oauth_origin: 'settings',
 				},
 			}
 			const url = generateUrl('/apps/integration_mattermost/config')

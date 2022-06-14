@@ -149,9 +149,11 @@ class ConfigController extends Controller {
 		$configState = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_state');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+		$oauthOrigin = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_origin');
 
 		// anyway, reset state
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_state');
+		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_origin');
 
 		if ($clientID and $clientSecret and $configState !== '' and $configState === $state) {
 			$redirect_uri = $this->config->getUserValue($this->userId, Application::APP_ID, 'redirect_uri');
@@ -175,10 +177,16 @@ class ConfigController extends Controller {
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $accessToken);
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $refreshToken);
 				$this->storeUserInfo($mattermostUrl);
-				return new RedirectResponse(
-					$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']) .
-					'?mattermostToken=success'
-				);
+				if ($oauthOrigin === 'settings') {
+					return new RedirectResponse(
+						$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']) .
+						'?mattermostToken=success'
+					);
+				} elseif ($oauthOrigin === 'dashboard') {
+					return new RedirectResponse(
+						$this->urlGenerator->linkToRoute('dashboard.dashboard.index')
+					);
+				}
 			}
 			$result = $this->l->t('Error getting OAuth access token. ' . $result['error']);
 		} else {
