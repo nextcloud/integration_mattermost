@@ -61,7 +61,8 @@ class MattermostAPIController extends Controller {
 		$this->mattermostAPIService = $mattermostAPIService;
 		$this->userId = $userId;
 		$this->accessToken = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
-		$this->mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url');
+		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$this->mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 		$this->urlGenerator = $urlGenerator;
 	}
 

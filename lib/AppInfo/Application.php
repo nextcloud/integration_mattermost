@@ -66,7 +66,8 @@ class Application extends App implements IBootstrap {
 			$container = $this->getContainer();
 
 			if ($this->config->getUserValue($userId, self::APP_ID, 'navigation_enabled', '0') === '1') {
-				$mattermostUrl = $this->config->getUserValue($userId, self::APP_ID, 'url');
+				$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+				$mattermostUrl = $this->config->getUserValue($userId, self::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 				if ($mattermostUrl === '') {
 					return;
 				}

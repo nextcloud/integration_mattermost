@@ -80,7 +80,8 @@ class ConfigController extends Controller {
 
 		if (isset($values['token'])) {
 			if ($values['token'] && $values['token'] !== '') {
-				$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url');
+				$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+				$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 				$result = $this->storeUserInfo($mattermostUrl);
 			} else {
 				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'user_id');
@@ -157,8 +158,8 @@ class ConfigController extends Controller {
 
 		if ($clientID and $clientSecret and $configState !== '' and $configState === $state) {
 			$redirect_uri = $this->config->getUserValue($this->userId, Application::APP_ID, 'redirect_uri');
-			$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', 'https://mattermost.com');
-			$mattermostUrl = $mattermostUrl && $mattermostUrl !== '' ? $mattermostUrl : 'https://mattermost.com';
+			$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+			$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 			$result = $this->mattermostAPIService->requestOAuthAccessToken($mattermostUrl, [
 				'client_id' => $clientID,
 				'client_secret' => $clientSecret,

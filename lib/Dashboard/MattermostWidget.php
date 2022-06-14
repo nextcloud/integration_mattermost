@@ -97,9 +97,9 @@ class MattermostWidget implements IWidget {
 	public function load(): void {
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
-		$oauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
-		$userMMUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url');
-		$oauthPossible = $clientID !== '' && $clientSecret !== '' && $oauthUrl === $userMMUrl;
+		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$userMMUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
+		$oauthPossible = $clientID !== '' && $clientSecret !== '' && $userMMUrl === $adminOauthUrl;
 
 		$userConfig = [
 			'oauth_is_possible' => $oauthPossible,

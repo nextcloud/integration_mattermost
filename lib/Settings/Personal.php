@@ -51,7 +51,8 @@ class Personal implements ISettings {
 		$mmUserId = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_id');
 		$mmUserName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_name');
 		$mmUserDisplayName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_displayname');
-		$url = $this->config->getUserValue($this->userId, Application::APP_ID, 'url');
+		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$url = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 
 		// for OAuth
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');

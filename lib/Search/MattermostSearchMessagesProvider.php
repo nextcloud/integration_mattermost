@@ -124,7 +124,8 @@ class MattermostSearchMessagesProvider implements IProvider {
 		$offset = $offset ? intval($offset) : 0;
 
 		$accessToken = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'token');
-		$url = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'url');
+		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$url = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 		$searchIssuesEnabled = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'search_messages_enabled', '0') === '1';
 		if ($accessToken === '' || !$searchIssuesEnabled) {
 			return SearchResult::paginated($this->getName(), [], 0);
