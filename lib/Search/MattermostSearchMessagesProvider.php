@@ -24,9 +24,12 @@ declare(strict_types=1);
  */
 namespace OCA\Mattermost\Search;
 
+use DateTime;
 use OCA\Mattermost\Service\MattermostAPIService;
 use OCA\Mattermost\AppInfo\Application;
 use OCP\App\IAppManager;
+use OCP\IDateTimeFormatter;
+use OCP\IDateTimeZone;
 use OCP\IL10N;
 use OCP\IConfig;
 use OCP\IURLGenerator;
@@ -53,6 +56,8 @@ class MattermostSearchMessagesProvider implements IProvider {
 	 * @var MattermostAPIService
 	 */
 	private $service;
+	private IDateTimeFormatter $dateTimeFormatter;
+	private IDateTimeZone $dateTimeZone;
 
 	/**
 	 * CospendSearchProvider constructor.
@@ -67,12 +72,16 @@ class MattermostSearchMessagesProvider implements IProvider {
 								IL10N $l10n,
 								IConfig $config,
 								IURLGenerator $urlGenerator,
+								IDateTimeFormatter $dateTimeFormatter,
+								IDateTimeZone $dateTimeZone,
 								MattermostAPIService $service) {
 		$this->appManager = $appManager;
 		$this->l10n = $l10n;
 		$this->config = $config;
 		$this->urlGenerator = $urlGenerator;
 		$this->service = $service;
+		$this->dateTimeFormatter = $dateTimeFormatter;
+		$this->dateTimeZone = $dateTimeZone;
 	}
 
 	/**
@@ -115,16 +124,13 @@ class MattermostSearchMessagesProvider implements IProvider {
 		$offset = $offset ? intval($offset) : 0;
 
 		$accessToken = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'token');
-		$url = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'url', 'https://mattermost.com');
-		if ($url === '') {
-			$url = 'https://mattermost.com';
-		}
+		$url = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'url');
 		$searchIssuesEnabled = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'search_messages_enabled', '0') === '1';
 		if ($accessToken === '' || !$searchIssuesEnabled) {
 			return SearchResult::paginated($this->getName(), [], 0);
 		}
 
-		$issues = $this->service->searchIssues($user->getUID(), $url, $term, $offset, $limit);
+		$issues = $this->service->searchMessages($user->getUID(), $url, $term, $offset, $limit);
 		if (isset($searchResult['error'])) {
 			return SearchResult::paginated($this->getName(), [], 0);
 		}
@@ -134,10 +140,10 @@ class MattermostSearchMessagesProvider implements IProvider {
 			return new MattermostSearchResultEntry(
 				$finalThumbnailUrl,
 				$this->getMainText($entry),
-				$this->getSubline($entry, $url),
-				$this->getLinkToMattermost($entry),
+				$this->getSubline($entry),
+				$this->getLinkToMattermost($entry, $url),
 				$finalThumbnailUrl === '' ? 'icon-mattermost-search-fallback' : '',
-				false
+				true
 			);
 		}, $issues);
 
@@ -153,42 +159,28 @@ class MattermostSearchMessagesProvider implements IProvider {
 	 * @return string
 	 */
 	protected function getMainText(array $entry): string {
-		$stateChar = $entry['type'] !== 'issue'
-			? ($entry['merged']
-				? '✅'
-				: ($entry['state'] === 'closed'
-					? '❌'
-					: '⋯'))
-			: ($entry['state'] === 'closed'
-				? '❌'
-				: '⋯');
-		return $stateChar . ' ' . $entry['title'];
-	}
-
-	/**
-	 * @param array $entry
-	 * @param string $url
-	 * @return string
-	 */
-	protected function getSubline(array $entry, string $url): string {
-		$repoFullName = str_replace($url, '', $entry['web_url']);
-		$repoFullName = preg_replace('/\/issues\/.*/', '', $repoFullName);
-		$repoFullName = preg_replace('/^\//', '', $repoFullName);
-		$spl = explode('/', $repoFullName);
-//		$owner = $spl[0];
-		$repo = $spl[1];
-		$number = $entry['iid'];
-		$typeChar = $entry['type'] !== 'issue' ? '⑃' : '🂠';
-		$idChar = $entry['type'] !== 'issue' ? '!' : '#';
-		return $typeChar . ' ' . $repo . $idChar . $number;
+		return $entry['message'];
 	}
 
 	/**
 	 * @param array $entry
 	 * @return string
 	 */
-	protected function getLinkToMattermost(array $entry): string {
-		return $entry['web_url'] ?? '';
+	protected function getSubline(array $entry): string {
+		return $this->l10n->t('%s in #%s at %s', [$entry['user_name'], $entry['channel_name'], $this->getFormattedDate($entry['create_at'])]);
+	}
+
+	protected function getFormattedDate(int $timestamp): string {
+		// return (new DateTime())->setTimestamp((int) ($timestamp / 1000))->format('Y-m-d H:i:s');
+		return $this->dateTimeFormatter->formatDateTime((int) ($timestamp / 1000), 'long', 'short', $this->dateTimeZone->getTimeZone());
+	}
+
+	/**
+	 * @param array $entry
+	 * @return string
+	 */
+	protected function getLinkToMattermost(array $entry, string $url): string {
+		return $url . '/' . $entry['team_name'] . '/channels/' . $entry['channel_name'];
 	}
 
 	/**
@@ -197,7 +189,7 @@ class MattermostSearchMessagesProvider implements IProvider {
 	 * @return string
 	 */
 	protected function getThumbnailUrl(array $entry): string {
-		$userId = $entry['author']['id'] ?? '';
+		$userId = $entry['user_id'] ?? '';
 		return $userId
 			? $this->urlGenerator->linkToRoute('integration_mattermost.mattermostAPI.getUserAvatar', []) . '?userId=' . urlencode(strval($userId))
 			: '';

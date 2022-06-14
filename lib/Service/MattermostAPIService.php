@@ -87,46 +87,35 @@ class MattermostAPIService {
 
 	/**
 	 * @param string $userId
-	 * @param string $url
+	 * @param string $mattermostUrl
 	 * @param string $term
 	 * @param int $offset
 	 * @param int $limit
 	 * @return array
 	 * @throws Exception
 	 */
-	public function searchMessages(string $userId, string $url, string $term, int $offset = 0, int $limit = 5): array {
+	public function searchMessages(string $userId, string $mattermostUrl, string $term, int $offset = 0, int $limit = 5): array {
 		$params = [
-			'scope' => 'projects',
-			'search' => $term,
+			'include_deleted_channels' => true,
+			'is_or_search' => true,
+			'page' => 0,
+			'per_page' => 60,
+			'terms' => $term,
+			'time_zone_offset' => 7200,
 		];
-		$projects = $this->request($userId, $url, 'search', $params);
-		if (isset($projects['error'])) {
-			return $projects;
-		}
-		usort($projects, function($a, $b) {
-			$a = new Datetime($a['last_activity_at']);
-			$ta = $a->getTimestamp();
-			$b = new Datetime($b['last_activity_at']);
-			$tb = $b->getTimestamp();
+		$result = $this->request($userId, $mattermostUrl, 'posts/search', $params, 'POST');
+		$posts = $result['posts'] ?? [];
+
+		// sort post by creation date, DESC
+		usort($posts, function($a, $b) {
+			$ta = (int) $a['create_at'];
+			$tb = (int) $b['create_at'];
 			return ($ta > $tb) ? -1 : 1;
 		});
-		//$a = usort($projects, function($a, $b) {
-		//	$sa = intval($a['star_count']);
-		//	$sb = intval($b['star_count']);
-		//	return ($sa > $sb) ? -1 : 1;
-		//});
-		return array_slice($projects, $offset, $limit);
-	}
 
-	/**
-	 * @param string $userId
-	 * @param string $url
-	 * @param ?string $since
-	 * @return array
-	 * @throws Exception
-	 */
-	public function getNotifications(string $userId, string $url, ?string $since = null): array {
-		return [];
+		$posts = array_slice($posts, $offset, $limit);
+
+		return $this->addPostInfos($posts, $userId, $mattermostUrl);
 	}
 
 	/**
@@ -181,13 +170,25 @@ class MattermostAPIService {
 			return $postTs > $since;
 		});
 
+		$posts = $this->addPostInfos($posts, $userId, $mattermostUrl);
+
+		// sort post by creation date, DESC
+		usort($posts, function($a, $b) {
+			$ta = (int) $a['create_at'];
+			$tb = (int) $b['create_at'];
+			return ($ta > $tb) ? -1 : 1;
+		});
+		return $posts;
+	}
+
+	public function addPostInfos(array $posts, string $userId, string $mattermostUrl): array {
 		if (count($posts) > 0) {
 			$channelsPerId = $this->getMyChannelsPerId($userId, $mattermostUrl);
 			// get channel and team information for each post
 			foreach ($posts as $postId => $post) {
 				$channelId = $post['channel_id'];
 				$posts[$postId]['channel_name'] = $channelsPerId[$channelId]['name'];
-				$posts[$postId]['channel_displayname'] = $channelsPerId[$channelId]['display_name'];
+				$posts[$postId]['channel_display_name'] = $channelsPerId[$channelId]['display_name'];
 				$posts[$postId]['team_id'] = $channelsPerId[$channelId]['team_id'];
 				$posts[$postId]['team_name'] = $channelsPerId[$channelId]['team_name'];
 				$posts[$postId]['team_display_name'] = $channelsPerId[$channelId]['team_display_name'];
@@ -200,7 +201,6 @@ class MattermostAPIService {
 			}
 			foreach ($usersById as $mmUserId => $user) {
 				$userInfo = $this->request($userId, $mattermostUrl, 'users/' . $mmUserId);
-				error_log('LALA ['.$mmUserId.'] : "'.$userInfo['username'].'"');
 				if (isset($userInfo['username'], $userInfo['first_name'], $userInfo['last_name'])) {
 					$usersById[$mmUserId]['user_name'] = $userInfo['username'];
 					$usersById[$mmUserId]['user_display_name'] = $userInfo['first_name'] . ' ' . $userInfo['last_name'];
@@ -211,13 +211,6 @@ class MattermostAPIService {
 				$posts[$postId]['user_name'] = $usersById[$mmUserId]['user_name'] ?? '';
 				$posts[$postId]['user_display_name'] = $usersById[$mmUserId]['user_display_name'] ?? '';
 			}
-
-			// sort post by creation date, DESC
-			usort($posts, function($a, $b) {
-				$ta = (int) $a['create_at'];
-				$tb = (int) $b['create_at'];
-				return ($ta > $tb) ? -1 : 1;
-			});
 		}
 		return $posts;
 	}

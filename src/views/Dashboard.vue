@@ -195,16 +195,6 @@ export default {
 		getNotificationImage(n) {
 			return generateUrl('/apps/integration_mattermost/avatar/user?') + encodeURIComponent('userId') + '=' + encodeURIComponent(n.user_id)
 		},
-		getAuthorFullName(n) {
-			return n.author.name
-				? (n.author.name + ' (@' + n.author.username + ')')
-				: n.author.username
-		},
-		getAuthorAvatarUrl(n) {
-			return (n.author && n.author.id)
-				? generateUrl('/apps/integration_mattermost/avatar/user?') + encodeURIComponent('userId') + '=' + encodeURIComponent(n.author.id)
-				: ''
-		},
 		getRepositoryName(n) {
 			return n.project.path
 				? n.project.path
@@ -214,7 +204,7 @@ export default {
 			return imagePath('integration_mattermost', 'mention.svg')
 		},
 		getSubline(n) {
-			return '@' + n.user_name + '#' + n.channel_name + ' ' + this.getFormattedDate(n)
+			return t('integration_mattermost', '{name} in #{channel} at {date}', { name: n.user_name, channel: n.channel_name, date: this.getFormattedDate(n) })
 		},
 		getTargetTitle(n) {
 			return n.message
