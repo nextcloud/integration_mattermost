@@ -14,11 +14,9 @@ return [
         ['name' => 'config#oauthRedirect', 'url' => '/oauth-redirect', 'verb' => 'GET'],
         ['name' => 'config#setConfig', 'url' => '/config', 'verb' => 'PUT'],
         ['name' => 'config#setAdminConfig', 'url' => '/admin-config', 'verb' => 'PUT'],
-        ['name' => 'mattermostAPI#getEvents', 'url' => '/events', 'verb' => 'GET'],
-        ['name' => 'mattermostAPI#getTodos', 'url' => '/todos', 'verb' => 'GET'],
-        ['name' => 'mattermostAPI#markTodoAsDone', 'url' => '/todos/{id}/mark-done', 'verb' => 'PUT'],
+        ['name' => 'mattermostAPI#getNotifications', 'url' => '/notifications', 'verb' => 'GET'],
         ['name' => 'mattermostAPI#getMattermostUrl', 'url' => '/url', 'verb' => 'GET'],
-        ['name' => 'mattermostAPI#getProjectAvatar', 'url' => '/avatar/project', 'verb' => 'GET'],
         ['name' => 'mattermostAPI#getUserAvatar', 'url' => '/avatar/user', 'verb' => 'GET'],
+        ['name' => 'mattermostAPI#getTeamAvatar', 'url' => '/avatar/team', 'verb' => 'GET'],
     ]
 ];

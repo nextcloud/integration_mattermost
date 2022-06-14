@@ -56,7 +56,7 @@ class MattermostWidget implements IWidget {
 	 * @inheritDoc
 	 */
 	public function getTitle(): string {
-		return $this->l10n->t('Mattermost notifications');
+		return $this->l10n->t('Mattermost');
 		}
 
 	/**

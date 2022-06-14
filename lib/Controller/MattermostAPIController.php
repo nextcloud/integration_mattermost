@@ -116,9 +116,12 @@ class MattermostAPIController extends Controller {
 		}
 	}
 
-	public function getMentionsMe() {
-		$mmUserName = $this->config->getUserValue($this->userId, Application::APP_ID, 'username');
-		$result = $this->mattermostAPIService->getMentionsMe($this->userId, $mmUserName, $this->mattermostUrl);
+	/**
+	 * @return DataResponse
+	 */
+	public function getNotifications(?int $since = null) {
+		$mmUserName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_name');
+		$result = $this->mattermostAPIService->getMentionsMe($this->userId, $mmUserName, $this->mattermostUrl, $since);
 		if (isset($result['error'])) {
 			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
 		} else {

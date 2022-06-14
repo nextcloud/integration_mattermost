@@ -163,7 +163,7 @@ class MattermostAPIService {
 		return ['teamInfo' => $userInfo];
 	}
 
-	public function getMentionsMe(string $userId, string $mattermostUserName, string $mattermostUrl): array {
+	public function getMentionsMe(string $userId, string $mattermostUserName, string $mattermostUrl, ?int $since = null): array {
 		$params = [
 			'include_deleted_channels' => true,
 			'is_or_search' => true,
@@ -172,7 +172,66 @@ class MattermostAPIService {
 			'terms' => '@' . $mattermostUserName . ' ',
 			'time_zone_offset' => 7200,
 		];
-		return $this->request($userId, $mattermostUrl, 'posts/search', $params, 'POST');
+		$result = $this->request($userId, $mattermostUrl, 'posts/search', $params, 'POST');
+		$posts = $result['posts'] ?? [];
+
+		// since filter
+		$posts = array_filter($posts, function(array $post) use ($since) {
+			$postTs = (int) $post['create_at'];
+			return $postTs > $since;
+		});
+
+		if (count($posts) > 0) {
+			$channelsPerId = $this->getMyChannelsPerId($userId, $mattermostUrl);
+			// get channel and team information for each post
+			foreach ($posts as $postId => $post) {
+				$channelId = $post['channel_id'];
+				$posts[$postId]['channel_name'] = $channelsPerId[$channelId]['name'];
+				$posts[$postId]['channel_displayname'] = $channelsPerId[$channelId]['display_name'];
+				$posts[$postId]['team_id'] = $channelsPerId[$channelId]['team_id'];
+				$posts[$postId]['team_name'] = $channelsPerId[$channelId]['team_name'];
+				$posts[$postId]['team_display_name'] = $channelsPerId[$channelId]['team_display_name'];
+			}
+
+			// get user/author info
+			$usersById = [];
+			foreach ($posts as $postId => $post) {
+				$usersById[$post['user_id']] = [];
+			}
+			foreach ($usersById as $mmUserId => $user) {
+				$userInfo = $this->request($userId, $mattermostUrl, 'users/' . $mmUserId);
+				error_log('LALA ['.$mmUserId.'] : "'.$userInfo['username'].'"');
+				if (isset($userInfo['username'], $userInfo['first_name'], $userInfo['last_name'])) {
+					$usersById[$mmUserId]['user_name'] = $userInfo['username'];
+					$usersById[$mmUserId]['user_display_name'] = $userInfo['first_name'] . ' ' . $userInfo['last_name'];
+				}
+			}
+			foreach ($posts as $postId => $post) {
+				$mmUserId = $post['user_id'];
+				$posts[$postId]['user_name'] = $usersById[$mmUserId]['user_name'] ?? '';
+				$posts[$postId]['user_display_name'] = $usersById[$mmUserId]['user_display_name'] ?? '';
+			}
+
+			// sort post by creation date, DESC
+			usort($posts, function($a, $b) {
+				$ta = (int) $a['create_at'];
+				$tb = (int) $b['create_at'];
+				return ($ta > $tb) ? -1 : 1;
+			});
+		}
+		return $posts;
+	}
+
+	public function getMyChannelsPerId(string $userId, string $mattermostUrl): array {
+		$result = $this->request($userId, $mattermostUrl, 'channels');
+		if (isset($result['error'])) {
+			return $result;
+		}
+		$perId = [];
+		foreach ($result as $channel) {
+			$perId[$channel['id']] = $channel;
+		}
+		return $perId;
 	}
 
 	/**
@@ -193,6 +252,7 @@ class MattermostAPIService {
 			$options = [
 				'headers' => [
 					'Authorization'  => 'Bearer ' . $accessToken,
+					'Content-Type' => 'application/x-www-form-urlencoded',
 					'User-Agent' => 'Nextcloud Mattermost integration',
 				],
 			];
@@ -213,7 +273,7 @@ class MattermostAPIService {
 
 					$url .= '?' . $paramsContent;
 				} else {
-					$options['body'] = $params;
+					$options['json'] = $params;
 				}
 			}
 
