@@ -17,6 +17,9 @@
 		<p v-if="!showOAuth && !connected" class="settings-hint">
 			{{ t('integration_mattermost', 'If you are allowed to, You can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens') }}
 		</p>
+		<p v-if="!showOAuth && !connected" class="settings-hint">
+			{{ t('integration_mattermost', 'You can connect with a personal token OR just with your login/password') }}
+		</p>
 		<div id="mattermost-content">
 			<div class="mattermost-grid-form">
 				<label for="mattermost-url">
@@ -29,40 +32,42 @@
 					:disabled="connected === true"
 					:placeholder="t('integration_mattermost', 'Mattermost instance address')"
 					@input="onInput">
-				<label v-show="!showOAuth"
+				<label v-show="showToken"
 					for="mattermost-token">
 					<a class="icon icon-category-auth" />
 					{{ t('integration_mattermost', 'Personal access token') }}
 				</label>
-				<input v-show="!showOAuth"
+				<input v-show="showToken"
 					id="mattermost-token"
 					v-model="state.token"
 					type="password"
 					:disabled="connected === true"
 					:placeholder="t('integration_mattermost', 'Mattermost personal access token')"
-					@input="onInput">
-				<label v-show="!showOAuth && !connected"
+					@keyup.enter="onConnectClick">
+				<label v-show="showLoginPassword"
 					for="mattermost-login">
 					<a class="icon icon-user" />
 					{{ t('integration_mattermost', 'Login') }}
 				</label>
-				<input v-show="!showOAuth && !connected"
+				<input v-show="showLoginPassword"
 					id="mattermost-login"
 					v-model="login"
 					type="text"
-					:placeholder="t('integration_mattermost', 'Mattermost login')">
-				<label v-show="!showOAuth && !connected"
+					:placeholder="t('integration_mattermost', 'Mattermost login')"
+					@keyup.enter="onConnectClick">
+				<label v-show="showLoginPassword"
 					for="mattermost-password">
 					<a class="icon icon-password" />
 					{{ t('integration_mattermost', 'Password') }}
 				</label>
-				<input v-show="!showOAuth && !connected"
+				<input v-show="showLoginPassword"
 					id="mattermost-password"
 					v-model="password"
 					type="password"
-					:placeholder="t('integration_mattermost', 'Mattermost password')">
+					:placeholder="t('integration_mattermost', 'Mattermost password')"
+					@keyup.enter="onConnectClick">
 			</div>
-			<Button v-if="!connected && (showOAuth || (login && password))"
+			<Button v-if="!connected && (showOAuth || (login && password) || state.token)"
 				id="mattermost-connect"
 				:disabled="loading === true"
 				:class="{ loading }"
@@ -75,7 +80,7 @@
 			<div v-if="connected" class="mattermost-grid-form">
 				<label class="mattermost-connected">
 					<a class="icon icon-checkmark-color" />
-					{{ t('integration_mattermost', 'Connected as {user}', { user: state.user_name }) }}
+					{{ t('integration_mattermost', 'Connected as {user}', { user: connectedDisplayName }) }}
 				</label>
 				<Button id="mattermost-rm-cred" @click="onLogoutClick">
 					<template #icon>
@@ -145,6 +150,15 @@ export default {
 				&& this.state.url && this.state.url !== ''
 				&& this.state.user_name && this.state.user_name !== ''
 		},
+		connectedDisplayName() {
+			return this.state.user_displayname + ' (' + this.state.user_name + ')'
+		},
+		showLoginPassword() {
+			return !this.showOAuth && !this.connected && !this.state.token
+		},
+		showToken() {
+			return !this.showOAuth && !this.login && !this.password
+		},
 	},
 
 	watch: {
@@ -188,7 +202,6 @@ export default {
 			}
 			delay(() => {
 				this.saveOptions({
-					token: this.state.token,
 					url: this.state.url,
 				})
 			}, 2000)()
@@ -209,6 +222,9 @@ export default {
 							showError(t('integration_mattermost', 'Invalid login/password'))
 						} else if (response.data.user_name) {
 							showSuccess(t('integration_mattermost', 'Successfully connected to Mattermost!'))
+							this.state.user_id = response.data.user_id
+							this.state.user_name = response.data.user_name
+							this.state.user_displayname = response.data.user_displayname
 							this.state.token = 'dumdum'
 						}
 					} else {
@@ -229,9 +245,17 @@ export default {
 		onConnectClick() {
 			if (this.showOAuth) {
 				this.connectWithOauth()
-			} else {
+			} else if (this.login && this.password) {
 				this.connectWithCredentials()
+			} else {
+				this.connectWithToken()
 			}
+		},
+		connectWithToken() {
+			this.loading = true
+			this.saveOptions({
+				token: this.state.token,
+			})
 		},
 		connectWithCredentials() {
 			this.loading = true

@@ -11,6 +11,7 @@
 
 namespace OCA\Mattermost\Controller;
 
+use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDisplayResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\IConfig;
@@ -60,8 +61,7 @@ class MattermostAPIController extends Controller {
 		$this->mattermostAPIService = $mattermostAPIService;
 		$this->userId = $userId;
 		$this->accessToken = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
-		$this->mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', 'https://mattermost.com');
-		$this->mattermostUrl = $this->mattermostUrl && $this->mattermostUrl !== '' ? $this->mattermostUrl : 'https://mattermost.com';
+		$this->mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url');
 		$this->urlGenerator = $urlGenerator;
 	}
 
@@ -82,10 +82,10 @@ class MattermostAPIController extends Controller {
 	 *
 	 * @param int $userId
 	 */
-	public function getUserAvatar(int $userId) {
+	public function getUserAvatar(string $userId) {
 		$result = $this->mattermostAPIService->getUserAvatar($this->userId, $userId, $this->mattermostUrl);
 		if (isset($result['userInfo'])) {
-			$userName = $result['userInfo']['name'] ?? '??';
+			$userName = $result['userInfo']['username'] ?? '??';
 			$fallbackAvatarUrl = $this->urlGenerator->linkToRouteAbsolute('core.GuestAvatar.getAvatar', ['guestName' => $userName, 'size' => 44]);
 			return new RedirectResponse($fallbackAvatarUrl);
 		} else {
@@ -103,16 +103,26 @@ class MattermostAPIController extends Controller {
 	 * @param int $teamId
 	 * @return DataDisplayResponse|RedirectResponse
 	 */
-	public function getTeamAvatar(int $teamId) {
-		$result = $this->mattermostAPIService->getProjectAvatar($this->userId, $teamId, $this->mattermostUrl);
-		if (isset($result['projectInfo'])) {
-			$projectName = $result['projectInfo']['name'] ?? '??';
+	public function getTeamAvatar(string $teamId) {
+		$result = $this->mattermostAPIService->getTeamAvatar($this->userId, $teamId, $this->mattermostUrl);
+		if (isset($result['teamInfo'])) {
+			$projectName = $result['teamInfo']['display_name'] ?? '??';
 			$fallbackAvatarUrl = $this->urlGenerator->linkToRouteAbsolute('core.GuestAvatar.getAvatar', ['guestName' => $projectName, 'size' => 44]);
 			return new RedirectResponse($fallbackAvatarUrl);
 		} else {
 			$response = new DataDisplayResponse($result['avatarContent']);
 			$response->cacheFor(60*60*24);
 			return $response;
+		}
+	}
+
+	public function getMentionsMe() {
+		$mmUserName = $this->config->getUserValue($this->userId, Application::APP_ID, 'username');
+		$result = $this->mattermostAPIService->getMentionsMe($this->userId, $mmUserName, $this->mattermostUrl);
+		if (isset($result['error'])) {
+			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
+		} else {
+			return new DataResponse($result);
 		}
 	}
 }

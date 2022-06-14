@@ -48,7 +48,9 @@ class Personal implements ISettings {
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
 		$searchMessagesEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'search_messages_enabled', '0');
 		$navigationEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'navigation_enabled', '0');
-		$userName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_name');
+		$mmUserId = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_id');
+		$mmUserName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_name');
+		$mmUserDisplayName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_displayname');
 		$url = $this->config->getUserValue($this->userId, Application::APP_ID, 'url');
 
 		// for OAuth
@@ -63,7 +65,9 @@ class Personal implements ISettings {
 			'client_id' => $clientID,
 			'client_secret' => $clientSecret,
 			'oauth_instance_url' => $oauthUrl,
-			'user_name' => $userName,
+			'user_id' => $mmUserId,
+			'user_name' => $mmUserName,
+			'user_displayname' => $mmUserDisplayName,
 			'search_messages_enabled' => ($searchMessagesEnabled === '1'),
 			'navigation_enabled' => ($navigationEnabled === '1'),
 		];

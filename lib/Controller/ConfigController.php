@@ -81,13 +81,15 @@ class ConfigController extends Controller {
 		if (isset($values['token'])) {
 			if ($values['token'] && $values['token'] !== '') {
 				$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url');
-				$userName = $this->storeUserInfo($mattermostUrl, $values['token']);
-				$result['user_name'] = $userName;
+				$result = $this->storeUserInfo($mattermostUrl);
 			} else {
 				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'user_id');
 				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'user_name');
+				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'user_displayname');
 				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'token');
+				$result['user_id'] = '';
 				$result['user_name'] = '';
+				$result['user_displayname'] = '';
 			}
 			// if the token is set, cleanup refresh token and expiration date
 			$this->config->deleteUserValue($this->userId, Application::APP_ID, 'refresh_token');
@@ -97,20 +99,28 @@ class ConfigController extends Controller {
 	}
 
 	private function loginWithCredentials(string $url, string $login, string $password): DataResponse {
+		// cleanup refresh token and expiration date on classic login
+		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'refresh_token');
+		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'token_expires_at');
+
 		$result = $this->mattermostAPIService->login($url, $login, $password);
 		if (isset($result['token'])) {
 			$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $result['token']);
-			$userName = $login;
-			if (isset($result['info'], $result['info']['first_name'], $result['info']['last_name'])) {
-				$userName = $result['info']['first_name'] . ' ' . $result['info']['last_name'];
-			}
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $login);
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', $userName);
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $result['info']['id'] ?? '');
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', $result['info']['username'] ?? '');
+			$userDisplayName = ($result['info']['first_name'] ?? '') . ' ' . ($result['info']['last_name'] ?? '');
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_displayname', $userDisplayName);
 			return new DataResponse([
-				'user_name' => $userName,
+				'user_id' => $result['info']['id'] ?? '',
+				'user_name' => $result['info']['username'] ?? '',
+				'user_displayname' => $userDisplayName,
 			]);
 		}
-		return new DataResponse(['user_name' => '']);
+		return new DataResponse([
+			'user_id' => '',
+			'user_name' => '',
+			'user_displayname' => '',
+		]);
 	}
 
 	/**
@@ -164,7 +174,7 @@ class ConfigController extends Controller {
 				}
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $accessToken);
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $refreshToken);
-				$this->storeUserInfo($mattermostUrl, $accessToken);
+				$this->storeUserInfo($mattermostUrl);
 				return new RedirectResponse(
 					$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']) .
 					'?mattermostToken=success'
@@ -182,24 +192,30 @@ class ConfigController extends Controller {
 
 	/**
 	 * @param string $mattermostUrl
-	 * @param string $accessToken
 	 * @return string
 	 */
-	private function storeUserInfo(string $mattermostUrl, string $accessToken, ?string $refreshToken = null): string {
+	private function storeUserInfo(string $mattermostUrl): array {
 		$info = $this->mattermostAPIService->request($this->userId, $mattermostUrl, 'users/me');
-		if (isset($info['first_name'], $info['last_name'], $info['id'])) {
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $info['id']);
-			$userName = $info['first_name'] . ' ' . $info['last_name'];
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', $userName);
-			return $userName;
-		} elseif (isset($info['username'], $info['id'])) {
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $info['id']);
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', $info['username']);
-			return $info['username'];
+		if (isset($info['first_name'], $info['last_name'], $info['id'], $info['username'])) {
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $info['id'] ?? '');
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', $info['username'] ?? '');
+			$userDisplayName = ($info['first_name'] ?? '') . ' ' . ($info['last_name'] ?? '');
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_displayname', $userDisplayName);
+
+			return [
+				'user_id' => $info['id'] ?? '',
+				'user_name' => $info['username'] ?? '',
+				'user_displayname' => $userDisplayName,
+			];
 		} else {
 			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', '');
 			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', '');
-			return '';
+			return [
+				'user_id' => '',
+				'user_name' => '',
+				'user_displayname' => '',
+				// TODO change perso settings to get/check user name errors correctly
+			];
 		}
 	}
 }

@@ -134,11 +134,17 @@ class MattermostAPIService {
 	 * @param string $mattermostUrl
 	 * @return array
 	 */
-	public function getUserAvatar(string $userId, int $mattermostUserId, string $mattermostUrl): array {
-		$userInfo = $this->request($userId, $mattermostUrl, 'users/' . $mattermostUserId);
-		if (!isset($userInfo['error']) && isset($userInfo['avatar_url'])) {
-			return ['avatarContent' => $this->client->get($userInfo['avatar_url'])->getBody()];
+	public function getUserAvatar(string $userId, string $mattermostUserId, string $mattermostUrl): array {
+		$image = $this->request($userId, $mattermostUrl, 'users/' . $mattermostUserId . '/image', [], 'GET', false);
+		if (!is_array($image)) {
+			return ['avatarContent' => $image];
 		}
+		$image = $this->request($userId, $mattermostUrl, 'users/' . $mattermostUserId . '/image/default', [], 'GET', false);
+		if (!is_array($image)) {
+			return ['avatarContent' => $image];
+		}
+
+		$userInfo = $this->request($userId, $mattermostUrl, 'users/' . $mattermostUserId);
 		return ['userInfo' => $userInfo];
 	}
 
@@ -147,22 +153,39 @@ class MattermostAPIService {
 	 * @param string $mattermostUrl
 	 * @return array
 	 */
-	public function getTeamAvatar(string $userId, int $teamId, string $mattermostUrl): array {
-		$projectInfo = $this->request($userId, $mattermostUrl, 'projects/' . $teamId);
-		if (!isset($projectInfo['error']) && isset($projectInfo['avatar_url'])) {
-			return ['avatarContent' => $this->client->get($projectInfo['avatar_url'])->getBody()];
+	public function getTeamAvatar(string $userId, string $teamId, string $mattermostUrl): array {
+		$image = $this->request($userId, $mattermostUrl, 'teams/' . $teamId . '/image', [], 'GET', false);
+		if (!is_array($image)) {
+			return ['avatarContent' => $image];
 		}
-		return ['projectInfo' => $projectInfo];
+
+		$userInfo = $this->request($userId, $mattermostUrl, 'teams/' . $teamId);
+		return ['teamInfo' => $userInfo];
+	}
+
+	public function getMentionsMe(string $userId, string $mattermostUserName, string $mattermostUrl): array {
+		$params = [
+			'include_deleted_channels' => true,
+			'is_or_search' => true,
+			'page' => 0,
+			'per_page' => 20,
+			'terms' => '@' . $mattermostUserName . ' ',
+			'time_zone_offset' => 7200,
+		];
+		return $this->request($userId, $mattermostUrl, 'posts/search', $params, 'POST');
 	}
 
 	/**
+	 * @param string $userId
 	 * @param string $url
 	 * @param string $endPoint
 	 * @param array $params
 	 * @param string $method
-	 * @return array
+	 * @param bool $jsonResponse
+	 * @throws Exception
 	 */
-	public function request(string $userId, string $url, string $endPoint, array $params = [], string $method = 'GET'): array {
+	public function request(string $userId, string $url, string $endPoint, array $params = [], string $method = 'GET',
+							bool $jsonResponse = true) {
 		$this->checkTokenExpiration($userId, $url);
 		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
 		try {
@@ -211,7 +234,11 @@ class MattermostAPIService {
 			if ($respCode >= 400) {
 				return ['error' => $this->l10n->t('Bad credentials')];
 			} else {
-				return json_decode($body, true);
+				if ($jsonResponse) {
+					return json_decode($body, true);
+				} else {
+					return $body;
+				}
 			}
 		} catch (ServerException | ClientException $e) {
 			$response = $e->getResponse();
