@@ -122,18 +122,50 @@ import './bootstrap'
 
 })()
 
-function sendLoop(channelId, channelName) {
+function sendLinks(channelId, channelName) {
+	const req = {
+		fileIds: OCA.Mattermost.filesToSend.map((f) => f.id),
+		channelId,
+		channelName,
+	}
+	const url = generateUrl('apps/integration_mattermost/sendLinks')
+	axios.post(url, req).then((response) => {
+		if (OCA.Mattermost.filesToSend.length === 1) {
+			showSuccess(
+				t('integration_mattermost', 'A link to {fileName} was sent to {channelName}', {
+					fileName: OCA.Mattermost.filesToSend[0].name,
+				})
+			)
+		} else {
+			showSuccess(t('integration_mattermost', '{number} links were sent to {channelName}', {
+				number: OCA.Mattermost.filesToSend.length,
+				channelName,
+			}))
+		}
+		OCA.Mattermost.MattermostSendModalVue.success()
+	}).catch((error) => {
+		console.error(error)
+		OCA.Mattermost.MattermostSendModalVue.failure()
+		OCA.Mattermost.filesToSend = []
+		showError(
+			t('integration_mattermost', 'Failed to send links to Mattermost')
+			+ ' ' + error.response?.request?.responseText
+		)
+	})
+}
+
+function sendFileLoop(channelId, channelName) {
 	if (OCA.Mattermost.filesToSend.length === 0) {
 		OCA.Mattermost.MattermostSendModalVue.success()
 	}
 
-	const file = OCA.Mattermost.filesToSend.pop()
+	const file = OCA.Mattermost.filesToSend.shift()
 	OCA.Mattermost.MattermostSendModalVue.fileStarted(file.id)
 	const req = {
 		fileId: file.id,
 		channelId,
 	}
-	const url = generateUrl('apps/integration_mattermost/send')
+	const url = generateUrl('apps/integration_mattermost/sendFile')
 	axios.post(url, req).then((response) => {
 		// finished
 		if (OCA.Mattermost.filesToSend.length === 0) {
@@ -145,7 +177,7 @@ function sendLoop(channelId, channelName) {
 				fileName: file.name,
 				channelName,
 			}))
-			sendLoop(channelId, channelName)
+			sendFileLoop(channelId, channelName)
 		}
 	}).catch((error) => {
 		console.error(error)
@@ -172,8 +204,12 @@ OCA.Mattermost.MattermostSendModalVue = new View().$mount(modalElement)
 OCA.Mattermost.MattermostSendModalVue.$on('closed', () => {
 	console.debug('mattermost modal closed')
 })
-OCA.Mattermost.MattermostSendModalVue.$on('validate', (channelId, channelName) => {
-	sendLoop(channelId, channelName)
+OCA.Mattermost.MattermostSendModalVue.$on('validate', (channelId, channelName, type) => {
+	if (type === 'link') {
+		sendLinks(channelId, channelName)
+	} else {
+		sendFileLoop(channelId, channelName)
+	}
 })
 
 // is Mattermost integration configured/connected?

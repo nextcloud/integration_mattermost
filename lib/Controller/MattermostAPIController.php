@@ -155,4 +155,19 @@ class MattermostAPIController extends Controller {
 			return new DataResponse($result);
 		}
 	}
+
+	/**
+	 * @param array $fileIds
+	 * @param string $channelId
+	 * @param string $channelName
+	 * @return DataResponse
+	 */
+	public function sendLinks(array $fileIds, string $channelId, string $channelName) {
+		$result = $this->mattermostAPIService->sendLinks($this->userId, $this->mattermostUrl, $fileIds, $channelId, $channelName);
+		if (isset($result['error'])) {
+			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
+		} else {
+			return new DataResponse($result);
+		}
+	}
 }

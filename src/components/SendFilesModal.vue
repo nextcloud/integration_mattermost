@@ -47,6 +47,7 @@
 					label="display_name"
 					track-by="id"
 					:internal-search="true"
+					class="channel-select"
 					@search-change="query = $event">
 					<template #option="{option}">
 						<PoundBoxIcon />
@@ -65,6 +66,34 @@
 						{{ t('integration_mattermost', 'Start typing to search') }}
 					</template>
 				</Multiselect>
+				<span class="field-label">
+					<PackageUpIcon />
+					<span>
+						{{ t('integration_mattermost', 'Send') }}
+					</span>
+				</span>
+				<div>
+					<CheckboxRadioSwitch
+						:checked.sync="sendType"
+						value="file"
+						name="send_type_radio"
+						type="radio">
+						<FileIcon :size="20" />
+						<span class="option-title">
+							{{ t('integration_mattermost', 'Upload files') }}
+						</span>
+					</CheckboxRadioSwitch>
+					<CheckboxRadioSwitch
+						:checked.sync="sendType"
+						value="link"
+						name="send_type_radio"
+						type="radio">
+						<LinkVariantIcon :size="20" />
+						<span class="option-title">
+							{{ t('integration_mattermost', 'Public links') }}
+						</span>
+					</CheckboxRadioSwitch>
+				</div>
 				<div class="mattermost-footer">
 					<Button
 						@click="closeModal">
@@ -89,11 +118,14 @@
 <script>
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Highlight from '@nextcloud/vue/dist/Components/Highlight'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 import Button from '@nextcloud/vue/dist/Components/Button'
 import SendIcon from 'vue-material-design-icons/Send'
 import FileIcon from 'vue-material-design-icons/File'
 import PoundBoxIcon from 'vue-material-design-icons/PoundBox'
+import LinkVariantIcon from 'vue-material-design-icons/LinkVariant'
+import PackageUpIcon from 'vue-material-design-icons/PackageUp'
 
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
@@ -110,12 +142,15 @@ export default {
 	components: {
 		MattermostIcon,
 		Multiselect,
+		CheckboxRadioSwitch,
 		Highlight,
 		Modal,
 		Button,
 		SendIcon,
 		PoundBoxIcon,
 		FileIcon,
+		LinkVariantIcon,
+		PackageUpIcon,
 	},
 
 	props: [],
@@ -124,6 +159,7 @@ export default {
 		return {
 			show: false,
 			loading: false,
+			sendType: 'link',
 			query: '',
 			files: [],
 			fileStates: {},
@@ -174,7 +210,7 @@ export default {
 		},
 		onSendClick() {
 			this.loading = true
-			this.$emit('validate', this.selectedChannel.id, this.selectedChannel.display_name)
+			this.$emit('validate', this.selectedChannel.id, this.selectedChannel.display_name, this.sendType)
 		},
 		success() {
 			this.loading = false
@@ -210,10 +246,25 @@ export default {
 	display: flex;
 	flex-direction: column;
 
+	> * {
+		margin-bottom: 16px;
+
+		&.field-label {
+			display: flex;
+			align-items: center;
+			margin-top: 12px;
+			span {
+				margin-left: 8px;
+			}
+		}
+		&:not(.field-label) {
+			margin-left: 32px;
+		}
+	}
+
 	.modal-title {
 		display: flex;
 		justify-content: center;
-		margin-bottom: 16px;
 		span {
 			margin-left: 8px;
 		}
@@ -226,7 +277,6 @@ export default {
 	.files {
 		display: flex;
 		flex-direction: column;
-		margin: 0 0 12px 32px;
 		.file {
 			display: flex;
 			align-items: center;
@@ -248,11 +298,6 @@ export default {
 		}
 	}
 
-	.userInput {
-		width: 100%;
-		margin: 0 0 28px 0;
-	}
-
 	.settings-hint {
 		color: var(--color-text-maxcontrast);
 		margin: 16px 0 16px 0;
@@ -261,22 +306,16 @@ export default {
 	.multiselect-name {
 		margin-left: 8px;
 	}
+
+	.option-title {
+		margin-left: 8px;
+	}
 }
 
 .mattermost-footer {
 	display: flex;
-	margin-top: 16px;
 	.spacer {
 		flex-grow: 1;
-	}
-}
-
-.field-label {
-	display: flex;
-	align-items: center;
-	margin-bottom: 12px;
-	span {
-		margin-left: 8px;
 	}
 }
 </style>

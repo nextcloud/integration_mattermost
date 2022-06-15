@@ -11,19 +11,21 @@
 
 namespace OCA\Mattermost\Service;
 
-use DateInterval;
 use Datetime;
-use DateTimeImmutable;
 use Exception;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use OC\Files\Node\File;
 use OCA\Mattermost\AppInfo\Application;
+use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\IConfig;
 use OCP\IL10N;
+use OCP\IURLGenerator;
+use OCP\Share\IShare;
 use Psr\Log\LoggerInterface;
 use OCP\Http\Client\IClientService;
+use OCP\Share\IManager as ShareManager;
 
 class MattermostAPIService {
 	/**
@@ -47,6 +49,8 @@ class MattermostAPIService {
 	 */
 	private $config;
 	private IRootFolder $root;
+	private ShareManager $shareManager;
+	private IURLGenerator $urlGenerator;
 
 	/**
 	 * Service to make requests to Mattermost API
@@ -56,6 +60,8 @@ class MattermostAPIService {
 								IL10N $l10n,
 								IConfig $config,
 								IRootFolder $root,
+								ShareManager $shareManager,
+								IURLGenerator $urlGenerator,
 								IClientService $clientService) {
 		$this->appName = $appName;
 		$this->logger = $logger;
@@ -63,6 +69,8 @@ class MattermostAPIService {
 		$this->client = $clientService->newClient();
 		$this->config = $config;
 		$this->root = $root;
+		$this->shareManager = $shareManager;
+		$this->urlGenerator = $urlGenerator;
 	}
 
 	/**
@@ -241,6 +249,51 @@ class MattermostAPIService {
 			return $result;
 		}
 		return $result;
+	}
+
+	public function sendLinks(string $userId, string $mattermostUrl, array $fileIds, string $channelId, string $channelName): array {
+		$links = [];
+		$userFolder = $this->root->getUserFolder($userId);
+
+		// create public links
+		foreach ($fileIds as $fileId) {
+			$files = $userFolder->getById($fileId);
+			if (count($files) > 0 && $files[0] instanceof File) {
+				$file = $files[0];
+
+				$share = $this->shareManager->newShare();
+				$share->setNode($file);
+				$share->setPermissions(Constants::PERMISSION_READ);
+				$share->setShareType(IShare::TYPE_LINK);
+				$share->setSharedBy($userId);
+				$share->setLabel('Mattermost (' . $channelName . ')');
+				$share = $this->shareManager->createShare($share);
+				$token = $share->getToken();
+				$linkUrl = $this->urlGenerator->getAbsoluteURL(
+					$this->urlGenerator->linkToRoute('files_sharing.Share.showShare', [
+						'token' => $token,
+					])
+				);
+				$links[] = [
+					'name' => $file->getName(),
+					'url' => $linkUrl,
+				];
+			}
+		}
+
+		if (count($links) > 0) {
+			$message = '';
+			foreach ($links as $link) {
+				$message .= '```' . $link['name'] . '```: ' . $link['url'] . "\n";
+			}
+			$params = [
+				'channel_id' => $channelId,
+				'message' => $message,
+			];
+			return $this->request($userId, $mattermostUrl, 'posts', $params, 'POST');
+		} else {
+			return ['error' => 'Files not found'];
+		}
 	}
 
 	public function sendFile(string $userId, string $mattermostUrl, int $fileId, string $channelId): array {
