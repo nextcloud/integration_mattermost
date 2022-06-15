@@ -107,8 +107,8 @@ import './bootstrap'
 
 		sendSingle: (fileName, context, that) => {
 			const file = {
-				id: context.$file.data('id'),
-				name: context.$file.data('name'),
+				id: context.fileInfoModel.attributes.id,
+				name: context.fileInfoModel.attributes.name,
 			}
 			const modalVue = OCA.Mattermost.MattermostSendModalVue
 			modalVue.updateChannels()

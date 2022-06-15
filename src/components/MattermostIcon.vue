@@ -1,0 +1,39 @@
+<template>
+	<span :aria-hidden="!title"
+		:aria-label="title"
+		class="material-design-icon mattermost-icon"
+		role="img"
+		v-bind="$attrs"
+		@click="$emit('click', $event)">
+		<svg :fill="fillColor"
+			:width="size"
+			:height="size"
+			enable-background="new 0 0 365.01752 364.38879"
+			version="1.1"
+			viewBox="0 0 365.01752 364.38879"
+			xml:space="preserve"
+			xmlns="http://www.w3.org/2000/svg">
+			<path d="m 347.53367,104.6 c -12.1,-26 -29.5,-47.9 -52.6,-66.3 0.6,12.5 2,39.2 2,39.2 0,0 1.4,1.9 2,2.7 23.4,32.6 31.9,68.8 24.1,108 -15.6,78.7 -92.3,126.8 -170.1,107.1 -68.3,-17.2 -113.9,-87.1 -101,-156.3 10.2,-54.6 42.5,-91 94.9,-109.5 l 1.9,-0.7 1.5,-1.1 c 6.4,-9 12.6,-18.1 19.2,-27.7 -79.5,3.9 -159.4,67.7 -168.59999955,164.7 C -8.0663295,258.6 55.23367,342.3 145.73367,360.6 c 94.2,19.2 183.9,-36.4 211,-125.4 13.6,-44.5 10.4,-88.3 -9.2,-130.6 z m -224.3,58.7 c 4,37.8 36.7,63.5 74.6,59.3 37.2,-4.1 64.4,-40.5 57.4,-77.3 -5.5,-28.7 -11.6,-57.3 -17.4,-85.9 -2.4,-11.9 -4.8,-23.7 -7.4,-36.2 -1,0.9 -1.5,1.3 -1.9,1.7 -12.7,12.5 -25.5,25 -38.2,37.5 -15.5,15.2 -31,30.5 -46.6,45.6 -15.6,15.2 -22.7,33.7 -20.5,55.3 z" />
+		</svg>
+	</span>
+</template>
+
+<script>
+export default {
+	name: 'MattermostIcon',
+	props: {
+		title: {
+			type: String,
+			default: '',
+		},
+		fillColor: {
+			type: String,
+			default: 'currentColor',
+		},
+		size: {
+			type: Number,
+			default: 24,
+		},
+	},
+}
+</script>

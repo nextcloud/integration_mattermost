@@ -15,10 +15,13 @@ return [
 		['name' => 'config#oauthRedirect', 'url' => '/oauth-redirect', 'verb' => 'GET'],
         ['name' => 'config#setConfig', 'url' => '/config', 'verb' => 'PUT'],
         ['name' => 'config#setAdminConfig', 'url' => '/admin-config', 'verb' => 'PUT'],
+
 		['name' => 'mattermostAPI#getChannels', 'url' => '/channels', 'verb' => 'GET'],
 		['name' => 'mattermostAPI#getNotifications', 'url' => '/notifications', 'verb' => 'GET'],
         ['name' => 'mattermostAPI#getMattermostUrl', 'url' => '/url', 'verb' => 'GET'],
         ['name' => 'mattermostAPI#getUserAvatar', 'url' => '/avatar/user', 'verb' => 'GET'],
         ['name' => 'mattermostAPI#getTeamAvatar', 'url' => '/avatar/team', 'verb' => 'GET'],
+
+		['name' => 'files#getFileImage', 'url' => '/preview', 'verb' => 'GET'],
     ]
 ];
