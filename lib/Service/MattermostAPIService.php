@@ -230,6 +230,14 @@ class MattermostAPIService {
 		return $perId;
 	}
 
+	public function getMyChannels(string $userId, string $mattermostUrl): array {
+		$result = $this->request($userId, $mattermostUrl, 'channels');
+		if (isset($result['error'])) {
+			return $result;
+		}
+		return $result;
+	}
+
 	/**
 	 * @param string $userId
 	 * @param string $url

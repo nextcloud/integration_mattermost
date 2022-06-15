@@ -129,4 +129,16 @@ class MattermostAPIController extends Controller {
 			return new DataResponse($result);
 		}
 	}
+
+	/**
+	 * @return DataResponse
+	 */
+	public function getChannels() {
+		$result = $this->mattermostAPIService->getMyChannels($this->userId, $this->mattermostUrl);
+		if (isset($result['error'])) {
+			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
+		} else {
+			return new DataResponse($result);
+		}
+	}
 }

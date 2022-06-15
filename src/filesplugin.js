@@ -100,6 +100,7 @@ import './bootstrap'
 			})
 			console.debug('these are the selected files', files)
 			const modalVue = OCA.Mattermost.MattermostSendModalVue
+			modalVue.updateChannels()
 			modalVue.setFiles(files)
 			modalVue.showModal()
 		},
@@ -110,6 +111,7 @@ import './bootstrap'
 				name: context.$file.data('name'),
 			}
 			const modalVue = OCA.Mattermost.MattermostSendModalVue
+			modalVue.updateChannels()
 			modalVue.setFiles([file])
 			modalVue.showModal()
 		},

@@ -42,6 +42,9 @@ import Button from '@nextcloud/vue/dist/Components/Button'
 import CloseIcon from 'vue-material-design-icons/Close'
 import SendIcon from 'vue-material-design-icons/Send'
 
+import axios from '@nextcloud/axios'
+import { generateUrl } from '@nextcloud/router'
+
 export default {
 	name: 'SendFilesModal',
 
@@ -59,7 +62,8 @@ export default {
 			show: false,
 			loading: false,
 			files: [],
-			selectedItem: { channelId: 222, channelName: 'superChan' },
+			channels: [],
+			selectedItem: { id: 222, name: 'super-chan', display_name: 'Super channel' },
 		}
 	},
 
@@ -98,7 +102,7 @@ export default {
 		},
 		onSendClick() {
 			this.loading = true
-			this.$emit('validate', this.files, this.selectedItem.channelId, this.selectedItem.channelName)
+			this.$emit('validate', this.files, this.selectedItem.id, this.selectedItem.display_name)
 		},
 		success() {
 			this.loading = false
@@ -106,6 +110,14 @@ export default {
 		},
 		failure() {
 			this.loading = false
+		},
+		updateChannels() {
+			const url = generateUrl('apps/integration_mattermost/channels')
+			axios.get(url).then((response) => {
+				this.channels = response.data
+			}).catch((error) => {
+				console.error(error)
+			})
 		},
 	},
 }
