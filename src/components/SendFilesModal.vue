@@ -19,8 +19,14 @@
 				<div class="files">
 					<div v-for="f in files"
 						:key="f.id"
-						class="file">
-						<img :src="getFilePreviewUrl(f.id)"
+						:class="{
+							file: true,
+							finished: fileStates[f.id] === STATES.FINISHED,
+						}">
+						<span v-if="fileStates[f.id] === STATES.IN_PROGRESS"
+							class="icon-loading-small" />
+						<img v-else
+							:src="getFilePreviewUrl(f.id)"
 							class="file-image">
 						<span>
 							{{ f.name }}
@@ -93,6 +99,11 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import MattermostIcon from './MattermostIcon'
 
+const STATES = {
+	IN_PROGRESS: 1,
+	FINISHED: 2,
+}
+
 export default {
 	name: 'SendFilesModal',
 
@@ -115,8 +126,10 @@ export default {
 			loading: false,
 			query: '',
 			files: [],
+			fileStates: {},
 			channels: [],
 			selectedChannel: null,
+			STATES,
 		}
 	},
 
@@ -147,6 +160,7 @@ export default {
 			this.$emit('closed')
 			this.selectedChannel = null
 			this.files = []
+			this.fileStates = {}
 			this.channels = []
 		},
 		setFiles(files) {
@@ -160,7 +174,7 @@ export default {
 		},
 		onSendClick() {
 			this.loading = true
-			this.$emit('validate', this.files, this.selectedChannel.id, this.selectedChannel.display_name)
+			this.$emit('validate', this.selectedChannel.id, this.selectedChannel.display_name)
 		},
 		success() {
 			this.loading = false
@@ -179,6 +193,12 @@ export default {
 		},
 		getFilePreviewUrl(fileId) {
 			return generateUrl('/apps/integration_mattermost/preview?id={fileId}&x=100&y=100', { fileId })
+		},
+		fileStarted(id) {
+			this.$set(this.fileStates, id, STATES.IN_PROGRESS)
+		},
+		fileFinished(id) {
+			this.$set(this.fileStates, id, STATES.FINISHED)
 		},
 	},
 }
@@ -216,6 +236,14 @@ export default {
 				width: 32px;
 				height: auto;
 				margin-right: 12px;
+			}
+
+			&.inProgress {
+				background-color: cyan;
+			}
+
+			&.finished {
+				background-color: var(--color-success);
 			}
 		}
 	}

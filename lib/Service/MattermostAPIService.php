@@ -17,7 +17,9 @@ use DateTimeImmutable;
 use Exception;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use OC\Files\Node\File;
 use OCA\Mattermost\AppInfo\Application;
+use OCP\Files\IRootFolder;
 use OCP\IConfig;
 use OCP\IL10N;
 use Psr\Log\LoggerInterface;
@@ -44,6 +46,7 @@ class MattermostAPIService {
 	 * @var IConfig
 	 */
 	private $config;
+	private IRootFolder $root;
 
 	/**
 	 * Service to make requests to Mattermost API
@@ -52,12 +55,14 @@ class MattermostAPIService {
 								LoggerInterface $logger,
 								IL10N $l10n,
 								IConfig $config,
+								IRootFolder $root,
 								IClientService $clientService) {
 		$this->appName = $appName;
 		$this->logger = $logger;
 		$this->l10n = $l10n;
 		$this->client = $clientService->newClient();
 		$this->config = $config;
+		$this->root = $root;
 	}
 
 	/**
@@ -236,6 +241,70 @@ class MattermostAPIService {
 			return $result;
 		}
 		return $result;
+	}
+
+	public function sendFile(string $userId, string $mattermostUrl, int $fileId, string $channelId): array {
+		$userFolder = $this->root->getUserFolder($userId);
+		$files = $userFolder->getById($fileId);
+		if (count($files) > 0 && $files[0] instanceof File) {
+			$file = $files[0];
+			$endpoint = 'files?channel_id=' . urlencode($channelId) . '&filename=' . urlencode($file->getName());
+			$sendResult = $this->requestSendFile($userId, $mattermostUrl, $endpoint, $file->fopen('r'));
+			if (isset($sendResult['error'])) {
+				return $sendResult;
+			}
+
+			if (isset($sendResult['file_infos']) && is_array($sendResult['file_infos']) && count($sendResult['file_infos']) > 0) {
+				$remoteFileId = $sendResult['file_infos'][0]['id'] ?? 0;
+				$params = [
+					'channel_id' => $channelId,
+					'message' => 'Check this out',
+					'file_ids' => [$remoteFileId],
+				];
+				return $this->request($userId, $mattermostUrl, 'posts', $params, 'POST');
+			} else {
+				return ['error' => 'File upload error'];
+			}
+		} else {
+			return ['error' => 'File not found'];
+		}
+	}
+
+	/**
+	 * @param string $userId
+	 * @param string $url
+	 * @param string $endPoint
+	 * @param $fileResource
+	 * @return array|mixed|resource|string|string[]
+	 * @throws Exception
+	 */
+	public function requestSendFile(string $userId, string $url, string $endPoint, $fileResource) {
+		$this->checkTokenExpiration($userId, $url);
+		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
+		try {
+			$url = $url . '/api/v4/' . $endPoint;
+			$options = [
+				'headers' => [
+					'Authorization'  => 'Bearer ' . $accessToken,
+//					'Content-Type' => 'application/x-www-form-urlencoded',
+					'User-Agent' => 'Nextcloud Mattermost integration',
+				],
+				'body' => $fileResource,
+			];
+
+			$response = $this->client->post($url, $options);
+			$body = $response->getBody();
+			$respCode = $response->getStatusCode();
+
+			if ($respCode >= 400) {
+				return ['error' => $this->l10n->t('Bad credentials')];
+			} else {
+				return json_decode($body, true);
+			}
+		} catch (ServerException | ClientException $e) {
+			$this->logger->warning('Mattermost API send file error : '.$e->getMessage(), ['app' => $this->appName]);
+			return ['error' => $e->getMessage()];
+		}
 	}
 
 	/**
