@@ -251,7 +251,16 @@ class MattermostAPIService {
 		return $result;
 	}
 
-	public function sendLinks(string $userId, string $mattermostUrl, array $fileIds, string $channelId, string $channelName): array {
+	public function sendMessage(string $userId, string $mattermostUrl, string $message, string $channelId): array {
+		$params = [
+			'channel_id' => $channelId,
+			'message' => $message,
+		];
+		return $this->request($userId, $mattermostUrl, 'posts', $params, 'POST');
+	}
+
+	public function sendLinks(string $userId, string $mattermostUrl, array $fileIds,
+							  string $channelId, string $channelName, string $comment): array {
 		$links = [];
 		$userFolder = $this->root->getUserFolder($userId);
 
@@ -282,7 +291,7 @@ class MattermostAPIService {
 		}
 
 		if (count($links) > 0) {
-			$message = '';
+			$message = $comment . "\n";
 			foreach ($links as $link) {
 				$message .= '```' . $link['name'] . '```: ' . $link['url'] . "\n";
 			}
@@ -311,7 +320,7 @@ class MattermostAPIService {
 				$remoteFileId = $sendResult['file_infos'][0]['id'] ?? 0;
 				$params = [
 					'channel_id' => $channelId,
-					'message' => 'Check this out',
+					'message' => '',
 					'file_ids' => [$remoteFileId],
 				];
 				return $this->request($userId, $mattermostUrl, 'posts', $params, 'POST');

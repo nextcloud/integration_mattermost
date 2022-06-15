@@ -16,6 +16,7 @@ return [
         ['name' => 'config#setConfig', 'url' => '/config', 'verb' => 'PUT'],
         ['name' => 'config#setAdminConfig', 'url' => '/admin-config', 'verb' => 'PUT'],
 
+		['name' => 'mattermostAPI#sendMessage', 'url' => '/sendMessage', 'verb' => 'POST'],
 		['name' => 'mattermostAPI#sendLinks', 'url' => '/sendLinks', 'verb' => 'POST'],
 		['name' => 'mattermostAPI#sendFile', 'url' => '/sendFile', 'verb' => 'POST'],
 		['name' => 'mattermostAPI#getChannels', 'url' => '/channels', 'verb' => 'GET'],

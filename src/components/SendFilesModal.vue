@@ -94,6 +94,15 @@
 						</span>
 					</CheckboxRadioSwitch>
 				</div>
+				<span class="field-label">
+					<CommentIcon />
+					<span>
+						{{ t('integration_mattermost', 'Comment') }}
+					</span>
+				</span>
+				<input v-model="comment"
+					type="text"
+					:placeholder="commentPlaceholder">
 				<div class="mattermost-footer">
 					<Button
 						@click="closeModal">
@@ -126,6 +135,7 @@ import FileIcon from 'vue-material-design-icons/File'
 import PoundBoxIcon from 'vue-material-design-icons/PoundBox'
 import LinkVariantIcon from 'vue-material-design-icons/LinkVariant'
 import PackageUpIcon from 'vue-material-design-icons/PackageUp'
+import CommentIcon from 'vue-material-design-icons/Comment'
 
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
@@ -151,6 +161,7 @@ export default {
 		FileIcon,
 		LinkVariantIcon,
 		PackageUpIcon,
+		CommentIcon,
 	},
 
 	props: [],
@@ -160,12 +171,14 @@ export default {
 			show: false,
 			loading: false,
 			sendType: 'link',
+			comment: '',
 			query: '',
 			files: [],
 			fileStates: {},
 			channels: [],
 			selectedChannel: null,
 			STATES,
+			commentPlaceholder: t('integration_mattermost', 'Sent from my Nextcloud'),
 		}
 	},
 
@@ -198,6 +211,7 @@ export default {
 			this.files = []
 			this.fileStates = {}
 			this.channels = []
+			this.comment = ''
 		},
 		setFiles(files) {
 			this.files = files
@@ -210,7 +224,12 @@ export default {
 		},
 		onSendClick() {
 			this.loading = true
-			this.$emit('validate', this.selectedChannel.id, this.selectedChannel.display_name, this.sendType)
+			this.$emit('validate',
+				this.selectedChannel.id,
+				this.selectedChannel.display_name,
+				this.sendType,
+				this.comment || this.commentPlaceholder
+			)
 		},
 		success() {
 			this.loading = false

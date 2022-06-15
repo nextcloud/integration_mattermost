@@ -122,11 +122,12 @@ import './bootstrap'
 
 })()
 
-function sendLinks(channelId, channelName) {
+function sendLinks(channelId, channelName, comment) {
 	const req = {
 		fileIds: OCA.Mattermost.filesToSend.map((f) => f.id),
 		channelId,
 		channelName,
+		comment,
 	}
 	const url = generateUrl('apps/integration_mattermost/sendLinks')
 	axios.post(url, req).then((response) => {
@@ -190,6 +191,15 @@ function sendFileLoop(channelId, channelName) {
 	})
 }
 
+function sendMessage(channelId, message) {
+	const req = {
+		message,
+		channelId,
+	}
+	const url = generateUrl('apps/integration_mattermost/sendMessage')
+	return axios.post(url, req)
+}
+
 OC.Plugins.register('OCA.Files.FileList', OCA.Mattermost.FilesPlugin)
 
 // send file modal
@@ -204,11 +214,21 @@ OCA.Mattermost.MattermostSendModalVue = new View().$mount(modalElement)
 OCA.Mattermost.MattermostSendModalVue.$on('closed', () => {
 	console.debug('mattermost modal closed')
 })
-OCA.Mattermost.MattermostSendModalVue.$on('validate', (channelId, channelName, type) => {
+OCA.Mattermost.MattermostSendModalVue.$on('validate', (channelId, channelName, type, comment) => {
 	if (type === 'link') {
-		sendLinks(channelId, channelName)
+		sendLinks(channelId, channelName, comment)
 	} else {
-		sendFileLoop(channelId, channelName)
+		sendMessage(channelId, comment).then((response) => {
+			sendFileLoop(channelId, channelName)
+		}).catch((error) => {
+			console.error(error)
+			OCA.Mattermost.MattermostSendModalVue.failure()
+			OCA.Mattermost.filesToSend = []
+			showError(
+				t('integration_mattermost', 'Failed to send files to Mattermost')
+				+ ': ' + error.response?.request?.responseText
+			)
+		})
 	}
 })
 
