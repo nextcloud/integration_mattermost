@@ -10,6 +10,8 @@
 namespace OCA\Mattermost\AppInfo;
 
 use Closure;
+use OCA\Files\Event\LoadAdditionalScriptsEvent;
+use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\INavigationManager;
@@ -47,6 +49,13 @@ class Application extends App implements IBootstrap {
 
 		$container = $this->getContainer();
 		$this->config = $container->get(IConfig::class);
+
+		$eventDispatcher = $container->get(IEventDispatcher::class);
+		// load files plugin script
+		$eventDispatcher->addListener(LoadAdditionalScriptsEvent::class, function () {
+			Util::addscript(self::APP_ID, self::APP_ID . '-filesplugin');
+			Util::addStyle(self::APP_ID, self::APP_ID . '-files');
+		});
 	}
 
 	public function register(IRegistrationContext $context): void {

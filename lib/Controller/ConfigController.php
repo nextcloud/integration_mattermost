@@ -12,6 +12,7 @@
 namespace OCA\Mattermost\Controller;
 
 use DateTime;
+use OCA\Activity\Data;
 use OCP\IURLGenerator;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -59,6 +60,21 @@ class ConfigController extends Controller {
 		$this->l = $l;
 		$this->mattermostAPIService = $mattermostAPIService;
 		$this->userId = $userId;
+	}
+
+	/**
+	 * set config values
+	 * @NoAdminRequired
+	 *
+	 * @return DataResponse
+	 */
+	public function isUserConnected(): DataResponse {
+		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
+		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
+		return new DataResponse([
+			'connected' => $mattermostUrl && $token,
+		]);
 	}
 
 	/**
@@ -150,7 +166,6 @@ class ConfigController extends Controller {
 		$configState = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_state');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
-		$oauthOrigin = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_origin');
 
 		// anyway, reset state
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_state');
@@ -178,6 +193,8 @@ class ConfigController extends Controller {
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $accessToken);
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $refreshToken);
 				$this->storeUserInfo($mattermostUrl);
+				$oauthOrigin = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_origin');
+				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_origin');
 				if ($oauthOrigin === 'settings') {
 					return new RedirectResponse(
 						$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']) .

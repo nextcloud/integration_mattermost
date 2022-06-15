@@ -12,10 +12,12 @@ webpackConfig.stats = {
 	modules: false,
 }
 
+const appId = 'integration_mattermost'
 webpackConfig.entry = {
-	personalSettings: { import: path.join(__dirname, 'src', 'personalSettings.js'), filename: 'integration_mattermost-personalSettings.js' },
-	adminSettings: { import: path.join(__dirname, 'src', 'adminSettings.js'), filename: 'integration_mattermost-adminSettings.js' },
-	dashboard: { import: path.join(__dirname, 'src', 'dashboard.js'), filename: 'integration_mattermost-dashboard.js' },
+	personalSettings: { import: path.join(__dirname, 'src', 'personalSettings.js'), filename: appId + '-personalSettings.js' },
+	adminSettings: { import: path.join(__dirname, 'src', 'adminSettings.js'), filename: appId + '-adminSettings.js' },
+	dashboard: { import: path.join(__dirname, 'src', 'dashboard.js'), filename: appId + '-dashboard.js' },
+	filesplugin: { import: path.join(__dirname, 'src', 'filesplugin.js'), filename: appId + '-filesplugin.js' },
 }
 
 webpackConfig.plugins.push(
