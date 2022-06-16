@@ -232,7 +232,7 @@ export default {
 			return n.id + ':' + n.create_at
 		},
 		getNotificationImage(n) {
-			return generateUrl('/apps/integration_mattermost/avatar/user?') + encodeURIComponent('userId') + '=' + encodeURIComponent(n.user_id)
+			return generateUrl('/apps/integration_mattermost/users/{userId}/image', { userId: n.user_id })
 		},
 		getRepositoryName(n) {
 			return n.project.path

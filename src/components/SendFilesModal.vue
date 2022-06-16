@@ -52,59 +52,76 @@
 					class="channel-select"
 					@search-change="query = $event">
 					<template #option="{option}">
-						<PoundBoxIcon />
+						<Avatar
+							:is-no-user="true"
+							:url="getTeamIconUrl(option.team_id)" />
 						<Highlight
-							:text="t('integration_mattermost', '{channelName} [{teamName}]', { channelName: option.display_name, teamName: option.team_display_name })"
+							:text="t('integration_mattermost', '[{teamName}] {channelName}', { channelName: option.display_name, teamName: option.team_display_name })"
 							:search="query"
 							class="multiselect-name" />
 					</template>
 					<template #singleLabel="{option}">
-						<PoundBoxIcon />
+						<Avatar
+							:is-no-user="true"
+							:url="getTeamIconUrl(option.team_id)" />
 						<span class="multiselect-name">
-							{{ t('integration_mattermost', '{channelName} in {teamName}', { channelName: option.display_name, teamName: option.team_display_name }) }}
+							{{ t('integration_mattermost', '[{teamName}] {channelName}', { channelName: option.display_name, teamName: option.team_display_name }) }}
 						</span>
 					</template>
 					<template #noOptions>
 						{{ t('integration_mattermost', 'Start typing to search') }}
 					</template>
 				</Multiselect>
-				<span class="field-label">
-					<PackageUpIcon />
-					<span>
-						{{ t('integration_mattermost', 'Send') }}
+				<Button class="advanced-switch"
+					@click="showAdvanced = !showAdvanced">
+					<template #icon>
+						<ChevronDownIcon v-if="showAdvanced" />
+						<ChevronRightIcon v-else />
+					</template>
+					{{ showAdvanced ? t('integration_mattermost', 'Hide advanced options') : t('integration_mattermost', 'Show advanced options') }}
+				</Button>
+				<div v-show="showAdvanced"
+					class="advanced-options">
+					<span class="field-label">
+						<PackageUpIcon />
+						<span>
+							{{ t('integration_mattermost', 'Type') }}
+						</span>
 					</span>
-				</span>
-				<div>
-					<CheckboxRadioSwitch
-						:checked.sync="sendType"
-						value="file"
-						name="send_type_radio"
-						type="radio">
-						<FileIcon :size="20" />
-						<span class="option-title">
-							{{ t('integration_mattermost', 'Upload files') }}
+					<div>
+						<CheckboxRadioSwitch
+							:checked.sync="sendType"
+							value="file"
+							name="send_type_radio"
+							type="radio">
+							<FileIcon :size="20" />
+							<span class="option-title">
+								{{ t('integration_mattermost', 'Upload files') }}
+							</span>
+						</CheckboxRadioSwitch>
+						<CheckboxRadioSwitch
+							:checked.sync="sendType"
+							value="link"
+							name="send_type_radio"
+							type="radio">
+							<LinkVariantIcon :size="20" />
+							<span class="option-title">
+								{{ t('integration_mattermost', 'Public links') }}
+							</span>
+						</CheckboxRadioSwitch>
+					</div>
+					<span class="field-label">
+						<CommentIcon />
+						<span>
+							{{ t('integration_mattermost', 'Comment') }}
 						</span>
-					</CheckboxRadioSwitch>
-					<CheckboxRadioSwitch
-						:checked.sync="sendType"
-						value="link"
-						name="send_type_radio"
-						type="radio">
-						<LinkVariantIcon :size="20" />
-						<span class="option-title">
-							{{ t('integration_mattermost', 'Public links') }}
-						</span>
-					</CheckboxRadioSwitch>
+					</span>
+					<div class="input-wrapper">
+						<input v-model="comment"
+							type="text"
+							:placeholder="commentPlaceholder">
+					</div>
 				</div>
-				<span class="field-label">
-					<CommentIcon />
-					<span>
-						{{ t('integration_mattermost', 'Comment') }}
-					</span>
-				</span>
-				<input v-model="comment"
-					type="text"
-					:placeholder="commentPlaceholder">
 				<div class="mattermost-footer">
 					<Button
 						@click="closeModal">
@@ -118,7 +135,10 @@
 						<template #icon>
 							<SendIcon />
 						</template>
-						{{ t('integration_mattermost', 'Send files') }}
+						{{ sendType === 'file'
+							? n('integration_mattermost', 'Send file', 'Send files', files.length)
+							: n('integration_mattermost', 'Send link', 'Send links', files.length)
+						}}
 					</Button>
 				</div>
 			</div>
@@ -133,6 +153,7 @@ import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwi
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 // import LoadingIcon from '@nextcloud/vue/dist/Components/LoadingIcon'
 import Button from '@nextcloud/vue/dist/Components/Button'
+import Avatar from '@nextcloud/vue/dist/Components/Avatar'
 import SendIcon from 'vue-material-design-icons/Send'
 import FileIcon from 'vue-material-design-icons/File'
 import PoundBoxIcon from 'vue-material-design-icons/PoundBox'
@@ -140,6 +161,8 @@ import LinkVariantIcon from 'vue-material-design-icons/LinkVariant'
 import PackageUpIcon from 'vue-material-design-icons/PackageUp'
 import CommentIcon from 'vue-material-design-icons/Comment'
 import CheckCircleIcon from 'vue-material-design-icons/CheckCircle'
+import ChevronDownIcon from 'vue-material-design-icons/ChevronDown'
+import ChevronRightIcon from 'vue-material-design-icons/ChevronRight'
 
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
@@ -161,6 +184,7 @@ export default {
 		Modal,
 		// LoadingIcon,
 		Button,
+		Avatar,
 		SendIcon,
 		PoundBoxIcon,
 		FileIcon,
@@ -168,6 +192,8 @@ export default {
 		PackageUpIcon,
 		CommentIcon,
 		CheckCircleIcon,
+		ChevronRightIcon,
+		ChevronDownIcon,
 	},
 
 	props: [],
@@ -176,7 +202,8 @@ export default {
 		return {
 			show: false,
 			loading: false,
-			sendType: 'link',
+			showAdvanced: false,
+			sendType: 'file',
 			comment: '',
 			query: '',
 			files: [],
@@ -198,35 +225,29 @@ export default {
 	},
 
 	mounted() {
+		this.reset()
 	},
 
 	methods: {
-		showModal() {
-			this.show = true
-			// once the modal is opened, focus on the multiselect input
-			/*
-			this.$nextTick(() => {
-				this.$refs.multiselect.$el.querySelector('input').focus()
-			})
-			*/
-		},
-		closeModal() {
-			this.show = false
-			this.$emit('closed')
+		reset() {
 			this.selectedChannel = null
 			this.files = []
 			this.fileStates = {}
 			this.channels = []
 			this.comment = ''
+			this.showAdvanced = false
+			this.sendType = 'file'
+		},
+		showModal() {
+			this.show = true
+		},
+		closeModal() {
+			this.show = false
+			this.$emit('closed')
+			this.reset()
 		},
 		setFiles(files) {
 			this.files = files
-		},
-		updateselectedChannel(newValue) {
-			if (newValue !== null) {
-				this.selectedChannel = newValue
-				console.debug('selected', this.selectedChannel)
-			}
 		},
 		onSendClick() {
 			this.loading = true
@@ -261,6 +282,9 @@ export default {
 		fileFinished(id) {
 			this.$set(this.fileStates, id, STATES.FINISHED)
 		},
+		getTeamIconUrl(teamId) {
+			return generateUrl('/apps/integration_mattermost/teams/{teamId}/image', { teamId })
+		},
 	},
 }
 </script>
@@ -274,17 +298,25 @@ export default {
 	> * {
 		margin-bottom: 16px;
 
-		&.field-label {
-			display: flex;
-			align-items: center;
-			margin-top: 12px;
-			span {
-				margin-left: 8px;
-			}
+	}
+
+	.field-label {
+		display: flex;
+		align-items: center;
+		margin: 12px 0;
+		span {
+			margin-left: 8px;
 		}
-		&:not(.field-label) {
-			margin-left: 32px;
-		}
+	}
+
+	> *:not(.field-label):not(.advanced-switch):not(.advanced-options):not(.mattermost-footer),
+	.advanced-options > *:not(.field-label) {
+		margin-left: 32px;
+	}
+
+	.advanced-options {
+		display: flex;
+		flex-direction: column;
 	}
 
 	.modal-title {
