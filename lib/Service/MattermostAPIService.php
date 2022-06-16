@@ -16,6 +16,7 @@ use Exception;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use OC\Files\Node\File;
+use OC\Files\Node\Folder;
 use OCA\Mattermost\AppInfo\Application;
 use OCP\Constants;
 use OCP\Files\IRootFolder;
@@ -266,12 +267,13 @@ class MattermostAPIService {
 
 		// create public links
 		foreach ($fileIds as $fileId) {
-			$files = $userFolder->getById($fileId);
-			if (count($files) > 0 && $files[0] instanceof File) {
-				$file = $files[0];
+			$nodes = $userFolder->getById($fileId);
+//			if (count($nodes) > 0 && $nodes[0] instanceof File) {
+			if (count($nodes) > 0 && ($nodes[0] instanceof File || $nodes[0] instanceof Folder)) {
+				$node = $nodes[0];
 
 				$share = $this->shareManager->newShare();
-				$share->setNode($file);
+				$share->setNode($node);
 				$share->setPermissions(Constants::PERMISSION_READ);
 				$share->setShareType(IShare::TYPE_LINK);
 				$share->setSharedBy($userId);
@@ -284,7 +286,7 @@ class MattermostAPIService {
 					])
 				);
 				$links[] = [
-					'name' => $file->getName(),
+					'name' => $node->getName(),
 					'url' => $linkUrl,
 				];
 			}

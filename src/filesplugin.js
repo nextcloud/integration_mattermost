@@ -58,6 +58,7 @@ import './bootstrap'
 				action: (selectedFiles) => { this.sendMulti(selectedFiles, fileList, this) },
 			})
 
+			/*
 			// when the multiselect menu is opened =>
 			// only show 'send to mattermost' if at least one selected item is a file
 			fileList.$el.find('.actions-selected').click(() => {
@@ -72,22 +73,29 @@ import './bootstrap'
 					fileList.fileMultiSelectMenu.toggleItemVisibility('mattermostSendMulti', showSendMultiple)
 				}
 			})
+			*/
 
 			fileList.fileActions.registerAction({
 				name: 'mattermostSendSingle',
+				/*
 				displayName: (context) => {
 					if (OCA.Mattermost.mattermostConnected && context.fileInfoModel.attributes.type !== 'dir') {
-						return t('integration_mattermost', 'Send files to Mattermost')
+						return t('integration_mattermost', 'Send to Mattermost')
 					}
 					return ''
 				},
+				*/
+				displayName: t('integration_mattermost', 'Send to Mattermost'),
 				mime: 'all',
 				order: -139,
+				/*
 				iconClass: (fileName, context) => {
 					if (OCA.Mattermost.mattermostConnected && context.fileInfoModel.attributes.type !== 'dir') {
 						return 'icon-mattermost'
 					}
 				},
+				*/
+				iconClass: 'icon-mattermost',
 				permissions: OC.PERMISSION_READ,
 				actionHandler: (fileName, context) => { this.sendSingle(fileName, context, this) },
 			})
@@ -95,11 +103,12 @@ import './bootstrap'
 
 		sendMulti: (selectedFiles, fileList, that) => {
 			const files = selectedFiles
-				.filter((f) => f.type !== 'dir')
+				// .filter((f) => f.type !== 'dir')
 				.map((f) => {
 					return {
 						id: f.id,
 						name: f.name,
+						type: f.type,
 					}
 				})
 			console.debug('these are the selected files', files)
@@ -114,6 +123,7 @@ import './bootstrap'
 			const file = {
 				id: context.fileInfoModel.attributes.id,
 				name: context.fileInfoModel.attributes.name,
+				type: context.fileInfoModel.attributes.type,
 			}
 			OCA.Mattermost.filesToSend = [file]
 			const modalVue = OCA.Mattermost.MattermostSendModalVue
@@ -126,6 +136,7 @@ import './bootstrap'
 })()
 
 function sendLinks(channelId, channelName, comment) {
+	console.debug('OCA.Mattermost.filesToSend', OCA.Mattermost.filesToSend)
 	const req = {
 		fileIds: OCA.Mattermost.filesToSend.map((f) => f.id),
 		channelId,
@@ -160,12 +171,30 @@ function sendLinks(channelId, channelName, comment) {
 	})
 }
 
-function sendFileLoop(channelId, channelName, count = 1) {
+function sendFileLoop(channelId, channelName, count = 0) {
 	if (OCA.Mattermost.filesToSend.length === 0) {
+		showSuccess(
+			n(
+				'integration_mattermost',
+				'{count} file was sent to {channelName}',
+				'{count} files were sent to {channelName}',
+				count,
+				{
+					channelName,
+					count,
+				}
+			)
+		)
 		OCA.Mattermost.MattermostSendModalVue.success()
+		return
 	}
 
 	const file = OCA.Mattermost.filesToSend.shift()
+	// skip directories
+	if (file.type === 'dir') {
+		sendFileLoop(channelId, channelName, count)
+		return
+	}
 	OCA.Mattermost.MattermostSendModalVue.fileStarted(file.id)
 	const req = {
 		fileId: file.id,
@@ -180,11 +209,11 @@ function sendFileLoop(channelId, channelName, count = 1) {
 					'integration_mattermost',
 					'{fileName} was sent to {channelName}',
 					'{count} files were sent to {channelName}',
-					count,
+					count + 1,
 					{
 						fileName: file.name,
 						channelName,
-						count,
+						count: count + 1,
 					}
 				)
 			)

@@ -7,7 +7,10 @@
 				<h2 class="modal-title">
 					<MattermostIcon />
 					<span>
-						{{ t('integration_mattermost', 'Send files to Mattermost') }}
+						{{ sendType === 'file'
+							? n('integration_mattermost', 'Send file to Mattermost', 'Send files to Mattermost', files.length)
+							: n('integration_mattermost', 'Send link to Mattermost', 'Send links to Mattermost', files.length)
+						}}
 					</span>
 				</h2>
 				<span class="field-label">
@@ -28,7 +31,7 @@
 							class="check-icon"
 							:size="24" />
 						<img v-else
-							:src="getFilePreviewUrl(f.id)"
+							:src="getFilePreviewUrl(f.id, f.type)"
 							class="file-image">
 						<span class="file-name">
 							{{ f.name }}
@@ -124,6 +127,13 @@
 							:placeholder="commentPlaceholder">
 					</div>
 				</div>
+				<span v-if="warnAboutSendingDirectories"
+					class="warning-container">
+					<AlertBoxIcon class="warning-icon" />
+					<label>
+						{{ t('integration_mattermost', 'Directories will be skipped, they can only be sent as links.') }}
+					</label>
+				</span>
 				<div class="mattermost-footer">
 					<Button
 						@click="closeModal">
@@ -165,6 +175,7 @@ import CommentIcon from 'vue-material-design-icons/Comment'
 import CheckCircleIcon from 'vue-material-design-icons/CheckCircle'
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown'
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight'
+import AlertBoxIcon from 'vue-material-design-icons/AlertBox'
 
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
@@ -196,6 +207,7 @@ export default {
 		CheckCircleIcon,
 		ChevronRightIcon,
 		ChevronDownIcon,
+		AlertBoxIcon,
 	},
 
 	props: [],
@@ -218,8 +230,15 @@ export default {
 	},
 
 	computed: {
+		warnAboutSendingDirectories() {
+			return this.sendType === 'file' && this.files.findIndex((f) => f.type === 'dir') !== -1
+		},
+		onlyDirectories() {
+			return this.files.filter((f) => f.type !== 'dir').length === 0
+		},
 		canValidate() {
 			return this.selectedChannel !== null
+				&& (this.sendType !== 'file' || !this.onlyDirectories)
 		},
 	},
 
@@ -275,7 +294,10 @@ export default {
 				console.error(error)
 			})
 		},
-		getFilePreviewUrl(fileId) {
+		getFilePreviewUrl(fileId, fileType) {
+			if (fileType === 'dir') {
+				return generateUrl('/apps/theming/img/core/filetypes/folder.svg')
+			}
 			return generateUrl('/apps/integration_mattermost/preview?id={fileId}&x=100&y=100', { fileId })
 		},
 		fileStarted(id) {
@@ -311,7 +333,7 @@ export default {
 		}
 	}
 
-	> *:not(.field-label):not(.advanced-switch):not(.advanced-options):not(.mattermost-footer),
+	> *:not(.field-label):not(.advanced-switch):not(.advanced-options):not(.mattermost-footer):not(.warning-container),
 	.advanced-options > *:not(.field-label) {
 		margin-left: 32px;
 	}
@@ -378,6 +400,16 @@ export default {
 	display: flex;
 	.spacer {
 		flex-grow: 1;
+	}
+}
+
+.warning-container {
+	display: flex;
+	> label {
+		margin-left: 8px;
+	}
+	.warning-icon {
+		color: var(--color-warning);
 	}
 }
 </style>
