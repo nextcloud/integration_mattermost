@@ -181,9 +181,9 @@ class MattermostAPIController extends Controller {
 	 * @param string $channelName
 	 * @return DataResponse
 	 */
-	public function sendLinks(array $fileIds, string $channelId, string $channelName, string $comment) {
+	public function sendLinks(array $fileIds, string $channelId, string $channelName, string $comment, string $permission): DataResponse {
 		$result = $this->mattermostAPIService->sendLinks(
-			$this->userId, $this->mattermostUrl, $fileIds, $channelId, $channelName, $comment
+			$this->userId, $this->mattermostUrl, $fileIds, $channelId, $channelName, $comment, $permission
 		);
 		if (isset($result['error'])) {
 			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);

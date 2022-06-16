@@ -56,7 +56,7 @@
 					@search-change="query = $event">
 					<template #option="{option}">
 						<Avatar
-							:is-no-user="true"
+							:size="34"
 							:url="getTeamIconUrl(option.team_id)"
 							display-name="#" />
 						<Highlight
@@ -66,7 +66,7 @@
 					</template>
 					<template #singleLabel="{option}">
 						<Avatar
-							:is-no-user="true"
+							:size="34"
 							:url="getTeamIconUrl(option.team_id)"
 							display-name="#" />
 						<span class="multiselect-name">
@@ -115,6 +115,19 @@
 							</span>
 						</CheckboxRadioSwitch>
 					</div>
+					<RadioElementSet v-if="sendType === 'link'"
+						name="perm_radio"
+						:options="permissionOptions"
+						:value="selectedPermission"
+						class="radios"
+						@update:value="selectedPermission = $event">
+						<!--template #icon="{option}">
+							{{ option.label }}
+						</template-->
+						<!--template-- #label="{option}">
+							{{ option.label + 'lala' }}
+						</template-->
+					</RadioElementSet>
 					<span class="field-label">
 						<CommentIcon />
 						<span>
@@ -177,6 +190,10 @@ import ChevronDownIcon from 'vue-material-design-icons/ChevronDown'
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight'
 import AlertBoxIcon from 'vue-material-design-icons/AlertBox'
 
+import PencilIcon from 'vue-material-design-icons/Pencil'
+import EyeIcon from 'vue-material-design-icons/Eye'
+
+import RadioElementSet from './RadioElementSet'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import MattermostIcon from './MattermostIcon'
@@ -195,6 +212,7 @@ export default {
 		CheckboxRadioSwitch,
 		Highlight,
 		Modal,
+		RadioElementSet,
 		// LoadingIcon,
 		Button,
 		Avatar,
@@ -224,8 +242,13 @@ export default {
 			fileStates: {},
 			channels: [],
 			selectedChannel: null,
+			selectedPermission: 'view',
 			STATES,
 			commentPlaceholder: t('integration_mattermost', 'Sent from my Nextcloud'),
+			permissionOptions: {
+				view: { label: t('integration_mattermost', 'View only'), icon: EyeIcon },
+				edit: { label: t('integration_mattermost', 'Edit'), icon: PencilIcon },
+			},
 		}
 	},
 
@@ -258,6 +281,7 @@ export default {
 			this.comment = ''
 			this.showAdvanced = false
 			this.sendType = 'file'
+			this.selectedPermission = 'view'
 		},
 		showModal() {
 			this.show = true
@@ -276,7 +300,8 @@ export default {
 				this.selectedChannel.id,
 				this.selectedChannel.display_name,
 				this.sendType,
-				this.comment || this.commentPlaceholder
+				this.comment || this.commentPlaceholder,
+				this.selectedPermission
 			)
 		},
 		success() {
@@ -380,6 +405,15 @@ export default {
 				color: var(--color-success);
 			}
 		}
+	}
+
+	.radios {
+		margin-top: 8px;
+		width: 250px;
+	}
+
+	.channel-select {
+		height: 44px;
 	}
 
 	.settings-hint {

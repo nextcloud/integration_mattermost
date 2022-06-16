@@ -135,13 +135,14 @@ import './bootstrap'
 
 })()
 
-function sendLinks(channelId, channelName, comment) {
+function sendLinks(channelId, channelName, comment, permission) {
 	console.debug('OCA.Mattermost.filesToSend', OCA.Mattermost.filesToSend)
 	const req = {
 		fileIds: OCA.Mattermost.filesToSend.map((f) => f.id),
 		channelId,
 		channelName,
 		comment,
+		permission,
 	}
 	const url = generateUrl('apps/integration_mattermost/sendLinks')
 	axios.post(url, req).then((response) => {
@@ -257,9 +258,9 @@ OCA.Mattermost.MattermostSendModalVue = new View().$mount(modalElement)
 OCA.Mattermost.MattermostSendModalVue.$on('closed', () => {
 	console.debug('mattermost modal closed')
 })
-OCA.Mattermost.MattermostSendModalVue.$on('validate', (channelId, channelName, type, comment) => {
+OCA.Mattermost.MattermostSendModalVue.$on('validate', (channelId, channelName, type, comment, permission) => {
 	if (type === 'link') {
-		sendLinks(channelId, channelName, comment)
+		sendLinks(channelId, channelName, comment, permission)
 	} else {
 		sendMessage(channelId, comment).then((response) => {
 			sendFileLoop(channelId, channelName)

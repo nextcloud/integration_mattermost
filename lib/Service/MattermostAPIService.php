@@ -78,6 +78,7 @@ class MattermostAPIService {
 	 * @param string $userId
 	 * @param string $url
 	 * @return array
+	 * @throws Exception
 	 */
 	private function getMyTeamsInfo(string $userId, string $url): array {
 		$params = [
@@ -133,9 +134,11 @@ class MattermostAPIService {
 	}
 
 	/**
-	 * @param int $userId
+	 * @param string $userId
+	 * @param string $mattermostUserId
 	 * @param string $mattermostUrl
 	 * @return array
+	 * @throws Exception
 	 */
 	public function getUserAvatar(string $userId, string $mattermostUserId, string $mattermostUrl): array {
 		$image = $this->request($userId, $mattermostUrl, 'users/' . $mattermostUserId . '/image', [], 'GET', false);
@@ -152,9 +155,11 @@ class MattermostAPIService {
 	}
 
 	/**
-	 * @param int $teamId
+	 * @param string $userId
+	 * @param string $teamId
 	 * @param string $mattermostUrl
 	 * @return array
+	 * @throws Exception
 	 */
 	public function getTeamAvatar(string $userId, string $teamId, string $mattermostUrl): array {
 		$image = $this->request($userId, $mattermostUrl, 'teams/' . $teamId . '/image', [], 'GET', false);
@@ -166,6 +171,14 @@ class MattermostAPIService {
 		return ['teamInfo' => $userInfo];
 	}
 
+	/**
+	 * @param string $userId
+	 * @param string $mattermostUserName
+	 * @param string $mattermostUrl
+	 * @param int|null $since
+	 * @return array|string[]
+	 * @throws Exception
+	 */
 	public function getMentionsMe(string $userId, string $mattermostUserName, string $mattermostUrl, ?int $since = null): array {
 		$params = [
 			'include_deleted_channels' => true,
@@ -198,6 +211,13 @@ class MattermostAPIService {
 		return $posts;
 	}
 
+	/**
+	 * @param array $posts
+	 * @param string $userId
+	 * @param string $mattermostUrl
+	 * @return array
+	 * @throws Exception
+	 */
 	public function addPostInfos(array $posts, string $userId, string $mattermostUrl): array {
 		if (count($posts) > 0) {
 			$channelsPerId = $this->getMyChannelsPerId($userId, $mattermostUrl);
@@ -232,6 +252,12 @@ class MattermostAPIService {
 		return $posts;
 	}
 
+	/**
+	 * @param string $userId
+	 * @param string $mattermostUrl
+	 * @return array|string[]
+	 * @throws Exception
+	 */
 	public function getMyChannelsPerId(string $userId, string $mattermostUrl): array {
 		$result = $this->request($userId, $mattermostUrl, 'channels');
 		if (isset($result['error'])) {
@@ -244,6 +270,12 @@ class MattermostAPIService {
 		return $perId;
 	}
 
+	/**
+	 * @param string $userId
+	 * @param string $mattermostUrl
+	 * @return array|string[]
+	 * @throws Exception
+	 */
 	public function getMyChannels(string $userId, string $mattermostUrl): array {
 		$result = $this->request($userId, $mattermostUrl, 'channels');
 		if (isset($result['error'])) {
@@ -252,6 +284,14 @@ class MattermostAPIService {
 		return $result;
 	}
 
+	/**
+	 * @param string $userId
+	 * @param string $mattermostUrl
+	 * @param string $message
+	 * @param string $channelId
+	 * @return array|string[]
+	 * @throws Exception
+	 */
 	public function sendMessage(string $userId, string $mattermostUrl, string $message, string $channelId): array {
 		$params = [
 			'channel_id' => $channelId,
@@ -260,8 +300,20 @@ class MattermostAPIService {
 		return $this->request($userId, $mattermostUrl, 'posts', $params, 'POST');
 	}
 
+	/**
+	 * @param string $userId
+	 * @param string $mattermostUrl
+	 * @param array $fileIds
+	 * @param string $channelId
+	 * @param string $channelName
+	 * @param string $comment
+	 * @param string $permission
+	 * @return array|string[]
+	 * @throws \OCP\Files\NotPermittedException
+	 * @throws \OC\User\NoUserException
+	 */
 	public function sendLinks(string $userId, string $mattermostUrl, array $fileIds,
-							  string $channelId, string $channelName, string $comment): array {
+							  string $channelId, string $channelName, string $comment, string $permission): array {
 		$links = [];
 		$userFolder = $this->root->getUserFolder($userId);
 
@@ -274,7 +326,11 @@ class MattermostAPIService {
 
 				$share = $this->shareManager->newShare();
 				$share->setNode($node);
-				$share->setPermissions(Constants::PERMISSION_READ);
+				if ($permission === 'edit') {
+					$share->setPermissions(Constants::PERMISSION_READ | Constants::PERMISSION_UPDATE);
+				} else {
+					$share->setPermissions(Constants::PERMISSION_READ);
+				}
 				$share->setShareType(IShare::TYPE_LINK);
 				$share->setSharedBy($userId);
 				$share->setLabel('Mattermost (' . $channelName . ')');
@@ -307,6 +363,16 @@ class MattermostAPIService {
 		}
 	}
 
+	/**
+	 * @param string $userId
+	 * @param string $mattermostUrl
+	 * @param int $fileId
+	 * @param string $channelId
+	 * @return array|string[]
+	 * @throws \OCP\Files\NotPermittedException
+	 * @throws \OCP\Lock\LockedException
+	 * @throws \OC\User\NoUserException
+	 */
 	public function sendFile(string $userId, string $mattermostUrl, int $fileId, string $channelId): array {
 		$userFolder = $this->root->getUserFolder($userId);
 		$files = $userFolder->getById($fileId);
@@ -378,6 +444,7 @@ class MattermostAPIService {
 	 * @param array $params
 	 * @param string $method
 	 * @param bool $jsonResponse
+	 * @return array|mixed|resource|string|string[]
 	 * @throws Exception
 	 */
 	public function request(string $userId, string $url, string $endPoint, array $params = [], string $method = 'GET',
@@ -454,6 +521,12 @@ class MattermostAPIService {
 		}
 	}
 
+	/**
+	 * @param string $userId
+	 * @param string $url
+	 * @return void
+	 * @throws \OCP\PreConditionNotMetException
+	 */
 	private function checkTokenExpiration(string $userId, string $url): void {
 		$refreshToken = $this->config->getUserValue($userId, Application::APP_ID, 'refresh_token');
 		$expireAt = $this->config->getUserValue($userId, Application::APP_ID, 'token_expires_at');
@@ -467,6 +540,12 @@ class MattermostAPIService {
 		}
 	}
 
+	/**
+	 * @param string $userId
+	 * @param string $url
+	 * @return bool
+	 * @throws \OCP\PreConditionNotMetException
+	 */
 	private function refreshToken(string $userId, string $url): bool {
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
@@ -556,6 +635,12 @@ class MattermostAPIService {
 		}
 	}
 
+	/**
+	 * @param string $baseUrl
+	 * @param string $login
+	 * @param string $password
+	 * @return array
+	 */
 	public function login(string $baseUrl, string $login, string $password): array {
 		try {
 			$url = $baseUrl . '/api/v4/users/login';
