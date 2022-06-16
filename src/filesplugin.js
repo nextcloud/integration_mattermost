@@ -12,6 +12,7 @@ import SendFilesModal from './components/SendFilesModal'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
+import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 
 import Vue from 'vue'
 import './bootstrap'
@@ -93,12 +94,14 @@ import './bootstrap'
 		},
 
 		sendMulti: (selectedFiles, fileList, that) => {
-			const files = selectedFiles.map((f) => {
-				return {
-					id: f.id,
-					name: f.name,
-				}
-			})
+			const files = selectedFiles
+				.filter((f) => f.type !== 'dir')
+				.map((f) => {
+					return {
+						id: f.id,
+						name: f.name,
+					}
+				})
 			console.debug('these are the selected files', files)
 			OCA.Mattermost.filesToSend = files
 			const modalVue = OCA.Mattermost.MattermostSendModalVue
@@ -131,18 +134,20 @@ function sendLinks(channelId, channelName, comment) {
 	}
 	const url = generateUrl('apps/integration_mattermost/sendLinks')
 	axios.post(url, req).then((response) => {
-		if (OCA.Mattermost.filesToSend.length === 1) {
-			showSuccess(
-				t('integration_mattermost', 'A link to {fileName} was sent to {channelName}', {
+		const number = OCA.Mattermost.filesToSend.length
+		showSuccess(
+			n(
+				'integration_mattermost',
+				'A link to {fileName} was sent to {channelName}',
+				'{number} links were sent to {channelName}',
+				number,
+				{
 					fileName: OCA.Mattermost.filesToSend[0].name,
-				})
+					channelName,
+					number,
+				}
 			)
-		} else {
-			showSuccess(t('integration_mattermost', '{number} links were sent to {channelName}', {
-				number: OCA.Mattermost.filesToSend.length,
-				channelName,
-			}))
-		}
+		)
 		OCA.Mattermost.MattermostSendModalVue.success()
 	}).catch((error) => {
 		console.error(error)
@@ -155,7 +160,7 @@ function sendLinks(channelId, channelName, comment) {
 	})
 }
 
-function sendFileLoop(channelId, channelName) {
+function sendFileLoop(channelId, channelName, count = 1) {
 	if (OCA.Mattermost.filesToSend.length === 0) {
 		OCA.Mattermost.MattermostSendModalVue.success()
 	}
@@ -170,15 +175,24 @@ function sendFileLoop(channelId, channelName) {
 	axios.post(url, req).then((response) => {
 		// finished
 		if (OCA.Mattermost.filesToSend.length === 0) {
+			showSuccess(
+				n(
+					'integration_mattermost',
+					'{fileName} was sent to {channelName}',
+					'{count} files were sent to {channelName}',
+					count,
+					{
+						fileName: file.name,
+						channelName,
+						count,
+					}
+				)
+			)
 			OCA.Mattermost.MattermostSendModalVue.success()
 		} else {
 			// not finished
 			OCA.Mattermost.MattermostSendModalVue.fileFinished(file.id)
-			showSuccess(t('integration_mattermost', '{fileName} was sent to {channelName}', {
-				fileName: file.name,
-				channelName,
-			}))
-			sendFileLoop(channelId, channelName)
+			sendFileLoop(channelId, channelName, count + 1)
 		}
 	}).catch((error) => {
 		console.error(error)

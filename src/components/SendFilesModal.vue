@@ -19,16 +19,18 @@
 				<div class="files">
 					<div v-for="f in files"
 						:key="f.id"
-						:class="{
-							file: true,
-							finished: fileStates[f.id] === STATES.FINISHED,
-						}">
+						class="file">
 						<span v-if="fileStates[f.id] === STATES.IN_PROGRESS"
 							class="icon-loading-small" />
+						<!--LoadingIcon v-if="fileStates[f.id] === STATES.IN_PROGRESS"
+							:size="32" /-->
+						<CheckCircleIcon v-else-if="fileStates[f.id] === STATES.FINISHED"
+							class="check-icon"
+							:size="24" />
 						<img v-else
 							:src="getFilePreviewUrl(f.id)"
 							class="file-image">
-						<span>
+						<span class="file-name">
 							{{ f.name }}
 						</span>
 					</div>
@@ -129,6 +131,7 @@ import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Highlight from '@nextcloud/vue/dist/Components/Highlight'
 import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
+// import LoadingIcon from '@nextcloud/vue/dist/Components/LoadingIcon'
 import Button from '@nextcloud/vue/dist/Components/Button'
 import SendIcon from 'vue-material-design-icons/Send'
 import FileIcon from 'vue-material-design-icons/File'
@@ -136,6 +139,7 @@ import PoundBoxIcon from 'vue-material-design-icons/PoundBox'
 import LinkVariantIcon from 'vue-material-design-icons/LinkVariant'
 import PackageUpIcon from 'vue-material-design-icons/PackageUp'
 import CommentIcon from 'vue-material-design-icons/Comment'
+import CheckCircleIcon from 'vue-material-design-icons/CheckCircle'
 
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
@@ -155,6 +159,7 @@ export default {
 		CheckboxRadioSwitch,
 		Highlight,
 		Modal,
+		// LoadingIcon,
 		Button,
 		SendIcon,
 		PoundBoxIcon,
@@ -162,6 +167,7 @@ export default {
 		LinkVariantIcon,
 		PackageUpIcon,
 		CommentIcon,
+		CheckCircleIcon,
 	},
 
 	props: [],
@@ -300,19 +306,22 @@ export default {
 			display: flex;
 			align-items: center;
 			margin: 4px 0;
+			height: 40px;
+
+			> *:first-child {
+				width: 32px;
+			}
 
 			img {
-				width: 32px;
 				height: auto;
-				margin-right: 12px;
 			}
 
-			&.inProgress {
-				background-color: cyan;
+			.file-name {
+				margin-left: 12px;
 			}
 
-			&.finished {
-				background-color: var(--color-success);
+			.check-icon {
+				color: var(--color-success);
 			}
 		}
 	}
