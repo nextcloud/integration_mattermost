@@ -116,9 +116,8 @@ import Button from '@nextcloud/vue/dist/Components/Button'
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
-import { delay } from '../utils'
+import { delay, oauthConnect } from '../utils'
 import { showSuccess, showError } from '@nextcloud/dialogs'
-import '@nextcloud/dialogs/styles/toast.scss'
 
 export default {
 	name: 'PersonalSettings',
@@ -266,35 +265,7 @@ export default {
 			})
 		},
 		connectWithOauth() {
-			const oauthState = Math.random().toString(36).substring(3)
-			const requestUrl = this.state.url + '/oauth/authorize'
-				+ '?client_id=' + encodeURIComponent(this.state.client_id)
-				+ '&redirect_uri=' + encodeURIComponent(this.redirect_uri)
-				+ '&response_type=code'
-				+ '&state=' + encodeURIComponent(oauthState)
-			// + '&scope=' + encodeURIComponent('read_user read_api read_repository')
-
-			const req = {
-				values: {
-					oauth_state: oauthState,
-					redirect_uri: this.redirect_uri,
-					oauth_origin: 'settings',
-				},
-			}
-			const url = generateUrl('/apps/integration_mattermost/config')
-			axios.put(url, req)
-				.then((response) => {
-					window.location.replace(requestUrl)
-				})
-				.catch((error) => {
-					showError(
-						t('integration_mattermost', 'Failed to save Mattermost OAuth state')
-						+ ': ' + (error.response?.request?.responseText ?? '')
-					)
-					console.debug(error)
-				})
-				.then(() => {
-				})
+			oauthConnect(this.state.url, this.state.client_id, 'settings')
 		},
 	},
 }

@@ -35,11 +35,12 @@ import { generateUrl, imagePath } from '@nextcloud/router'
 import { DashboardWidget } from '@nextcloud/vue-dashboard'
 import { showError } from '@nextcloud/dialogs'
 import { loadState } from '@nextcloud/initial-state'
-import '@nextcloud/dialogs/styles/toast.scss'
 import moment from '@nextcloud/moment'
 import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
 import LoginVariantIcon from 'vue-material-design-icons/LoginVariant'
 import Button from '@nextcloud/vue/dist/Components/Button'
+
+import { oauthConnect } from '../utils'
 
 export default {
 	name: 'Dashboard',
@@ -143,33 +144,7 @@ export default {
 
 	methods: {
 		onOauthClick() {
-			const redirectUri = window.location.protocol + '//' + window.location.host + generateUrl('/apps/integration_mattermost/oauth-redirect')
-
-			const oauthState = Math.random().toString(36).substring(3)
-			const requestUrl = this.mattermostUrl + '/oauth/authorize'
-				+ '?client_id=' + encodeURIComponent(this.initialState.client_id)
-				+ '&redirect_uri=' + encodeURIComponent(redirectUri)
-				+ '&response_type=code'
-				+ '&state=' + encodeURIComponent(oauthState)
-			// + '&scope=' + encodeURIComponent('read_user read_api read_repository')
-
-			const req = {
-				values: {
-					oauth_state: oauthState,
-					redirect_uri: redirectUri,
-					oauth_origin: 'dashboard',
-				},
-			}
-			const url = generateUrl('/apps/integration_mattermost/config')
-			axios.put(url, req).then((response) => {
-				window.location.replace(requestUrl)
-			}).catch((error) => {
-				showError(
-					t('integration_mattermost', 'Failed to save Mattermost OAuth state')
-					+ ': ' + (error.response?.request?.responseText ?? '')
-				)
-				console.debug(error)
-			})
+			oauthConnect(this.mattermostUrl, this.initialState.client_id, 'dashboard')
 		},
 		changeWindowVisibility() {
 			this.windowVisibility = !document.hidden

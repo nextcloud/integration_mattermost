@@ -13,6 +13,7 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
+import { oauthConnect } from './utils'
 
 import Vue from 'vue'
 import './bootstrap'
@@ -58,6 +59,23 @@ import './bootstrap'
 				action: (selectedFiles) => { this.sendMulti(selectedFiles, fileList, this) },
 			})
 
+			fileList.registerMultiSelectFileAction({
+				name: 'mattermostConnectMulti',
+				displayName: (context) => {
+					if (!OCA.Mattermost.mattermostConnected && OCA.Mattermost.oauthPossible) {
+						return t('integration_mattermost', 'Connect to Mattermost')
+					}
+					return ''
+				},
+				iconClass: () => {
+					if (!OCA.Mattermost.mattermostConnected && OCA.Mattermost.oauthPossible) {
+						return 'icon-mattermost'
+					}
+				},
+				order: -2,
+				action: (selectedFiles) => { this.connectToMattermost() },
+			})
+
 			/*
 			// when the multiselect menu is opened =>
 			// only show 'send to mattermost' if at least one selected item is a file
@@ -77,27 +95,40 @@ import './bootstrap'
 
 			fileList.fileActions.registerAction({
 				name: 'mattermostSendSingle',
-				/*
 				displayName: (context) => {
-					if (OCA.Mattermost.mattermostConnected && context.fileInfoModel.attributes.type !== 'dir') {
+					if (OCA.Mattermost.mattermostConnected) {
 						return t('integration_mattermost', 'Send to Mattermost')
 					}
 					return ''
 				},
-				*/
-				displayName: t('integration_mattermost', 'Send to Mattermost'),
 				mime: 'all',
 				order: -139,
-				/*
 				iconClass: (fileName, context) => {
-					if (OCA.Mattermost.mattermostConnected && context.fileInfoModel.attributes.type !== 'dir') {
+					if (OCA.Mattermost.mattermostConnected) {
 						return 'icon-mattermost'
 					}
 				},
-				*/
-				iconClass: 'icon-mattermost',
 				permissions: OC.PERMISSION_READ,
 				actionHandler: (fileName, context) => { this.sendSingle(fileName, context, this) },
+			})
+
+			fileList.fileActions.registerAction({
+				name: 'mattermostConnectSingle',
+				displayName: (context) => {
+					if (!OCA.Mattermost.mattermostConnected && OCA.Mattermost.oauthPossible) {
+						return t('integration_mattermost', 'Connect to Mattermost')
+					}
+					return ''
+				},
+				mime: 'all',
+				order: -139,
+				iconClass: (fileName, context) => {
+					if (!OCA.Mattermost.mattermostConnected && OCA.Mattermost.oauthPossible) {
+						return 'icon-mattermost'
+					}
+				},
+				permissions: OC.PERMISSION_READ,
+				actionHandler: (fileName, context) => { this.connectToMattermost() },
 			})
 		},
 
@@ -111,7 +142,6 @@ import './bootstrap'
 						type: f.type,
 					}
 				})
-			console.debug('these are the selected files', files)
 			OCA.Mattermost.filesToSend = files
 			const modalVue = OCA.Mattermost.MattermostSendModalVue
 			modalVue.updateChannels()
@@ -130,6 +160,14 @@ import './bootstrap'
 			modalVue.updateChannels()
 			modalVue.setFiles([file])
 			modalVue.showModal()
+		},
+
+		connectToMattermost: () => {
+			oauthConnect(
+				OCA.Mattermost.mattermostUrl,
+				OCA.Mattermost.clientId,
+				'files--' + OCA.Files.App.fileList._currentDirectory
+			)
 		},
 	}
 
@@ -280,6 +318,9 @@ OCA.Mattermost.MattermostSendModalVue.$on('validate', (channelId, channelName, t
 const urlCheckConnection = generateUrl('/apps/integration_mattermost/is-connected')
 axios.get(urlCheckConnection).then((response) => {
 	OCA.Mattermost.mattermostConnected = response.data.connected
+	OCA.Mattermost.oauthPossible = response.data.oauth_possible
+	OCA.Mattermost.clientId = response.data.client_id
+	OCA.Mattermost.mattermostUrl = response.data.url
 }).catch((error) => {
 	console.error(error)
 })

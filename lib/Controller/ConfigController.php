@@ -72,8 +72,15 @@ class ConfigController extends Controller {
 		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 		$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
+
+		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
+		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+		$oauthPossible = $clientID !== '' && $clientSecret !== '' && $mattermostUrl === $adminOauthUrl;
 		return new DataResponse([
 			'connected' => $mattermostUrl && $token,
+			'oauth_possible' => $oauthPossible,
+			'url' => $mattermostUrl,
+			'client_id' => $clientID,
 		]);
 	}
 
@@ -169,7 +176,6 @@ class ConfigController extends Controller {
 
 		// anyway, reset state
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_state');
-		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_origin');
 
 		if ($clientID and $clientSecret and $configState !== '' and $configState === $state) {
 			$redirect_uri = $this->config->getUserValue($this->userId, Application::APP_ID, 'redirect_uri');
@@ -203,6 +209,11 @@ class ConfigController extends Controller {
 				} elseif ($oauthOrigin === 'dashboard') {
 					return new RedirectResponse(
 						$this->urlGenerator->linkToRoute('dashboard.dashboard.index')
+					);
+				} elseif (preg_match('/^files--.*/', $oauthOrigin)) {
+					$path = preg_replace('/^files--/', '', $oauthOrigin);
+					return new RedirectResponse(
+						$this->urlGenerator->linkToRoute('files.view.index', ['dir' => $path])
 					);
 				}
 			}
