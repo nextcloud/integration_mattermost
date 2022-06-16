@@ -54,7 +54,8 @@
 					<template #option="{option}">
 						<Avatar
 							:is-no-user="true"
-							:url="getTeamIconUrl(option.team_id)" />
+							:url="getTeamIconUrl(option.team_id)"
+							display-name="#" />
 						<Highlight
 							:text="t('integration_mattermost', '[{teamName}] {channelName}', { channelName: option.display_name, teamName: option.team_display_name })"
 							:search="query"
@@ -63,7 +64,8 @@
 					<template #singleLabel="{option}">
 						<Avatar
 							:is-no-user="true"
-							:url="getTeamIconUrl(option.team_id)" />
+							:url="getTeamIconUrl(option.team_id)"
+							display-name="#" />
 						<span class="multiselect-name">
 							{{ t('integration_mattermost', '[{teamName}] {channelName}', { channelName: option.display_name, teamName: option.team_display_name }) }}
 						</span>
@@ -283,7 +285,7 @@ export default {
 			this.$set(this.fileStates, id, STATES.FINISHED)
 		},
 		getTeamIconUrl(teamId) {
-			return generateUrl('/apps/integration_mattermost/teams/{teamId}/image', { teamId })
+			return generateUrl('/apps/integration_mattermost/teams/{teamId}/image', { teamId }) + '?useFallback=0'
 		},
 	},
 }

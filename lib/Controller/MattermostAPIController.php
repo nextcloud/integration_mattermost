@@ -81,19 +81,22 @@ class MattermostAPIController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
-	 * @param int $userId
+	 * @param string $userId
+	 * @param int $useFallback
+	 * @return DataDisplayResponse|RedirectResponse
 	 */
-	public function getUserAvatar(string $userId) {
+	public function getUserAvatar(string $userId, int $useFallback = 1) {
 		$result = $this->mattermostAPIService->getUserAvatar($this->userId, $userId, $this->mattermostUrl);
-		if (isset($result['userInfo'])) {
+		if (isset($result['avatarContent'])) {
+			$response = new DataDisplayResponse($result['avatarContent']);
+			$response->cacheFor(60 * 60 * 24);
+			return $response;
+		} elseif ($useFallback !== 0 && isset($result['userInfo'])) {
 			$userName = $result['userInfo']['username'] ?? '??';
 			$fallbackAvatarUrl = $this->urlGenerator->linkToRouteAbsolute('core.GuestAvatar.getAvatar', ['guestName' => $userName, 'size' => 44]);
 			return new RedirectResponse($fallbackAvatarUrl);
-		} else {
-			$response = new DataDisplayResponse($result['avatarContent']);
-			$response->cacheFor(60*60*24);
-			return $response;
 		}
+		return new DataDisplayResponse('', Http::STATUS_NOT_FOUND);
 	}
 
 	/**
@@ -101,20 +104,22 @@ class MattermostAPIController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
-	 * @param int $teamId
+	 * @param string $teamId
+	 * @param int $useFallback
 	 * @return DataDisplayResponse|RedirectResponse
 	 */
-	public function getTeamAvatar(string $teamId) {
+	public function getTeamAvatar(string $teamId, int $useFallback = 1)	{
 		$result = $this->mattermostAPIService->getTeamAvatar($this->userId, $teamId, $this->mattermostUrl);
-		if (isset($result['teamInfo'])) {
+		if (isset($result['avatarContent'])) {
+			$response = new DataDisplayResponse($result['avatarContent']);
+			$response->cacheFor(60 * 60 * 24);
+			return $response;
+		} elseif ($useFallback !== 0 && isset($result['teamInfo'])) {
 			$projectName = $result['teamInfo']['display_name'] ?? '??';
 			$fallbackAvatarUrl = $this->urlGenerator->linkToRouteAbsolute('core.GuestAvatar.getAvatar', ['guestName' => $projectName, 'size' => 44]);
 			return new RedirectResponse($fallbackAvatarUrl);
-		} else {
-			$response = new DataDisplayResponse($result['avatarContent']);
-			$response->cacheFor(60*60*24);
-			return $response;
 		}
+		return new DataDisplayResponse('', Http::STATUS_NOT_FOUND);
 	}
 
 	/**
