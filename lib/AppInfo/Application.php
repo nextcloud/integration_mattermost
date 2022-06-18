@@ -53,7 +53,7 @@ class Application extends App implements IBootstrap {
 		$eventDispatcher = $container->get(IEventDispatcher::class);
 		// load files plugin script
 		$eventDispatcher->addListener(LoadAdditionalScriptsEvent::class, function () {
-			Util::addscript(self::APP_ID, self::APP_ID . '-filesplugin');
+			Util::addscript(self::APP_ID, self::APP_ID . '-filesplugin', 'files');
 			Util::addStyle(self::APP_ID, self::APP_ID . '-files');
 		});
 	}
