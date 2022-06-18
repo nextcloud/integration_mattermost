@@ -43,6 +43,11 @@ import './bootstrap'
 				return
 			}
 
+			console.debug('BEGIN attachhhhhhh', OCA.Mattermost.mattermostConnected)
+			console.debug('BEGIN attachhhhhhh', OCA.Mattermost.fileIdsToSendAfterOAuth)
+			console.debug('fileList', fileList)
+			this.sendFileIds(OCA.Mattermost.fileIdsToSendAfterOAuth, fileList)
+
 			fileList.registerMultiSelectFileAction({
 				name: 'mattermostSendMulti',
 				displayName: (context) => {
@@ -57,7 +62,7 @@ import './bootstrap'
 					}
 				},
 				order: -2,
-				action: (selectedFiles) => { this.sendMulti(selectedFiles, fileList, this) },
+				action: (selectedFiles) => { this.sendMulti(selectedFiles) },
 			})
 
 			fileList.registerMultiSelectFileAction({
@@ -74,7 +79,7 @@ import './bootstrap'
 					}
 				},
 				order: -2,
-				action: (selectedFiles) => { this.connectToMattermost() },
+				action: (selectedFiles) => { this.connectToMattermost(selectedFiles.map((f) => f.id)) },
 			})
 
 			/*
@@ -110,7 +115,7 @@ import './bootstrap'
 					}
 				},
 				permissions: OC.PERMISSION_READ,
-				actionHandler: (fileName, context) => { this.sendSingle(fileName, context, this) },
+				actionHandler: (fileName, context) => { this.sendSingle(fileName, context) },
 			})
 
 			fileList.fileActions.registerAction({
@@ -129,11 +134,11 @@ import './bootstrap'
 					}
 				},
 				permissions: OC.PERMISSION_READ,
-				actionHandler: (fileName, context) => { this.connectToMattermost() },
+				actionHandler: (fileName, context) => { this.connectToMattermost([context.fileInfoModel.attributes.id]) },
 			})
 		},
 
-		sendMulti: (selectedFiles, fileList, that) => {
+		sendMulti: (selectedFiles) => {
 			const files = selectedFiles
 				// .filter((f) => f.type !== 'dir')
 				.map((f) => {
@@ -150,7 +155,7 @@ import './bootstrap'
 			modalVue.showModal()
 		},
 
-		sendSingle: (fileName, context, that) => {
+		sendSingle: (fileName, context) => {
 			const file = {
 				id: context.fileInfoModel.attributes.id,
 				name: context.fileInfoModel.attributes.name,
@@ -163,11 +168,27 @@ import './bootstrap'
 			modalVue.showModal()
 		},
 
-		connectToMattermost: () => {
+		sendFileIds: (fileIdsStr, fileList) => {
+			if (fileIdsStr) {
+				console.debug('sendFileIds', fileList)
+				const fileIds = fileIdsStr.split(',')
+				const files = fileIds.map((fid) => {
+					const f = fileList.files.find((e) => e.id === parseInt(fid))
+					return {
+						id: f.id,
+						name: f.name,
+						type: f.type,
+					}
+				})
+				console.debug('sendFileIds FILES', files)
+			}
+		},
+
+		connectToMattermost: (selectedFilesIds = []) => {
 			oauthConnect(
 				OCA.Mattermost.mattermostUrl,
 				OCA.Mattermost.clientId,
-				'files--' + OCA.Files.App.fileList._currentDirectory
+				'files--' + OCA.Files.App.fileList._currentDirectory + '--' + selectedFilesIds.join(',')
 			)
 		},
 	}
@@ -283,8 +304,6 @@ function sendMessage(channelId, message) {
 	return axios.post(url, req)
 }
 
-OC.Plugins.register('OCA.Files.FileList', OCA.Mattermost.FilesPlugin)
-
 // send file modal
 const modalId = 'mattermostSendModal'
 const modalElement = document.createElement('div')
@@ -315,13 +334,15 @@ OCA.Mattermost.MattermostSendModalVue.$on('validate', (channelId, channelName, t
 	}
 })
 
-// is Mattermost integration configured/connected?
+// get Mattermost state
 const urlCheckConnection = generateUrl('/apps/integration_mattermost/is-connected')
 axios.get(urlCheckConnection).then((response) => {
 	OCA.Mattermost.mattermostConnected = response.data.connected
 	OCA.Mattermost.oauthPossible = response.data.oauth_possible
 	OCA.Mattermost.clientId = response.data.client_id
 	OCA.Mattermost.mattermostUrl = response.data.url
+	OCA.Mattermost.fileIdsToSendAfterOAuth = response.data.file_ids_to_send_after_oauth
+	OC.Plugins.register('OCA.Files.FileList', OCA.Mattermost.FilesPlugin)
 }).catch((error) => {
 	console.error(error)
 })

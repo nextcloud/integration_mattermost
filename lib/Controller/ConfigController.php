@@ -76,11 +76,16 @@ class ConfigController extends Controller {
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
 		$oauthPossible = $clientID !== '' && $clientSecret !== '' && $mattermostUrl === $adminOauthUrl;
+
+		$fileIdsToSendAfterOAuth = $this->config->getUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
+		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
+
 		return new DataResponse([
 			'connected' => $mattermostUrl && $token,
 			'oauth_possible' => $oauthPossible,
 			'url' => $mattermostUrl,
 			'client_id' => $clientID,
+			'file_ids_to_send_after_oauth' => $fileIdsToSendAfterOAuth,
 		]);
 	}
 
@@ -211,10 +216,17 @@ class ConfigController extends Controller {
 						$this->urlGenerator->linkToRoute('dashboard.dashboard.index')
 					);
 				} elseif (preg_match('/^files--.*/', $oauthOrigin)) {
-					$path = preg_replace('/^files--/', '', $oauthOrigin);
-					return new RedirectResponse(
-						$this->urlGenerator->linkToRoute('files.view.index', ['dir' => $path])
-					);
+					$parts = explode('--', $oauthOrigin);
+					if (count($parts) > 1) {
+						// $path = preg_replace('/^files--/', '', $oauthOrigin);
+						$path = $parts[1];
+						if (count($parts) > 2) {
+							$this->config->setUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth', $parts[2]);
+						}
+						return new RedirectResponse(
+							$this->urlGenerator->linkToRoute('files.view.index', ['dir' => $path])
+						);
+					}
 				}
 			}
 			$result = $this->l->t('Error getting OAuth access token. ' . $result['error']);
