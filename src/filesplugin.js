@@ -10,6 +10,7 @@
 import SendFilesModal from './components/SendFilesModal'
 
 import axios from '@nextcloud/axios'
+import moment from '@nextcloud/moment'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
@@ -173,14 +174,14 @@ import './bootstrap'
 
 })()
 
-function sendLinks(channelId, channelName, comment, permission) {
-	console.debug('OCA.Mattermost.filesToSend', OCA.Mattermost.filesToSend)
+function sendLinks(channelId, channelName, comment, permission, expirationDate) {
 	const req = {
 		fileIds: OCA.Mattermost.filesToSend.map((f) => f.id),
 		channelId,
 		channelName,
 		comment,
 		permission,
+		expirationDate: expirationDate ? moment(expirationDate).format('YYYY-MM-DD') : undefined,
 	}
 	const url = generateUrl('apps/integration_mattermost/sendLinks')
 	axios.post(url, req).then((response) => {
@@ -296,9 +297,9 @@ OCA.Mattermost.MattermostSendModalVue = new View().$mount(modalElement)
 OCA.Mattermost.MattermostSendModalVue.$on('closed', () => {
 	console.debug('mattermost modal closed')
 })
-OCA.Mattermost.MattermostSendModalVue.$on('validate', (channelId, channelName, type, comment, permission) => {
+OCA.Mattermost.MattermostSendModalVue.$on('validate', (channelId, channelName, type, comment, permission, expirationDate) => {
 	if (type === 'link') {
-		sendLinks(channelId, channelName, comment, permission)
+		sendLinks(channelId, channelName, comment, permission, expirationDate)
 	} else {
 		sendMessage(channelId, comment).then((response) => {
 			sendFileLoop(channelId, channelName)

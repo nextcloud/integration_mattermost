@@ -308,12 +308,14 @@ class MattermostAPIService {
 	 * @param string $channelName
 	 * @param string $comment
 	 * @param string $permission
+	 * @param string|null $expirationDate
 	 * @return array|string[]
 	 * @throws \OCP\Files\NotPermittedException
 	 * @throws \OC\User\NoUserException
 	 */
 	public function sendLinks(string $userId, string $mattermostUrl, array $fileIds,
-							  string $channelId, string $channelName, string $comment, string $permission): array {
+							  string $channelId, string $channelName, string $comment,
+							  string $permission, ?string $expirationDate = null): array {
 		$links = [];
 		$userFolder = $this->root->getUserFolder($userId);
 
@@ -334,7 +336,14 @@ class MattermostAPIService {
 				$share->setShareType(IShare::TYPE_LINK);
 				$share->setSharedBy($userId);
 				$share->setLabel('Mattermost (' . $channelName . ')');
+				if ($expirationDate !== null) {
+					$share->setExpirationDate(new Datetime($expirationDate));
+				}
 				$share = $this->shareManager->createShare($share);
+				if ($expirationDate === null) {
+					$share->setExpirationDate(null);
+					$this->shareManager->updateShare($share);
+				}
 				$token = $share->getToken();
 				$linkUrl = $this->urlGenerator->getAbsoluteURL(
 					$this->urlGenerator->linkToRoute('files_sharing.Share.showShare', [

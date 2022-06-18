@@ -128,6 +128,18 @@
 							{{ option.label + 'lala' }}
 						</template-->
 					</RadioElementSet>
+					<div v-show="sendType === 'link'"
+						class="expiration-field">
+						<CheckboxRadioSwitch :checked.sync="expirationEnabled">
+							{{ t('integration_mattermost', 'Set expiration date') }}
+						</CheckboxRadioSwitch>
+						<DatetimePicker v-show="expirationEnabled"
+							id="expiration-datepicker"
+							v-model="expirationDate"
+							:disabled-date="isDateDisabled"
+							:placeholder="t('integration_mattermost', 'Expires on')"
+							:clearable="true" />
+					</div>
 					<span class="field-label">
 						<CommentIcon />
 						<span>
@@ -175,6 +187,7 @@
 import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
 import Highlight from '@nextcloud/vue/dist/Components/Highlight'
 import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
+import DatetimePicker from '@nextcloud/vue/dist/Components/DatetimePicker'
 import Modal from '@nextcloud/vue/dist/Components/Modal'
 // import LoadingIcon from '@nextcloud/vue/dist/Components/LoadingIcon'
 import Button from '@nextcloud/vue/dist/Components/Button'
@@ -210,6 +223,7 @@ export default {
 		MattermostIcon,
 		Multiselect,
 		CheckboxRadioSwitch,
+		DatetimePicker,
 		Highlight,
 		Modal,
 		RadioElementSet,
@@ -243,6 +257,8 @@ export default {
 			channels: [],
 			selectedChannel: null,
 			selectedPermission: 'view',
+			expirationEnabled: false,
+			expirationDate: null,
 			STATES,
 			commentPlaceholder: t('integration_mattermost', 'Sent from my Nextcloud'),
 			permissionOptions: {
@@ -282,6 +298,8 @@ export default {
 			this.showAdvanced = false
 			this.sendType = 'file'
 			this.selectedPermission = 'view'
+			this.expirationEnabled = false
+			this.expirationDate = null
 		},
 		showModal() {
 			this.show = true
@@ -301,7 +319,8 @@ export default {
 				this.selectedChannel.display_name,
 				this.sendType,
 				this.comment || this.commentPlaceholder,
-				this.selectedPermission
+				this.selectedPermission,
+				this.sendType === 'link' && this.expirationEnabled ? this.expirationDate : null
 			)
 		},
 		success() {
@@ -333,6 +352,10 @@ export default {
 		},
 		getTeamIconUrl(teamId) {
 			return generateUrl('/apps/integration_mattermost/teams/{teamId}/image', { teamId }) + '?useFallback=0'
+		},
+		isDateDisabled(d) {
+			const now = new Date()
+			return d <= now
 		},
 	},
 }
@@ -366,6 +389,15 @@ export default {
 	.advanced-options {
 		display: flex;
 		flex-direction: column;
+	}
+
+	.expiration-field {
+		display: flex;
+		align-items: center;
+		margin-top: 8px;
+		> *:first-child {
+			margin-right: 20px;
+		}
 	}
 
 	.modal-title {
