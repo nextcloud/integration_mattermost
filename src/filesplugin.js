@@ -168,7 +168,8 @@ function openChannelSelector(files) {
 		/**
 		 * In case we successfully connected with oauth and got redirected back to files
 		 * actually go on with the files that were previously selected
-		 * @param fileList
+		 *
+		 * @param {object} fileList the one from attach()
 		 */
 		sendFileIdsAfterOAuth: (fileList) => {
 			const fileIdsStr = OCA.Mattermost.fileIdsToSendAfterOAuth
@@ -197,10 +198,38 @@ function openChannelSelector(files) {
 		},
 
 		connectToMattermost: (selectedFilesIds = []) => {
-			oauthConnect(
-				OCA.Mattermost.mattermostUrl,
-				OCA.Mattermost.clientId,
-				'files--' + OCA.Files.App.fileList._currentDirectory + '--' + selectedFilesIds.join(',')
+			const settingsLink = generateUrl('/settings/user/connected-accounts')
+			const linkText = t('integration_mattermost', 'Connected accounts')
+			const settingsHtmlLink = `<a href="${settingsLink}" class="external">${linkText}</a>`
+			OC.dialogs.message(
+				t('integration_mattermost', 'Are you sure you want to connect to {mmUrl}?', { mmUrl: OCA.Mattermost.mattermostUrl })
+					+ '<br><br>'
+					+ t(
+						'integration_mattermost',
+						'You can choose another Mattermost server in the {settingsHtmlLink} section of your personal settings.',
+						{ settingsHtmlLink },
+						null,
+						{ escape: false }
+					),
+				t('integration_mattermost', 'Connect to Mattermost'),
+				'none',
+				{
+					type: OC.dialogs.YES_NO_BUTTONS,
+					confirm: t('integration_mattermost', 'Connect'),
+					confirmClasses: 'success',
+					cancel: t('integration_mattermost', 'Cancel'),
+				},
+				(result) => {
+					if (result) {
+						oauthConnect(
+							OCA.Mattermost.mattermostUrl,
+							OCA.Mattermost.clientId,
+							'files--' + OCA.Files.App.fileList._currentDirectory + '--' + selectedFilesIds.join(',')
+						)
+					}
+				},
+				true,
+				true,
 			)
 		},
 	}
