@@ -19,6 +19,14 @@ import { oauthConnect } from './utils'
 import Vue from 'vue'
 import './bootstrap'
 
+function openChannelSelector(files) {
+	OCA.Mattermost.filesToSend = files
+	const modalVue = OCA.Mattermost.MattermostSendModalVue
+	modalVue.updateChannels()
+	modalVue.setFiles([...files])
+	modalVue.showModal()
+}
+
 (function() {
 	if (!OCA.Mattermost) {
 		/**
@@ -43,10 +51,7 @@ import './bootstrap'
 				return
 			}
 
-			console.debug('BEGIN attachhhhhhh', OCA.Mattermost.mattermostConnected)
-			console.debug('BEGIN attachhhhhhh', OCA.Mattermost.fileIdsToSendAfterOAuth)
-			console.debug('fileList', fileList)
-			this.sendFileIds(OCA.Mattermost.fileIdsToSendAfterOAuth, fileList)
+			this.sendFileIdsAfterOAuth(fileList)
 
 			fileList.registerMultiSelectFileAction({
 				name: 'mattermostSendMulti',
@@ -148,11 +153,7 @@ import './bootstrap'
 						type: f.type,
 					}
 				})
-			OCA.Mattermost.filesToSend = files
-			const modalVue = OCA.Mattermost.MattermostSendModalVue
-			modalVue.updateChannels()
-			modalVue.setFiles([...files])
-			modalVue.showModal()
+			openChannelSelector(files)
 		},
 
 		sendSingle: (fileName, context) => {
@@ -161,26 +162,37 @@ import './bootstrap'
 				name: context.fileInfoModel.attributes.name,
 				type: context.fileInfoModel.attributes.type,
 			}
-			OCA.Mattermost.filesToSend = [file]
-			const modalVue = OCA.Mattermost.MattermostSendModalVue
-			modalVue.updateChannels()
-			modalVue.setFiles([file])
-			modalVue.showModal()
+			openChannelSelector([file])
 		},
 
-		sendFileIds: (fileIdsStr, fileList) => {
+		/**
+		 * In case we successfully connected with oauth and got redirected back to files
+		 * actually go on with the files that were previously selected
+		 * @param fileList
+		 */
+		sendFileIdsAfterOAuth: (fileList) => {
+			const fileIdsStr = OCA.Mattermost.fileIdsToSendAfterOAuth
+			// this is only true after an OAuth connection initated from a file action
 			if (fileIdsStr) {
-				console.debug('sendFileIds', fileList)
-				const fileIds = fileIdsStr.split(',')
-				const files = fileIds.map((fid) => {
-					const f = fileList.files.find((e) => e.id === parseInt(fid))
-					return {
-						id: f.id,
-						name: f.name,
-						type: f.type,
+				const currentDir = OCA.Mattermost.currentDirAfterOAuth
+				// trick to make sure the file list is loaded (didn't find an event or a good alternative)
+				fileList.changeDirectory(currentDir).then(() => {
+					const fileIds = fileIdsStr.split(',')
+					const files = fileIds.map((fid) => {
+						const f = fileList.files.find((e) => e.id === parseInt(fid))
+						if (f) {
+							return {
+								id: f.id,
+								name: f.name,
+								type: f.type,
+							}
+						}
+						return null
+					}).filter((e) => e !== null)
+					if (files.length) {
+						openChannelSelector(files)
 					}
 				})
-				console.debug('sendFileIds FILES', files)
 			}
 		},
 
@@ -342,6 +354,7 @@ axios.get(urlCheckConnection).then((response) => {
 	OCA.Mattermost.clientId = response.data.client_id
 	OCA.Mattermost.mattermostUrl = response.data.url
 	OCA.Mattermost.fileIdsToSendAfterOAuth = response.data.file_ids_to_send_after_oauth
+	OCA.Mattermost.currentDirAfterOAuth = response.data.current_dir_after_oauth
 	OC.Plugins.register('OCA.Files.FileList', OCA.Mattermost.FilesPlugin)
 }).catch((error) => {
 	console.error(error)

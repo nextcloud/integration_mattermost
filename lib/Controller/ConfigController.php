@@ -79,6 +79,8 @@ class ConfigController extends Controller {
 
 		$fileIdsToSendAfterOAuth = $this->config->getUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
+		$currentDirAfterOAuth = $this->config->getUserValue($this->userId, Application::APP_ID, 'current_dir_after_oauth');
+		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'current_dir_after_oauth');
 
 		return new DataResponse([
 			'connected' => $mattermostUrl && $token,
@@ -86,6 +88,7 @@ class ConfigController extends Controller {
 			'url' => $mattermostUrl,
 			'client_id' => $clientID,
 			'file_ids_to_send_after_oauth' => $fileIdsToSendAfterOAuth,
+			'current_dir_after_oauth' => $currentDirAfterOAuth,
 		]);
 	}
 
@@ -222,6 +225,7 @@ class ConfigController extends Controller {
 						$path = $parts[1];
 						if (count($parts) > 2) {
 							$this->config->setUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth', $parts[2]);
+							$this->config->setUserValue($this->userId, Application::APP_ID, 'current_dir_after_oauth', $path);
 						}
 						return new RedirectResponse(
 							$this->urlGenerator->linkToRoute('files.view.index', ['dir' => $path])
