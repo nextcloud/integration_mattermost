@@ -40,7 +40,7 @@ import EmptyContent from '@nextcloud/vue/dist/Components/EmptyContent'
 import LoginVariantIcon from 'vue-material-design-icons/LoginVariant'
 import Button from '@nextcloud/vue/dist/Components/Button'
 
-import { oauthConnect } from '../utils'
+import { oauthConnect, oauthConnectConfirmDialog } from '../utils'
 
 export default {
 	name: 'Dashboard',
@@ -144,7 +144,11 @@ export default {
 
 	methods: {
 		onOauthClick() {
-			oauthConnect(this.mattermostUrl, this.initialState.client_id, 'dashboard')
+			oauthConnectConfirmDialog(this.mattermostUrl).then((result) => {
+				if (result) {
+					oauthConnect(this.mattermostUrl, this.initialState.client_id, 'dashboard')
+				}
+			})
 		},
 		changeWindowVisibility() {
 			this.windowVisibility = !document.hidden
