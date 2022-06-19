@@ -192,7 +192,7 @@ class MattermostSearchMessagesProvider implements IProvider {
 	protected function getThumbnailUrl(array $entry): string {
 		$userId = $entry['user_id'] ?? '';
 		return $userId
-			? $this->urlGenerator->linkToRoute('integration_mattermost.mattermostAPI.getUserAvatar', []) . '?userId=' . urlencode(strval($userId))
+			? $this->urlGenerator->linkToRoute('integration_mattermost.mattermostAPI.getUserAvatar', ['userId' => $userId])
 			: '';
 	}
 }
