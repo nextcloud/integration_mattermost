@@ -177,7 +177,8 @@ function openChannelSelector(files) {
 			if (fileIdsStr) {
 				const currentDir = OCA.Mattermost.currentDirAfterOAuth
 				// trick to make sure the file list is loaded (didn't find an event or a good alternative)
-				fileList.changeDirectory(currentDir).then(() => {
+				// force=true to make sure we get a promise
+				fileList.changeDirectory(currentDir, true, true).then(() => {
 					const fileIds = fileIdsStr.split(',')
 					const files = fileIds.map((fid) => {
 						const f = fileList.files.find((e) => e.id === parseInt(fid))
