@@ -16,7 +16,9 @@
 				<span class="field-label">
 					<FileIcon />
 					<span>
-						{{ t('integration_mattermost', 'Files') }}
+						<strong>
+							{{ t('integration_mattermost', 'Files') }}
+						</strong>
 					</span>
 				</span>
 				<div class="files">
@@ -45,7 +47,9 @@
 				<span class="field-label">
 					<PoundBoxIcon />
 					<span>
-						{{ t('integration_mattermost', 'Channel') }}
+						<strong>
+							{{ t('integration_mattermost', 'Channel') }}
+						</strong>
 					</span>
 				</span>
 				<Multiselect
@@ -81,20 +85,13 @@
 						{{ t('integration_mattermost', 'Start typing to search') }}
 					</template>
 				</Multiselect>
-				<Button class="advanced-switch"
-					@click="showAdvanced = !showAdvanced">
-					<template #icon>
-						<ChevronDownIcon v-if="showAdvanced" />
-						<ChevronRightIcon v-else />
-					</template>
-					{{ showAdvanced ? t('integration_mattermost', 'Hide advanced options') : t('integration_mattermost', 'Show advanced options') }}
-				</Button>
-				<div v-show="showAdvanced"
-					class="advanced-options">
+				<div class="advanced-options">
 					<span class="field-label">
 						<PackageUpIcon />
 						<span>
-							{{ t('integration_mattermost', 'Type') }}
+							<strong>
+								{{ t('integration_mattermost', 'Type') }}
+							</strong>
 						</span>
 					</span>
 					<div>
@@ -147,7 +144,9 @@
 					<span class="field-label">
 						<CommentIcon />
 						<span>
-							{{ t('integration_mattermost', 'Comment') }}
+							<strong>
+								{{ t('integration_mattermost', 'Comment') }}
+							</strong>
 						</span>
 					</span>
 					<div class="input-wrapper">
@@ -164,11 +163,11 @@
 					</label>
 				</span>
 				<div class="mattermost-footer">
+					<div class="spacer" />
 					<Button
 						@click="closeModal">
 						{{ t('integration_mattermost', 'Cancel') }}
 					</Button>
-					<div class="spacer" />
 					<Button type="primary"
 						:class="{ loading, okButton: true }"
 						:disabled="!canValidate"
@@ -203,8 +202,6 @@ import LinkVariantIcon from 'vue-material-design-icons/LinkVariant'
 import PackageUpIcon from 'vue-material-design-icons/PackageUp'
 import CommentIcon from 'vue-material-design-icons/Comment'
 import CheckCircleIcon from 'vue-material-design-icons/CheckCircle'
-import ChevronDownIcon from 'vue-material-design-icons/ChevronDown'
-import ChevronRightIcon from 'vue-material-design-icons/ChevronRight'
 import AlertBoxIcon from 'vue-material-design-icons/AlertBox'
 
 import PencilIcon from 'vue-material-design-icons/Pencil'
@@ -242,8 +239,6 @@ export default {
 		PackageUpIcon,
 		CommentIcon,
 		CheckCircleIcon,
-		ChevronRightIcon,
-		ChevronDownIcon,
 		AlertBoxIcon,
 	},
 
@@ -253,7 +248,6 @@ export default {
 		return {
 			show: false,
 			loading: false,
-			showAdvanced: false,
 			sendType: 'file',
 			comment: '',
 			query: '',
@@ -300,7 +294,6 @@ export default {
 			this.fileStates = {}
 			this.channels = []
 			this.comment = ''
-			this.showAdvanced = false
 			this.sendType = 'file'
 			this.selectedPermission = 'view'
 			this.expirationEnabled = false
@@ -389,9 +382,9 @@ export default {
 		}
 	}
 
-	> *:not(.field-label):not(.advanced-switch):not(.advanced-options):not(.mattermost-footer):not(.warning-container),
+	> *:not(.field-label):not(.advanced-options):not(.mattermost-footer):not(.warning-container),
 	.advanced-options > *:not(.field-label) {
-		margin-left: 32px;
+		margin-left: 10px;
 	}
 
 	.advanced-options {
@@ -477,6 +470,9 @@ export default {
 .mattermost-footer {
 	display: flex;
 	padding-bottom: 16px;
+	> * {
+		margin-left: 8px;
+	}
 }
 
 .warning-container {
