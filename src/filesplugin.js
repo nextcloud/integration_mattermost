@@ -337,7 +337,8 @@ OCA.Mattermost.MattermostSendModalVue = new View().$mount(modalElement)
 OCA.Mattermost.MattermostSendModalVue.$on('closed', () => {
 	console.debug('mattermost modal closed')
 })
-OCA.Mattermost.MattermostSendModalVue.$on('validate', (channelId, channelName, type, comment, permission, expirationDate) => {
+OCA.Mattermost.MattermostSendModalVue.$on('validate', (filesToSend, channelId, channelName, type, comment, permission, expirationDate) => {
+	OCA.Mattermost.filesToSend = filesToSend
 	if (type === 'link') {
 		sendLinks(channelId, channelName, comment, permission, expirationDate)
 	} else {

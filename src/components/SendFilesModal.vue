@@ -42,6 +42,12 @@
 						<span class="file-size">
 							{{ myHumanFileSize(f.size, true) }}
 						</span>
+						<Button class="remove-file-button"
+							@click="onRemoveFile(f.id)">
+							<template #icon>
+								<CloseIcon :size="20" />
+							</template>
+						</Button>
 					</div>
 				</div>
 				<span class="field-label">
@@ -197,6 +203,7 @@ import Button from '@nextcloud/vue/dist/Components/Button'
 import Avatar from '@nextcloud/vue/dist/Components/Avatar'
 import SendIcon from 'vue-material-design-icons/Send'
 import FileIcon from 'vue-material-design-icons/File'
+import CloseIcon from 'vue-material-design-icons/Close'
 import PoundBoxIcon from 'vue-material-design-icons/PoundBox'
 import LinkVariantIcon from 'vue-material-design-icons/LinkVariant'
 import PackageUpIcon from 'vue-material-design-icons/PackageUp'
@@ -240,6 +247,7 @@ export default {
 		CommentIcon,
 		CheckCircleIcon,
 		AlertBoxIcon,
+		CloseIcon,
 	},
 
 	props: [],
@@ -277,6 +285,7 @@ export default {
 		canValidate() {
 			return this.selectedChannel !== null
 				&& (this.sendType !== 'file' || !this.onlyDirectories)
+				&& this.files.length > 0
 		},
 	},
 
@@ -313,6 +322,7 @@ export default {
 		onSendClick() {
 			this.loading = true
 			this.$emit('validate',
+				[...this.files],
 				this.selectedChannel.id,
 				this.selectedChannel.display_name,
 				this.sendType,
@@ -357,6 +367,10 @@ export default {
 		},
 		myHumanFileSize(bytes, approx = false, si = false, dp = 1) {
 			return humanFileSize(bytes, approx, si, dp)
+		},
+		onRemoveFile(fileId) {
+			const index = this.files.findIndex((f) => f.id === fileId)
+			this.files.splice(index, 1)
 		},
 	},
 }
@@ -432,10 +446,25 @@ export default {
 
 			.file-name {
 				margin-left: 12px;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+			}
+
+			.file-size {
+				white-space: nowrap;
 			}
 
 			.check-icon {
 				color: var(--color-success);
+			}
+
+			.remove-file-button {
+				width: 32px !important;
+				height: 32px;
+				margin-left: 8px;
+				min-width: 32px;
+				min-height: 32px;
 			}
 		}
 	}
