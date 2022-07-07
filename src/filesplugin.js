@@ -74,7 +74,7 @@ function openChannelSelector(files) {
 				name: 'mattermostConnectMulti',
 				displayName: (context) => {
 					if (!OCA.Mattermost.mattermostConnected && OCA.Mattermost.oauthPossible) {
-						return t('integration_mattermost', 'Connect to Mattermost')
+						return t('integration_mattermost', 'Send files to Mattermost')
 					}
 					return ''
 				},
@@ -127,7 +127,7 @@ function openChannelSelector(files) {
 				name: 'mattermostConnectSingle',
 				displayName: (context) => {
 					if (!OCA.Mattermost.mattermostConnected && OCA.Mattermost.oauthPossible) {
-						return t('integration_mattermost', 'Connect to Mattermost')
+						return t('integration_mattermost', 'Send files to Mattermost')
 					}
 					return ''
 				},

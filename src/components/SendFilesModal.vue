@@ -259,7 +259,7 @@ export default {
 			expirationEnabled: false,
 			expirationDate: null,
 			STATES,
-			commentPlaceholder: t('integration_mattermost', 'Sent from my Nextcloud'),
+			commentPlaceholder: t('integration_mattermost', 'Message to send with the files'),
 			permissionOptions: {
 				view: { label: t('integration_mattermost', 'View only'), icon: EyeIcon },
 				edit: { label: t('integration_mattermost', 'Edit'), icon: PencilIcon },
@@ -316,7 +316,7 @@ export default {
 				this.selectedChannel.id,
 				this.selectedChannel.display_name,
 				this.sendType,
-				this.comment || this.commentPlaceholder,
+				this.comment,
 				this.selectedPermission,
 				this.sendType === 'link' && this.expirationEnabled ? this.expirationDate : null
 			)

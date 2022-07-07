@@ -50,7 +50,9 @@ export function oauthConnectConfirmDialog(mattermostUrl) {
 		const linkText = t('integration_mattermost', 'Connected accounts')
 		const settingsHtmlLink = `<a href="${settingsLink}" class="external">${linkText}</a>`
 		OC.dialogs.message(
-			t('integration_mattermost', 'Are you sure you want to connect to {mmUrl}?', { mmUrl: mattermostUrl })
+			t('integration_mattermost', 'You need to connect before using the Mattermost integration.')
+			+ '<br><br>'
+			+ t('integration_mattermost', 'Do you want to connect to {mmUrl}?', { mmUrl: mattermostUrl })
 			+ '<br><br>'
 			+ t(
 				'integration_mattermost',
