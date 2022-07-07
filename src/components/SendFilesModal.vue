@@ -36,6 +36,10 @@
 						<span class="file-name">
 							{{ f.name }}
 						</span>
+						<div class="spacer" />
+						<span class="file-size">
+							{{ myHumanFileSize(f.size, true) }}
+						</span>
 					</div>
 				</div>
 				<span class="field-label">
@@ -210,6 +214,7 @@ import RadioElementSet from './RadioElementSet'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import MattermostIcon from './MattermostIcon'
+import { humanFileSize } from '../utils'
 
 const STATES = {
 	IN_PROGRESS: 1,
@@ -357,19 +362,22 @@ export default {
 			const now = new Date()
 			return d <= now
 		},
+		myHumanFileSize(bytes, approx = false, si = false, dp = 1) {
+			return humanFileSize(bytes, approx, si, dp)
+		},
 	},
 }
 </script>
 
 <style scoped lang="scss">
 .mattermost-modal-content {
+	width: 100%;
 	padding: 16px;
 	display: flex;
 	flex-direction: column;
 
 	> * {
 		margin-bottom: 16px;
-
 	}
 
 	.field-label {
@@ -462,11 +470,13 @@ export default {
 	}
 }
 
+.spacer {
+	flex-grow: 1;
+}
+
 .mattermost-footer {
 	display: flex;
-	.spacer {
-		flex-grow: 1;
-	}
+	padding-bottom: 16px;
 }
 
 .warning-container {

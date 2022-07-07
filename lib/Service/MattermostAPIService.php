@@ -525,7 +525,7 @@ class MattermostAPIService {
 					return ['error' => 'No Mattermost refresh token, impossible to refresh the token'];
 				}
 			}
-			$this->logger->warning('Mattermost API error : '.$e->getMessage(), ['app' => $this->appName]);
+			$this->logger->debug('Mattermost API error : '.$e->getMessage(), ['app' => $this->appName]);
 			return ['error' => $e->getMessage()];
 		}
 	}

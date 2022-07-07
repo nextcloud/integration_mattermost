@@ -151,6 +151,7 @@ function openChannelSelector(files) {
 						id: f.id,
 						name: f.name,
 						type: f.type,
+						size: f.size,
 					}
 				})
 			openChannelSelector(files)
@@ -161,6 +162,7 @@ function openChannelSelector(files) {
 				id: context.fileInfoModel.attributes.id,
 				name: context.fileInfoModel.attributes.name,
 				type: context.fileInfoModel.attributes.type,
+				size: context.fileInfoModel.attributes.size,
 			}
 			openChannelSelector([file])
 		},
@@ -187,6 +189,7 @@ function openChannelSelector(files) {
 								id: f.id,
 								name: f.name,
 								type: f.type,
+								size: f.size,
 							}
 						}
 						return null
