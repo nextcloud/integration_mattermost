@@ -266,11 +266,12 @@ export default {
 		},
 		connectWithOauth() {
 			if (this.state.use_popup) {
-				oauthConnect(this.state.url, this.state.client_id, 'settings', true, (data) => {
-					this.state.token = 'dummyToken'
-					this.state.user_name = data.userName
-					this.state.user_displayname = data.userDisplayName
-				})
+				oauthConnect(this.state.url, this.state.client_id, null, true)
+					.then((data) => {
+						this.state.token = 'dummyToken'
+						this.state.user_name = data.userName
+						this.state.user_displayname = data.userDisplayName
+					})
 			} else {
 				oauthConnect(this.state.url, this.state.client_id, 'settings')
 			}

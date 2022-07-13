@@ -225,16 +225,11 @@ function openChannelSelector(files) {
 			oauthConnectConfirmDialog(OCA.Mattermost.mattermostUrl).then((result) => {
 				if (result) {
 					if (OCA.Mattermost.usePopup) {
-						oauthConnect(
-							OCA.Mattermost.mattermostUrl,
-							OCA.Mattermost.clientId,
-							'',
-							true,
-							(data) => {
+						oauthConnect(OCA.Mattermost.mattermostUrl, OCA.Mattermost.clientId, null, true)
+							.then((data) => {
 								OCA.Mattermost.mattermostConnected = true
 								openChannelSelector(selectedFiles)
-							}
-						)
+							})
 					} else {
 						const selectedFilesIds = selectedFiles.map(f => f.id)
 						oauthConnect(

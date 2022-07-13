@@ -147,10 +147,11 @@ export default {
 			oauthConnectConfirmDialog(this.mattermostUrl).then((result) => {
 				if (result) {
 					if (this.initialState.use_popup) {
-						oauthConnect(this.mattermostUrl, this.initialState.client_id, 'dashboard', true, (data) => {
-							this.stopLoop()
-							this.launchLoop()
-						})
+						oauthConnect(this.mattermostUrl, this.initialState.client_id, null, true)
+							.then((data) => {
+								this.stopLoop()
+								this.launchLoop()
+							})
 					} else {
 						oauthConnect(this.mattermostUrl, this.initialState.client_id, 'dashboard')
 					}
