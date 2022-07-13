@@ -68,19 +68,18 @@ function openChannelSelector(files) {
 				},
 				order: -2,
 				action: (selectedFiles) => {
+					const filesToSend = selectedFiles.map((f) => {
+						return {
+							id: f.id,
+							name: f.name,
+							type: f.type,
+							size: f.size,
+						}
+					})
 					if (OCA.Mattermost.mattermostConnected) {
-						this.sendMulti(selectedFiles)
+						openChannelSelector(filesToSend)
 					} else if (OCA.Mattermost.oauthPossible) {
-						this.connectToMattermost(
-							selectedFiles.map((f) => {
-								return {
-									id: f.id,
-									name: f.name,
-									type: f.type,
-									size: f.size,
-								}
-							})
-						)
+						this.connectToMattermost(filesToSend)
 					}
 				},
 			})
@@ -119,44 +118,21 @@ function openChannelSelector(files) {
 				},
 				permissions: OC.PERMISSION_READ,
 				actionHandler: (fileName, context) => {
+					const filesToSend = [
+						{
+							id: context.fileInfoModel.attributes.id,
+							name: context.fileInfoModel.attributes.name,
+							type: context.fileInfoModel.attributes.type,
+							size: context.fileInfoModel.attributes.size,
+						},
+					]
 					if (OCA.Mattermost.mattermostConnected) {
-						this.sendSingle(fileName, context)
+						openChannelSelector(filesToSend)
 					} else if (OCA.Mattermost.oauthPossible) {
-						this.connectToMattermost([
-							{
-								id: context.fileInfoModel.attributes.id,
-								name: context.fileInfoModel.attributes.name,
-								type: context.fileInfoModel.attributes.type,
-								size: context.fileInfoModel.attributes.size,
-							},
-						])
+						this.connectToMattermost(filesToSend)
 					}
 				},
 			})
-		},
-
-		sendMulti: (selectedFiles) => {
-			const files = selectedFiles
-				// .filter((f) => f.type !== 'dir')
-				.map((f) => {
-					return {
-						id: f.id,
-						name: f.name,
-						type: f.type,
-						size: f.size,
-					}
-				})
-			openChannelSelector(files)
-		},
-
-		sendSingle: (fileName, context) => {
-			const file = {
-				id: context.fileInfoModel.attributes.id,
-				name: context.fileInfoModel.attributes.name,
-				type: context.fileInfoModel.attributes.type,
-				size: context.fileInfoModel.attributes.size,
-			}
-			openChannelSelector([file])
 		},
 
 		/**
