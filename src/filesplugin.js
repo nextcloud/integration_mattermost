@@ -56,45 +56,32 @@ function openChannelSelector(files) {
 			fileList.registerMultiSelectFileAction({
 				name: 'mattermostSendMulti',
 				displayName: (context) => {
-					if (OCA.Mattermost.mattermostConnected) {
+					if (OCA.Mattermost.mattermostConnected || OCA.Mattermost.oauthPossible) {
 						return t('integration_mattermost', 'Send files to Mattermost')
 					}
 					return ''
 				},
 				iconClass: () => {
-					if (OCA.Mattermost.mattermostConnected) {
-						return 'icon-mattermost'
-					}
-				},
-				order: -2,
-				action: (selectedFiles) => { this.sendMulti(selectedFiles) },
-			})
-
-			fileList.registerMultiSelectFileAction({
-				name: 'mattermostConnectMulti',
-				displayName: (context) => {
-					if (!OCA.Mattermost.mattermostConnected && OCA.Mattermost.oauthPossible) {
-						return t('integration_mattermost', 'Send files to Mattermost')
-					}
-					return ''
-				},
-				iconClass: () => {
-					if (!OCA.Mattermost.mattermostConnected && OCA.Mattermost.oauthPossible) {
+					if (OCA.Mattermost.mattermostConnected || OCA.Mattermost.oauthPossible) {
 						return 'icon-mattermost'
 					}
 				},
 				order: -2,
 				action: (selectedFiles) => {
-					this.connectToMattermost(
-						selectedFiles.map((f) => {
-							return {
-								id: f.id,
-								name: f.name,
-								type: f.type,
-								size: f.size,
-							}
-						})
-					)
+					if (OCA.Mattermost.mattermostConnected) {
+						this.sendMulti(selectedFiles)
+					} else if (OCA.Mattermost.oauthPossible) {
+						this.connectToMattermost(
+							selectedFiles.map((f) => {
+								return {
+									id: f.id,
+									name: f.name,
+									type: f.type,
+									size: f.size,
+								}
+							})
+						)
+					}
 				},
 			})
 
@@ -118,7 +105,7 @@ function openChannelSelector(files) {
 			fileList.fileActions.registerAction({
 				name: 'mattermostSendSingle',
 				displayName: (context) => {
-					if (OCA.Mattermost.mattermostConnected) {
+					if (OCA.Mattermost.mattermostConnected || OCA.Mattermost.oauthPossible) {
 						return t('integration_mattermost', 'Send to Mattermost')
 					}
 					return ''
@@ -126,39 +113,24 @@ function openChannelSelector(files) {
 				mime: 'all',
 				order: -139,
 				iconClass: (fileName, context) => {
-					if (OCA.Mattermost.mattermostConnected) {
-						return 'icon-mattermost'
-					}
-				},
-				permissions: OC.PERMISSION_READ,
-				actionHandler: (fileName, context) => { this.sendSingle(fileName, context) },
-			})
-
-			fileList.fileActions.registerAction({
-				name: 'mattermostConnectSingle',
-				displayName: (context) => {
-					if (!OCA.Mattermost.mattermostConnected && OCA.Mattermost.oauthPossible) {
-						return t('integration_mattermost', 'Send files to Mattermost')
-					}
-					return ''
-				},
-				mime: 'all',
-				order: -139,
-				iconClass: (fileName, context) => {
-					if (!OCA.Mattermost.mattermostConnected && OCA.Mattermost.oauthPossible) {
+					if (OCA.Mattermost.mattermostConnected || OCA.Mattermost.oauthPossible) {
 						return 'icon-mattermost'
 					}
 				},
 				permissions: OC.PERMISSION_READ,
 				actionHandler: (fileName, context) => {
-					this.connectToMattermost([
-						{
-							id: context.fileInfoModel.attributes.id,
-							name: context.fileInfoModel.attributes.name,
-							type: context.fileInfoModel.attributes.type,
-							size: context.fileInfoModel.attributes.size,
-						},
-					])
+					if (OCA.Mattermost.mattermostConnected) {
+						this.sendSingle(fileName, context)
+					} else if (OCA.Mattermost.oauthPossible) {
+						this.connectToMattermost([
+							{
+								id: context.fileInfoModel.attributes.id,
+								name: context.fileInfoModel.attributes.name,
+								type: context.fileInfoModel.attributes.type,
+								size: context.fileInfoModel.attributes.size,
+							},
+						])
+					}
 				},
 			})
 		},
