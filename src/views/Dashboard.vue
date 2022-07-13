@@ -2,14 +2,14 @@
 	<DashboardWidget :items="items"
 		:show-more-url="showMoreUrl"
 		:show-more-text="title"
-		:loading="state === 'loading'">
+		:loading="widgetState === 'loading'">
 		<template #empty-content>
 			<EmptyContent
 				v-if="emptyContentMessage"
 				:icon="emptyContentIcon">
 				<template #desc>
 					{{ emptyContentMessage }}
-					<div v-if="state === 'no-token' || state === 'error'" class="connect-button">
+					<div v-if="widgetState === 'no-token' || widgetState === 'error'" class="connect-button">
 						<a v-if="!initialState.oauth_is_possible"
 							class="button"
 							:href="settingsUrl">
@@ -63,7 +63,7 @@ export default {
 		return {
 			notifications: [],
 			loop: null,
-			state: 'loading',
+			widgetState: 'loading',
 			settingsUrl: generateUrl('/settings/user/connected-accounts#mattermost_prefs'),
 			initialState: loadState('integration_mattermost', 'user-config'),
 			windowVisibility: true,
@@ -99,21 +99,21 @@ export default {
 			return moment(this.lastDate)
 		},
 		emptyContentMessage() {
-			if (this.state === 'no-token') {
+			if (this.widgetState === 'no-token') {
 				return t('integration_mattermost', 'No Mattermost account connected')
-			} else if (this.state === 'error') {
+			} else if (this.widgetState === 'error') {
 				return t('integration_mattermost', 'Error connecting to Mattermost')
-			} else if (this.state === 'ok') {
+			} else if (this.widgetState === 'ok') {
 				return t('integration_mattermost', 'No Mattermost notifications!')
 			}
 			return ''
 		},
 		emptyContentIcon() {
-			if (this.state === 'no-token') {
+			if (this.widgetState === 'no-token') {
 				return 'icon-mattermost'
-			} else if (this.state === 'error') {
+			} else if (this.widgetState === 'error') {
 				return 'icon-close'
-			} else if (this.state === 'ok') {
+			} else if (this.widgetState === 'ok') {
 				return 'icon-checkmark'
 			}
 			return 'icon-checkmark'
@@ -146,7 +146,14 @@ export default {
 		onOauthClick() {
 			oauthConnectConfirmDialog(this.mattermostUrl).then((result) => {
 				if (result) {
-					oauthConnect(this.mattermostUrl, this.initialState.client_id, 'dashboard')
+					if (this.initialState.use_popup) {
+						oauthConnect(this.mattermostUrl, this.initialState.client_id, 'dashboard', true, (data) => {
+							this.stopLoop()
+							this.launchLoop()
+						})
+					} else {
+						oauthConnect(this.mattermostUrl, this.initialState.client_id, 'dashboard')
+					}
 				}
 			})
 		},
@@ -169,14 +176,14 @@ export default {
 			}
 			axios.get(generateUrl('/apps/integration_mattermost/notifications'), req).then((response) => {
 				this.processNotifications(response.data)
-				this.state = 'ok'
+				this.widgetState = 'ok'
 			}).catch((error) => {
 				clearInterval(this.loop)
 				if (error.response && error.response.status === 400) {
-					this.state = 'no-token'
+					this.widgetState = 'no-token'
 				} else if (error.response && error.response.status === 401) {
 					showError(t('integration_mattermost', 'Failed to get Mattermost notifications'))
-					this.state = 'error'
+					this.widgetState = 'error'
 				} else {
 					// there was an error in notif processing
 					console.debug(error)

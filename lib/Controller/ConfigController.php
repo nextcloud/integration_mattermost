@@ -13,6 +13,8 @@ namespace OCA\Mattermost\Controller;
 
 use DateTime;
 use OCA\Activity\Data;
+use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Services\IInitialState;
 use OCP\IURLGenerator;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -46,12 +48,17 @@ class ConfigController extends Controller {
 	 * @var string|null
 	 */
 	private $userId;
+	/**
+	 * @var IInitialState
+	 */
+	private $initialStateService;
 
 	public function __construct(string $appName,
 								IRequest $request,
 								IConfig $config,
 								IURLGenerator $urlGenerator,
 								IL10N $l,
+								IInitialState $initialStateService,
 								MattermostAPIService $mattermostAPIService,
 								?string $userId) {
 		parent::__construct($appName, $request);
@@ -60,6 +67,7 @@ class ConfigController extends Controller {
 		$this->l = $l;
 		$this->mattermostAPIService = $mattermostAPIService;
 		$this->userId = $userId;
+		$this->initialStateService = $initialStateService;
 	}
 
 	/**
@@ -76,6 +84,7 @@ class ConfigController extends Controller {
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
 		$oauthPossible = $clientID !== '' && $clientSecret !== '' && $mattermostUrl === $adminOauthUrl;
+		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
 
 		$fileIdsToSendAfterOAuth = $this->config->getUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
@@ -85,6 +94,7 @@ class ConfigController extends Controller {
 		return new DataResponse([
 			'connected' => $mattermostUrl && $token,
 			'oauth_possible' => $oauthPossible,
+			'use_popup' => ($usePopup === '1'),
 			'url' => $mattermostUrl,
 			'client_id' => $clientID,
 			'file_ids_to_send_after_oauth' => $fileIdsToSendAfterOAuth,
@@ -169,6 +179,18 @@ class ConfigController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param string $username
+	 * @return TemplateResponse
+	 */
+	public function popupSuccessPage(string $user_name, string $user_displayname): TemplateResponse {
+		$this->initialStateService->provideInitialState('popup-data', ['user_name' => $user_name, 'user_displayname' => $user_displayname]);
+		return new TemplateResponse(Application::APP_ID, 'popupSuccess', [], TemplateResponse::RENDER_AS_GUEST);
+	}
+
+	/**
 	 * receive oauth code and get oauth access token
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -206,30 +228,40 @@ class ConfigController extends Controller {
 				}
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $accessToken);
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $refreshToken);
-				$this->storeUserInfo($mattermostUrl);
-				$oauthOrigin = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_origin');
-				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_origin');
-				if ($oauthOrigin === 'settings') {
+				$userInfo = $this->storeUserInfo($mattermostUrl);
+				$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0') === '1';
+				if ($usePopup) {
 					return new RedirectResponse(
-						$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']) .
-						'?mattermostToken=success'
+						$this->urlGenerator->linkToRoute('integration_mattermost.config.popupSuccessPage', [
+							'user_name' => $userInfo['user_name'] ?? '',
+							'user_displayname' => $userInfo['user_displayname'] ?? '',
+						])
 					);
-				} elseif ($oauthOrigin === 'dashboard') {
-					return new RedirectResponse(
-						$this->urlGenerator->linkToRoute('dashboard.dashboard.index')
-					);
-				} elseif (preg_match('/^files--.*/', $oauthOrigin)) {
-					$parts = explode('--', $oauthOrigin);
-					if (count($parts) > 1) {
-						// $path = preg_replace('/^files--/', '', $oauthOrigin);
-						$path = $parts[1];
-						if (count($parts) > 2) {
-							$this->config->setUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth', $parts[2]);
-							$this->config->setUserValue($this->userId, Application::APP_ID, 'current_dir_after_oauth', $path);
-						}
+				} else {
+					$oauthOrigin = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_origin');
+					$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_origin');
+					if ($oauthOrigin === 'settings') {
 						return new RedirectResponse(
-							$this->urlGenerator->linkToRoute('files.view.index', ['dir' => $path])
+							$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']) .
+							'?mattermostToken=success'
 						);
+					} elseif ($oauthOrigin === 'dashboard') {
+						return new RedirectResponse(
+							$this->urlGenerator->linkToRoute('dashboard.dashboard.index')
+						);
+					} elseif (preg_match('/^files--.*/', $oauthOrigin)) {
+						$parts = explode('--', $oauthOrigin);
+						if (count($parts) > 1) {
+							// $path = preg_replace('/^files--/', '', $oauthOrigin);
+							$path = $parts[1];
+							if (count($parts) > 2) {
+								$this->config->setUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth', $parts[2]);
+								$this->config->setUserValue($this->userId, Application::APP_ID, 'current_dir_after_oauth', $path);
+							}
+							return new RedirectResponse(
+								$this->urlGenerator->linkToRoute('files.view.index', ['dir' => $path])
+							);
+						}
 					}
 				}
 			}

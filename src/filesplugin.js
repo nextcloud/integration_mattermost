@@ -84,7 +84,18 @@ function openChannelSelector(files) {
 					}
 				},
 				order: -2,
-				action: (selectedFiles) => { this.connectToMattermost(selectedFiles.map((f) => f.id)) },
+				action: (selectedFiles) => {
+					this.connectToMattermost(
+						selectedFiles.map((f) => {
+							return {
+								id: f.id,
+								name: f.name,
+								type: f.type,
+								size: f.size,
+							}
+						})
+					)
+				},
 			})
 
 			/*
@@ -139,7 +150,16 @@ function openChannelSelector(files) {
 					}
 				},
 				permissions: OC.PERMISSION_READ,
-				actionHandler: (fileName, context) => { this.connectToMattermost([context.fileInfoModel.attributes.id]) },
+				actionHandler: (fileName, context) => {
+					this.connectToMattermost([
+						{
+							id: context.fileInfoModel.attributes.id,
+							name: context.fileInfoModel.attributes.name,
+							type: context.fileInfoModel.attributes.type,
+							size: context.fileInfoModel.attributes.size,
+						},
+					])
+				},
 			})
 		},
 
@@ -201,14 +221,28 @@ function openChannelSelector(files) {
 			}
 		},
 
-		connectToMattermost: (selectedFilesIds = []) => {
+		connectToMattermost: (selectedFiles = []) => {
 			oauthConnectConfirmDialog(OCA.Mattermost.mattermostUrl).then((result) => {
 				if (result) {
-					oauthConnect(
-						OCA.Mattermost.mattermostUrl,
-						OCA.Mattermost.clientId,
-						'files--' + OCA.Files.App.fileList._currentDirectory + '--' + selectedFilesIds.join(',')
-					)
+					if (OCA.Mattermost.usePopup) {
+						oauthConnect(
+							OCA.Mattermost.mattermostUrl,
+							OCA.Mattermost.clientId,
+							'',
+							true,
+							(data) => {
+								OCA.Mattermost.mattermostConnected = true
+								openChannelSelector(selectedFiles)
+							}
+						)
+					} else {
+						const selectedFilesIds = selectedFiles.map(f => f.id)
+						oauthConnect(
+							OCA.Mattermost.mattermostUrl,
+							OCA.Mattermost.clientId,
+							'files--' + OCA.Files.App.fileList._currentDirectory + '--' + selectedFilesIds.join(',')
+						)
+					}
 				}
 			})
 		},
@@ -361,6 +395,7 @@ const urlCheckConnection = generateUrl('/apps/integration_mattermost/is-connecte
 axios.get(urlCheckConnection).then((response) => {
 	OCA.Mattermost.mattermostConnected = response.data.connected
 	OCA.Mattermost.oauthPossible = response.data.oauth_possible
+	OCA.Mattermost.usePopup = response.data.use_popup
 	OCA.Mattermost.clientId = response.data.client_id
 	OCA.Mattermost.mattermostUrl = response.data.url
 	OCA.Mattermost.fileIdsToSendAfterOAuth = response.data.file_ids_to_send_after_oauth

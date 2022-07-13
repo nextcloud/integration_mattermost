@@ -14,7 +14,7 @@ export function delay(callback, ms) {
 	}
 }
 
-export function oauthConnect(mattermostUrl, clientId, oauthOrigin) {
+export function oauthConnect(mattermostUrl, clientId, oauthOrigin, usePopup = false, popupCallback = null) {
 	const redirectUri = window.location.protocol + '//' + window.location.host + generateUrl('/apps/integration_mattermost/oauth-redirect')
 
 	const oauthState = Math.random().toString(36).substring(3)
@@ -34,7 +34,19 @@ export function oauthConnect(mattermostUrl, clientId, oauthOrigin) {
 	}
 	const url = generateUrl('/apps/integration_mattermost/config')
 	axios.put(url, req).then((response) => {
-		window.location.replace(requestUrl)
+		if (usePopup) {
+			const ssoWindow = window.open(
+				requestUrl,
+				t('integration_mattermost', 'Sign in with Mattermost'),
+				'toolbar=no, menubar=no, width=600, height=700')
+			ssoWindow.focus()
+			window.addEventListener('message', (event) => {
+				console.debug('Child window message received', event)
+				popupCallback(event.data)
+			})
+		} else {
+			window.location.replace(requestUrl)
+		}
 	}).catch((error) => {
 		showError(
 			t('integration_mattermost', 'Failed to save Mattermost OAuth state')

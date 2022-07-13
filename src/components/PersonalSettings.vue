@@ -265,7 +265,15 @@ export default {
 			})
 		},
 		connectWithOauth() {
-			oauthConnect(this.state.url, this.state.client_id, 'settings')
+			if (this.state.use_popup) {
+				oauthConnect(this.state.url, this.state.client_id, 'settings', true, (data) => {
+					this.state.token = 'dummyToken'
+					this.state.user_name = data.userName
+					this.state.user_displayname = data.userDisplayName
+				})
+			} else {
+				oauthConnect(this.state.url, this.state.client_id, 'settings')
+			}
 		},
 	},
 }
