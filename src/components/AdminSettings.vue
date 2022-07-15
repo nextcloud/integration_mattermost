@@ -1,23 +1,27 @@
 <template>
 	<div id="mattermost_prefs" class="section">
 		<h2>
-			<a class="icon icon-mattermost" />
+			<MattermostIcon class="mattermost-icon" />
 			{{ t('integration_mattermost', 'Mattermost integration') }}
 		</h2>
 		<p class="settings-hint">
 			{{ t('integration_mattermost', 'If you want to allow your Nextcloud users to use OAuth to authenticate to a Mattermost instance of your choice, create an application in your Mattermost settings and set the ID and secret here.') }}
-			<br><br>
-			<span class="icon icon-details" />
+		</p>
+		<br>
+		<p class="settings-hint">
+			<InformationVariantIcon :size="24" class="icon" />
 			{{ t('integration_mattermost', 'Make sure you set the "Redirect URI" to') }}
-			<b> {{ redirect_uri }} </b>
-			<br><br>
+			&nbsp;<b> {{ redirect_uri }} </b>
+		</p>
+		<br>
+		<p class="settings-hint">
 			{{ t('integration_mattermost', 'and give "read_user", "read_api" and "read_repository" permissions to the application. Optionally "api" instead.') }}
 			<br>
 			{{ t('integration_mattermost', 'Put the "Application ID" and "Application secret" below. Your Nextcloud users will then see a "Connect to Mattermost" button in their personal settings if they select the Mattermost instance defined here.') }}
 		</p>
-		<div class="grid-form">
+		<div class="field">
 			<label for="mattermost-oauth-instance">
-				<a class="icon icon-link" />
+				<EarthIcon :size="20" class="icon" />
 				{{ t('integration_mattermost', 'OAuth app instance address') }}
 			</label>
 			<input id="mattermost-oauth-instance"
@@ -25,8 +29,10 @@
 				type="text"
 				:placeholder="t('integration_mattermost', 'Instance address')"
 				@input="onInput">
+		</div>
+		<div class="field">
 			<label for="mattermost-client-id">
-				<a class="icon icon-category-auth" />
+				<KeyIcon :size="20" class="icon" />
 				{{ t('integration_mattermost', 'Application ID') }}
 			</label>
 			<input id="mattermost-client-id"
@@ -36,8 +42,10 @@
 				:placeholder="t('integration_mattermost', 'ID of your Mattermost application')"
 				@input="onInput"
 				@focus="readonly = false">
+		</div>
+		<div class="field">
 			<label for="mattermost-client-secret">
-				<a class="icon icon-category-auth" />
+				<KeyIcon :size="20" class="icon" />
 				{{ t('integration_mattermost', 'Application secret') }}
 			</label>
 			<input id="mattermost-client-secret"
@@ -47,11 +55,50 @@
 				:placeholder="t('integration_mattermost', 'Client secret of your Mattermost application')"
 				@focus="readonly = false"
 				@input="onInput">
-			<CheckboxRadioSwitch
-				:checked.sync="state.use_popup"
-				@update:checked="onUsePopupChanged">
-				{{ t('integration_google', 'Use a popup to authenticate') }}
-			</CheckboxRadioSwitch>
+		</div>
+		<CheckboxRadioSwitch
+			class="field"
+			:checked.sync="state.use_popup"
+			@update:checked="onUsePopupChanged">
+			{{ t('integration_google', 'Use a popup to authenticate') }}
+		</CheckboxRadioSwitch>
+		<br>
+		<p class="settings-hint">
+			<InformationVariantIcon :size="24" class="icon" />
+			{{ t('integration_mattermost', 'If you have configured the Nextcloud integration in Mattermost, you might need to configure those webhooks.') }}
+		</p>
+		<div class="field">
+			<label for="mattermost-cal-event-add">
+				<WebhookIcon :size="20" class="icon" />
+				{{ t('integration_mattermost', 'Calendar event added webhook URL') }}
+			</label>
+			<input id="mattermost-cal-event-add"
+				v-model="state.cal_event_added_webhook"
+				type="text"
+				:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
+				@input="onInput">
+		</div>
+		<div class="field">
+			<label for="mattermost-cal-event-edit">
+				<WebhookIcon :size="20" class="icon" />
+				{{ t('integration_mattermost', 'Calendar event edited webhook URL') }}
+			</label>
+			<input id="mattermost-cal-event-edit"
+				v-model="state.cal_event_edited_webhook"
+				type="text"
+				:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
+				@input="onInput">
+		</div>
+		<div class="field">
+			<label for="mattermost-webhook-secret">
+				<KeyIcon :size="20" class="icon" />
+				{{ t('integration_mattermost', 'Webhook secret') }}
+			</label>
+			<input id="mattermost-webhook-secret"
+				v-model="state.webhook_secret"
+				type="password"
+				:placeholder="t('integration_mattermost', 'secret')"
+				@input="onInput">
 		</div>
 	</div>
 </template>
@@ -63,12 +110,22 @@ import axios from '@nextcloud/axios'
 import { delay } from '../utils'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
+import MattermostIcon from './MattermostIcon'
+import InformationVariantIcon from 'vue-material-design-icons/InformationVariant'
+import EarthIcon from 'vue-material-design-icons/Earth'
+import KeyIcon from 'vue-material-design-icons/Key'
+import WebhookIcon from 'vue-material-design-icons/Webhook'
 
 export default {
 	name: 'AdminSettings',
 
 	components: {
+		MattermostIcon,
 		CheckboxRadioSwitch,
+		InformationVariantIcon,
+		EarthIcon,
+		KeyIcon,
+		WebhookIcon,
 	},
 
 	props: [],
@@ -98,6 +155,9 @@ export default {
 					client_id: this.state.client_id,
 					client_secret: this.state.client_secret,
 					oauth_instance_url: this.state.oauth_instance_url,
+					webhook_secret: this.state.webhook_secret,
+					cal_event_added_webhook: this.state.cal_event_added_webhook,
+					cal_event_edited_webhook: this.state.cal_event_edited_webhook,
 				})
 			}, 2000)()
 		},
@@ -121,40 +181,36 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.grid-form label {
-	line-height: 38px;
-}
+#mattermost_prefs {
+	.field {
+		display: flex;
+		align-items: center;
+		margin-left: 30px;
 
-.grid-form input {
-	width: 100%;
-}
+		input,
+		label {
+			width: 300px;
+		}
 
-.grid-form {
-	max-width: 500px;
-	display: grid;
-	grid-template: 1fr / 1fr 1fr;
-	margin-left: 30px;
-}
+		label {
+			display: flex;
+			align-items: center;
+		}
+		.icon {
+			margin-right: 8px;
+		}
+	}
 
-#mattermost_prefs .icon {
-	display: inline-block;
-	width: 32px;
-}
+	.settings-hint {
+		display: flex;
+		align-items: center;
+	}
 
-#mattermost_prefs .grid-form .icon {
-	margin-bottom: -3px;
-}
-
-.icon-mattermost {
-	background-image: url(./../../img/app-dark.svg);
-	background-size: 23px 23px;
-	height: 23px;
-	margin-bottom: -4px;
-	filter: var(--background-invert-if-dark);
-}
-
-// for NC <= 24
-body.theme--dark .icon-mattermost {
-	background-image: url(./../../img/app.svg);
+	h2 {
+		display: flex;
+		.mattermost-icon {
+			margin-right: 12px;
+		}
+	}
 }
 </style>
