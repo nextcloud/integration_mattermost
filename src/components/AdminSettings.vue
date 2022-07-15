@@ -70,10 +70,10 @@
 		<div class="field">
 			<label for="mattermost-cal-event-add">
 				<WebhookIcon :size="20" class="icon" />
-				{{ t('integration_mattermost', 'Calendar event added webhook URL') }}
+				{{ t('integration_mattermost', 'Calendar event created webhook URL') }}
 			</label>
 			<input id="mattermost-cal-event-add"
-				v-model="state.cal_event_added_webhook"
+				v-model="state.calendar_event_created_webhook"
 				type="text"
 				:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
 				@input="onInput">
@@ -81,10 +81,10 @@
 		<div class="field">
 			<label for="mattermost-cal-event-edit">
 				<WebhookIcon :size="20" class="icon" />
-				{{ t('integration_mattermost', 'Calendar event edited webhook URL') }}
+				{{ t('integration_mattermost', 'Calendar event updated webhook URL') }}
 			</label>
 			<input id="mattermost-cal-event-edit"
-				v-model="state.cal_event_edited_webhook"
+				v-model="state.calendar_event_updated_webhook"
 				type="text"
 				:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
 				@input="onInput">
@@ -156,8 +156,8 @@ export default {
 					client_secret: this.state.client_secret,
 					oauth_instance_url: this.state.oauth_instance_url,
 					webhook_secret: this.state.webhook_secret,
-					cal_event_added_webhook: this.state.cal_event_added_webhook,
-					cal_event_edited_webhook: this.state.cal_event_edited_webhook,
+					calendar_event_created_webhook: this.state.calendar_event_created_webhook,
+					calendar_event_updated_webhook: this.state.calendar_event_updated_webhook,
 				})
 			}, 2000)()
 		},

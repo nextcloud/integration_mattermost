@@ -24,7 +24,6 @@ declare(strict_types=1);
  */
 namespace OCA\Mattermost\Search;
 
-use DateTime;
 use OCA\Mattermost\Service\MattermostAPIService;
 use OCA\Mattermost\AppInfo\Application;
 use OCP\App\IAppManager;

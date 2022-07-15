@@ -15,6 +15,7 @@ use Datetime;
 use Exception;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\RequestOptions;
 use OC\Files\Node\File;
 use OC\Files\Node\Folder;
 use OCA\Mattermost\AppInfo\Application;
@@ -27,6 +28,7 @@ use OCP\Share\IShare;
 use Psr\Log\LoggerInterface;
 use OCP\Http\Client\IClientService;
 use OCP\Share\IManager as ShareManager;
+use Throwable;
 
 class MattermostAPIService {
 	/**
@@ -425,8 +427,7 @@ class MattermostAPIService {
 			$options = [
 				'headers' => [
 					'Authorization'  => 'Bearer ' . $accessToken,
-//					'Content-Type' => 'application/x-www-form-urlencoded',
-					'User-Agent' => 'Nextcloud Mattermost integration',
+					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
 				],
 				'body' => $fileResource,
 			];
@@ -466,7 +467,7 @@ class MattermostAPIService {
 				'headers' => [
 					'Authorization'  => 'Bearer ' . $accessToken,
 					'Content-Type' => 'application/x-www-form-urlencoded',
-					'User-Agent' => 'Nextcloud Mattermost integration',
+					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
 				],
 			];
 
@@ -606,7 +607,7 @@ class MattermostAPIService {
 			$url = $url . '/oauth/access_token';
 			$options = [
 				'headers' => [
-					'User-Agent'  => 'Nextcloud Mattermost integration',
+					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
 				]
 			];
 
@@ -655,7 +656,7 @@ class MattermostAPIService {
 			$url = $baseUrl . '/api/v4/users/login';
 			$options = [
 				'headers' => [
-					'User-Agent'  => 'Nextcloud Mattermost integration',
+					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
 					'Content-Type' => 'application/x-www-form-urlencoded',
 				],
 				'json' => [
@@ -682,6 +683,32 @@ class MattermostAPIService {
 		} catch (Exception $e) {
 			$this->logger->warning('Mattermost login error : '.$e->getMessage(), ['app' => $this->appName]);
 			return ['error' => $e->getMessage()];
+		}
+	}
+
+	/**
+	 * @param string $url
+	 * @param array $content
+	 * @return void
+	 */
+	public function sendWebhook(string $url, array $content): void {
+		try {
+			$stringContent = json_encode($content);
+			$options = [
+				'headers' => [
+					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
+					'Content-Type' => 'application/json',
+				],
+				'body' => $stringContent,
+			];
+			$secret = $this->config->getAppValue(Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY);
+			if ($secret !== '') {
+				$hash = hash('sha256', $stringContent . $secret);
+				$options['headers']['X-Webhook-Signature'] = $hash;
+			}
+			$this->client->post($url, $options);
+		} catch (Exception | Throwable $e) {
+			$this->logger->error('Mattermost Webhook error : ' . $e->getMessage(), ['app' => Application::APP_ID]);
 		}
 	}
 }

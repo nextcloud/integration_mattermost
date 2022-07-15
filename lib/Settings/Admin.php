@@ -34,18 +34,18 @@ class Admin implements ISettings {
 		$oauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
 
-		$webhookSecret = $this->config->getAppValue(Application::APP_ID, 'webhook_secret');
-		$calEventAddedWebhook = $this->config->getAppValue(Application::APP_ID, 'cal_event_added_webhook');
-		$calEventEditedWebhook = $this->config->getAppValue(Application::APP_ID, 'cal_event_edited_webhook');
+		$webhookSecret = $this->config->getAppValue(Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY);
+		$calEventAddedWebhook = $this->config->getAppValue(Application::APP_ID, Application::CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY);
+		$calEventEditedWebhook = $this->config->getAppValue(Application::APP_ID, Application::CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY);
 
 		$adminConfig = [
 			'client_id' => $clientID,
 			'client_secret' => $clientSecret,
 			'oauth_instance_url' => $oauthUrl,
 			'use_popup' => ($usePopup === '1'),
-			'webhook_secret' => $webhookSecret,
-			'cal_event_added_webhook' => $calEventAddedWebhook,
-			'cal_event_edited_webhook' => $calEventEditedWebhook,
+			Application::WEBHOOK_SECRET_CONFIG_KEY => $webhookSecret,
+			Application::CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY => $calEventAddedWebhook,
+			Application::CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY => $calEventEditedWebhook,
 		];
 		$this->initialStateService->provideInitialState('admin-config', $adminConfig);
 		return new TemplateResponse(Application::APP_ID, 'adminSettings');

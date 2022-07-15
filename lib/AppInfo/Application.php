@@ -10,7 +10,11 @@
 namespace OCA\Mattermost\AppInfo;
 
 use Closure;
+use OCA\DAV\Events\CalendarObjectCreatedEvent;
+use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
+use OCA\Mattermost\Listener\CalendarObjectCreatedListener;
+use OCA\Mattermost\Listener\CalendarObjectUpdatedListener;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -34,6 +38,12 @@ use OCP\Util;
  */
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'integration_mattermost';
+
+	public const INTEGRATION_USER_AGENT = 'Nextcloud Mattermost integration';
+
+	public const CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY = 'calendar_event_created_webhook';
+	public const CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY = 'calendar_event_updated_webhook';
+	public const WEBHOOK_SECRET_CONFIG_KEY = 'webhook_secret';
 	/**
 	 * @var mixed
 	 */
@@ -61,6 +71,9 @@ class Application extends App implements IBootstrap {
 	public function register(IRegistrationContext $context): void {
 		$context->registerDashboardWidget(MattermostWidget::class);
 		$context->registerSearchProvider(MattermostSearchMessagesProvider::class);
+
+		$context->registerEventListener(CalendarObjectCreatedEvent::class, CalendarObjectCreatedListener::class);
+		$context->registerEventListener(CalendarObjectUpdatedEvent::class, CalendarObjectUpdatedListener::class);
 	}
 
 	public function boot(IBootContext $context): void {
