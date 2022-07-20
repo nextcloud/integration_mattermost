@@ -58,7 +58,7 @@
 			class="field"
 			:checked.sync="state.use_popup"
 			@update:checked="onUsePopupChanged">
-			{{ t('integration_google', 'Use a popup to authenticate') }}
+			{{ t('integration_mattermost', 'Use a popup to authenticate') }}
 		</CheckboxRadioSwitch>
 		<br>
 		<p class="settings-hint">

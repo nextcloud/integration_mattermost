@@ -71,7 +71,6 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * set config values
 	 * @NoAdminRequired
 	 *
 	 * @return DataResponse
@@ -140,6 +139,13 @@ class ConfigController extends Controller {
 		return new DataResponse($result);
 	}
 
+	/**
+	 * @param string $url
+	 * @param string $login
+	 * @param string $password
+	 * @return DataResponse
+	 * @throws \OCP\PreConditionNotMetException
+	 */
 	private function loginWithCredentials(string $url, string $login, string $password): DataResponse {
 		// cleanup refresh token and expiration date on classic login
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'refresh_token');

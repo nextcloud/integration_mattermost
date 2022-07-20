@@ -226,11 +226,11 @@ class MattermostAPIService {
 			// get channel and team information for each post
 			foreach ($posts as $postId => $post) {
 				$channelId = $post['channel_id'];
-				$posts[$postId]['channel_name'] = $channelsPerId[$channelId]['name'];
-				$posts[$postId]['channel_display_name'] = $channelsPerId[$channelId]['display_name'];
-				$posts[$postId]['team_id'] = $channelsPerId[$channelId]['team_id'];
-				$posts[$postId]['team_name'] = $channelsPerId[$channelId]['team_name'];
-				$posts[$postId]['team_display_name'] = $channelsPerId[$channelId]['team_display_name'];
+				$posts[$postId]['channel_name'] = $channelsPerId[$channelId]['name'] ?? '';
+				$posts[$postId]['channel_display_name'] = $channelsPerId[$channelId]['display_name'] ?? '';
+				$posts[$postId]['team_id'] = $channelsPerId[$channelId]['team_id'] ?? '';
+				$posts[$postId]['team_name'] = $channelsPerId[$channelId]['team_name'] ?? '';
+				$posts[$postId]['team_display_name'] = $channelsPerId[$channelId]['team_display_name'] ?? '';
 			}
 
 			// get user/author info
