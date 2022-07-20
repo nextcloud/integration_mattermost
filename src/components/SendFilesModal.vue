@@ -217,7 +217,7 @@ import EyeIcon from 'vue-material-design-icons/Eye'
 import RadioElementSet from './RadioElementSet'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
-import MattermostIcon from './MattermostIcon'
+import MattermostIcon from './icons/MattermostIcon'
 import { humanFileSize } from '../utils'
 
 const STATES = {
