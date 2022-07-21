@@ -1,19 +1,16 @@
 <template>
 	<div id="mattermost_prefs" class="section">
 		<h2>
-			<a class="icon icon-mattermost" />
+			<MattermostIcon class="mattermost-icon" />
 			{{ t('integration_mattermost', 'Mattermost integration') }}
 		</h2>
-		<div id="toggle-mattermost-navigation-link">
-			<input
-				id="mattermost-link"
-				type="checkbox"
-				class="checkbox"
-				:checked="state.navigation_enabled"
-				@input="onNavigationChange">
-			<label for="mattermost-link">{{ t('integration_mattermost', 'Enable navigation link') }}</label>
-		</div>
-		<br><br>
+		<CheckboxRadioSwitch
+			class="field"
+			:checked.sync="state.navigation_enabled"
+			@update:checked="onNavigationChange">
+			{{ t('integration_mattermost', 'Enable navigation link') }}
+		</CheckboxRadioSwitch>
+		<br>
 		<p v-if="!showOAuth && !connected" class="settings-hint">
 			{{ t('integration_mattermost', 'If you are allowed to, You can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens') }}
 		</p>
@@ -21,7 +18,7 @@
 			{{ t('integration_mattermost', 'You can connect with a personal token OR just with your login/password') }}
 		</p>
 		<div id="mattermost-content">
-			<div class="mattermost-grid-form">
+			<div class="field">
 				<label for="mattermost-url">
 					<a class="icon icon-link" />
 					{{ t('integration_mattermost', 'Mattermost instance address') }}
@@ -32,36 +29,41 @@
 					:disabled="connected === true"
 					:placeholder="t('integration_mattermost', 'Mattermost instance address')"
 					@input="onInput">
-				<label v-show="showToken"
-					for="mattermost-token">
+			</div>
+			<div v-show="showToken"
+				class="field">
+				<label for="mattermost-token">
 					<a class="icon icon-category-auth" />
 					{{ t('integration_mattermost', 'Personal access token') }}
 				</label>
-				<input v-show="showToken"
-					id="mattermost-token"
+				<input id="mattermost-token"
 					v-model="state.token"
 					type="password"
 					:disabled="connected === true"
 					:placeholder="t('integration_mattermost', 'Mattermost personal access token')"
 					@keyup.enter="onConnectClick">
-				<label v-show="showLoginPassword"
+			</div>
+			<div v-show="showLoginPassword"
+				class="field">
+				<label
 					for="mattermost-login">
 					<a class="icon icon-user" />
 					{{ t('integration_mattermost', 'Login') }}
 				</label>
-				<input v-show="showLoginPassword"
-					id="mattermost-login"
+				<input id="mattermost-login"
 					v-model="login"
 					type="text"
 					:placeholder="t('integration_mattermost', 'Mattermost login')"
 					@keyup.enter="onConnectClick">
-				<label v-show="showLoginPassword"
+			</div>
+			<div v-show="showLoginPassword"
+				class="field">
+				<label
 					for="mattermost-password">
 					<a class="icon icon-password" />
 					{{ t('integration_mattermost', 'Password') }}
 				</label>
-				<input v-show="showLoginPassword"
-					id="mattermost-password"
+				<input id="mattermost-password"
 					v-model="password"
 					type="password"
 					:placeholder="t('integration_mattermost', 'Mattermost password')"
@@ -77,7 +79,7 @@
 				</template>
 				{{ t('integration_mattermost', 'Connect to Mattermost') }}
 			</Button>
-			<div v-if="connected" class="mattermost-grid-form">
+			<div v-if="connected" class="field">
 				<label class="mattermost-connected">
 					<a class="icon icon-checkmark-color" />
 					{{ t('integration_mattermost', 'Connected as {user}', { user: connectedDisplayName }) }}
@@ -88,23 +90,32 @@
 					</template>
 					{{ t('integration_mattermost', 'Disconnect from Mattermost') }}
 				</Button>
-				<span />
 			</div>
 			<br>
 			<div v-if="connected" id="mattermost-search-block">
-				<input
-					id="search-mattermost"
-					type="checkbox"
-					class="checkbox"
-					:checked="state.search_messages_enabled"
-					@input="onSearchChange">
-				<label for="search-mattermost">{{ t('integration_mattermost', 'Enable searching for messages') }}</label>
-				<br><br>
+				<CheckboxRadioSwitch
+					:checked.sync="state.search_messages_enabled"
+					@update:checked="onSearchChange">
+					{{ t('integration_mattermost', 'Enable searching for messages') }}
+				</CheckboxRadioSwitch>
+				<br>
 				<p v-if="state.search_messages_enabled" class="settings-hint">
-					<span class="icon icon-details" />
+					<InformationVariantIcon :size="24" class="icon" />
 					{{ t('integration_mattermost', 'Warning, everything you type in the search bar will be sent to Mattermost.') }}
 				</p>
 			</div>
+			<CheckboxRadioSwitch v-if="!state.calendar_event_created_webhook_set"
+				class="field"
+				:checked.sync="state.calendar_event_created_webhook"
+				@update:checked="onCheckboxChanged($event, 'calendar_event_created_webhook')">
+				{{ t('integration_mattermost', 'Enable "calendar event created" webhook') }}
+			</CheckboxRadioSwitch>
+			<CheckboxRadioSwitch v-if="!state.calendar_event_updated_webhook_set"
+				class="field"
+				:checked.sync="state.calendar_event_updated_webhook"
+				@update:checked="onCheckboxChanged($event, 'calendar_event_updated_webhook')">
+				{{ t('integration_mattermost', 'Enable "calendar event updated" webhook') }}
+			</CheckboxRadioSwitch>
 		</div>
 	</div>
 </template>
@@ -112,20 +123,26 @@
 <script>
 import OpenInNewIcon from 'vue-material-design-icons/OpenInNew'
 import CloseIcon from 'vue-material-design-icons/Close'
+import InformationVariantIcon from 'vue-material-design-icons/InformationVariant'
 import Button from '@nextcloud/vue/dist/Components/Button'
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { delay, oauthConnect } from '../utils'
 import { showSuccess, showError } from '@nextcloud/dialogs'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
+import MattermostIcon from './icons/MattermostIcon'
 
 export default {
 	name: 'PersonalSettings',
 
 	components: {
+		MattermostIcon,
+		CheckboxRadioSwitch,
 		Button,
 		OpenInNewIcon,
 		CloseIcon,
+		InformationVariantIcon,
 	},
 
 	props: [],
@@ -182,13 +199,14 @@ export default {
 			this.password = ''
 			this.saveOptions({ token: '' })
 		},
-		onSearchChange(e) {
-			this.state.search_messages_enabled = e.target.checked
-			this.saveOptions({ search_messages_enabled: this.state.search_messages_enabled ? '1' : '0' })
+		onCheckboxChanged(newValue, key) {
+			this.saveOptions({ [key]: newValue ? '1' : '0' })
 		},
-		onNavigationChange(e) {
-			this.state.navigation_enabled = e.target.checked
-			this.saveOptions({ navigation_enabled: this.state.navigation_enabled ? '1' : '0' })
+		onSearchChange(newValue) {
+			this.saveOptions({ search_messages_enabled: newValue ? '1' : '0' })
+		},
+		onNavigationChange(newValue) {
+			this.saveOptions({ navigation_enabled: newValue ? '1' : '0' })
 		},
 		onInput() {
 			this.loading = true
@@ -281,54 +299,42 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.mattermost-grid-form label {
-	line-height: 38px;
-}
+#mattermost_prefs {
+	h2 {
+		display: flex;
 
-.mattermost-grid-form input {
-	width: 100%;
-}
-
-.mattermost-grid-form {
-	max-width: 600px;
-	display: grid;
-	grid-template: 1fr / 1fr 1fr;
-	button .icon {
-		margin-bottom: -1px;
+		.mattermost-icon {
+			margin-right: 12px;
+		}
 	}
-}
 
-#mattermost_prefs .icon {
-	display: inline-block;
-	width: 32px;
-}
+	.field {
+		display: flex;
+		align-items: center;
 
-#mattermost_prefs .grid-form .icon {
-	margin-bottom: -3px;
-}
+		input,
+		label {
+			width: 300px;
+		}
 
-.icon-mattermost {
-	background-image: url(./../../img/app-dark.svg);
-	background-size: 23px 23px;
-	height: 23px;
-	margin-bottom: -4px;
-	filter: var(--background-invert-if-dark);
-}
+		label {
+			display: flex;
+			align-items: center;
+		}
 
-// for NC <= 24
-body.theme--dark .icon-mattermost {
-	background-image: url(./../../img/app.svg);
-}
+		.icon {
+			margin-right: 8px;
+		}
+	}
 
-#mattermost-content {
-	margin-left: 40px;
-}
+	.field,
+	#mattermost-search-block {
+		margin-left: 30px;
+	}
 
-#mattermost-search-block .icon {
-	width: 22px;
-}
-
-#toggle-mattermost-navigation-link {
-	margin-left: 40px;
+	.settings-hint {
+		display: flex;
+		align-items: center;
+	}
 }
 </style>

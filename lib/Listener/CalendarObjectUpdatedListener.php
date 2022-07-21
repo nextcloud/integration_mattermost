@@ -40,6 +40,14 @@ class CalendarObjectUpdatedListener extends AbstractListener implements IEventLi
 			return null;
 		}
 
+		if ($this->userId === null || $this->userId === '') {
+			return null;
+		}
+		$enabled = $this->config->getUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY) === '1';
+		if (!$enabled) {
+			return null;
+		}
+
 		return [
 			$url,
 			[

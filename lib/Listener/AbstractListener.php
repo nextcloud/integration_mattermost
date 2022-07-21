@@ -37,11 +37,17 @@ abstract class AbstractListener implements IEventListener {
 	 * @var IConfig
 	 */
 	protected $config;
+	/**
+	 * @var string|null
+	 */
+	protected $userId;
 
 	public function __construct(IConfig $config,
-								MattermostAPIService $mattermostAPIService) {
+								MattermostAPIService $mattermostAPIService,
+								?string $userId) {
 		$this->mattermostAPIService = $mattermostAPIService;
 		$this->config = $config;
+		$this->userId = $userId;
 	}
 
 	public function handle(Event $event): void {

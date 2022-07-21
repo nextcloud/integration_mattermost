@@ -61,6 +61,10 @@ class Personal implements ISettings {
 		$oauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
 
+		// webhooks
+		$calEventCreatedWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, 'calendar_event_created_webhook');
+		$calEventUpdatedWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, 'calendar_event_updated_webhook');
+
 		$userConfig = [
 			'token' => $token ? 'dummyTokenContent' : '',
 			'url' => $url,
@@ -73,6 +77,8 @@ class Personal implements ISettings {
 			'user_displayname' => $mmUserDisplayName,
 			'search_messages_enabled' => ($searchMessagesEnabled === '1'),
 			'navigation_enabled' => ($navigationEnabled === '1'),
+			'calendar_event_created_webhook' => ($calEventCreatedWebhook === '1'),
+			'calendar_event_updated_webhook' => ($calEventUpdatedWebhook === '1'),
 		];
 		$this->initialStateService->provideInitialState('user-config', $userConfig);
 		return new TemplateResponse(Application::APP_ID, 'personalSettings');
