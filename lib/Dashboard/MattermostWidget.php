@@ -40,9 +40,18 @@ class MattermostWidget implements IWidget {
 	 * @var IURLGenerator
 	 */
 	private $url;
-	private IInitialState $initialStateService;
-	private IConfig $config;
-	private ?string $userId;
+	/**
+	 * @var IConfig
+	 */
+	private $config;
+	/**
+	 * @var IInitialState
+	 */
+	private $initialStateService;
+	/**
+	 * @var string|null
+	 */
+	private $userId;
 
 	public function __construct(IL10N         $l10n,
 								IConfig       $config,
@@ -51,8 +60,8 @@ class MattermostWidget implements IWidget {
 								?string       $userId) {
 		$this->l10n = $l10n;
 		$this->url = $url;
-		$this->initialStateService = $initialStateService;
 		$this->config = $config;
+		$this->initialStateService = $initialStateService;
 		$this->userId = $userId;
 	}
 

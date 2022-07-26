@@ -23,7 +23,10 @@ class Personal implements ISettings {
 	 * @var string|null
 	 */
 	private $userId;
-	private MattermostAPIService $mattermostAPIService;
+	/**
+	 * @var MattermostAPIService
+	 */
+	private $mattermostAPIService;
 
 	public function __construct(IConfig $config,
 								IInitialState $initialStateService,

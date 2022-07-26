@@ -6,13 +6,12 @@
  * later. See the COPYING file.
  *
  * @author Julien Veyssier <eneiluj@posteo.net>
- * @copyright Julien Veyssier 2020
+ * @copyright Julien Veyssier 2022
  */
 
 namespace OCA\Mattermost\Controller;
 
 use DateTime;
-use OCA\Activity\Data;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\IURLGenerator;
@@ -213,7 +212,7 @@ class ConfigController extends Controller {
 		// anyway, reset state
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_state');
 
-		if ($clientID and $clientSecret and $configState !== '' and $configState === $state) {
+		if ($clientID && $clientSecret && $configState !== '' && $configState === $state) {
 			$redirect_uri = $this->config->getUserValue($this->userId, Application::APP_ID, 'redirect_uri');
 			$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 			$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;

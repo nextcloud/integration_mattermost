@@ -55,8 +55,14 @@ class MattermostSearchMessagesProvider implements IProvider {
 	 * @var MattermostAPIService
 	 */
 	private $service;
-	private IDateTimeFormatter $dateTimeFormatter;
-	private IDateTimeZone $dateTimeZone;
+	/**
+	 * @var IDateTimeFormatter
+	 */
+	private $dateTimeFormatter;
+	/**
+	 * @var IDateTimeZone
+	 */
+	private $dateTimeZone;
 
 	/**
 	 * CospendSearchProvider constructor.
@@ -125,8 +131,8 @@ class MattermostSearchMessagesProvider implements IProvider {
 		$accessToken = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'token');
 		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 		$url = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
-		$searchIssuesEnabled = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'search_messages_enabled', '0') === '1';
-		if ($accessToken === '' || !$searchIssuesEnabled) {
+		$searchMessagesEnabled = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'search_messages_enabled', '0') === '1';
+		if ($accessToken === '' || !$searchMessagesEnabled) {
 			return SearchResult::paginated($this->getName(), [], 0);
 		}
 

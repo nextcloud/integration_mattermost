@@ -51,9 +51,18 @@ class MattermostAPIService {
 	 * @var IConfig
 	 */
 	private $config;
-	private IRootFolder $root;
-	private ShareManager $shareManager;
-	private IURLGenerator $urlGenerator;
+	/**
+	 * @var IRootFolder
+	 */
+	private $root;
+	/**
+	 * @var ShareManager
+	 */
+	private $shareManager;
+	/**
+	 * @var IURLGenerator
+	 */
+	private $urlGenerator;
 
 	/**
 	 * Service to make requests to Mattermost API
