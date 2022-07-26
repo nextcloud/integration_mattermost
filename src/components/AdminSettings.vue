@@ -60,44 +60,6 @@
 			@update:checked="onUsePopupChanged">
 			{{ t('integration_mattermost', 'Use a popup to authenticate') }}
 		</CheckboxRadioSwitch>
-		<br>
-		<p class="settings-hint">
-			<InformationVariantIcon :size="24" class="icon" />
-			{{ t('integration_mattermost', 'If you have configured the Nextcloud integration in Mattermost, you might need to configure those webhooks.') }}
-		</p>
-		<div class="field">
-			<label for="mattermost-cal-event-add">
-				<WebhookIcon :size="20" class="icon" />
-				{{ t('integration_mattermost', 'Calendar event created webhook URL') }}
-			</label>
-			<input id="mattermost-cal-event-add"
-				v-model="state.calendar_event_created_webhook"
-				type="text"
-				:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
-				@input="onInput">
-		</div>
-		<div class="field">
-			<label for="mattermost-cal-event-edit">
-				<WebhookIcon :size="20" class="icon" />
-				{{ t('integration_mattermost', 'Calendar event updated webhook URL') }}
-			</label>
-			<input id="mattermost-cal-event-edit"
-				v-model="state.calendar_event_updated_webhook"
-				type="text"
-				:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
-				@input="onInput">
-		</div>
-		<div class="field">
-			<label for="mattermost-webhook-secret">
-				<KeyIcon :size="20" class="icon" />
-				{{ t('integration_mattermost', 'Webhook secret') }}
-			</label>
-			<input id="mattermost-webhook-secret"
-				v-model="state.webhook_secret"
-				type="password"
-				:placeholder="t('integration_mattermost', 'secret')"
-				@input="onInput">
-		</div>
 	</div>
 </template>
 
@@ -112,7 +74,6 @@ import MattermostIcon from './icons/MattermostIcon'
 import InformationVariantIcon from 'vue-material-design-icons/InformationVariant'
 import EarthIcon from 'vue-material-design-icons/Earth'
 import KeyIcon from 'vue-material-design-icons/Key'
-import WebhookIcon from 'vue-material-design-icons/Webhook'
 
 export default {
 	name: 'AdminSettings',
@@ -123,7 +84,6 @@ export default {
 		InformationVariantIcon,
 		EarthIcon,
 		KeyIcon,
-		WebhookIcon,
 	},
 
 	props: [],
@@ -153,9 +113,6 @@ export default {
 					client_id: this.state.client_id,
 					client_secret: this.state.client_secret,
 					oauth_instance_url: this.state.oauth_instance_url,
-					webhook_secret: this.state.webhook_secret,
-					calendar_event_created_webhook: this.state.calendar_event_created_webhook,
-					calendar_event_updated_webhook: this.state.calendar_event_updated_webhook,
 				})
 			}, 2000)()
 		},

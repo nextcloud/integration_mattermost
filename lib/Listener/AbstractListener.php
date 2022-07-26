@@ -23,6 +23,7 @@
  */
 namespace OCA\Mattermost\Listener;
 
+use OCA\Mattermost\AppInfo\Application;
 use OCA\Mattermost\Service\MattermostAPIService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
@@ -56,7 +57,8 @@ abstract class AbstractListener implements IEventListener {
 		if ($info !== null) {
 			[$url, $content] = $info;
 			$content['eventType'] = get_class($event);
-			$this->mattermostAPIService->sendWebhook($url, $content);
+			$secret = $this->config->getUserValue($this->userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY);
+			$this->mattermostAPIService->sendWebhook($url, $content, $secret);
 		}
 	}
 

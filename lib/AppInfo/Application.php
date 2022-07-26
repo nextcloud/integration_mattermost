@@ -41,6 +41,7 @@ class Application extends App implements IBootstrap {
 
 	public const INTEGRATION_USER_AGENT = 'Nextcloud Mattermost integration';
 
+	public const WEBHOOKS_ENABLED_CONFIG_KEY = 'webhooks_enabled';
 	public const CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY = 'calendar_event_created_webhook';
 	public const CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY = 'calendar_event_updated_webhook';
 	public const WEBHOOK_SECRET_CONFIG_KEY = 'webhook_secret';

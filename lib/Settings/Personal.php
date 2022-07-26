@@ -65,8 +65,10 @@ class Personal implements ISettings {
 		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
 
 		// webhooks
-		$calEventCreatedWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, 'calendar_event_created_webhook');
-		$calEventUpdatedWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, 'calendar_event_updated_webhook');
+		$webhooksEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'webhooks_enabled') === '1';
+		$webhookSecret = $this->config->getUserValue($this->userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY);
+		$calEventAddedWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY);
+		$calEventEditedWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY);
 
 		$userConfig = [
 			'token' => $token ? 'dummyTokenContent' : '',
@@ -80,8 +82,10 @@ class Personal implements ISettings {
 			'user_displayname' => $mmUserDisplayName,
 			'search_messages_enabled' => ($searchMessagesEnabled === '1'),
 			'navigation_enabled' => ($navigationEnabled === '1'),
-			'calendar_event_created_webhook' => ($calEventCreatedWebhook === '1'),
-			'calendar_event_updated_webhook' => ($calEventUpdatedWebhook === '1'),
+			Application::WEBHOOKS_ENABLED_CONFIG_KEY => $webhooksEnabled,
+			Application::WEBHOOK_SECRET_CONFIG_KEY => $webhookSecret,
+			Application::CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY => $calEventAddedWebhook,
+			Application::CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY => $calEventEditedWebhook,
 		];
 		$this->initialStateService->provideInitialState('user-config', $userConfig);
 		return new TemplateResponse(Application::APP_ID, 'personalSettings');

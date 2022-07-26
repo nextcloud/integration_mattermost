@@ -104,18 +104,54 @@
 					{{ t('integration_mattermost', 'Warning, everything you type in the search bar will be sent to Mattermost.') }}
 				</p>
 			</div>
-			<CheckboxRadioSwitch v-if="!state.calendar_event_created_webhook_set"
+			<br>
+			<p class="settings-hint">
+				<InformationVariantIcon :size="24" class="icon" />
+				{{ t('integration_mattermost', 'If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks.') }}
+				{{ t('integration_mattermost', 'This section does not require to be connected to Mattermost from Nextcloud.') }}
+			</p>
+			<CheckboxRadioSwitch
 				class="field"
-				:checked.sync="state.calendar_event_created_webhook"
-				@update:checked="onCheckboxChanged($event, 'calendar_event_created_webhook')">
-				{{ t('integration_mattermost', 'Enable "calendar event created" webhook') }}
+				:checked.sync="state.webhooks_enabled"
+				@update:checked="onCheckboxChanged($event, 'webhooks_enabled')">
+				{{ t('integration_mattermost', 'Enable webhooks') }}
 			</CheckboxRadioSwitch>
-			<CheckboxRadioSwitch v-if="!state.calendar_event_updated_webhook_set"
-				class="field"
-				:checked.sync="state.calendar_event_updated_webhook"
-				@update:checked="onCheckboxChanged($event, 'calendar_event_updated_webhook')">
-				{{ t('integration_mattermost', 'Enable "calendar event updated" webhook') }}
-			</CheckboxRadioSwitch>
+			<div class="field">
+				<label for="mattermost-cal-event-add">
+					<WebhookIcon :size="20" class="icon" />
+					{{ t('integration_mattermost', 'Calendar event created webhook URL') }}
+				</label>
+				<input id="mattermost-cal-event-add"
+					v-model="state.calendar_event_created_webhook"
+					type="text"
+					:disabled="!state.webhooks_enabled"
+					:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
+					@input="onInput">
+			</div>
+			<div class="field">
+				<label for="mattermost-cal-event-edit">
+					<WebhookIcon :size="20" class="icon" />
+					{{ t('integration_mattermost', 'Calendar event updated webhook URL') }}
+				</label>
+				<input id="mattermost-cal-event-edit"
+					v-model="state.calendar_event_updated_webhook"
+					type="text"
+					:disabled="!state.webhooks_enabled"
+					:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
+					@input="onInput">
+			</div>
+			<div class="field">
+				<label for="mattermost-webhook-secret">
+					<KeyIcon :size="20" class="icon" />
+					{{ t('integration_mattermost', 'Webhook secret') }}
+				</label>
+				<input id="mattermost-webhook-secret"
+					v-model="state.webhook_secret"
+					type="password"
+					:disabled="!state.webhooks_enabled"
+					:placeholder="t('integration_mattermost', 'secret')"
+					@input="onInput">
+			</div>
 		</div>
 	</div>
 </template>
@@ -132,6 +168,8 @@ import { delay, oauthConnect } from '../utils'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
 import MattermostIcon from './icons/MattermostIcon'
+import WebhookIcon from 'vue-material-design-icons/Webhook'
+import KeyIcon from 'vue-material-design-icons/Key'
 
 export default {
 	name: 'PersonalSettings',
@@ -143,6 +181,8 @@ export default {
 		OpenInNewIcon,
 		CloseIcon,
 		InformationVariantIcon,
+		WebhookIcon,
+		KeyIcon,
 	},
 
 	props: [],
@@ -210,16 +250,12 @@ export default {
 		},
 		onInput() {
 			this.loading = true
-			if (this.state.url !== '' && !this.state.url.startsWith('https://')) {
-				if (this.state.url.startsWith('http://')) {
-					this.state.url = this.state.url.replace('http://', 'https://')
-				} else {
-					this.state.url = 'https://' + this.state.url
-				}
-			}
 			delay(() => {
 				this.saveOptions({
 					url: this.state.url,
+					webhook_secret: this.state.webhook_secret,
+					calendar_event_created_webhook: this.state.calendar_event_created_webhook,
+					calendar_event_updated_webhook: this.state.calendar_event_updated_webhook,
 				})
 			}, 2000)()
 		},

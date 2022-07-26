@@ -139,6 +139,34 @@ class ConfigController extends Controller {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 *
+	 * @return DataResponse
+	 */
+	public function setWebhooksConfig(?string $calendar_event_updated_url = null, ?string $calendar_event_created_url = null,
+									?bool $enabled = null, ?string $webhook_secret = null): DataResponse {
+		$result = [];
+		if ($calendar_event_created_url !== null) {
+			$result['calendar_event_created_url'] = $calendar_event_created_url;
+			$this->config->setUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY, $calendar_event_created_url);
+		}
+		if ($calendar_event_updated_url !== null) {
+			$result['calendar_event_updated_url'] = $calendar_event_updated_url;
+			$this->config->setUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY, $calendar_event_updated_url);
+		}
+		if ($enabled !== null) {
+			$result['enabled'] = $enabled;
+			$this->config->setUserValue($this->userId, Application::APP_ID, Application::WEBHOOKS_ENABLED_CONFIG_KEY, $enabled ? '1' : '0');
+		}
+		if ($webhook_secret !== null) {
+			$result['webhook_secret'] = $webhook_secret;
+			$this->config->setUserValue($this->userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY, $webhook_secret);
+		}
+		return new DataResponse($result);
+	}
+
+	/**
 	 * @param string $url
 	 * @param string $login
 	 * @param string $password

@@ -689,7 +689,7 @@ class MattermostAPIService {
 	 * @param array $content
 	 * @return void
 	 */
-	public function sendWebhook(string $url, array $content): void {
+	public function sendWebhook(string $url, array $content, string $secret): void {
 		try {
 			$stringContent = json_encode($content);
 			$options = [
@@ -699,7 +699,6 @@ class MattermostAPIService {
 				],
 				'body' => $stringContent,
 			];
-			$secret = $this->config->getAppValue(Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY);
 			if ($secret !== '') {
 				$hash = hash('sha256', $stringContent . $secret);
 				$options['headers']['X-Webhook-Signature'] = $hash;
