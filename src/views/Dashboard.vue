@@ -11,9 +11,13 @@
 					{{ emptyContentMessage }}
 					<div v-if="widgetState === 'no-token' || widgetState === 'error'" class="connect-button">
 						<a v-if="!initialState.oauth_is_possible"
-							class="button"
 							:href="settingsUrl">
-							{{ t('integration_mattermost', 'Connect to Mattermost') }}
+							<Button>
+								<template #icon>
+									<LoginVariantIcon />
+								</template>
+								{{ t('integration_mattermost', 'Connect to Mattermost') }}
+							</Button>
 						</a>
 						<Button v-else
 							@click="onOauthClick">

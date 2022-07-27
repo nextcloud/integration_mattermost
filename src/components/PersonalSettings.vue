@@ -69,9 +69,9 @@
 					:placeholder="t('integration_mattermost', 'Mattermost password')"
 					@keyup.enter="onConnectClick">
 			</div>
-			<Button v-if="!connected && (showOAuth || (login && password) || state.token)"
+			<Button v-if="!connected"
 				id="mattermost-connect"
-				:disabled="loading === true"
+				:disabled="loading === true || (!showOAuth && !state.token && !(login && password))"
 				:class="{ loading }"
 				@click="onConnectClick">
 				<template #icon>
