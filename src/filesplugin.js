@@ -19,6 +19,8 @@ import { oauthConnect, oauthConnectConfirmDialog } from './utils'
 import Vue from 'vue'
 import './bootstrap'
 
+const DEBUG = false
+
 function openChannelSelector(files) {
 	OCA.Mattermost.filesToSend = files
 	const modalVue = OCA.Mattermost.MattermostSendModalVue
@@ -47,15 +49,18 @@ function openChannelSelector(files) {
 		],
 
 		attach(fileList) {
+			if (DEBUG) console.debug('[Mattermost] begin of attach')
 			if (this.ignoreLists.indexOf(fileList.id) >= 0) {
 				return
 			}
 
+			if (DEBUG) console.debug('[Mattermost] before sendFileIdsAfterOAuth')
 			this.sendFileIdsAfterOAuth(fileList)
 
 			fileList.registerMultiSelectFileAction({
 				name: 'mattermostSendMulti',
 				displayName: (context) => {
+					if (DEBUG) console.debug('[Mattermost] in registerMultiSelectFileAction->displayName: OCA.Mattermost.oauthPossible', OCA.Mattermost.oauthPossible)
 					if (OCA.Mattermost.mattermostConnected || OCA.Mattermost.oauthPossible) {
 						return t('integration_mattermost', 'Send files to Mattermost')
 					}
@@ -143,6 +148,7 @@ function openChannelSelector(files) {
 		 */
 		sendFileIdsAfterOAuth: (fileList) => {
 			const fileIdsStr = OCA.Mattermost.fileIdsToSendAfterOAuth
+			if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, fileIdsStr', fileIdsStr)
 			// this is only true after an OAuth connection initated from a file action
 			if (fileIdsStr) {
 				const currentDir = OCA.Mattermost.currentDirAfterOAuth
@@ -162,7 +168,9 @@ function openChannelSelector(files) {
 						}
 						return null
 					}).filter((e) => e !== null)
+					if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, after changeDirectory, files:', files)
 					if (files.length) {
+						if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, after changeDirectory, call openChannelSelector')
 						openChannelSelector(files)
 					}
 				})
@@ -312,7 +320,7 @@ const View = Vue.extend(SendFilesModal)
 OCA.Mattermost.MattermostSendModalVue = new View().$mount(modalElement)
 
 OCA.Mattermost.MattermostSendModalVue.$on('closed', () => {
-	console.debug('mattermost modal closed')
+	if (DEBUG) console.debug('[Mattermost] modal closed')
 })
 OCA.Mattermost.MattermostSendModalVue.$on('validate', (filesToSend, channelId, channelName, type, comment, permission, expirationDate) => {
 	OCA.Mattermost.filesToSend = filesToSend
@@ -343,6 +351,7 @@ axios.get(urlCheckConnection).then((response) => {
 	OCA.Mattermost.mattermostUrl = response.data.url
 	OCA.Mattermost.fileIdsToSendAfterOAuth = response.data.file_ids_to_send_after_oauth
 	OCA.Mattermost.currentDirAfterOAuth = response.data.current_dir_after_oauth
+	if (DEBUG) console.debug('[Mattermost] OCA.Mattermost', OCA.Mattermost)
 	OC.Plugins.register('OCA.Files.FileList', OCA.Mattermost.FilesPlugin)
 }).catch((error) => {
 	console.error(error)
