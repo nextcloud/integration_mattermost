@@ -140,12 +140,25 @@
 						<CheckboxRadioSwitch :checked.sync="expirationEnabled">
 							{{ t('integration_mattermost', 'Set expiration date') }}
 						</CheckboxRadioSwitch>
+						<div class="spacer" />
 						<DatetimePicker v-show="expirationEnabled"
 							id="expiration-datepicker"
 							v-model="expirationDate"
 							:disabled-date="isDateDisabled"
 							:placeholder="t('integration_mattermost', 'Expires on')"
 							:clearable="true" />
+					</div>
+					<div v-show="sendType === 'link'"
+						class="password-field">
+						<CheckboxRadioSwitch :checked.sync="passwordEnabled">
+							{{ t('integration_mattermost', 'Set link password') }}
+						</CheckboxRadioSwitch>
+						<div class="spacer" />
+						<input v-show="passwordEnabled"
+							id="password-input"
+							v-model="password"
+							type="text"
+							:placeholder="passwordPlaceholder">
 					</div>
 					<span class="field-label">
 						<CommentIcon />
@@ -266,6 +279,9 @@ export default {
 			selectedPermission: 'view',
 			expirationEnabled: false,
 			expirationDate: null,
+			passwordEnabled: false,
+			password: '',
+			passwordPlaceholder: t('integration_mattermost', 'password'),
 			STATES,
 			commentPlaceholder: t('integration_mattermost', 'Message to send with the files'),
 			permissionOptions: {
@@ -307,6 +323,8 @@ export default {
 			this.selectedPermission = 'view'
 			this.expirationEnabled = false
 			this.expirationDate = null
+			this.passwordEnabled = false
+			this.password = null
 		},
 		showModal() {
 			this.show = true
@@ -321,15 +339,16 @@ export default {
 		},
 		onSendClick() {
 			this.loading = true
-			this.$emit('validate',
-				[...this.files],
-				this.selectedChannel.id,
-				this.selectedChannel.display_name,
-				this.sendType,
-				this.comment,
-				this.selectedPermission,
-				this.sendType === 'link' && this.expirationEnabled ? this.expirationDate : null
-			)
+			this.$emit('validate', {
+				filesToSend: [...this.files],
+				channelId: this.selectedChannel.id,
+				channelName: this.selectedChannel.display_name,
+				type: this.sendType,
+				comment: this.comment,
+				permission: this.selectedPermission,
+				expirationDate: this.sendType === 'link' && this.expirationEnabled ? this.expirationDate : null,
+				password: this.sendType === 'link' && this.passwordEnabled ? this.password : null,
+			})
 		},
 		success() {
 			this.loading = false
@@ -407,11 +426,20 @@ export default {
 	}
 
 	.expiration-field {
+		margin-top: 8px;
+	}
+
+	.password-field,
+	.expiration-field {
 		display: flex;
 		align-items: center;
-		margin-top: 8px;
 		> *:first-child {
 			margin-right: 20px;
+		}
+		#expiration-datepicker,
+		#password-input {
+			width: 250px;
+			margin: 0;
 		}
 	}
 

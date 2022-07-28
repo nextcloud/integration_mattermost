@@ -326,14 +326,14 @@ class MattermostAPIService {
 	 */
 	public function sendLinks(string $userId, string $mattermostUrl, array $fileIds,
 							  string $channelId, string $channelName, string $comment,
-							  string $permission, ?string $expirationDate = null): array {
+							  string $permission, ?string $expirationDate = null, ?string $password = null): array {
 		$links = [];
 		$userFolder = $this->root->getUserFolder($userId);
 
 		// create public links
 		foreach ($fileIds as $fileId) {
 			$nodes = $userFolder->getById($fileId);
-//			if (count($nodes) > 0 && $nodes[0] instanceof File) {
+			// if (count($nodes) > 0 && $nodes[0] instanceof File) {
 			if (count($nodes) > 0 && ($nodes[0] instanceof File || $nodes[0] instanceof Folder)) {
 				$node = $nodes[0];
 
@@ -349,6 +349,9 @@ class MattermostAPIService {
 				$share->setLabel('Mattermost (' . $channelName . ')');
 				if ($expirationDate !== null) {
 					$share->setExpirationDate(new Datetime($expirationDate));
+				}
+				if ($password !== null) {
+					$share->setPassword($password);
 				}
 				$share = $this->shareManager->createShare($share);
 				if ($expirationDate === null) {

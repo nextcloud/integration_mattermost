@@ -201,7 +201,7 @@ function openChannelSelector(files) {
 
 })()
 
-function sendLinks(channelId, channelName, comment, permission, expirationDate) {
+function sendLinks(channelId, channelName, comment, permission, expirationDate, password) {
 	const req = {
 		fileIds: OCA.Mattermost.filesToSend.map((f) => f.id),
 		channelId,
@@ -209,6 +209,7 @@ function sendLinks(channelId, channelName, comment, permission, expirationDate) 
 		comment,
 		permission,
 		expirationDate: expirationDate ? moment(expirationDate).format('YYYY-MM-DD') : undefined,
+		password,
 	}
 	const url = generateUrl('apps/integration_mattermost/sendLinks')
 	axios.post(url, req).then((response) => {
@@ -322,10 +323,10 @@ OCA.Mattermost.MattermostSendModalVue = new View().$mount(modalElement)
 OCA.Mattermost.MattermostSendModalVue.$on('closed', () => {
 	if (DEBUG) console.debug('[Mattermost] modal closed')
 })
-OCA.Mattermost.MattermostSendModalVue.$on('validate', (filesToSend, channelId, channelName, type, comment, permission, expirationDate) => {
+OCA.Mattermost.MattermostSendModalVue.$on('validate', ({ filesToSend, channelId, channelName, type, comment, permission, expirationDate, password }) => {
 	OCA.Mattermost.filesToSend = filesToSend
 	if (type === 'link') {
-		sendLinks(channelId, channelName, comment, permission, expirationDate)
+		sendLinks(channelId, channelName, comment, permission, expirationDate, password)
 	} else {
 		sendMessage(channelId, comment).then((response) => {
 			sendFileLoop(channelId, channelName)

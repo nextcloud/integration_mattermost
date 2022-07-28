@@ -186,9 +186,10 @@ class MattermostAPIController extends Controller {
 	 * @throws \OC\User\NoUserException
 	 */
 	public function sendLinks(array $fileIds, string $channelId, string $channelName, string $comment,
-							  string $permission, ?string $expirationDate = null): DataResponse {
+							  string $permission, ?string $expirationDate = null, ?string $password = null): DataResponse {
 		$result = $this->mattermostAPIService->sendLinks(
-			$this->userId, $this->mattermostUrl, $fileIds, $channelId, $channelName, $comment, $permission, $expirationDate
+			$this->userId, $this->mattermostUrl, $fileIds, $channelId, $channelName,
+			$comment, $permission, $expirationDate, $password
 		);
 		if (isset($result['error'])) {
 			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
