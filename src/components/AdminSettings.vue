@@ -64,16 +64,18 @@
 </template>
 
 <script>
+import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
+import EarthIcon from 'vue-material-design-icons/Earth.vue'
+import KeyIcon from 'vue-material-design-icons/Key.vue'
+
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
-import { delay } from '../utils'
 import { showSuccess, showError } from '@nextcloud/dialogs'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
-import MattermostIcon from './icons/MattermostIcon'
-import InformationVariantIcon from 'vue-material-design-icons/InformationVariant'
-import EarthIcon from 'vue-material-design-icons/Earth'
-import KeyIcon from 'vue-material-design-icons/Key'
+import MattermostIcon from './icons/MattermostIcon.vue'
+
+import { delay } from '../utils.js'
 
 export default {
 	name: 'AdminSettings',

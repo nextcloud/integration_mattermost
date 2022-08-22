@@ -7,17 +7,17 @@
  * See the COPYING-README file.
  *
  */
-import SendFilesModal from './components/SendFilesModal'
+import SendFilesModal from './components/SendFilesModal.vue'
 
 import axios from '@nextcloud/axios'
 import moment from '@nextcloud/moment'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
-import { oauthConnect, oauthConnectConfirmDialog } from './utils'
+import { oauthConnect, oauthConnectConfirmDialog } from './utils.js'
 
 import Vue from 'vue'
-import './bootstrap'
+import './bootstrap.js'
 
 const DEBUG = false
 

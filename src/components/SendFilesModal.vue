@@ -42,12 +42,12 @@
 						<span class="file-size">
 							{{ myHumanFileSize(f.size, true) }}
 						</span>
-						<Button class="remove-file-button"
+						<NcButton class="remove-file-button"
 							@click="onRemoveFile(f.id)">
 							<template #icon>
 								<CloseIcon :size="20" />
 							</template>
-						</Button>
+						</NcButton>
 					</div>
 				</div>
 				<span class="field-label">
@@ -183,11 +183,11 @@
 				</span>
 				<div class="mattermost-footer">
 					<div class="spacer" />
-					<Button
+					<NcButton
 						@click="closeModal">
 						{{ t('integration_mattermost', 'Cancel') }}
-					</Button>
-					<Button type="primary"
+					</NcButton>
+					<NcButton type="primary"
 						:class="{ loading, okButton: true }"
 						:disabled="!canValidate"
 						@click="onSendClick">
@@ -198,7 +198,7 @@
 							? n('integration_mattermost', 'Send file', 'Send files', files.length)
 							: n('integration_mattermost', 'Send link', 'Send links', files.length)
 						}}
-					</Button>
+					</NcButton>
 				</div>
 			</div>
 		</Modal>
@@ -206,32 +206,32 @@
 </template>
 
 <script>
-import Multiselect from '@nextcloud/vue/dist/Components/Multiselect'
-import Highlight from '@nextcloud/vue/dist/Components/Highlight'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
-import DatetimePicker from '@nextcloud/vue/dist/Components/DatetimePicker'
-import Modal from '@nextcloud/vue/dist/Components/Modal'
-// import LoadingIcon from '@nextcloud/vue/dist/Components/LoadingIcon'
-import Button from '@nextcloud/vue/dist/Components/Button'
-import Avatar from '@nextcloud/vue/dist/Components/Avatar'
-import SendIcon from 'vue-material-design-icons/Send'
-import FileIcon from 'vue-material-design-icons/File'
-import CloseIcon from 'vue-material-design-icons/Close'
-import PoundBoxIcon from 'vue-material-design-icons/PoundBox'
-import LinkVariantIcon from 'vue-material-design-icons/LinkVariant'
-import PackageUpIcon from 'vue-material-design-icons/PackageUp'
-import CommentIcon from 'vue-material-design-icons/Comment'
-import CheckCircleIcon from 'vue-material-design-icons/CheckCircle'
-import AlertBoxIcon from 'vue-material-design-icons/AlertBox'
+import Multiselect from '@nextcloud/vue/dist/Components/Multiselect.js'
+import Highlight from '@nextcloud/vue/dist/Components/Highlight.js'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import DatetimePicker from '@nextcloud/vue/dist/Components/DatetimePicker.js'
+import Modal from '@nextcloud/vue/dist/Components/Modal.js'
+// import LoadingIcon from '@nextcloud/vue/dist/Components/LoadingIcon.js'
+import NcButton from '@nextcloud/vue/dist/Components/Button.js'
+import Avatar from '@nextcloud/vue/dist/Components/Avatar.js'
 
-import PencilIcon from 'vue-material-design-icons/Pencil'
-import EyeIcon from 'vue-material-design-icons/Eye'
+import SendIcon from 'vue-material-design-icons/Send.vue'
+import FileIcon from 'vue-material-design-icons/File.vue'
+import CloseIcon from 'vue-material-design-icons/Close.vue'
+import PoundBoxIcon from 'vue-material-design-icons/PoundBox.vue'
+import LinkVariantIcon from 'vue-material-design-icons/LinkVariant.vue'
+import PackageUpIcon from 'vue-material-design-icons/PackageUp.vue'
+import CommentIcon from 'vue-material-design-icons/Comment.vue'
+import CheckCircleIcon from 'vue-material-design-icons/CheckCircle.vue'
+import AlertBoxIcon from 'vue-material-design-icons/AlertBox.vue'
+import PencilIcon from 'vue-material-design-icons/Pencil.vue'
+import EyeIcon from 'vue-material-design-icons/Eye.vue'
 
-import RadioElementSet from './RadioElementSet'
+import RadioElementSet from './RadioElementSet.vue'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
-import MattermostIcon from './icons/MattermostIcon'
-import { humanFileSize } from '../utils'
+import MattermostIcon from './icons/MattermostIcon.vue'
+import { humanFileSize } from '../utils.js'
 
 const STATES = {
 	IN_PROGRESS: 1,
@@ -250,7 +250,7 @@ export default {
 		Modal,
 		RadioElementSet,
 		// LoadingIcon,
-		Button,
+		NcButton,
 		Avatar,
 		SendIcon,
 		PoundBoxIcon,

@@ -69,7 +69,7 @@
 					:placeholder="t('integration_mattermost', 'Mattermost password')"
 					@keyup.enter="onConnectClick">
 			</div>
-			<Button v-if="!connected"
+			<NcButton v-if="!connected"
 				id="mattermost-connect"
 				:disabled="loading === true || (!showOAuth && !state.token && !(login && password))"
 				:class="{ loading }"
@@ -78,18 +78,18 @@
 					<OpenInNewIcon />
 				</template>
 				{{ t('integration_mattermost', 'Connect to Mattermost') }}
-			</Button>
+			</NcButton>
 			<div v-if="connected" class="field">
 				<label class="mattermost-connected">
 					<a class="icon icon-checkmark-color" />
 					{{ t('integration_mattermost', 'Connected as {user}', { user: connectedDisplayName }) }}
 				</label>
-				<Button id="mattermost-rm-cred" @click="onLogoutClick">
+				<NcButton id="mattermost-rm-cred" @click="onLogoutClick">
 					<template #icon>
 						<CloseIcon />
 					</template>
 					{{ t('integration_mattermost', 'Disconnect from Mattermost') }}
-				</Button>
+				</NcButton>
 			</div>
 			<br>
 			<div v-if="connected" id="mattermost-search-block">
@@ -157,19 +157,20 @@
 </template>
 
 <script>
-import OpenInNewIcon from 'vue-material-design-icons/OpenInNew'
-import CloseIcon from 'vue-material-design-icons/Close'
-import InformationVariantIcon from 'vue-material-design-icons/InformationVariant'
-import Button from '@nextcloud/vue/dist/Components/Button'
+import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
+import CloseIcon from 'vue-material-design-icons/Close.vue'
+import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
+import WebhookIcon from 'vue-material-design-icons/Webhook.vue'
+import KeyIcon from 'vue-material-design-icons/Key.vue'
+
+import NcButton from '@nextcloud/vue/dist/Components/Button.js'
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
-import { delay, oauthConnect } from '../utils'
+import { delay, oauthConnect } from '../utils.js'
 import { showSuccess, showError } from '@nextcloud/dialogs'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch'
-import MattermostIcon from './icons/MattermostIcon'
-import WebhookIcon from 'vue-material-design-icons/Webhook'
-import KeyIcon from 'vue-material-design-icons/Key'
+import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import MattermostIcon from './icons/MattermostIcon.vue'
 
 export default {
 	name: 'PersonalSettings',
@@ -177,7 +178,7 @@ export default {
 	components: {
 		MattermostIcon,
 		CheckboxRadioSwitch,
-		Button,
+		NcButton,
 		OpenInNewIcon,
 		CloseIcon,
 		InformationVariantIcon,
