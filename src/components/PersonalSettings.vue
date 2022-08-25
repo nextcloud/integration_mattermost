@@ -216,9 +216,9 @@ export default {
 			return (this.state.url === this.state.oauth_instance_url) && this.state.client_id && this.state.client_secret
 		},
 		connected() {
-			return this.state.token && this.state.token !== ''
-				&& this.state.url && this.state.url !== ''
-				&& this.state.user_name && this.state.user_name !== ''
+			return !!this.state.token
+				&& !!this.state.url
+				&& !!this.state.user_name
 		},
 		connectedDisplayName() {
 			return this.state.user_displayname + ' (' + this.state.user_name + ')'

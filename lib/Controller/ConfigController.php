@@ -24,6 +24,7 @@ use OCP\AppFramework\Controller;
 
 use OCA\Mattermost\Service\MattermostAPIService;
 use OCA\Mattermost\AppInfo\Application;
+use OCP\PreConditionNotMetException;
 
 class ConfigController extends Controller {
 
@@ -215,7 +216,8 @@ class ConfigController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
-	 * @param string $username
+	 * @param string $user_name
+	 * @param string $user_displayname
 	 * @return TemplateResponse
 	 */
 	public function popupSuccessPage(string $user_name, string $user_displayname): TemplateResponse {
@@ -231,6 +233,7 @@ class ConfigController extends Controller {
 	 * @param string $code
 	 * @param string $state
 	 * @return RedirectResponse
+	 * @throws PreConditionNotMetException
 	 */
 	public function oauthRedirect(string $code = '', string $state = ''): RedirectResponse {
 		$configState = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_state');

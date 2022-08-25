@@ -1,9 +1,9 @@
 .icon-mattermost-search-fallback {
-	background-image: url(./../img/app-dark.svg);
+	background-image: url('../img/app-dark.svg');
 	filter: var(--background-invert-if-dark);
 }
 
 /* for NC <= 24 */
 body.theme--dark .icon-mattermost-search-fallback {
-	background-image: url(./../img/app.svg);
+	background-image: url('../img/app.svg');
 }
