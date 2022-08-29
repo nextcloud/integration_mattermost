@@ -9,7 +9,7 @@
 		</p>
 		<br>
 		<p class="settings-hint">
-			<InformationVariantIcon :size="24" class="icon" />
+			<InformationOutlineIcon :size="24" class="icon" />
 			{{ t('integration_mattermost', 'Make sure you set the "Redirect URI" to') }}
 			&nbsp;<b> {{ redirect_uri }} </b>
 		</p>
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import InformationVariantIcon from 'vue-material-design-icons/InformationVariant.vue'
+import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue'
 import EarthIcon from 'vue-material-design-icons/Earth.vue'
 import KeyIcon from 'vue-material-design-icons/Key.vue'
 
@@ -83,7 +83,7 @@ export default {
 	components: {
 		MattermostIcon,
 		CheckboxRadioSwitch,
-		InformationVariantIcon,
+		InformationOutlineIcon,
 		EarthIcon,
 		KeyIcon,
 	},
@@ -154,13 +154,16 @@ export default {
 			align-items: center;
 		}
 		.icon {
-			margin-right: 8px;
+			margin-right: 4px;
 		}
 	}
 
 	.settings-hint {
 		display: flex;
 		align-items: center;
+		.icon {
+			margin-right: 4px;
+		}
 	}
 
 	h2 {
