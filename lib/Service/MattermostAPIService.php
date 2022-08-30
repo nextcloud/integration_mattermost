@@ -32,10 +32,6 @@ use Throwable;
 
 class MattermostAPIService {
 	/**
-	 * @var string
-	 */
-	private $appName;
-	/**
 	 * @var LoggerInterface
 	 */
 	private $logger;
@@ -75,7 +71,6 @@ class MattermostAPIService {
 								ShareManager $shareManager,
 								IURLGenerator $urlGenerator,
 								IClientService $clientService) {
-		$this->appName = $appName;
 		$this->logger = $logger;
 		$this->l10n = $l10n;
 		$this->client = $clientService->newClient();
@@ -454,7 +449,7 @@ class MattermostAPIService {
 				return json_decode($body, true);
 			}
 		} catch (ServerException | ClientException $e) {
-			$this->logger->warning('Mattermost API send file error : '.$e->getMessage(), ['app' => $this->appName]);
+			$this->logger->warning('Mattermost API send file error : '.$e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}
@@ -527,7 +522,7 @@ class MattermostAPIService {
 				}
 			}
 		} catch (ServerException | ClientException $e) {
-			$this->logger->debug('Mattermost API error : '.$e->getMessage(), ['app' => $this->appName]);
+			$this->logger->debug('Mattermost API error : '.$e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}
@@ -563,7 +558,7 @@ class MattermostAPIService {
 		$redirect_uri = $this->config->getUserValue($userId, Application::APP_ID, 'redirect_uri');
 		$refreshToken = $this->config->getUserValue($userId, Application::APP_ID, 'refresh_token');
 		if (!$refreshToken) {
-			$this->logger->error('No Mattermost refresh token found', ['app' => $this->appName]);
+			$this->logger->error('No Mattermost refresh token found', ['app' => Application::APP_ID]);
 			return false;
 		}
 		$result = $this->requestOAuthAccessToken($url, [
@@ -574,7 +569,7 @@ class MattermostAPIService {
 			'refresh_token' => $refreshToken,
 		], 'POST');
 		if (isset($result['access_token'])) {
-			$this->logger->info('Mattermost access token successfully refreshed', ['app' => $this->appName]);
+			$this->logger->info('Mattermost access token successfully refreshed', ['app' => Application::APP_ID]);
 			$accessToken = $result['access_token'];
 			$refreshToken = $result['refresh_token'];
 			$this->config->setUserValue($userId, Application::APP_ID, 'token', $accessToken);
@@ -591,7 +586,7 @@ class MattermostAPIService {
 				'Token is not valid anymore. Impossible to refresh it. '
 					. $result['error'] . ' '
 					. $result['error_description'] ?? '[no error description]',
-				['app' => $this->appName]
+				['app' => Application::APP_ID]
 			);
 			return false;
 		}
@@ -641,7 +636,7 @@ class MattermostAPIService {
 				return json_decode($body, true);
 			}
 		} catch (Exception $e) {
-			$this->logger->warning('Mattermost OAuth error : '.$e->getMessage(), array('app' => $this->appName));
+			$this->logger->warning('Mattermost OAuth error : '.$e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}
@@ -682,7 +677,7 @@ class MattermostAPIService {
 				return ['error' => $this->l10n->t('Invalid response')];
 			}
 		} catch (Exception $e) {
-			$this->logger->warning('Mattermost login error : '.$e->getMessage(), ['app' => $this->appName]);
+			$this->logger->warning('Mattermost login error : '.$e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}
