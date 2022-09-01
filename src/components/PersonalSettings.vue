@@ -1,15 +1,9 @@
 <template>
 	<div id="mattermost_prefs" class="section">
 		<h2>
-			<MattermostIcon class="mattermost-icon" />
+			<MattermostIcon class="icon" />
 			{{ t('integration_mattermost', 'Mattermost integration') }}
 		</h2>
-		<CheckboxRadioSwitch
-			class="top-element"
-			:checked.sync="state.navigation_enabled"
-			@update:checked="onNavigationChange">
-			{{ t('integration_mattermost', 'Enable navigation link') }}
-		</CheckboxRadioSwitch>
 		<br>
 		<div id="mattermost-content">
 			<div id="mattermost-connect-block">
@@ -20,7 +14,7 @@
 				<p v-if="!showOAuth && !connected" class="settings-hint">
 					{{ t('integration_mattermost', 'You can connect with a personal token OR just with your login/password.') }}
 				</p>
-				<div class="field">
+				<div class="line">
 					<label for="mattermost-url">
 						<EarthIcon :size="20" class="icon" />
 						{{ t('integration_mattermost', 'Mattermost instance address') }}
@@ -33,7 +27,7 @@
 						@input="onInput">
 				</div>
 				<div v-show="showToken"
-					class="field">
+					class="line">
 					<label for="mattermost-token">
 						<KeyIcon :size="20" class="icon" />
 						{{ t('integration_mattermost', 'Personal access token') }}
@@ -46,7 +40,7 @@
 						@keyup.enter="onConnectClick">
 				</div>
 				<div v-show="showLoginPassword"
-					class="field">
+					class="line">
 					<label
 						for="mattermost-login">
 						<AccountIcon :size="20" class="icon" />
@@ -59,7 +53,7 @@
 						@keyup.enter="onConnectClick">
 				</div>
 				<div v-show="showLoginPassword"
-					class="field">
+					class="line">
 					<label
 						for="mattermost-password">
 						<LockIcon :size="20" class="icon" />
@@ -81,7 +75,7 @@
 					</template>
 					{{ t('integration_mattermost', 'Connect to Mattermost') }}
 				</NcButton>
-				<div v-if="connected" class="field">
+				<div v-if="connected" class="line">
 					<label class="mattermost-connected">
 						<CheckIcon :size="20" class="icon" />
 						{{ t('integration_mattermost', 'Connected as {user}', { user: connectedDisplayName }) }}
@@ -95,6 +89,11 @@
 				</div>
 			</div>
 			<br>
+			<CheckboxRadioSwitch
+				:checked.sync="state.navigation_enabled"
+				@update:checked="onNavigationChange">
+				{{ t('integration_mattermost', 'Enable navigation link') }}
+			</CheckboxRadioSwitch>
 			<div v-if="connected" id="mattermost-search-block">
 				<CheckboxRadioSwitch
 					:checked.sync="state.search_messages_enabled"
@@ -115,12 +114,11 @@
 					{{ t('integration_mattermost', 'This section does not require to be connected to Mattermost from Nextcloud.') }}
 				</p>
 				<CheckboxRadioSwitch
-					class="field"
 					:checked.sync="state.webhooks_enabled"
 					@update:checked="onCheckboxChanged($event, 'webhooks_enabled')">
 					{{ t('integration_mattermost', 'Enable webhooks') }}
 				</CheckboxRadioSwitch>
-				<div class="field">
+				<div class="line">
 					<label for="mattermost-cal-event-add">
 						<WebhookIcon :size="20" class="icon" />
 						{{ t('integration_mattermost', 'Calendar event created webhook URL') }}
@@ -132,7 +130,7 @@
 						:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
 						@input="onInput">
 				</div>
-				<div class="field">
+				<div class="line">
 					<label for="mattermost-cal-event-edit">
 						<WebhookIcon :size="20" class="icon" />
 						{{ t('integration_mattermost', 'Calendar event updated webhook URL') }}
@@ -144,7 +142,7 @@
 						:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
 						@input="onInput">
 				</div>
-				<div class="field">
+				<div class="line">
 					<label for="mattermost-webhook-secret">
 						<KeyIcon :size="20" class="icon" />
 						{{ t('integration_mattermost', 'Webhook secret') }}
@@ -350,45 +348,32 @@ export default {
 
 <style scoped lang="scss">
 #mattermost_prefs {
-	h2 {
-		display: flex;
-
-		.mattermost-icon {
-			margin-right: 12px;
-		}
+	#mattermost-content {
+		margin-left: 40px;
 	}
 
-	.field {
-		display: flex;
-		align-items: center;
-
-		input,
-		label {
-			width: 300px;
-		}
-
-		label {
-			display: flex;
-			align-items: center;
-		}
-
-		.icon {
-			margin-right: 8px;
-		}
-	}
-
-	.top-element,
-	#mattermost-connect-block,
-	#mattermost-webhooks-block,
-	#mattermost-search-block {
-		margin-left: 30px;
-	}
-
+	h2,
+	.line,
 	.settings-hint {
 		display: flex;
 		align-items: center;
-		span {
+		.icon {
 			margin-right: 4px;
+		}
+	}
+
+	h2 .icon {
+		margin-right: 8px;
+	}
+
+	.line {
+		> label {
+			width: 300px;
+			display: flex;
+			align-items: center;
+		}
+		> input {
+			width: 300px;
 		}
 	}
 }

@@ -1,7 +1,7 @@
 <template>
 	<div id="mattermost_prefs" class="section">
 		<h2>
-			<MattermostIcon class="mattermost-icon" />
+			<MattermostIcon class="icon" />
 			{{ t('integration_mattermost', 'Mattermost integration') }}
 		</h2>
 		<p class="settings-hint">
@@ -11,55 +11,56 @@
 		<p class="settings-hint">
 			<InformationOutlineIcon :size="24" class="icon" />
 			{{ t('integration_mattermost', 'Make sure you set the "Redirect URI" to') }}
-			&nbsp;<b> {{ redirect_uri }} </b>
 		</p>
-		<br>
+		<strong>{{ redirect_uri }}</strong>
+		<br><br>
 		<p class="settings-hint">
 			{{ t('integration_mattermost', 'Put the "Application ID" and "Application secret" below. Your Nextcloud users will then see a "Connect to Mattermost" button in their personal settings if they select the Mattermost instance defined here.') }}
 		</p>
-		<div class="field">
-			<label for="mattermost-oauth-instance">
-				<EarthIcon :size="20" class="icon" />
-				{{ t('integration_mattermost', 'OAuth app instance address') }}
-			</label>
-			<input id="mattermost-oauth-instance"
-				v-model="state.oauth_instance_url"
-				type="text"
-				:placeholder="t('integration_mattermost', 'Instance address')"
-				@input="onInput">
+		<div id="mattermost-content">
+			<div class="line">
+				<label for="mattermost-oauth-instance">
+					<EarthIcon :size="20" class="icon" />
+					{{ t('integration_mattermost', 'OAuth app instance address') }}
+				</label>
+				<input id="mattermost-oauth-instance"
+					v-model="state.oauth_instance_url"
+					type="text"
+					:placeholder="t('integration_mattermost', 'Instance address')"
+					@input="onInput">
+			</div>
+			<div class="line">
+				<label for="mattermost-client-id">
+					<KeyIcon :size="20" class="icon" />
+					{{ t('integration_mattermost', 'Application ID') }}
+				</label>
+				<input id="mattermost-client-id"
+					v-model="state.client_id"
+					type="password"
+					:readonly="readonly"
+					:placeholder="t('integration_mattermost', 'ID of your Mattermost application')"
+					@input="onInput"
+					@focus="readonly = false">
+			</div>
+			<div class="line">
+				<label for="mattermost-client-secret">
+					<KeyIcon :size="20" class="icon" />
+					{{ t('integration_mattermost', 'Application secret') }}
+				</label>
+				<input id="mattermost-client-secret"
+					v-model="state.client_secret"
+					type="password"
+					:readonly="readonly"
+					:placeholder="t('integration_mattermost', 'Client secret of your Mattermost application')"
+					@focus="readonly = false"
+					@input="onInput">
+			</div>
+			<CheckboxRadioSwitch
+				:checked.sync="state.use_popup"
+				@update:checked="onUsePopupChanged">
+				{{ t('integration_mattermost', 'Use a popup to authenticate') }}
+			</CheckboxRadioSwitch>
 		</div>
-		<div class="field">
-			<label for="mattermost-client-id">
-				<KeyIcon :size="20" class="icon" />
-				{{ t('integration_mattermost', 'Application ID') }}
-			</label>
-			<input id="mattermost-client-id"
-				v-model="state.client_id"
-				type="password"
-				:readonly="readonly"
-				:placeholder="t('integration_mattermost', 'ID of your Mattermost application')"
-				@input="onInput"
-				@focus="readonly = false">
-		</div>
-		<div class="field">
-			<label for="mattermost-client-secret">
-				<KeyIcon :size="20" class="icon" />
-				{{ t('integration_mattermost', 'Application secret') }}
-			</label>
-			<input id="mattermost-client-secret"
-				v-model="state.client_secret"
-				type="password"
-				:readonly="readonly"
-				:placeholder="t('integration_mattermost', 'Client secret of your Mattermost application')"
-				@focus="readonly = false"
-				@input="onInput">
-		</div>
-		<CheckboxRadioSwitch
-			class="field"
-			:checked.sync="state.use_popup"
-			@update:checked="onUsePopupChanged">
-			{{ t('integration_mattermost', 'Use a popup to authenticate') }}
-		</CheckboxRadioSwitch>
 	</div>
 </template>
 
@@ -139,25 +140,12 @@ export default {
 
 <style scoped lang="scss">
 #mattermost_prefs {
-	.field {
-		display: flex;
-		align-items: center;
-		margin-left: 30px;
-
-		input,
-		label {
-			width: 300px;
-		}
-
-		label {
-			display: flex;
-			align-items: center;
-		}
-		.icon {
-			margin-right: 4px;
-		}
+	#mattermost-content {
+		margin-left: 40px;
 	}
 
+	h2,
+	.line,
 	.settings-hint {
 		display: flex;
 		align-items: center;
@@ -166,10 +154,18 @@ export default {
 		}
 	}
 
-	h2 {
-		display: flex;
-		.mattermost-icon {
-			margin-right: 12px;
+	h2 .icon {
+		margin-right: 8px;
+	}
+
+	.line {
+		> label {
+			width: 300px;
+			display: flex;
+			align-items: center;
+		}
+		> input {
+			width: 300px;
 		}
 	}
 }

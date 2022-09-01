@@ -15,11 +15,5 @@ import Vue from 'vue'
 import './bootstrap.js'
 import PersonalSettings from './components/PersonalSettings.vue'
 
-// eslint-disable-next-line
-'use strict'
-
-// eslint-disable-next-line
-new Vue({
-	el: '#mattermost_prefs',
-	render: h => h(PersonalSettings),
-})
+const VuePersonalSettings = Vue.extend(PersonalSettings)
+new VuePersonalSettings().$mount('#mattermost_prefs')
