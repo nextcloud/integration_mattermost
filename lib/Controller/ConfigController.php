@@ -85,20 +85,38 @@ class ConfigController extends Controller {
 		$oauthPossible = $clientID !== '' && $clientSecret !== '' && $mattermostUrl === $adminOauthUrl;
 		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
 
-		$fileIdsToSendAfterOAuth = $this->config->getUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
-		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
-		$currentDirAfterOAuth = $this->config->getUserValue($this->userId, Application::APP_ID, 'current_dir_after_oauth');
-		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'current_dir_after_oauth');
-
 		return new DataResponse([
 			'connected' => $mattermostUrl && $token,
 			'oauth_possible' => $oauthPossible,
 			'use_popup' => ($usePopup === '1'),
 			'url' => $mattermostUrl,
 			'client_id' => $clientID,
-			'file_ids_to_send_after_oauth' => $fileIdsToSendAfterOAuth,
-			'current_dir_after_oauth' => $currentDirAfterOAuth,
 		]);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 *
+	 * @return DataResponse
+	 */
+	public function getFilesToSend(): DataResponse {
+		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
+		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
+		$isConnected = $mattermostUrl && $token;
+
+		if ($isConnected) {
+			$fileIdsToSendAfterOAuth = $this->config->getUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
+			$this->config->deleteUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
+			$currentDirAfterOAuth = $this->config->getUserValue($this->userId, Application::APP_ID, 'current_dir_after_oauth');
+			$this->config->deleteUserValue($this->userId, Application::APP_ID, 'current_dir_after_oauth');
+
+			return new DataResponse([
+				'file_ids_to_send_after_oauth' => $fileIdsToSendAfterOAuth,
+				'current_dir_after_oauth' => $currentDirAfterOAuth,
+			]);
+		}
+		return new DataResponse(['message' => 'Not connected']);
 	}
 
 	/**

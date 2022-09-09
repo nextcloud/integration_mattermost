@@ -12,6 +12,7 @@
 return [
 	'routes' => [
 		['name' => 'config#isUserConnected', 'url' => '/is-connected', 'verb' => 'GET'],
+		['name' => 'config#getFilesToSend', 'url' => '/files-to-send', 'verb' => 'GET'],
 		['name' => 'config#oauthRedirect', 'url' => '/oauth-redirect', 'verb' => 'GET'],
 		['name' => 'config#setConfig', 'url' => '/config', 'verb' => 'PUT'],
 		['name' => 'config#setWebhooksConfig', 'url' => '/webhooks', 'verb' => 'POST'],

@@ -14,7 +14,7 @@ import moment from '@nextcloud/moment'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
-import { oauthConnect, oauthConnectConfirmDialog } from './utils.js'
+import { oauthConnect, oauthConnectConfirmDialog, gotoSettingsConfirmDialog } from './utils.js'
 
 import Vue from 'vue'
 import './bootstrap.js'
@@ -54,23 +54,13 @@ function openChannelSelector(files) {
 				return
 			}
 
-			if (DEBUG) console.debug('[Mattermost] before sendFileIdsAfterOAuth')
-			this.sendFileIdsAfterOAuth(fileList)
+			if (DEBUG) console.debug('[Mattermost] before checkIfFilesToSend')
+			this.checkIfFilesToSend(fileList)
 
 			fileList.registerMultiSelectFileAction({
 				name: 'mattermostSendMulti',
-				displayName: (context) => {
-					if (DEBUG) console.debug('[Mattermost] in registerMultiSelectFileAction->displayName: OCA.Mattermost.oauthPossible', OCA.Mattermost.oauthPossible)
-					if (OCA.Mattermost.mattermostConnected || OCA.Mattermost.oauthPossible) {
-						return t('integration_mattermost', 'Send files to Mattermost')
-					}
-					return ''
-				},
-				iconClass: () => {
-					if (OCA.Mattermost.mattermostConnected || OCA.Mattermost.oauthPossible) {
-						return 'icon-mattermost'
-					}
-				},
+				displayName: t('integration_mattermost', 'Send files to Mattermost'),
+				iconClass: 'icon-mattermost',
 				order: -2,
 				action: (selectedFiles) => {
 					const filesToSend = selectedFiles.map((f) => {
@@ -85,42 +75,18 @@ function openChannelSelector(files) {
 						openChannelSelector(filesToSend)
 					} else if (OCA.Mattermost.oauthPossible) {
 						this.connectToMattermost(filesToSend)
+					} else {
+						gotoSettingsConfirmDialog()
 					}
 				},
 			})
-
-			/*
-			// when the multiselect menu is opened =>
-			// only show 'send to mattermost' if at least one selected item is a file
-			fileList.$el.find('.actions-selected').click(() => {
-				if (OCA.Mattermost.mattermostConnected) {
-					let showSendMultiple = false
-					for (const fid in fileList._selectedFiles) {
-						const file = fileList.files.find((t) => parseInt(fid) === t.id)
-						if (file.type !== 'dir') {
-							showSendMultiple = true
-						}
-					}
-					fileList.fileMultiSelectMenu.toggleItemVisibility('mattermostSendMulti', showSendMultiple)
-				}
-			})
-			*/
 
 			fileList.fileActions.registerAction({
 				name: 'mattermostSendSingle',
-				displayName: (context) => {
-					if (OCA.Mattermost.mattermostConnected || OCA.Mattermost.oauthPossible) {
-						return t('integration_mattermost', 'Send to Mattermost')
-					}
-					return ''
-				},
+				displayName: t('integration_mattermost', 'Send to Mattermost'),
+				iconClass: 'icon-mattermost',
 				mime: 'all',
 				order: -139,
-				iconClass: (fileName, context) => {
-					if (OCA.Mattermost.mattermostConnected || OCA.Mattermost.oauthPossible) {
-						return 'icon-mattermost'
-					}
-				},
 				permissions: OC.PERMISSION_READ,
 				actionHandler: (fileName, context) => {
 					const filesToSend = [
@@ -135,8 +101,25 @@ function openChannelSelector(files) {
 						openChannelSelector(filesToSend)
 					} else if (OCA.Mattermost.oauthPossible) {
 						this.connectToMattermost(filesToSend)
+					} else {
+						gotoSettingsConfirmDialog()
 					}
 				},
+			})
+		},
+
+		checkIfFilesToSend(fileList) {
+			const urlCheckConnection = generateUrl('/apps/integration_mattermost/files-to-send')
+			axios.get(urlCheckConnection).then((response) => {
+				const fileIdsStr = response.data.file_ids_to_send_after_oauth
+				const currentDir = response.data.current_dir_after_oauth
+				if (fileIdsStr && currentDir) {
+					this.sendFileIdsAfterOAuth(fileList, fileIdsStr, currentDir)
+				} else {
+					if (DEBUG) console.debug('[Mattermost] nothing to send')
+				}
+			}).catch((error) => {
+				console.error(error)
 			})
 		},
 
@@ -145,13 +128,13 @@ function openChannelSelector(files) {
 		 * actually go on with the files that were previously selected
 		 *
 		 * @param {object} fileList the one from attach()
+		 * @param {string} fileIdsStr list of files to send
+		 * @param {string} currentDir path to the current dir
 		 */
-		sendFileIdsAfterOAuth: (fileList) => {
-			const fileIdsStr = OCA.Mattermost.fileIdsToSendAfterOAuth
-			if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, fileIdsStr', fileIdsStr)
+		sendFileIdsAfterOAuth: (fileList, fileIdsStr, currentDir) => {
+			if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, fileIdsStr, currentDir', fileIdsStr, currentDir)
 			// this is only true after an OAuth connection initated from a file action
 			if (fileIdsStr) {
-				const currentDir = OCA.Mattermost.currentDirAfterOAuth
 				// trick to make sure the file list is loaded (didn't find an event or a good alternative)
 				// force=true to make sure we get a promise
 				fileList.changeDirectory(currentDir, true, true).then(() => {
@@ -350,10 +333,12 @@ axios.get(urlCheckConnection).then((response) => {
 	OCA.Mattermost.usePopup = response.data.use_popup
 	OCA.Mattermost.clientId = response.data.client_id
 	OCA.Mattermost.mattermostUrl = response.data.url
-	OCA.Mattermost.fileIdsToSendAfterOAuth = response.data.file_ids_to_send_after_oauth
-	OCA.Mattermost.currentDirAfterOAuth = response.data.current_dir_after_oauth
 	if (DEBUG) console.debug('[Mattermost] OCA.Mattermost', OCA.Mattermost)
-	OC.Plugins.register('OCA.Files.FileList', OCA.Mattermost.FilesPlugin)
 }).catch((error) => {
 	console.error(error)
+})
+
+document.addEventListener('DOMContentLoaded', () => {
+	if (DEBUG) console.debug('[Mattermost] before register files plugin')
+	OC.Plugins.register('OCA.Files.FileList', OCA.Mattermost.FilesPlugin)
 })
