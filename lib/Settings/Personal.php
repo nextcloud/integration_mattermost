@@ -49,8 +49,9 @@ class Personal implements ISettings {
 		}
 
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
-		$searchMessagesEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'search_messages_enabled', '0');
-		$navigationEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'navigation_enabled', '0');
+		$searchMessagesEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'search_messages_enabled', '0') === '1';
+		$navigationEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'navigation_enabled', '0') === '1';
+		$fileActionEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'file_action_enabled', '1') === '1';
 		$mmUserId = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_id');
 		$mmUserName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_name');
 		$mmUserDisplayName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_displayname');
@@ -80,8 +81,9 @@ class Personal implements ISettings {
 			'user_id' => $mmUserId,
 			'user_name' => $mmUserName,
 			'user_displayname' => $mmUserDisplayName,
-			'search_messages_enabled' => ($searchMessagesEnabled === '1'),
-			'navigation_enabled' => ($navigationEnabled === '1'),
+			'search_messages_enabled' => $searchMessagesEnabled,
+			'navigation_enabled' => $navigationEnabled,
+			'file_action_enabled' => $fileActionEnabled,
 			Application::WEBHOOKS_ENABLED_CONFIG_KEY => $webhooksEnabled,
 			Application::WEBHOOK_SECRET_CONFIG_KEY => $webhookSecret,
 			Application::CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY => $calEventAddedWebhook,

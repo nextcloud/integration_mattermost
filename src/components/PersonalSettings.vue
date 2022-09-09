@@ -90,9 +90,14 @@
 			</div>
 			<br>
 			<CheckboxRadioSwitch
+				:checked.sync="state.file_action_enabled"
+				@update:checked="onCheckboxChanged($event, 'file_action_enabled')">
+				{{ t('integration_mattermost', 'Add file action to send files to Mattermost') }}
+			</CheckboxRadioSwitch>
+			<CheckboxRadioSwitch
 				:checked.sync="state.navigation_enabled"
 				@update:checked="onNavigationChange">
-				{{ t('integration_mattermost', 'Enable navigation link') }}
+				{{ t('integration_mattermost', 'Enable navigation link (link to Mattermost with a top menu item)') }}
 			</CheckboxRadioSwitch>
 			<div v-if="connected" id="mattermost-search-block">
 				<CheckboxRadioSwitch

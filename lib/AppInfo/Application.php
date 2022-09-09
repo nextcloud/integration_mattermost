@@ -60,13 +60,6 @@ class Application extends App implements IBootstrap {
 
 		$container = $this->getContainer();
 		$this->config = $container->get(IConfig::class);
-
-		$eventDispatcher = $container->get(IEventDispatcher::class);
-		// load files plugin script
-		$eventDispatcher->addListener(LoadAdditionalScriptsEvent::class, function () {
-			Util::addscript(self::APP_ID, self::APP_ID . '-filesplugin', 'files');
-			Util::addStyle(self::APP_ID, self::APP_ID . '-files');
-		});
 	}
 
 	public function register(IRegistrationContext $context): void {
@@ -79,7 +72,21 @@ class Application extends App implements IBootstrap {
 
 	public function boot(IBootContext $context): void {
 		$context->injectFn(Closure::fromCallable([$this, 'registerNavigation']));
+		$context->injectFn(Closure::fromCallable([$this, 'loadFilesPlugin']));
 		Util::addStyle(self::APP_ID, 'mattermost-search');
+	}
+
+	public function loadFilesPlugin(IUserSession $userSession, IEventDispatcher $eventDispatcher): void {
+		$user = $userSession->getUser();
+		if ($user !== null) {
+			$userId = $user->getUID();
+			if ($this->config->getUserValue($userId, self::APP_ID, 'file_action_enabled', '0') === '1') {
+				$eventDispatcher->addListener(LoadAdditionalScriptsEvent::class, function () {
+					Util::addscript(self::APP_ID, self::APP_ID . '-filesplugin', 'files');
+					Util::addStyle(self::APP_ID, self::APP_ID . '-files');
+				});
+			}
+		}
 	}
 
 	public function registerNavigation(IUserSession $userSession): void {
