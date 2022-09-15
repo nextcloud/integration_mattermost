@@ -89,22 +89,22 @@
 				</div>
 			</div>
 			<br>
-			<CheckboxRadioSwitch
+			<NcCheckboxRadioSwitch
 				:checked.sync="state.file_action_enabled"
 				@update:checked="onCheckboxChanged($event, 'file_action_enabled')">
 				{{ t('integration_mattermost', 'Add file action to send files to Mattermost') }}
-			</CheckboxRadioSwitch>
-			<CheckboxRadioSwitch
+			</NcCheckboxRadioSwitch>
+			<NcCheckboxRadioSwitch
 				:checked.sync="state.navigation_enabled"
 				@update:checked="onNavigationChange">
 				{{ t('integration_mattermost', 'Enable navigation link (link to Mattermost with a top menu item)') }}
-			</CheckboxRadioSwitch>
+			</NcCheckboxRadioSwitch>
 			<div v-if="connected" id="mattermost-search-block">
-				<CheckboxRadioSwitch
+				<NcCheckboxRadioSwitch
 					:checked.sync="state.search_messages_enabled"
 					@update:checked="onSearchChange">
 					{{ t('integration_mattermost', 'Enable searching for messages') }}
-				</CheckboxRadioSwitch>
+				</NcCheckboxRadioSwitch>
 				<br>
 				<p v-if="state.search_messages_enabled" class="settings-hint">
 					<InformationOutlineIcon :size="24" class="icon" />
@@ -118,11 +118,11 @@
 					{{ t('integration_mattermost', 'If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks.') }}
 					{{ t('integration_mattermost', 'This section does not require to be connected to Mattermost from Nextcloud.') }}
 				</p>
-				<CheckboxRadioSwitch
+				<NcCheckboxRadioSwitch
 					:checked.sync="state.webhooks_enabled"
 					@update:checked="onCheckboxChanged($event, 'webhooks_enabled')">
 					{{ t('integration_mattermost', 'Enable webhooks') }}
-				</CheckboxRadioSwitch>
+				</NcCheckboxRadioSwitch>
 				<div class="line">
 					<label for="mattermost-cal-event-add">
 						<WebhookIcon :size="20" class="icon" />
@@ -175,21 +175,23 @@ import WebhookIcon from 'vue-material-design-icons/Webhook.vue'
 import EarthIcon from 'vue-material-design-icons/Earth.vue'
 import CheckIcon from 'vue-material-design-icons/Check.vue'
 
-import NcButton from '@nextcloud/vue/dist/Components/Button.js'
+import MattermostIcon from './icons/MattermostIcon.vue'
+
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { delay, oauthConnect } from '../utils.js'
 import { showSuccess, showError } from '@nextcloud/dialogs'
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
-import MattermostIcon from './icons/MattermostIcon.vue'
 
 export default {
 	name: 'PersonalSettings',
 
 	components: {
 		MattermostIcon,
-		CheckboxRadioSwitch,
+		NcCheckboxRadioSwitch,
 		NcButton,
 		OpenInNewIcon,
 		CloseIcon,

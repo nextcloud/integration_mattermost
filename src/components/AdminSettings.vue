@@ -55,11 +55,11 @@
 					@focus="readonly = false"
 					@input="onInput">
 			</div>
-			<CheckboxRadioSwitch
+			<NcCheckboxRadioSwitch
 				:checked.sync="state.use_popup"
 				@update:checked="onUsePopupChanged">
 				{{ t('integration_mattermost', 'Use a popup to authenticate') }}
-			</CheckboxRadioSwitch>
+			</NcCheckboxRadioSwitch>
 		</div>
 	</div>
 </template>
@@ -69,7 +69,7 @@ import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline
 import EarthIcon from 'vue-material-design-icons/Earth.vue'
 import KeyIcon from 'vue-material-design-icons/Key.vue'
 
-import CheckboxRadioSwitch from '@nextcloud/vue/dist/Components/CheckboxRadioSwitch.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
@@ -83,7 +83,7 @@ export default {
 
 	components: {
 		MattermostIcon,
-		CheckboxRadioSwitch,
+		NcCheckboxRadioSwitch,
 		InformationOutlineIcon,
 		EarthIcon,
 		KeyIcon,
