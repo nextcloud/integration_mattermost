@@ -66,8 +66,9 @@ class Application extends App implements IBootstrap {
 		$context->registerDashboardWidget(MattermostWidget::class);
 		$context->registerSearchProvider(MattermostSearchMessagesProvider::class);
 
-		$context->registerEventListener(CalendarObjectCreatedEvent::class, CalendarObjectCreatedListener::class);
-		$context->registerEventListener(CalendarObjectUpdatedEvent::class, CalendarObjectUpdatedListener::class);
+		// TODO uncomment when webhooks are ready on Mattermost's side
+//		$context->registerEventListener(CalendarObjectCreatedEvent::class, CalendarObjectCreatedListener::class);
+//		$context->registerEventListener(CalendarObjectUpdatedEvent::class, CalendarObjectUpdatedListener::class);
 	}
 
 	public function boot(IBootContext $context): void {

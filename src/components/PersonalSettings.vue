@@ -112,7 +112,7 @@
 				</p>
 			</div>
 			<br>
-			<div v-if="connected" id="mattermost-webhooks-block">
+			<div v-if="false && connected" id="mattermost-webhooks-block">
 				<p class="settings-hint">
 					<InformationOutlineIcon :size="24" class="icon" />
 					{{ t('integration_mattermost', 'If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks.') }}
