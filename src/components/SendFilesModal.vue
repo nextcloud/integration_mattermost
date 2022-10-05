@@ -61,7 +61,7 @@
 				<NcMultiselect
 					v-model="selectedChannel"
 					:placeholder="t('integration_mattermost', 'Choose a channel')"
-					:options="channels"
+					:options="sortedChannels"
 					:user-select="true"
 					label="display_name"
 					track-by="id"
@@ -303,6 +303,17 @@ export default {
 				&& (this.sendType !== 'file' || !this.onlyDirectories)
 				&& this.files.length > 0
 		},
+		sortedChannels() {
+			return this.channels.slice().sort((a, b) => {
+				const lpa = a.last_post_at
+				const lpb = b.last_post_at
+				return lpa < lpb
+					? 1
+					: lpa > lpb
+						? -1
+						: 0
+			})
+		},
 	},
 
 	watch: {
@@ -361,6 +372,9 @@ export default {
 			const url = generateUrl('apps/integration_mattermost/channels')
 			axios.get(url).then((response) => {
 				this.channels = response.data
+				if (this.sortedChannels.length > 0) {
+					this.selectedChannel = this.sortedChannels[0]
+				}
 			}).catch((error) => {
 				console.error(error)
 			})
