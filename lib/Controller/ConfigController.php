@@ -125,6 +125,7 @@ class ConfigController extends Controller {
 	 *
 	 * @param array $values
 	 * @return DataResponse
+	 * @throws PreConditionNotMetException
 	 */
 	public function setConfig(array $values): DataResponse {
 		if (isset($values['url'], $values['login'], $values['password'])) {
@@ -162,6 +163,7 @@ class ConfigController extends Controller {
 	 * @NoAdminRequired
 	 *
 	 * @return DataResponse
+	 * @throws PreConditionNotMetException
 	 */
 	public function setWebhooksConfig(?string $calendar_event_updated_url = null, ?string $calendar_event_created_url = null,
 									?bool $enabled = null, ?string $webhook_secret = null): DataResponse {

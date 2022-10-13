@@ -346,12 +346,20 @@ class MattermostAPIService {
 					$share->setExpirationDate(new Datetime($expirationDate));
 				}
 				if ($password !== null) {
-					$share->setPassword($password);
+					try {
+						$share->setPassword($password);
+					} catch (Exception $e) {
+						return ['error' => $e->getMessage()];
+					}
 				}
-				$share = $this->shareManager->createShare($share);
-				if ($expirationDate === null) {
-					$share->setExpirationDate(null);
-					$this->shareManager->updateShare($share);
+				try {
+					$share = $this->shareManager->createShare($share);
+					if ($expirationDate === null) {
+						$share->setExpirationDate(null);
+						$this->shareManager->updateShare($share);
+					}
+				} catch (Exception $e) {
+					return ['error' => $e->getMessage()];
 				}
 				$token = $share->getToken();
 				$linkUrl = $this->urlGenerator->getAbsoluteURL(
