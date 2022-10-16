@@ -162,10 +162,16 @@ class ConfigController extends Controller {
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
+	 * @param string|null $calendar_event_updated_url
+	 * @param string|null $calendar_event_created_url
+	 * @param string|null $daily_summary_url
+	 * @param bool|null $enabled
+	 * @param string|null $webhook_secret
 	 * @return DataResponse
 	 * @throws PreConditionNotMetException
 	 */
 	public function setWebhooksConfig(?string $calendar_event_updated_url = null, ?string $calendar_event_created_url = null,
+									?string $daily_summary_url = null,
 									?bool $enabled = null, ?string $webhook_secret = null): DataResponse {
 		$result = [];
 		if ($calendar_event_created_url !== null) {
@@ -175,6 +181,10 @@ class ConfigController extends Controller {
 		if ($calendar_event_updated_url !== null) {
 			$result['calendar_event_updated_url'] = $calendar_event_updated_url;
 			$this->config->setUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY, $calendar_event_updated_url);
+		}
+		if ($daily_summary_url !== null) {
+			$result['daily_summary_url'] = $daily_summary_url;
+			$this->config->setUserValue($this->userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_CONFIG_KEY, $daily_summary_url);
 		}
 		if ($enabled !== null) {
 			$result['enabled'] = $enabled;

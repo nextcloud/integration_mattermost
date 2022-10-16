@@ -70,6 +70,7 @@ class Personal implements ISettings {
 		$webhookSecret = $this->config->getUserValue($this->userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY);
 		$calEventAddedWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY);
 		$calEventEditedWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY);
+		$dailySummaryWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_CONFIG_KEY);
 
 		$userConfig = [
 			'token' => $token ? 'dummyTokenContent' : '',
@@ -88,6 +89,7 @@ class Personal implements ISettings {
 			Application::WEBHOOK_SECRET_CONFIG_KEY => $webhookSecret,
 			Application::CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY => $calEventAddedWebhook,
 			Application::CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY => $calEventEditedWebhook,
+			Application::DAILY_SUMMARY_WEBHOOK_CONFIG_KEY => $dailySummaryWebhook,
 		];
 		$this->initialStateService->provideInitialState('user-config', $userConfig);
 		return new TemplateResponse(Application::APP_ID, 'personalSettings');

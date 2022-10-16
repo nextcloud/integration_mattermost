@@ -112,7 +112,7 @@
 				</p>
 			</div>
 			<br>
-			<div v-if="false && connected" id="mattermost-webhooks-block">
+			<div id="mattermost-webhooks-block">
 				<p class="settings-hint">
 					<InformationOutlineIcon :size="24" class="icon" />
 					{{ t('integration_mattermost', 'If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks.') }}
@@ -142,6 +142,18 @@
 					</label>
 					<input id="mattermost-cal-event-edit"
 						v-model="state.calendar_event_updated_webhook"
+						type="text"
+						:disabled="!state.webhooks_enabled"
+						:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
+						@input="onInput">
+				</div>
+				<div class="line">
+					<label for="mattermost-daily-summary">
+						<WebhookIcon :size="20" class="icon" />
+						{{ t('integration_mattermost', 'Daily summary webhook URL') }}
+					</label>
+					<input id="mattermost-daily-summary"
+						v-model="state.daily_summary_webhook"
 						type="text"
 						:disabled="!state.webhooks_enabled"
 						:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
@@ -275,6 +287,7 @@ export default {
 					webhook_secret: this.state.webhook_secret,
 					calendar_event_created_webhook: this.state.calendar_event_created_webhook,
 					calendar_event_updated_webhook: this.state.calendar_event_updated_webhook,
+					daily_summary_webhook: this.state.daily_summary_webhook,
 				})
 			}, 2000)()
 		},

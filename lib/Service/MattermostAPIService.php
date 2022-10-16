@@ -13,6 +13,7 @@ namespace OCA\Mattermost\Service;
 
 use Datetime;
 use Exception;
+use Generator;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\RequestOptions;
@@ -24,6 +25,8 @@ use OCP\Files\IRootFolder;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
+use OCP\IUser;
+use OCP\IUserManager;
 use OCP\Share\IShare;
 use Psr\Log\LoggerInterface;
 use OCP\Http\Client\IClientService;
@@ -59,6 +62,10 @@ class MattermostAPIService {
 	 * @var IURLGenerator
 	 */
 	private $urlGenerator;
+	/**
+	 * @var IUserManager
+	 */
+	private $userManager;
 
 	/**
 	 * Service to make requests to Mattermost API
@@ -70,6 +77,7 @@ class MattermostAPIService {
 								IRootFolder $root,
 								ShareManager $shareManager,
 								IURLGenerator $urlGenerator,
+								IUserManager $userManager,
 								IClientService $clientService) {
 		$this->logger = $logger;
 		$this->l10n = $l10n;
@@ -78,6 +86,43 @@ class MattermostAPIService {
 		$this->root = $root;
 		$this->shareManager = $shareManager;
 		$this->urlGenerator = $urlGenerator;
+		$this->userManager = $userManager;
+	}
+
+	public function dailySummaryWebhook(): Generator {
+		$userIds = [];
+		$this->userManager->callForAllUsers(function (IUser $user) use (&$userIds) {
+			$userIds[] = $user->getUID();
+		});
+
+		foreach ($userIds as $userId) {
+			yield [
+				'user_id' => $userId,
+				'nb_events' => $this->userDailySummaryWebhook($userId),
+			];
+		}
+		return [];
+	}
+
+	public function userDailySummaryWebhook(string $userId): ?int {
+		$url = $this->config->getUserValue($userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_CONFIG_KEY);
+		if ($url === '') {
+			return null;
+		}
+		$webhooksEnabled = $this->config->getUserValue($userId, Application::APP_ID, Application::WEBHOOKS_ENABLED_CONFIG_KEY) === '1';
+		if (!$webhooksEnabled) {
+			return null;
+		}
+
+//		$content = $this->getDailySummaryContent($userId);
+		$content = [
+			['plop' => 'lala'],
+			['plop2' => 'lala2'],
+		];
+		$content['eventType'] = 'dailySummary';
+		$secret = $this->config->getUserValue($userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY);
+		$this->sendWebhook($url, $content, $secret);
+		return count($content);
 	}
 
 	/**

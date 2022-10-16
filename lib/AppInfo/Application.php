@@ -44,6 +44,7 @@ class Application extends App implements IBootstrap {
 	public const WEBHOOKS_ENABLED_CONFIG_KEY = 'webhooks_enabled';
 	public const CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY = 'calendar_event_created_webhook';
 	public const CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY = 'calendar_event_updated_webhook';
+	public const DAILY_SUMMARY_WEBHOOK_CONFIG_KEY = 'daily_summary_webhook';
 	public const WEBHOOK_SECRET_CONFIG_KEY = 'webhook_secret';
 	/**
 	 * @var mixed
@@ -66,9 +67,9 @@ class Application extends App implements IBootstrap {
 		$context->registerDashboardWidget(MattermostWidget::class);
 		$context->registerSearchProvider(MattermostSearchMessagesProvider::class);
 
-		// TODO uncomment when webhooks are ready on Mattermost's side
-//		$context->registerEventListener(CalendarObjectCreatedEvent::class, CalendarObjectCreatedListener::class);
-//		$context->registerEventListener(CalendarObjectUpdatedEvent::class, CalendarObjectUpdatedListener::class);
+		// event based webhooks
+		$context->registerEventListener(CalendarObjectCreatedEvent::class, CalendarObjectCreatedListener::class);
+		$context->registerEventListener(CalendarObjectUpdatedEvent::class, CalendarObjectUpdatedListener::class);
 	}
 
 	public function boot(IBootContext $context): void {
