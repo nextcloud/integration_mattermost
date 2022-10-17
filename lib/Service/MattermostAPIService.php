@@ -92,27 +92,46 @@ class MattermostAPIService {
 	public function dailySummaryWebhook(): Generator {
 		$userIds = [];
 		$this->userManager->callForAllUsers(function (IUser $user) use (&$userIds) {
-			$userIds[] = $user->getUID();
+			if ($user->isEnabled()) {
+				$userIds[] = $user->getUID();
+			}
 		});
 
+		$today = (new Datetime())->format('Y-m-d');
 		foreach ($userIds as $userId) {
 			yield [
 				'user_id' => $userId,
-				'nb_events' => $this->userDailySummaryWebhook($userId),
+				'job_info' => $this->userDailySummaryWebhook($userId, $today),
 			];
 		}
 		return [];
 	}
 
-	public function userDailySummaryWebhook(string $userId): ?int {
+	public function userDailySummaryWebhook(string $userId, string $today): ?array {
 		$url = $this->config->getUserValue($userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_CONFIG_KEY);
 		if ($url === '') {
-			return null;
+			return [
+				'message' => 'No webhook url configured for daily summary',
+				'nb_events' => null,
+			];
 		}
 		$webhooksEnabled = $this->config->getUserValue($userId, Application::APP_ID, Application::WEBHOOKS_ENABLED_CONFIG_KEY) === '1';
 		if (!$webhooksEnabled) {
-			return null;
+			return [
+				'message' => 'Mattermost webhooks disabled for user',
+				'nb_events' => null,
+			];
 		}
+
+		// check if it has already run today
+		$lastDailyJobDate = $this->config->getUserValue($userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_LAST_DATE_CONFIG_KEY);
+		if ($lastDailyJobDate === $today) {
+			return [
+				'message' => 'Job has already been executed today',
+				'nb_events' => null,
+			];
+		}
+		$this->config->setUserValue($userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_LAST_DATE_CONFIG_KEY, $today);
 
 //		$content = $this->getDailySummaryContent($userId);
 		$content = [
@@ -122,7 +141,9 @@ class MattermostAPIService {
 		$content['eventType'] = 'dailySummary';
 		$secret = $this->config->getUserValue($userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY);
 		$this->sendWebhook($url, $content, $secret);
-		return count($content);
+		return [
+			'nb_events' => count($content),
+		];
 	}
 
 	/**

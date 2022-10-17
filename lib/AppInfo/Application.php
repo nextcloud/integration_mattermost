@@ -45,6 +45,7 @@ class Application extends App implements IBootstrap {
 	public const CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY = 'calendar_event_created_webhook';
 	public const CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY = 'calendar_event_updated_webhook';
 	public const DAILY_SUMMARY_WEBHOOK_CONFIG_KEY = 'daily_summary_webhook';
+	public const DAILY_SUMMARY_WEBHOOK_LAST_DATE_CONFIG_KEY = 'daily_summary_webhook_last_date';
 	public const WEBHOOK_SECRET_CONFIG_KEY = 'webhook_secret';
 	/**
 	 * @var mixed

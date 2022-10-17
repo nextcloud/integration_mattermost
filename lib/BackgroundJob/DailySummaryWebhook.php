@@ -47,8 +47,8 @@ class DailySummaryWebhook extends TimedJob {
 								MattermostAPIService $mattermostAPIService,
 								LoggerInterface $logger) {
 		parent::__construct($time);
-		// Every day
-		$this->setInterval(60 * 60 * 24);
+		// Every hour but it will only be triggered once a day
+		$this->setInterval(60 * 60);
 
 		$this->logger = $logger;
 		$this->mattermostAPIService = $mattermostAPIService;

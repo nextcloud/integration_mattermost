@@ -12,6 +12,7 @@
 
 namespace OCA\Mattermost\Command;
 
+use DateTime;
 use OCA\Mattermost\Service\MattermostAPIService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -43,21 +44,24 @@ class DailySummary extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$userId = $input->getArgument('user_id');
 		if ($userId !== null) {
-			$nbEvents = $this->mattermostAPIService->userDailySummaryWebhook($userId);
+			$today = (new Datetime())->format('Y-m-d');
+			$jobResult = $this->mattermostAPIService->userDailySummaryWebhook($userId, $today);
+			$nbEvents = $jobResult['nb_events'];
 			if ($nbEvents === null) {
-				$output->writeln('Daily summary webhook is disabled for user ' . $userId);
+				$output->writeln('[' . $userId . '] ' . $jobResult['message']);
 				return 0;
 			}
-			$output->writeln($nbEvents . ' events sent for user ' . $userId);
+			$output->writeln('[' . $userId . '] ' . $nbEvents . ' events sent');
 		} else {
 			$output->writeln('Trigger daily summary for all users');
 			foreach ($this->mattermostAPIService->dailySummaryWebhook() as $userResult) {
 				$userId = $userResult['user_id'];
-				if ($userResult['nb_events'] === null) {
-					$output->writeln('Daily summary webhook is disabled for user ' . $userId);
+				$jobResult = $userResult['job_info'];
+				if ($jobResult['nb_events'] === null) {
+					$output->writeln('[' . $userId . '] ' . $jobResult['message']);
 				} else {
-					$nbEvents = $userResult['nb_events'];
-					$output->writeln($nbEvents . ' events sent for user ' . $userId);
+					$nbEvents = $jobResult['nb_events'];
+					$output->writeln('[' . $userId . '] ' . $nbEvents . ' events sent');
 				}
 			}
 		}
