@@ -1,5 +1,5 @@
 <template>
-	<DashboardWidget :items="items"
+	<NcDashboardWidget :items="items"
 		:show-more-url="showMoreUrl"
 		:show-more-text="title"
 		:loading="widgetState === 'loading'">
@@ -32,7 +32,7 @@
 				</template>
 			</NcEmptyContent>
 		</template>
-	</DashboardWidget>
+	</NcDashboardWidget>
 </template>
 
 <script>
@@ -44,12 +44,12 @@ import MattermostIcon from '../components/icons/MattermostIcon.vue'
 
 import axios from '@nextcloud/axios'
 import { generateUrl, imagePath } from '@nextcloud/router'
-import { DashboardWidget } from '@nextcloud/vue-dashboard'
 import { showError } from '@nextcloud/dialogs'
 import { loadState } from '@nextcloud/initial-state'
 import moment from '@nextcloud/moment'
 import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcDashboardWidget from '@nextcloud/vue/dist/Components/NcDashboardWidget.js'
 
 import { oauthConnect, oauthConnectConfirmDialog } from '../utils.js'
 
@@ -57,7 +57,7 @@ export default {
 	name: 'Dashboard',
 
 	components: {
-		DashboardWidget,
+		NcDashboardWidget,
 		NcEmptyContent,
 		NcButton,
 		LoginVariantIcon,
