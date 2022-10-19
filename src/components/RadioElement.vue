@@ -92,9 +92,9 @@ export default {
 	&.selected {
 		font-weight: bold;
 		// selected element has a bottom border and we remove the one of the following element
-		border: 2px solid var(--color-primary-element-light);
+		border: 2px solid var(--color-primary-element);
 		&:hover {
-			border: 2px solid var(--color-primary);
+			border: 2px solid var(--color-primary-element-hover);
 		}
 		label {
 			background-color: var(--color-background-dark);
