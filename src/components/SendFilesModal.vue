@@ -59,7 +59,7 @@
 					</span>
 				</span>
 				<NcMultiselect
-					v-model="selectedChannel"
+					:value="selectedChannel"
 					:placeholder="t('integration_mattermost', 'Choose a channel')"
 					:options="sortedChannels"
 					:user-select="true"
@@ -67,7 +67,8 @@
 					track-by="id"
 					:internal-search="true"
 					class="channel-select"
-					@search-change="query = $event">
+					@search-change="query = $event"
+					@input="onChannelSelected">
 					<template #option="{option}">
 						<NcAvatar
 							:size="34"
@@ -404,6 +405,11 @@ export default {
 		onRemoveFile(fileId) {
 			const index = this.files.findIndex((f) => f.id === fileId)
 			this.files.splice(index, 1)
+		},
+		onChannelSelected(selected) {
+			if (selected !== null) {
+				this.selectedChannel = selected
+			}
 		},
 	},
 }
