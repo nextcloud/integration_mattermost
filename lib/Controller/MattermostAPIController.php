@@ -11,9 +11,12 @@
 
 namespace OCA\Mattermost\Controller;
 
+use Exception;
+use OC\User\NoUserException;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDisplayResponse;
 use OCP\AppFramework\Http\RedirectResponse;
+use OCP\Files\NotPermittedException;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
@@ -22,6 +25,7 @@ use OCP\AppFramework\Controller;
 use OCA\Mattermost\Service\MattermostAPIService;
 use OCA\Mattermost\AppInfo\Application;
 use OCP\IURLGenerator;
+use OCP\Lock\LockedException;
 
 class MattermostAPIController extends Controller {
 
@@ -37,10 +41,6 @@ class MattermostAPIController extends Controller {
 	 * @var string|null
 	 */
 	private $userId;
-	/**
-	 * @var string
-	 */
-	private $accessToken;
 	/**
 	 * @var string
 	 */
@@ -60,7 +60,6 @@ class MattermostAPIController extends Controller {
 		$this->config = $config;
 		$this->mattermostAPIService = $mattermostAPIService;
 		$this->userId = $userId;
-		$this->accessToken = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
 		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 		$this->mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 		$this->urlGenerator = $urlGenerator;
@@ -83,6 +82,7 @@ class MattermostAPIController extends Controller {
 	 * @param string $userId
 	 * @param int $useFallback
 	 * @return DataDisplayResponse|RedirectResponse
+	 * @throws \Exception
 	 */
 	public function getUserAvatar(string $userId, int $useFallback = 1) {
 		$result = $this->mattermostAPIService->getUserAvatar($this->userId, $userId, $this->mattermostUrl);
@@ -106,6 +106,7 @@ class MattermostAPIController extends Controller {
 	 * @param string $teamId
 	 * @param int $useFallback
 	 * @return DataDisplayResponse|RedirectResponse
+	 * @throws \Exception
 	 */
 	public function getTeamAvatar(string $teamId, int $useFallback = 1)	{
 		$result = $this->mattermostAPIService->getTeamAvatar($this->userId, $teamId, $this->mattermostUrl);
@@ -122,7 +123,10 @@ class MattermostAPIController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 *
 	 * @return DataResponse
+	 * @throws Exception
 	 */
 	public function getNotifications(?int $since = null) {
 		$mmUserName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_name');
@@ -135,7 +139,10 @@ class MattermostAPIController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 *
 	 * @return DataResponse
+	 * @throws Exception
 	 */
 	public function getChannels() {
 		$result = $this->mattermostAPIService->getMyChannels($this->userId, $this->mattermostUrl);
@@ -147,9 +154,12 @@ class MattermostAPIController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 *
 	 * @param string $message
 	 * @param string $channelId
 	 * @return DataResponse
+	 * @throws Exception
 	 */
 	public function sendMessage(string $message, string $channelId) {
 		$result = $this->mattermostAPIService->sendMessage($this->userId, $this->mattermostUrl, $message, $channelId);
@@ -161,9 +171,14 @@ class MattermostAPIController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 *
 	 * @param int $fileId
 	 * @param string $channelId
 	 * @return DataResponse
+	 * @throws NotPermittedException
+	 * @throws LockedException
+	 * @throws NoUserException
 	 */
 	public function sendFile(int $fileId, string $channelId) {
 		$result = $this->mattermostAPIService->sendFile($this->userId, $this->mattermostUrl, $fileId, $channelId);
@@ -175,15 +190,18 @@ class MattermostAPIController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 *
 	 * @param array $fileIds
 	 * @param string $channelId
 	 * @param string $channelName
 	 * @param string $comment
 	 * @param string $permission
 	 * @param string|null $expirationDate
+	 * @param string|null $password
 	 * @return DataResponse
-	 * @throws \OCP\Files\NotPermittedException
-	 * @throws \OC\User\NoUserException
+	 * @throws NoUserException
+	 * @throws NotPermittedException
 	 */
 	public function sendLinks(array $fileIds, string $channelId, string $channelName, string $comment,
 							  string $permission, ?string $expirationDate = null, ?string $password = null): DataResponse {

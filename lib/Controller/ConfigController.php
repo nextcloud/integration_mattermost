@@ -344,6 +344,7 @@ class ConfigController extends Controller {
 	/**
 	 * @param string $mattermostUrl
 	 * @return string
+	 * @throws PreConditionNotMetException
 	 */
 	private function storeUserInfo(string $mattermostUrl): array {
 		$info = $this->mattermostAPIService->request($this->userId, $mattermostUrl, 'users/me');
