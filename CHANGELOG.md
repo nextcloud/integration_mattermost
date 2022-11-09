@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.2 – 2022-11-09
+### Added
+- Ability to send files to direct user-user conversations
+
+### Fixed
+- stop using API endpoints which require to be a Mattermost admin
+[#7](https://github.com/julien-nc/integration_mattermost/issues/7) @piratPavel
+
 ## 1.0.1 – 2022-11-08
 ### Changed
 - sort channels by last post date, use most recent as default selection
