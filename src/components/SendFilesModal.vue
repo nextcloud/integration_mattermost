@@ -25,10 +25,8 @@
 					<div v-for="f in files"
 						:key="f.id"
 						class="file">
-						<span v-if="fileStates[f.id] === STATES.IN_PROGRESS"
-							class="icon-loading-small" />
-						<!--LoadingIcon v-if="fileStates[f.id] === STATES.IN_PROGRESS"
-							:size="32" /-->
+						<NcLoadingIcon v-if="fileStates[f.id] === STATES.IN_PROGRESS"
+							:size="20" />
 						<CheckCircleIcon v-else-if="fileStates[f.id] === STATES.FINISHED"
 							class="check-icon"
 							:size="24" />
@@ -229,7 +227,7 @@ import NcHighlight from '@nextcloud/vue/dist/Components/NcHighlight.js'
 import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 import NcDatetimePicker from '@nextcloud/vue/dist/Components/NcDatetimePicker.js'
 import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
-// import LoadingIcon from '@nextcloud/vue/dist/Components/LoadingIcon.js'
+import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import NcAvatar from '@nextcloud/vue/dist/Components/NcAvatar.js'
 
@@ -268,7 +266,7 @@ export default {
 		NcHighlight,
 		NcModal,
 		RadioElementSet,
-		// LoadingIcon,
+		NcLoadingIcon,
 		NcButton,
 		NcAvatar,
 		SendIcon,
