@@ -231,6 +231,7 @@ import EyeIcon from 'vue-material-design-icons/Eye.vue'
 import RadioElementSet from './RadioElementSet.vue'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
+import { showError } from '@nextcloud/dialogs'
 import MattermostIcon from './icons/MattermostIcon.vue'
 import { humanFileSize } from '../utils.js'
 
@@ -377,6 +378,10 @@ export default {
 					this.selectedChannel = this.sortedChannels[0]
 				}
 			}).catch((error) => {
+				showError(
+					t('integration_mattermost', 'Failed to load Mattermost channels')
+					+ ': ' + error.response?.data?.error
+				)
 				console.error(error)
 			})
 		},
