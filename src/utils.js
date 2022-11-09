@@ -1,6 +1,9 @@
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showError } from '@nextcloud/dialogs'
+import FileIcon from 'vue-material-design-icons/File.vue'
+import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
+import LinkVariantIcon from 'vue-material-design-icons/LinkVariant.vue'
 
 let mytimer = 0
 export function delay(callback, ms) {
@@ -139,4 +142,22 @@ export function humanFileSize(bytes, approx = false, si = false, dp = 1) {
 	} else {
 		return bytes.toFixed(dp) + ' ' + units[u]
 	}
+}
+
+export const SEND_TYPE = {
+	file: {
+		id: 'file',
+		label: t('integration_mattermost', 'Upload files'),
+		icon: FileIcon,
+	},
+	public_link: {
+		id: 'public_link',
+		label: t('integration_mattermost', 'Public links'),
+		icon: LinkVariantIcon,
+	},
+	internal_link: {
+		id: 'internal_link',
+		label: t('integration_mattermost', 'Internal links (Only works for users with access to the files)'),
+		icon: OpenInNewIcon,
+	},
 }

@@ -203,9 +203,9 @@ class MattermostAPIController extends Controller {
 	 * @throws NoUserException
 	 * @throws NotPermittedException
 	 */
-	public function sendLinks(array $fileIds, string $channelId, string $channelName, string $comment,
+	public function sendPublicLinks(array $fileIds, string $channelId, string $channelName, string $comment,
 							  string $permission, ?string $expirationDate = null, ?string $password = null): DataResponse {
-		$result = $this->mattermostAPIService->sendLinks(
+		$result = $this->mattermostAPIService->sendPublicLinks(
 			$this->userId, $this->mattermostUrl, $fileIds, $channelId, $channelName,
 			$comment, $permission, $expirationDate, $password
 		);

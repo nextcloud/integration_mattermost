@@ -7,7 +7,7 @@
 				<h2 class="modal-title">
 					<MattermostIcon />
 					<span>
-						{{ sendType === 'file'
+						{{ sendType === SEND_TYPE.file.id
 							? n('integration_mattermost', 'Send file to Mattermost', 'Send files to Mattermost', files.length)
 							: n('integration_mattermost', 'Send link to Mattermost', 'Send links to Mattermost', files.length)
 						}}
@@ -117,28 +117,19 @@
 						</span>
 					</span>
 					<div>
-						<NcCheckboxRadioSwitch
+						<NcCheckboxRadioSwitch v-for="(type, key) in SEND_TYPE"
+							:key="key"
 							:checked.sync="sendType"
-							value="file"
+							:value="type.id"
 							name="send_type_radio"
 							type="radio">
-							<FileIcon :size="20" />
+							<component :is="type.icon" :size="20" />
 							<span class="option-title">
-								{{ t('integration_mattermost', 'Upload files') }}
-							</span>
-						</NcCheckboxRadioSwitch>
-						<NcCheckboxRadioSwitch
-							:checked.sync="sendType"
-							value="link"
-							name="send_type_radio"
-							type="radio">
-							<LinkVariantIcon :size="20" />
-							<span class="option-title">
-								{{ t('integration_mattermost', 'Public links') }}
+								{{ type.label }}
 							</span>
 						</NcCheckboxRadioSwitch>
 					</div>
-					<RadioElementSet v-if="sendType === 'link'"
+					<RadioElementSet v-if="sendType === SEND_TYPE.public_link.id"
 						name="perm_radio"
 						:options="permissionOptions"
 						:value="selectedPermission"
@@ -151,7 +142,7 @@
 							{{ option.label + 'lala' }}
 						</template-->
 					</RadioElementSet>
-					<div v-show="sendType === 'link'"
+					<div v-show="sendType === SEND_TYPE.public_link.id"
 						class="expiration-field">
 						<NcCheckboxRadioSwitch :checked.sync="expirationEnabled">
 							{{ t('integration_mattermost', 'Set expiration date') }}
@@ -164,7 +155,7 @@
 							:placeholder="t('integration_mattermost', 'Expires on')"
 							:clearable="true" />
 					</div>
-					<div v-show="sendType === 'link'"
+					<div v-show="sendType === SEND_TYPE.public_link.id"
 						class="password-field">
 						<NcCheckboxRadioSwitch :checked.sync="passwordEnabled">
 							{{ t('integration_mattermost', 'Set link password') }}
@@ -210,7 +201,7 @@
 						<template #icon>
 							<SendIcon />
 						</template>
-						{{ sendType === 'file'
+						{{ sendType === SEND_TYPE.file.id
 							? n('integration_mattermost', 'Send file', 'Send files', files.length)
 							: n('integration_mattermost', 'Send link', 'Send links', files.length)
 						}}
@@ -235,7 +226,6 @@ import SendIcon from 'vue-material-design-icons/Send.vue'
 import FileIcon from 'vue-material-design-icons/File.vue'
 import CloseIcon from 'vue-material-design-icons/Close.vue'
 import PoundBoxIcon from 'vue-material-design-icons/PoundBox.vue'
-import LinkVariantIcon from 'vue-material-design-icons/LinkVariant.vue'
 import PackageUpIcon from 'vue-material-design-icons/PackageUp.vue'
 import CommentIcon from 'vue-material-design-icons/Comment.vue'
 import CheckCircleIcon from 'vue-material-design-icons/CheckCircle.vue'
@@ -248,7 +238,7 @@ import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showError } from '@nextcloud/dialogs'
 import MattermostIcon from './icons/MattermostIcon.vue'
-import { humanFileSize } from '../utils.js'
+import { humanFileSize, SEND_TYPE } from '../utils.js'
 
 const STATES = {
 	IN_PROGRESS: 1,
@@ -272,7 +262,6 @@ export default {
 		SendIcon,
 		PoundBoxIcon,
 		FileIcon,
-		LinkVariantIcon,
 		PackageUpIcon,
 		CommentIcon,
 		CheckCircleIcon,
@@ -284,9 +273,10 @@ export default {
 
 	data() {
 		return {
+			SEND_TYPE,
 			show: false,
 			loading: false,
-			sendType: 'file',
+			sendType: SEND_TYPE.file.id,
 			comment: '',
 			query: '',
 			files: [],
@@ -310,14 +300,14 @@ export default {
 
 	computed: {
 		warnAboutSendingDirectories() {
-			return this.sendType === 'file' && this.files.findIndex((f) => f.type === 'dir') !== -1
+			return this.sendType === SEND_TYPE.file.id && this.files.findIndex((f) => f.type === 'dir') !== -1
 		},
 		onlyDirectories() {
 			return this.files.filter((f) => f.type !== 'dir').length === 0
 		},
 		canValidate() {
 			return this.selectedChannel !== null
-				&& (this.sendType !== 'file' || !this.onlyDirectories)
+				&& (this.sendType !== SEND_TYPE.file.id || !this.onlyDirectories)
 				&& this.files.length > 0
 		},
 		sortedChannels() {
@@ -347,7 +337,7 @@ export default {
 			this.fileStates = {}
 			this.channels = []
 			this.comment = ''
-			this.sendType = 'file'
+			this.sendType = SEND_TYPE.file.id
 			this.selectedPermission = 'view'
 			this.expirationEnabled = false
 			this.expirationDate = null
@@ -374,8 +364,8 @@ export default {
 				type: this.sendType,
 				comment: this.comment,
 				permission: this.selectedPermission,
-				expirationDate: this.sendType === 'link' && this.expirationEnabled ? this.expirationDate : null,
-				password: this.sendType === 'link' && this.passwordEnabled ? this.password : null,
+				expirationDate: this.sendType === SEND_TYPE.public_link.id && this.expirationEnabled ? this.expirationDate : null,
+				password: this.sendType === SEND_TYPE.public_link.id && this.passwordEnabled ? this.password : null,
 			})
 		},
 		success() {

@@ -14,7 +14,7 @@ import moment from '@nextcloud/moment'
 import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
-import { oauthConnect, oauthConnectConfirmDialog, gotoSettingsConfirmDialog } from './utils.js'
+import { oauthConnect, oauthConnectConfirmDialog, gotoSettingsConfirmDialog, SEND_TYPE } from './utils.js'
 
 import Vue from 'vue'
 import './bootstrap.js'
@@ -184,7 +184,7 @@ function openChannelSelector(files) {
 
 })()
 
-function sendLinks(channelId, channelName, comment, permission, expirationDate, password) {
+function sendPublicLinks(channelId, channelName, comment, permission, expirationDate, password) {
 	const req = {
 		fileIds: OCA.Mattermost.filesToSend.map((f) => f.id),
 		channelId,
@@ -194,7 +194,7 @@ function sendLinks(channelId, channelName, comment, permission, expirationDate, 
 		expirationDate: expirationDate ? moment(expirationDate).format('YYYY-MM-DD') : undefined,
 		password,
 	}
-	const url = generateUrl('apps/integration_mattermost/sendLinks')
+	const url = generateUrl('apps/integration_mattermost/sendPublicLinks')
 	axios.post(url, req).then((response) => {
 		const number = OCA.Mattermost.filesToSend.length
 		showSuccess(
@@ -218,6 +218,39 @@ function sendLinks(channelId, channelName, comment, permission, expirationDate, 
 		showError(
 			t('integration_mattermost', 'Failed to send links to Mattermost')
 			+ ' ' + error.response?.request?.responseText
+		)
+	})
+}
+
+function sendInternalLinks(channelId, channelName, comment) {
+	sendMessage(channelId, comment).then((response) => {
+		OCA.Mattermost.filesToSend.forEach(f => {
+			const link = window.location.protocol + '//' + window.location.host + generateUrl('/f/' + f.id)
+			const message = f.name + ': ' + link
+			sendMessage(channelId, message)
+		})
+		const number = OCA.Mattermost.filesToSend.length
+		showSuccess(
+			n(
+				'integration_mattermost',
+				'A link to {fileName} was sent to {channelName}',
+				'{number} links were sent to {channelName}',
+				number,
+				{
+					fileName: OCA.Mattermost.filesToSend[0].name,
+					channelName,
+					number,
+				}
+			)
+		)
+		OCA.Mattermost.MattermostSendModalVue.success()
+	}).catch((error) => {
+		console.error(error)
+		OCA.Mattermost.MattermostSendModalVue.failure()
+		OCA.Mattermost.filesToSend = []
+		showError(
+			t('integration_mattermost', 'Failed to send internal links to Mattermost')
+			+ ': ' + error.response?.request?.responseText
 		)
 	})
 }
@@ -308,8 +341,10 @@ OCA.Mattermost.MattermostSendModalVue.$on('closed', () => {
 })
 OCA.Mattermost.MattermostSendModalVue.$on('validate', ({ filesToSend, channelId, channelName, type, comment, permission, expirationDate, password }) => {
 	OCA.Mattermost.filesToSend = filesToSend
-	if (type === 'link') {
-		sendLinks(channelId, channelName, comment, permission, expirationDate, password)
+	if (type === SEND_TYPE.public_link.id) {
+		sendPublicLinks(channelId, channelName, comment, permission, expirationDate, password)
+	} else if (type === SEND_TYPE.internal_link.id) {
+		sendInternalLinks(channelId, channelName, comment)
 	} else {
 		sendMessage(channelId, comment).then((response) => {
 			sendFileLoop(channelId, channelName)

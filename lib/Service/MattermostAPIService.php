@@ -430,7 +430,7 @@ class MattermostAPIService {
 	 * @throws NotPermittedException
 	 * @throws NoUserException
 	 */
-	public function sendLinks(string $userId, string $mattermostUrl, array $fileIds,
+	public function sendPublicLinks(string $userId, string $mattermostUrl, array $fileIds,
 							  string $channelId, string $channelName, string $comment,
 							  string $permission, ?string $expirationDate = null, ?string $password = null): array {
 		$links = [];
