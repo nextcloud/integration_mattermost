@@ -70,22 +70,39 @@
 					@search-change="query = $event"
 					@input="onChannelSelected">
 					<template #option="{option}">
-						<NcAvatar
+						<NcAvatar v-if="option.team_display_name"
 							:size="34"
 							:url="getTeamIconUrl(option.team_id)"
 							display-name="#" />
-						<NcHighlight
-							:text="t('integration_mattermost', '[{teamName}] {channelName}', { channelName: option.display_name, teamName: option.team_display_name })"
+						<NcAvatar v-else-if="option.direct_message_display_name"
+							:size="34"
+							:url="getUserIconUrl(option.direct_message_user_id)"
+							display-name="U" />
+						<NcHighlight v-if="option.team_display_name"
+							:text="'[' + option.team_display_name + '] ' + option.display_name"
+							:search="query"
+							class="multiselect-name" />
+						<NcHighlight v-else-if="option.direct_message_display_name"
+							:text="option.direct_message_display_name"
 							:search="query"
 							class="multiselect-name" />
 					</template>
 					<template #singleLabel="{option}">
-						<NcAvatar
+						<NcAvatar v-if="option.team_display_name"
 							:size="34"
 							:url="getTeamIconUrl(option.team_id)"
 							display-name="#" />
-						<span class="multiselect-name">
-							{{ t('integration_mattermost', '[{teamName}] {channelName}', { channelName: option.display_name, teamName: option.team_display_name }) }}
+						<NcAvatar v-else-if="option.direct_message_display_name"
+							:size="34"
+							:url="getUserIconUrl(option.direct_message_user_id)"
+							display-name="U" />
+						<span v-if="option.team_display_name"
+							class="multiselect-name">
+							{{ '[' + option.team_display_name + '] ' + option.display_name }}
+						</span>
+						<span v-else-if="option.direct_message_display_name"
+							class="multiselect-name">
+							{{ option.direct_message_display_name }}
 						</span>
 					</template>
 					<template #noOptions>
@@ -378,11 +395,9 @@ export default {
 					this.selectedChannel = this.sortedChannels[0]
 				}
 			}).catch((error) => {
-				showError(
-					t('integration_mattermost', 'Failed to load Mattermost channels')
-					+ ': ' + error.response?.data?.error
-				)
+				showError(t('integration_mattermost', 'Failed to load Mattermost channels'))
 				console.error(error)
+				console.error(error.response?.data?.error)
 			})
 		},
 		getFilePreviewUrl(fileId, fileType) {
@@ -399,6 +414,9 @@ export default {
 		},
 		getTeamIconUrl(teamId) {
 			return generateUrl('/apps/integration_mattermost/teams/{teamId}/image', { teamId }) + '?useFallback=0'
+		},
+		getUserIconUrl(userId) {
+			return generateUrl('/apps/integration_mattermost/users/{userId}/image', { userId }) + '?useFallback=0'
 		},
 		isDateDisabled(d) {
 			const now = new Date()

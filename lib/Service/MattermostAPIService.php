@@ -19,9 +19,11 @@ use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\RequestOptions;
 use OC\Files\Node\File;
 use OC\Files\Node\Folder;
+use OC\User\NoUserException;
 use OCA\Mattermost\AppInfo\Application;
 use OCP\Constants;
 use OCP\Files\IRootFolder;
+use OCP\Files\NotPermittedException;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
@@ -349,11 +351,57 @@ class MattermostAPIService {
 	 * @throws Exception
 	 */
 	public function getMyChannels(string $userId, string $mattermostUrl): array {
-		$result = $this->request($userId, $mattermostUrl, 'channels');
-		if (isset($result['error'])) {
-			return $result;
+		$mattermostUserId = $this->config->getUserValue($userId, Application::APP_ID, 'user_id');
+		$channelResult = $this->request($userId, $mattermostUrl, 'users/' . $mattermostUserId . '/channels');
+		if (isset($channelResult['error'])) {
+			return $channelResult;
 		}
-		return $result;
+
+		// get team names
+		$teamIds = [];
+		foreach ($channelResult as $channel) {
+			if ($channel['type'] === 'O') {
+				$teamId = $channel['team_id'];
+				if (!in_array($teamId, $teamIds)) {
+					$teamIds[] = $teamId;
+				}
+			}
+		}
+		$teamDisplayNamesById = [];
+		foreach ($teamIds as $teamId) {
+			$teamResult = $this->request($userId, $mattermostUrl, 'teams/' . $teamId);
+			if (!isset($teamResult['error'])) {
+				$teamDisplayNamesById[$teamId] = $teamResult['display_name'];
+			}
+		}
+		// put it back in the channels
+		foreach ($channelResult as $i => $channel) {
+			$channelResult[$i]['team_display_name'] = $teamDisplayNamesById[$channel['team_id']] ?? null;
+		}
+
+		// get direct message author names
+		foreach ($channelResult as $i => $channel) {
+			if ($channel['type'] === 'D') {
+				$names = explode('__', $channel['name']);
+				if (count($names) !== 2) {
+					continue;
+				}
+				$directUserId = $names[0];
+				if ($directUserId === $mattermostUserId) {
+					$directUserId = $names[1];
+				}
+				$userResult = $this->request($userId, $mattermostUrl, 'users/' . $directUserId);
+				if (!isset($userResult['error'])) {
+					$userName = trim($userResult['first_name'] . ' ' . $userResult['last_name']);
+					$userName = $userName ?: $userResult['username'];
+					$channelResult[$i]['display_name'] = $userName;
+					$channelResult[$i]['direct_message_display_name'] = $userName;
+					$channelResult[$i]['direct_message_user_id'] = $directUserId;
+				}
+			}
+		}
+
+		return $channelResult;
 	}
 
 	/**
@@ -381,9 +429,10 @@ class MattermostAPIService {
 	 * @param string $comment
 	 * @param string $permission
 	 * @param string|null $expirationDate
+	 * @param string|null $password
 	 * @return array|string[]
-	 * @throws \OCP\Files\NotPermittedException
-	 * @throws \OC\User\NoUserException
+	 * @throws NotPermittedException
+	 * @throws NoUserException
 	 */
 	public function sendLinks(string $userId, string $mattermostUrl, array $fileIds,
 							  string $channelId, string $channelName, string $comment,
@@ -596,7 +645,8 @@ class MattermostAPIService {
 				}
 			}
 		} catch (ServerException | ClientException $e) {
-			$this->logger->debug('Mattermost API error : '.$e->getMessage(), ['app' => Application::APP_ID]);
+			$body = $e->getResponse()->getBody();
+			$this->logger->warning('Mattermost API error : ' . $body, ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}
