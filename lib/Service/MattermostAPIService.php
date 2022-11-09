@@ -155,23 +155,16 @@ class MattermostAPIService {
 	 * @throws Exception
 	 */
 	private function getMyTeamsInfo(string $userId, string $url): array {
-		$params = [
-			'membership' => 'true',
-		];
-		$projects = $this->request($userId, $url, 'projects', $params);
-		if (isset($projects['error'])) {
-			return $projects;
+		$mattermostUserId = $this->config->getUserValue($userId, Application::APP_ID, 'user_id');
+		$teams = $this->request($userId, $url, 'users/' . $mattermostUserId . '/teams');
+		if (isset($teams['error'])) {
+			return [];
 		}
-		$projectsInfo = [];
-		foreach ($projects as $project) {
-			$pid = $project['id'];
-			$projectsInfo[$pid] = [
-				'path_with_namespace' => $project['path_with_namespace'],
-				'avatar_url' => $project['avatar_url'],
-				'visibility' => $project['visibility'],
-			];
+		$teamsById = [];
+		foreach ($teams as $team) {
+			$teamsById[$team['id']] = $team;
 		}
-		return $projectsInfo;
+		return $teamsById;
 	}
 
 	/**
@@ -295,14 +288,16 @@ class MattermostAPIService {
 	public function addPostInfos(array $posts, string $userId, string $mattermostUrl): array {
 		if (count($posts) > 0) {
 			$channelsPerId = $this->getMyChannelsPerId($userId, $mattermostUrl);
+			$teamsPerId = $this->getMyTeamsInfo($userId, $mattermostUrl);
 			// get channel and team information for each post
 			foreach ($posts as $postId => $post) {
 				$channelId = $post['channel_id'];
+				$teamId = $channelsPerId[$channelId]['team_id'] ?? '';
 				$posts[$postId]['channel_name'] = $channelsPerId[$channelId]['name'] ?? '';
 				$posts[$postId]['channel_display_name'] = $channelsPerId[$channelId]['display_name'] ?? '';
-				$posts[$postId]['team_id'] = $channelsPerId[$channelId]['team_id'] ?? '';
-				$posts[$postId]['team_name'] = $channelsPerId[$channelId]['team_name'] ?? '';
-				$posts[$postId]['team_display_name'] = $channelsPerId[$channelId]['team_display_name'] ?? '';
+				$posts[$postId]['team_id'] = $teamId;
+				$posts[$postId]['team_name'] = $teamsPerId[$teamId]['name'] ?? '';
+				$posts[$postId]['team_display_name'] = $teamsPerId[$teamId]['display_name'] ?? '';
 			}
 
 			// get user/author info
@@ -333,7 +328,8 @@ class MattermostAPIService {
 	 * @throws Exception
 	 */
 	public function getMyChannelsPerId(string $userId, string $mattermostUrl): array {
-		$result = $this->request($userId, $mattermostUrl, 'channels');
+		$mattermostUserId = $this->config->getUserValue($userId, Application::APP_ID, 'user_id');
+		$result = $this->request($userId, $mattermostUrl, 'users/' . $mattermostUserId . '/channels');
 		if (isset($result['error'])) {
 			return $result;
 		}
