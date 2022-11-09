@@ -1,0 +1,7 @@
+{ "translations": {
+    "Error during OAuth exchanges" : "Fout tijdens OAuth uitwisselingen",
+    "Application secret" : "Application secret",
+    "Connected as {user}" : "Verbonden als {user}",
+    "Start typing to search" : "Begin met typen om te zoeken"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
