@@ -173,25 +173,30 @@ class MattermostSearchMessagesProvider implements IProvider {
 	 * @return string
 	 */
 	protected function getSubline(array $entry): string {
+		if ($entry['channel_type'] === 'D') {
+			return $this->l10n->t('%s in @%s at %s', [$entry['user_name'], $entry['direct_message_user_name'], $this->getFormattedDate($entry['create_at'])]);
+		}
 		return $this->l10n->t('%s in #%s at %s', [$entry['user_name'], $entry['channel_name'], $this->getFormattedDate($entry['create_at'])]);
 	}
 
 	protected function getFormattedDate(int $timestamp): string {
-		// return (new DateTime())->setTimestamp((int) ($timestamp / 1000))->format('Y-m-d H:i:s');
 		return $this->dateTimeFormatter->formatDateTime((int) ($timestamp / 1000), 'long', 'short', $this->dateTimeZone->getTimeZone());
 	}
 
 	/**
 	 * @param array $entry
+	 * @param string $url
 	 * @return string
 	 */
 	protected function getLinkToMattermost(array $entry, string $url): string {
+		if ($entry['channel_type'] === 'D') {
+			return $url . '/' . $entry['team_name'] . '/messages/@' . $entry['direct_message_user_name'];
+		}
 		return $url . '/' . $entry['team_name'] . '/channels/' . $entry['channel_name'];
 	}
 
 	/**
 	 * @param array $entry
-	 * @param string $thumbnailUrl
 	 * @return string
 	 */
 	protected function getThumbnailUrl(array $entry): string {

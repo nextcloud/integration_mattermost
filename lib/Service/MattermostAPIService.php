@@ -289,15 +289,23 @@ class MattermostAPIService {
 		if (count($posts) > 0) {
 			$channelsPerId = $this->getMyChannelsPerId($userId, $mattermostUrl);
 			$teamsPerId = $this->getMyTeamsInfo($userId, $mattermostUrl);
+			$teamIds = array_keys($teamsPerId);
+			$fallbackTeamId = end($teamIds);
 			// get channel and team information for each post
 			foreach ($posts as $postId => $post) {
 				$channelId = $post['channel_id'];
 				$teamId = $channelsPerId[$channelId]['team_id'] ?? '';
+				$posts[$postId]['channel_type'] = $channelsPerId[$channelId]['type'] ?? '';
 				$posts[$postId]['channel_name'] = $channelsPerId[$channelId]['name'] ?? '';
 				$posts[$postId]['channel_display_name'] = $channelsPerId[$channelId]['display_name'] ?? '';
 				$posts[$postId]['team_id'] = $teamId;
 				$posts[$postId]['team_name'] = $teamsPerId[$teamId]['name'] ?? '';
 				$posts[$postId]['team_display_name'] = $teamsPerId[$teamId]['display_name'] ?? '';
+				if ($channelsPerId[$channelId]['type'] === 'D') {
+					$posts[$postId]['direct_message_user_name'] = $channelsPerId[$channelId]['direct_message_user_name'] ?? '';
+					// add any team to direct messages as it apparently does not matter but is needed...
+					$posts[$postId]['team_name'] = $teamsPerId[$fallbackTeamId]['name'] ?? '';
+				}
 			}
 
 			// get user/author info
@@ -328,8 +336,7 @@ class MattermostAPIService {
 	 * @throws Exception
 	 */
 	public function getMyChannelsPerId(string $userId, string $mattermostUrl): array {
-		$mattermostUserId = $this->config->getUserValue($userId, Application::APP_ID, 'user_id');
-		$result = $this->request($userId, $mattermostUrl, 'users/' . $mattermostUserId . '/channels');
+		$result = $this->getMyChannels($userId, $mattermostUrl);
 		if (isset($result['error'])) {
 			return $result;
 		}
@@ -388,10 +395,12 @@ class MattermostAPIService {
 				}
 				$userResult = $this->request($userId, $mattermostUrl, 'users/' . $directUserId);
 				if (!isset($userResult['error'])) {
-					$userName = trim($userResult['first_name'] . ' ' . $userResult['last_name']);
-					$userName = $userName ?: $userResult['username'];
-					$channelResult[$i]['display_name'] = $userName;
-					$channelResult[$i]['direct_message_display_name'] = $userName;
+					$userDisplayName = preg_replace('/^\s+$/', '', $userResult['first_name'] . ' ' . $userResult['last_name']);
+					$userDisplayName = $userDisplayName ?: $userResult['username'];
+					$userName = $userResult['username'];
+					$channelResult[$i]['display_name'] = $userDisplayName;
+					$channelResult[$i]['direct_message_display_name'] = $userDisplayName;
+					$channelResult[$i]['direct_message_user_name'] = $userName;
 					$channelResult[$i]['direct_message_user_id'] = $directUserId;
 				}
 			}
