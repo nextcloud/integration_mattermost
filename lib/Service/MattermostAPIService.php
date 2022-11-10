@@ -405,14 +405,18 @@ class MattermostAPIService {
 	 * @param string $mattermostUrl
 	 * @param string $message
 	 * @param string $channelId
+	 * @param array|null $remoteFileIds
 	 * @return array|string[]
 	 * @throws Exception
 	 */
-	public function sendMessage(string $userId, string $mattermostUrl, string $message, string $channelId): array {
+	public function sendMessage(string $userId, string $mattermostUrl, string $message, string $channelId, ?array $remoteFileIds = null): array {
 		$params = [
 			'channel_id' => $channelId,
 			'message' => $message,
 		];
+		if ($remoteFileIds !== null) {
+			$params['file_ids'] = $remoteFileIds;
+		}
 		return $this->request($userId, $mattermostUrl, 'posts', $params, 'POST');
 	}
 
@@ -523,12 +527,9 @@ class MattermostAPIService {
 
 			if (isset($sendResult['file_infos']) && is_array($sendResult['file_infos']) && count($sendResult['file_infos']) > 0) {
 				$remoteFileId = $sendResult['file_infos'][0]['id'] ?? 0;
-				$params = [
-					'channel_id' => $channelId,
-					'message' => '',
-					'file_ids' => [$remoteFileId],
+				return [
+					'remote_file_id' => $remoteFileId,
 				];
-				return $this->request($userId, $mattermostUrl, 'posts', $params, 'POST');
 			} else {
 				return ['error' => 'File upload error'];
 			}

@@ -158,11 +158,12 @@ class MattermostAPIController extends Controller {
 	 *
 	 * @param string $message
 	 * @param string $channelId
+	 * @param array|null $remoteFileIds
 	 * @return DataResponse
 	 * @throws Exception
 	 */
-	public function sendMessage(string $message, string $channelId) {
-		$result = $this->mattermostAPIService->sendMessage($this->userId, $this->mattermostUrl, $message, $channelId);
+	public function sendMessage(string $message, string $channelId, ?array $remoteFileIds = null) {
+		$result = $this->mattermostAPIService->sendMessage($this->userId, $this->mattermostUrl, $message, $channelId, $remoteFileIds);
 		if (isset($result['error'])) {
 			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
 		} else {

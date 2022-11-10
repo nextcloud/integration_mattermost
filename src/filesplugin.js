@@ -255,28 +255,17 @@ function sendInternalLinks(channelId, channelName, comment) {
 	})
 }
 
-function sendFileLoop(channelId, channelName, count = 0) {
-	if (OCA.Mattermost.filesToSend.length === 0) {
-		showSuccess(
-			n(
-				'integration_mattermost',
-				'{count} file was sent to {channelName}',
-				'{count} files were sent to {channelName}',
-				count,
-				{
-					channelName,
-					count,
-				}
-			)
-		)
-		OCA.Mattermost.MattermostSendModalVue.success()
-		return
-	}
-
+function sendFileLoop(channelId, channelName, comment) {
 	const file = OCA.Mattermost.filesToSend.shift()
 	// skip directories
 	if (file.type === 'dir') {
-		sendFileLoop(channelId, channelName, count)
+		if (OCA.Mattermost.filesToSend.length === 0) {
+			// we are done, no next file
+			sendMessageAfterFilesUpload(channelId, channelName, comment)
+		} else {
+			// skip, go to next
+			sendFileLoop(channelId, channelName, comment)
+		}
 		return
 	}
 	OCA.Mattermost.MattermostSendModalVue.fileStarted(file.id)
@@ -286,31 +275,21 @@ function sendFileLoop(channelId, channelName, count = 0) {
 	}
 	const url = generateUrl('apps/integration_mattermost/sendFile')
 	axios.post(url, req).then((response) => {
-		// finished
+		OCA.Mattermost.remoteFileIds.push(response.data.remote_file_id)
+		OCA.Mattermost.sentFileNames.push(file.name)
+		OCA.Mattermost.MattermostSendModalVue.fileFinished(file.id)
 		if (OCA.Mattermost.filesToSend.length === 0) {
-			showSuccess(
-				n(
-					'integration_mattermost',
-					'{fileName} was sent to {channelName}',
-					'{count} files were sent to {channelName}',
-					count + 1,
-					{
-						fileName: file.name,
-						channelName,
-						count: count + 1,
-					}
-				)
-			)
-			OCA.Mattermost.MattermostSendModalVue.success()
+			// finished
+			sendMessageAfterFilesUpload(channelId, channelName, comment)
 		} else {
 			// not finished
-			OCA.Mattermost.MattermostSendModalVue.fileFinished(file.id)
-			sendFileLoop(channelId, channelName, count + 1)
+			sendFileLoop(channelId, channelName, comment)
 		}
 	}).catch((error) => {
 		console.error(error)
 		OCA.Mattermost.MattermostSendModalVue.failure()
 		OCA.Mattermost.filesToSend = []
+		OCA.Mattermost.sentFileNames = []
 		showError(
 			t('integration_mattermost', 'Failed to send {name} to Mattermost', { name: file.name })
 			+ ' ' + error.response?.request?.responseText
@@ -318,10 +297,43 @@ function sendFileLoop(channelId, channelName, count = 0) {
 	})
 }
 
-function sendMessage(channelId, message) {
+function sendMessageAfterFilesUpload(channelId, channelName, comment) {
+	const count = OCA.Mattermost.sentFileNames.length
+	const lastFileName = count === 0 ? t('integration_mattermost', 'Nothing') : OCA.Mattermost.sentFileNames[count - 1]
+	sendMessage(channelId, comment, OCA.Mattermost.remoteFileIds).then((response) => {
+		showSuccess(
+			n(
+				'integration_mattermost',
+				'{fileName} was sent to {channelName}',
+				'{count} files were sent to {channelName}',
+				count,
+				{
+					fileName: lastFileName,
+					channelName,
+					count,
+				}
+			)
+		)
+		OCA.Mattermost.MattermostSendModalVue.success()
+	}).catch((error) => {
+		console.error(error)
+		OCA.Mattermost.MattermostSendModalVue.failure()
+		showError(
+			t('integration_mattermost', 'Failed to send files to Mattermost')
+			+ ': ' + error.response?.request?.responseText
+		)
+	}).then(() => {
+		OCA.Mattermost.filesToSend = []
+		OCA.Mattermost.remoteFileIds = []
+		OCA.Mattermost.sentFileNames = []
+	})
+}
+
+function sendMessage(channelId, message, remoteFileIds = undefined) {
 	const req = {
 		message,
 		channelId,
+		remoteFileIds,
 	}
 	const url = generateUrl('apps/integration_mattermost/sendMessage')
 	return axios.post(url, req)
@@ -346,17 +358,9 @@ OCA.Mattermost.MattermostSendModalVue.$on('validate', ({ filesToSend, channelId,
 	} else if (type === SEND_TYPE.internal_link.id) {
 		sendInternalLinks(channelId, channelName, comment)
 	} else {
-		sendMessage(channelId, comment).then((response) => {
-			sendFileLoop(channelId, channelName)
-		}).catch((error) => {
-			console.error(error)
-			OCA.Mattermost.MattermostSendModalVue.failure()
-			OCA.Mattermost.filesToSend = []
-			showError(
-				t('integration_mattermost', 'Failed to send files to Mattermost')
-				+ ': ' + error.response?.request?.responseText
-			)
-		})
+		OCA.Mattermost.remoteFileIds = []
+		OCA.Mattermost.sentFileNames = []
+		sendFileLoop(channelId, channelName, comment)
 	}
 })
 
