@@ -189,10 +189,18 @@ class MattermostSearchMessagesProvider implements IProvider {
 	 * @return string
 	 */
 	protected function getLinkToMattermost(array $entry, string $url): string {
+		/*
 		if ($entry['channel_type'] === 'D') {
+			// in a direct conversation
 			return $url . '/' . $entry['team_name'] . '/messages/@' . $entry['direct_message_user_name'];
 		}
-		return $url . '/' . $entry['team_name'] . '/channels/' . $entry['channel_name'];
+		*/
+		// in a channel
+		// return $url . '/' . $entry['team_name'] . '/channels/' . $entry['channel_name'];
+
+		// most generic way: permalinks
+		// https://mm.org/teamID/pl/postID
+		return $url . '/' . $entry['team_name'] . '/pl/' . $entry['id'];
 	}
 
 	/**

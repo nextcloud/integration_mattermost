@@ -224,7 +224,7 @@ export default {
 			})
 		},
 		getNotificationTarget(n) {
-			return this.mattermostUrl + '/' + n.team_name + '/channels/' + n.channel_name
+			return this.mattermostUrl + '/' + n.team_name + '/pl/' + n.id
 		},
 		getUniqueKey(n) {
 			return n.id + ':' + n.create_at
@@ -241,6 +241,9 @@ export default {
 			return imagePath('integration_mattermost', 'mention.svg')
 		},
 		getSubline(n) {
+			if (n.channel_type === 'D') {
+				return t('integration_mattermost', '{name} in @{direct_username} at {date}', { name: n.user_name, direct_username: n.direct_message_user_name, date: this.getFormattedDate(n) })
+			}
 			return t('integration_mattermost', '{name} in #{channel} at {date}', { name: n.user_name, channel: n.channel_name, date: this.getFormattedDate(n) })
 		},
 		getTargetTitle(n) {
