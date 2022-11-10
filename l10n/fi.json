@@ -1,5 +1,27 @@
 { "translations": {
+    "Error getting OAuth access token. " : "Virhe haettaessa OAuth-käyttöpolettia.",
+    "Error during OAuth exchanges" : "Virhe OAuth-tunnistautumisessa",
+    "Bad credentials" : "Virheelliset kirjautumistiedot",
+    "Bad HTTP method" : "Virheellinen HTTP-metodi",
+    "OAuth access token refused" : "OAuth-valtuutus hylätty",
+    "Connected accounts" : "Yhdistetyt tilit",
+    "Instance address" : "Instanssin osoite",
+    "Application ID" : "Sovelluksen ID",
     "Application secret" : "Sovelluksen salaisuus",
-    "Use a popup to authenticate" : "Käytä ponnahdusikkunaa tunnistautumista varten"
+    "Use a popup to authenticate" : "Käytä ponnahdusikkunaa tunnistautumista varten",
+    "Personal access token" : "Henkilökohtainen valtuutustietue",
+    "Login" : "Kirjaudu sisään",
+    "Password" : "Salasana",
+    "Connected as {user}" : "Yhdistetty käyttäjänä {user}",
+    "Files" : "Tiedostot",
+    "Channel" : "Kanava",
+    "Start typing to search" : "Aloita kirjoittaminen hakeaksesi",
+    "Type" : "Tyyppi",
+    "Set expiration date" : "Aseta vanhenemispäivä",
+    "Comment" : "Kommentti",
+    "Cancel" : "Peruuta",
+    "View only" : "Vain katselu",
+    "Edit" : "Muokkaa",
+    "Upload files" : "Lähetä tiedostoja"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

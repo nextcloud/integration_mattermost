@@ -1,4 +1,32 @@
 { "translations": {
-    "Use a popup to authenticate" : "Popup zur Authentifizierung verwenden"
+    "Mattermost" : "Mattermost",
+    "Error getting OAuth access token. " : "Fehler beim Abrufen des OAuth-Zugriffstokens.",
+    "Error during OAuth exchanges" : "Fehler beim OAuth-Austausch",
+    "Bad credentials" : "Falsche Anmeldeinformationen",
+    "Bad HTTP method" : "Ungültige HTTP-Methode",
+    "OAuth access token refused" : "OAuth-Zugriffstoken abgelehnt",
+    "Connected accounts" : "Verbundene Konten",
+    "Make sure you set the \"Redirect URI\" to" : "Stellen Sie sicher, dass die \"Weiterleitungs-URI\" gesetzt ist auf",
+    "OAuth app instance address" : "OAuth-App Instanzadresse",
+    "Instance address" : "Adresse der Instanz",
+    "Application ID" : "Anwendungs-ID",
+    "Application secret" : "Anwendungsgeheimnis",
+    "Use a popup to authenticate" : "Popup zur Authentifizierung verwenden",
+    "Personal access token" : "Persönlicher Zugriffsschlüssel",
+    "Login" : "Anmelden",
+    "Password" : "Passwort",
+    "Connected as {user}" : "Verbunden als {user}",
+    "Invalid access token" : "Falscher Zugriffstoken",
+    "Files" : "Dateien",
+    "Channel" : "Kanal",
+    "Start typing to search" : "Beginnen Sie mit der Eingabe, um zu suchen",
+    "Type" : "Typ",
+    "Set expiration date" : "Ablaufdatum setzen",
+    "Comment" : "Kommentar",
+    "Cancel" : "Abbrechen",
+    "View only" : "Nur anzeigen",
+    "Edit" : "Bearbeiten",
+    "Go to settings" : "Gehe zu den Einstellungen",
+    "Upload files" : "Dateien hochladen"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

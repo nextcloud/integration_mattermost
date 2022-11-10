@@ -1,0 +1,27 @@
+{ "translations": {
+    "Mattermost" : "Mattermost",
+    "Error getting OAuth access token. " : "Produciuse un erro ao obter o testemuño de acceso OAuth.",
+    "Error during OAuth exchanges" : "Produciuse un erro durante os intercambios de OAuth",
+    "Bad credentials" : "Credenciais incorrectas",
+    "OAuth access token refused" : "Foi rexeitado o testemuño de acceso de OAuth",
+    "Connected accounts" : "Contas conectadas",
+    "Make sure you set the \"Redirect URI\" to" : "Asegúrese de estabelecer o «URI de redirección» como",
+    "OAuth app instance address" : "Enderezo da instancia de OAuth",
+    "Instance address" : "Enderezo da instancia",
+    "Application ID" : "ID da aplicación",
+    "Application secret" : "Segredo da aplicación",
+    "Personal access token" : "Testemuño de acceso persoal",
+    "Login" : "Acceder",
+    "Password" : "Contrasinal",
+    "Connected as {user}" : "Conectado como {user}",
+    "Files" : "Ficheiros",
+    "Channel" : "Canle",
+    "Start typing to search" : "Comece a escribir para buscar",
+    "Type" : "Tipo",
+    "Set expiration date" : "Estabelecer a data de caducidade",
+    "Comment" : "Comentario",
+    "Cancel" : "Cancelar",
+    "Edit" : "Editar",
+    "Upload files" : "Enviar ficheiros"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

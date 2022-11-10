@@ -1,5 +1,9 @@
 { "translations": {
+    "Login" : "Login",
+    "Password" : "ئىم",
     "Files" : "ھۆججەتلەر",
+    "Type" : "Type",
+    "Cancel" : "ۋاز كەچ",
     "Edit" : "تەھرىر"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

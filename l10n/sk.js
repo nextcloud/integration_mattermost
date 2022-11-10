@@ -1,13 +1,32 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Error getting OAuth access token. " : "Chyba pri získavaní prístupového tokenu OAuth.",
     "Error during OAuth exchanges" : "Chyba počas výmeny OAuth",
+    "Bad credentials" : "Nesprávne prihlasovacie údaje",
+    "Bad HTTP method" : "Zlá metóda HTTP",
+    "OAuth access token refused" : "Prístupový token OAuth bol zamietnutý",
+    "Connected accounts" : "Prepojené účty",
+    "Make sure you set the \"Redirect URI\" to" : "Nezabudnite nastaviť \"Redirect URI\" na",
+    "OAuth app instance address" : "Adresa inštancie aplikácie OAuth",
+    "Instance address" : "Adresa inštancie",
+    "Application ID" : "ID aplikácie",
     "Application secret" : "Aplikačný tajný kľúč",
     "Use a popup to authenticate" : "Pre overenie použite kontextové okno",
+    "Personal access token" : "Osobný prístupový token",
+    "Login" : "Prihlásiť sa",
+    "Password" : "Heslo",
     "Connected as {user}" : "Pripojený ako {user}",
     "Invalid access token" : "Nesprávny prístupový token",
     "Files" : "Súbory",
+    "Channel" : "Kanál",
     "Start typing to search" : "Začnite písať pre vyhľadanie",
-    "Edit" : "Upraviť"
+    "Type" : "Typ",
+    "Set expiration date" : "Nastaviť dátum expirácie",
+    "Comment" : "Komentár",
+    "Cancel" : "Zrušiť",
+    "View only" : "Iba pre čítanie",
+    "Edit" : "Upraviť",
+    "Upload files" : "Nahrať súbory"
 },
 "nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);");

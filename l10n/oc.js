@@ -1,7 +1,18 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Bad credentials" : "Marrits identificants",
+    "Login" : "Login",
+    "Password" : "Senhal",
     "Connected as {user}" : "Connectat coma {user}",
-    "Start typing to search" : "Començatz de picar per recercar"
+    "Files" : "Fichièrs",
+    "Channel" : "Cadena",
+    "Start typing to search" : "Començatz de picar per recercar",
+    "Type" : "Tipe",
+    "Set expiration date" : "Especificar una data d'expiracion",
+    "Comment" : "Comentaris",
+    "Cancel" : "Anullar",
+    "View only" : "Veire solament",
+    "Edit" : "Modificar"
 },
 "nplurals=2; plural=(n > 1);");
