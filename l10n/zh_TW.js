@@ -88,9 +88,9 @@ OC.L10N.register(
     "Send to Mattermost" : "傳送至 Mattermost",
     "_A link to {fileName} was sent to {channelName}_::_{number} links were sent to {channelName}_" : ["{number} 個連結已傳送至 {channelName}"],
     "Failed to send links to Mattermost" : "傳送連結至 Mattermost 失敗",
-    "_{count} file was sent to {channelName}_::_{count} files were sent to {channelName}_" : ["{count} 個檔案已傳送至 {channelName}"],
-    "_{fileName} was sent to {channelName}_::_{count} files were sent to {channelName}_" : ["{count} 個檔案已傳送至 {channelName}"],
+    "Failed to send internal links to Mattermost" : "未能將內部連結傳送到 Mattermost",
     "Failed to send {name} to Mattermost" : "傳送 {name} 至 Mattermost 失敗",
+    "_{fileName} was sent to {channelName}_::_{count} files were sent to {channelName}_" : ["{count} 個檔案已傳送至 {channelName}"],
     "Failed to send files to Mattermost" : "傳送檔案至 Mattermost 失敗",
     "Sign in with Mattermost" : "使用 Mattermost 登入",
     "Failed to save Mattermost OAuth state" : "儲存 Mattermost OAuth 狀態失敗",
@@ -98,6 +98,7 @@ OC.L10N.register(
     "Do you want to go to your \"Connect accounts\" personal settings?" : "您想要到您的「連結帳號」個人設定嗎？",
     "Go to settings" : "到設定",
     "Upload files" : "上傳檔案",
-    "Public links" : "公開連結"
+    "Public links" : "公開連結",
+    "Internal links (Only works for users with access to the files)" : "內部連結（僅對有權存取此檔案的使用者有效）"
 },
 "nplurals=1; plural=0;");

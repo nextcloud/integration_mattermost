@@ -88,9 +88,9 @@ OC.L10N.register(
     "Send to Mattermost" : "Odeslat do Mattermost",
     "_A link to {fileName} was sent to {channelName}_::_{number} links were sent to {channelName}_" : ["Odkaz na {fileName} byl odeslán {channelName}","{number} odkazy byly odeslány {channelName}","{number} odkazů bylo odesláno {channelName}","{number} odkazy byly odeslány {channelName}"],
     "Failed to send links to Mattermost" : "Nepodařilo se odeslat odkazy do Mattermost",
-    "_{count} file was sent to {channelName}_::_{count} files were sent to {channelName}_" : ["{count} soubor byl odeslán {channelName}","{count} soubory byl odeslány {channelName}","{count} souborů bylo odesláno {channelName}","{count} soubory byl odeslány {channelName}"],
-    "_{fileName} was sent to {channelName}_::_{count} files were sent to {channelName}_" : ["{fileName} byl odeslán {channelName}","{count} soubory byly odeslány {channelName}","{count} souborů bylo odesláno {channelName}","{count} soubory byly odeslány {channelName}"],
+    "Failed to send internal links to Mattermost" : "Nepodařilo se odeslat interní odkazy do Mattermost",
     "Failed to send {name} to Mattermost" : "Nepodařilo se odeslat {name} do Mattermost",
+    "_{fileName} was sent to {channelName}_::_{count} files were sent to {channelName}_" : ["{fileName} byl odeslán {channelName}","{count} soubory byly odeslány {channelName}","{count} souborů bylo odesláno {channelName}","{count} soubory byly odeslány {channelName}"],
     "Failed to send files to Mattermost" : "Nepodařilo se odeslat soubory do Mattermost",
     "Sign in with Mattermost" : "Přihlásit se prostřednictvím Mattermost",
     "Failed to save Mattermost OAuth state" : "Nepodařilo se uložit stav Mattermost OAuth",
@@ -98,6 +98,7 @@ OC.L10N.register(
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Chcete přejít do svých osobních nastavení „Připojit účty“?",
     "Go to settings" : "Přejít do nastavení",
     "Upload files" : "Nahrát soubory",
-    "Public links" : "Veřejné odkazy"
+    "Public links" : "Veřejné odkazy",
+    "Internal links (Only works for users with access to the files)" : "Interním odkazy (funguje pouze pro uživatele, kteří mají k těmto souborům přístup)"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");

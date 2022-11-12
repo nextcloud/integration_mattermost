@@ -20,6 +20,7 @@ OC.L10N.register(
     "Set expiration date" : "Nustatyti galiojimo pabaigos datą",
     "Comment" : "Komentaras",
     "Cancel" : "Atsisakyti",
+    "password" : "slaptažodis",
     "View only" : "Tik peržiūrėti",
     "Edit" : "Taisyti",
     "Upload files" : "Įkelti failus"

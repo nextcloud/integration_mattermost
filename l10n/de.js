@@ -15,19 +15,15 @@ OC.L10N.register(
     "Application secret" : "Anwendungsgeheimnis",
     "Use a popup to authenticate" : "Popup zur Authentifizierung verwenden",
     "Personal access token" : "Persönlicher Zugriffstoken",
-    "Login" : "Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).",
-    "Password" : "Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).",
     "Connected as {user}" : "Verbunden als {user}",
     "Invalid access token" : "Ungültiger Zugriffstoken",
     "Files" : "Dateien",
     "Channel" : "Kanal",
     "Start typing to search" : "Beginne mit der Eingabe, um zu suchen",
     "Type" : "Typ",
-    "Set expiration date" : "Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).",
     "Comment" : "Kommentar",
     "Cancel" : "Abbrechen",
-    "View only" : "Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).",
-    "Edit" : "Bearbeiten",
-    "Upload files" : "Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE)."
+    "View only" : "Nur anzeigen",
+    "Edit" : "Bearbeiten"
 },
 "nplurals=2; plural=(n != 1);");
