@@ -5,8 +5,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## 1.0.3 – 2022-11-15
 ### Added
 - Ability to send internal links
+- translations
+
+### Changed
+- only send one message grouping optional comment + files
+  [#11](https://github.com/julien-nc/integration_mattermost/issues/11) @joho1968
+- use message permalinks instead of channel links as target for dashboard items and search results
+  [#12](https://github.com/julien-nc/integration_mattermost/issues/12) @joho1968
+
+### Fixed
+- fix search result entries for direct messages (displayed text and link)
+  [#12](https://github.com/julien-nc/integration_mattermost/issues/12) @joho1968
 
 ## 1.0.2 – 2022-11-09
 ### Added
