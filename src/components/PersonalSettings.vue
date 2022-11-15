@@ -123,53 +123,51 @@
 					@update:checked="onCheckboxChanged($event, 'webhooks_enabled')">
 					{{ t('integration_mattermost', 'Enable webhooks') }}
 				</NcCheckboxRadioSwitch>
-				<div class="line">
-					<label for="mattermost-cal-event-add">
-						<WebhookIcon :size="20" class="icon" />
-						{{ t('integration_mattermost', 'Calendar event created webhook URL') }}
-					</label>
-					<input id="mattermost-cal-event-add"
-						v-model="state.calendar_event_created_webhook"
-						type="text"
-						:disabled="!state.webhooks_enabled"
-						:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
-						@input="onInput">
-				</div>
-				<div class="line">
-					<label for="mattermost-cal-event-edit">
-						<WebhookIcon :size="20" class="icon" />
-						{{ t('integration_mattermost', 'Calendar event updated webhook URL') }}
-					</label>
-					<input id="mattermost-cal-event-edit"
-						v-model="state.calendar_event_updated_webhook"
-						type="text"
-						:disabled="!state.webhooks_enabled"
-						:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
-						@input="onInput">
-				</div>
-				<div class="line">
-					<label for="mattermost-daily-summary">
-						<WebhookIcon :size="20" class="icon" />
-						{{ t('integration_mattermost', 'Daily summary webhook URL') }}
-					</label>
-					<input id="mattermost-daily-summary"
-						v-model="state.daily_summary_webhook"
-						type="text"
-						:disabled="!state.webhooks_enabled"
-						:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
-						@input="onInput">
-				</div>
-				<div class="line">
-					<label for="mattermost-webhook-secret">
-						<KeyIcon :size="20" class="icon" />
-						{{ t('integration_mattermost', 'Webhook secret') }}
-					</label>
-					<input id="mattermost-webhook-secret"
-						v-model="state.webhook_secret"
-						type="password"
-						:disabled="!state.webhooks_enabled"
-						:placeholder="t('integration_mattermost', 'secret')"
-						@input="onInput">
+				<div v-if="state.webhooks_enabled" id="webhook-fields">
+					<div class="line">
+						<label for="mattermost-cal-event-add">
+							<WebhookIcon :size="20" class="icon" />
+							{{ t('integration_mattermost', 'Calendar event created webhook URL') }}
+						</label>
+						<input id="mattermost-cal-event-add"
+							v-model="state.calendar_event_created_webhook"
+							type="text"
+							:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
+							@input="onInput">
+					</div>
+					<div class="line">
+						<label for="mattermost-cal-event-edit">
+							<WebhookIcon :size="20" class="icon" />
+							{{ t('integration_mattermost', 'Calendar event updated webhook URL') }}
+						</label>
+						<input id="mattermost-cal-event-edit"
+							v-model="state.calendar_event_updated_webhook"
+							type="text"
+							:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
+							@input="onInput">
+					</div>
+					<div class="line">
+						<label for="mattermost-daily-summary">
+							<WebhookIcon :size="20" class="icon" />
+							{{ t('integration_mattermost', 'Daily summary webhook URL') }}
+						</label>
+						<input id="mattermost-daily-summary"
+							v-model="state.daily_summary_webhook"
+							type="text"
+							:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
+							@input="onInput">
+					</div>
+					<div class="line">
+						<label for="mattermost-webhook-secret">
+							<KeyIcon :size="20" class="icon" />
+							{{ t('integration_mattermost', 'Webhook secret') }}
+						</label>
+						<input id="mattermost-webhook-secret"
+							v-model="state.webhook_secret"
+							type="password"
+							:placeholder="t('integration_mattermost', 'secret')"
+							@input="onInput">
+					</div>
 				</div>
 			</div>
 		</div>
