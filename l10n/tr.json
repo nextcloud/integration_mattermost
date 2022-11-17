@@ -81,8 +81,25 @@
     "Error connecting to Mattermost" : "Mattermost bağlantısı kurulurken sorun çıktı",
     "No Mattermost notifications!" : "Herhangi bir Mattermost bildirimi yok!",
     "Failed to get Mattermost notifications" : "Mattermost bildirimleri alınamadı",
+    "{name} in @{direct_username} at {date}" : "{name} tarafından @{direct_username} ile {date} tarihinde",
+    "{name} in #{channel} at {date}" : "{name} tarafından #{channel} kanalında {date} tarihinde",
+    "Failed to edit Mattermost todo" : "Mattermost yapılacak işler listesi düzenlenemedi",
     "Send files to Mattermost" : "Dosyaları Mattermost üzerine gönder",
+    "Send to Mattermost" : "Mattermost üzerine gönder",
+    "_A link to {fileName} was sent to {channelName}_::_{number} links were sent to {channelName}_" : ["Bir bağlantı {channelName} kanalına gönderildi","{number} bağlantı {channelName} kanalına gönderildi"],
+    "Failed to send links to Mattermost" : "Bağlantılar Mattermost üzerine gönderilemedi",
+    "Failed to send internal links to Mattermost" : "İç bağlantılar Mattermost üzerine gönderilemedi",
+    "Failed to send {name} to Mattermost" : "{name} Mattermost üzerine gönderilemedi",
+    "Nothing" : "Hiçbir şey",
+    "_{fileName} was sent to {channelName}_::_{count} files were sent to {channelName}_" : ["{fileName}, {channelName} kanalına gönderildi","{count} dosya {channelName} kanalına gönderildi"],
+    "Failed to send files to Mattermost" : "Dosyalar Mattermost üzerine gönderilemedi",
+    "Sign in with Mattermost" : "Mattermost ile oturum aç",
+    "Failed to save Mattermost OAuth state" : "Mattermost OAuth durumu kaydedilemedi",
+    "You need to connect to a Mattermost server before using the Mattermost integration." : "Mattermost bütünleştirmesini kullanmadan önce bir Mattermost sunucusu ile bağlantı kurmalısınız.",
+    "Do you want to go to your \"Connect accounts\" personal settings?" : "Kişisel ayarlarınızdaki \"Hesapları ilişkilendir\" bölümüne gitmek ister misiniz?",
+    "Go to settings" : "Ayarlara git",
     "Upload files" : "Dosyaları yükle",
-    "Public links" : "Herkese açık bağlantılar"
+    "Public links" : "Herkese açık bağlantılar",
+    "Internal links (Only works for users with access to the files)" : "İç bağlantılar (yalnızca bu dosyalara erişebilen kullanıcılar için geçerlidir)"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }
