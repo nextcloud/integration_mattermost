@@ -9,7 +9,7 @@
 			<div id="mattermost-connect-block">
 				<p v-if="!showOAuth && !connected" class="settings-hint">
 					<InformationOutlineIcon :size="24" class="icon" />
-					{{ t('integration_mattermost', 'If you are allowed to, You can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens.') }}
+					{{ t('integration_mattermost', 'If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens.') }}
 				</p>
 				<p v-if="!showOAuth && !connected" class="settings-hint">
 					{{ t('integration_mattermost', 'You can connect with a personal token OR just with your login/password.') }}
