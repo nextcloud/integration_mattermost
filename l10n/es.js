@@ -28,7 +28,6 @@ OC.L10N.register(
     "Use a popup to authenticate" : "Use una ventana emergente para autenticar",
     "Mattermost admin options saved" : "Las opciones de admin para Mattermost fueron guardadas",
     "Failed to save Mattermost admin options" : "Fallo al guardar las opciones de admin Mattermost ",
-    "If you are allowed to, You can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Si le está permitido, podrá crear un token de acceso personal en su perfil Mattermost -> Seguridad -> Tokens de acceso personales.",
     "You can connect with a personal token OR just with your login/password." : "Puede conectarse con su token de acceso personal o con su usuario/contraseña.",
     "Mattermost instance address" : "Dirección de la instancia Mattermost",
     "Personal access token" : "Token de acceso personal",

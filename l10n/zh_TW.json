@@ -26,7 +26,6 @@
     "Use a popup to authenticate" : "使用彈出式視窗進行驗證",
     "Mattermost admin options saved" : "已儲存 Mattermost 管理選項",
     "Failed to save Mattermost admin options" : "儲存 Mattermost 管理選項失敗",
-    "If you are allowed to, You can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "若允許，您可以在您的 Mattermost「帳號設定」→「安全」→「個人存取權杖」中建立個人存取權杖。",
     "You can connect with a personal token OR just with your login/password." : "您可以使用個人權杖或僅使用您的登入帳號/密碼進行連線。",
     "Mattermost instance address" : "Mattermost 站台地址",
     "Personal access token" : "個人存取權杖",

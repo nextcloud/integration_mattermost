@@ -9,6 +9,7 @@ OC.L10N.register(
     "Set expiration date" : "تنظیم تاریخ انقضا",
     "Comment" : "دیدگاه",
     "Cancel" : "لغو",
+    "View only" : "تنها مشاهده",
     "Edit" : "ویرایش",
     "Upload files" : "بارگذاری فایل ها"
 },
