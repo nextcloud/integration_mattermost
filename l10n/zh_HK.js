@@ -28,6 +28,7 @@ OC.L10N.register(
     "Use a popup to authenticate" : "使用彈出窗口進行身份驗證",
     "Mattermost admin options saved" : "已儲存 Mattermost 管理員選項",
     "Failed to save Mattermost admin options" : "儲存 Mattermost 管理員選項失敗",
+    "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "如果允許，您可以在 Mattermost 個人資料 -> 安全 -> 個人訪問令牌中創建個人訪問令牌。",
     "You can connect with a personal token OR just with your login/password." : "您可以使用個人令牌或僅使用您的登錄名/密碼進行連接。",
     "Mattermost instance address" : "Mattermost 站台地址",
     "Personal access token" : "個人存取權杖",

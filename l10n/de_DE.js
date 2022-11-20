@@ -28,6 +28,7 @@ OC.L10N.register(
     "Use a popup to authenticate" : "Popup zur Anmeldung verwenden",
     "Mattermost admin options saved" : "Mattermost-Administrations-Einstellungen gespeichert.",
     "Failed to save Mattermost admin options" : "Fehler beim Speichern der Mattermost-Administrations-Einstellungen",
+    "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Wenn Sie dazu berechtigt sind, können Sie in Ihrem Mattermost-Profil -> Sicherheit -> Persönliche Zugangstoken einen persönlichen Zugangstoken erstellen.",
     "You can connect with a personal token OR just with your login/password." : "Sie können sich mit einem persönlichen Token ODER einfach mit Ihrem Login/Passwort verbinden.",
     "Mattermost instance address" : "Adresse der Mattermost-Instanz",
     "Personal access token" : "Persönlicher Zugriffsschlüssel",

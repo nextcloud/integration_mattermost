@@ -26,6 +26,7 @@
     "Use a popup to authenticate" : "Ověřte se ve vyskakovacím okně",
     "Mattermost admin options saved" : "Předvolby správy pro Mattermost uloženy",
     "Failed to save Mattermost admin options" : "Nepodařilo se uložit předvolby správy pro Mattermost",
+    "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Pokud k tomu máte oprávnění, je možné si vytvořit osobní přístupový token, ve svém Mattermost profilu -> Zabezpečení -> Osobní přístupové tokeny",
     "You can connect with a personal token OR just with your login/password." : "Je možné se připojit pomocí osobního tokenu NEBO jen přihlašovacím jménem / heslem.",
     "Mattermost instance address" : "Adresa instance Mattermost",
     "Personal access token" : "Osobní přístupový token",

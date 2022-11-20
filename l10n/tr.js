@@ -28,6 +28,7 @@ OC.L10N.register(
     "Use a popup to authenticate" : "Kimlik doğrulaması için açılan pencere kullanılsın",
     "Mattermost admin options saved" : "Mattermost yönetici ayarları kaydedildi",
     "Failed to save Mattermost admin options" : "Mattermost yönetici ayarları kaydedilemedi",
+    "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Kullanıcınıza uygun izin verilmişse, Mattermost profilinizde -> Güvenlik -> Kişisel erişim kodları bölümünden bir kişisel erişim kodu oluşturabilirsiniz.",
     "You can connect with a personal token OR just with your login/password." : "Kişisel bir kod ile YA DA yalnızca kullanıcı adı ve parolanızla bağlantı kurabilirsiniz.",
     "Mattermost instance address" : "Mattermost kopyası adresi",
     "Personal access token" : "Kişisel erişim kodu",

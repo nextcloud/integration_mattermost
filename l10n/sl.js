@@ -12,6 +12,7 @@ OC.L10N.register(
     "Instance address" : "Naslov povezave",
     "Application ID" : "ID Programa",
     "Application secret" : "Koda programa",
+    "Use a popup to authenticate" : "Uporabi pojavno okno za overitev",
     "Personal access token" : "Osebni žeton za dostop",
     "Login" : "Prijava",
     "Password" : "Geslo",
