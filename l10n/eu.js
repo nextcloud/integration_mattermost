@@ -7,6 +7,8 @@ OC.L10N.register(
     "Bad credentials" : "Kredentzial okerrak",
     "Bad HTTP method" : "HTTP metodo okerra",
     "OAuth access token refused" : "OAuth sarbide tokena ukatua izan da",
+    "Invalid credentials" : "Kredentzial baliogabeak",
+    "Invalid response" : "Erantzun baliogabea",
     "Connected accounts" : "Konektatutako kontuak",
     "Make sure you set the \"Redirect URI\" to" : "Ziurtatu \"Birbideratze URLa\" ezartzen duzula hona:",
     "OAuth app instance address" : "OAuth aplikazioaren instantziaren helbidea",
@@ -19,6 +21,7 @@ OC.L10N.register(
     "Password" : "Pasahitza",
     "Connected as {user}" : "{user} gisa konektatuta",
     "Invalid access token" : "Sarbide token baliogabea",
+    "Invalid login/password" : "Erabiltzaile/pasahitz baliogabea",
     "Files" : "Fitxategiak",
     "Channel" : "Kanala",
     "Start typing to search" : "Hasi idazten bilatzeko",
@@ -28,6 +31,8 @@ OC.L10N.register(
     "Cancel" : "Utzi",
     "View only" : "Ikusi soilik",
     "Edit" : "Aldatu",
+    "_Send file to Mattermost_::_Send files to Mattermost_" : ["Bidali fitxategia Mattermost-era","Bidali fitxategiak Mattermost-era"],
+    "Send files to Mattermost" : "Bidali fitxategiak Mattermost-era",
     "Upload files" : "Igo fitxategiak"
 },
 "nplurals=2; plural=(n != 1);");
