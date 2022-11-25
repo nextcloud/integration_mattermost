@@ -42,7 +42,7 @@ OC.L10N.register(
     "Disconnect from Mattermost" : "Mattermost bağlantısını kes",
     "Add file action to send files to Mattermost" : "Dosyaları Mattermost üzerine yollayan bir dosya işlemi ekleyin",
     "Enable navigation link (link to Mattermost with a top menu item)" : "Gezinme bağlantısı etkinleştirilsin (bir üst menü ögesiyle Mattermost bağlantısı)",
-    "Enable searching for messages" : "İleti arama etkinleştirilsin",
+    "Enable searching for messages" : "İletilerde arama yapılabilsin",
     "Warning, everything you type in the search bar will be sent to Mattermost." : "Uyarı, arama çubuğuna yazdığınız her şey Mattermost üzerine gönderilecek.",
     "If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks." : "Mattermost üzerinde Nextcloud bütünleştirmesini yapılandırdığınızda, bu web bağlantıları uzaktan otomatik olarak yapılandırılır.",
     "This section does not require to be connected to Mattermost from Nextcloud." : "Bu bölümde, Nextcloud üzerinden Mattermost bağlantısı kurmak gerekmez.",
