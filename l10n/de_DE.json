@@ -76,7 +76,7 @@
     "_Send file to Mattermost_::_Send files to Mattermost_" : ["Datei an Mattermost senden","Dateien an Mattermost senden"],
     "_Send link to Mattermost_::_Send links to Mattermost_" : ["Link zu Mattermost senden","Links zu Mattermost senden"],
     "_Send file_::_Send files_" : ["Datei senden","Dateien senden"],
-    "_Send link_::_Send links_" : ["Link teilen","Links teilen"],
+    "_Send link_::_Send links_" : ["Link teilen","Links senden"],
     "No Mattermost account connected" : "Kein Mattermost-Konto verbunden",
     "Error connecting to Mattermost" : "Fehler bei der Verbindung zu Mattermost",
     "No Mattermost notifications!" : "Keine Mattermost-Benachrichtigungen!",
