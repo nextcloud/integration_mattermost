@@ -20,6 +20,7 @@ OC.L10N.register(
     "Login" : "Entrar",
     "Password" : "Senha",
     "Connected as {user}" : "Conectado como {user}",
+    "Enable webhooks" : "Habilitar webhooks",
     "Invalid access token" : "Token de acesso inválido",
     "Files" : "Arquivos",
     "Channel" : "Canal",
