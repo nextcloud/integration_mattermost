@@ -71,7 +71,7 @@ OC.L10N.register(
     "Send to Mattermost" : "Envoyer vers Mattermost",
     "_A link to {fileName} was sent to {channelName}_::_{number} links were sent to {channelName}_" : ["Un lien vers {fileName} a été envoyé sur {channelName}","{number} liens ont été envoyés sur {channelName}","{number} liens ont été envoyés sur {channelName}"],
     "Nothing" : "Rien",
-    "Upload files" : "Envoyer des fichiers",
+    "Upload files" : "Téléverser des fichiers",
     "Public links" : "Liens publics",
     "Internal links (Only works for users with access to the files)" : "Liens internes (ne fonctionne que pour les utilisateurs ayant accès aux fichiers)"
 },
