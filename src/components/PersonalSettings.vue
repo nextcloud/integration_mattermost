@@ -158,6 +158,17 @@
 							@input="onInput">
 					</div>
 					<div class="line">
+						<label for="mattermost-imminent-events">
+							<WebhookIcon :size="20" class="icon" />
+							{{ t('integration_mattermost', 'Upcoming events webhook URL') }}
+						</label>
+						<input id="mattermost-imminent-events"
+							v-model="state.imminent_events_webhook"
+							type="text"
+							:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
+							@input="onInput">
+					</div>
+					<div class="line">
 						<label for="mattermost-webhook-secret">
 							<KeyIcon :size="20" class="icon" />
 							{{ t('integration_mattermost', 'Webhook secret') }}
@@ -286,6 +297,7 @@ export default {
 					calendar_event_created_webhook: this.state.calendar_event_created_webhook,
 					calendar_event_updated_webhook: this.state.calendar_event_updated_webhook,
 					daily_summary_webhook: this.state.daily_summary_webhook,
+					imminent_events_webhook: this.state.imminent_events_webhook,
 				})
 			}, 2000)()
 		},

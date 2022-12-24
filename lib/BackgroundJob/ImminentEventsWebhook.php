@@ -28,7 +28,7 @@ use OCP\BackgroundJob\TimedJob;
 use OCP\AppFramework\Utility\ITimeFactory;
 use Psr\Log\LoggerInterface;
 
-class DailySummaryWebhook extends TimedJob {
+class ImminentEventsWebhook extends TimedJob {
 
 	/** @var LoggerInterface */
 	protected $logger;
@@ -41,17 +41,16 @@ class DailySummaryWebhook extends TimedJob {
 								WebhookService $webhookService,
 								LoggerInterface $logger) {
 		parent::__construct($time);
-		// Every hour but it will only do something once a day
-		$this->setInterval(60 * 60);
+		$this->setInterval(10 * 60);
 
 		$this->logger = $logger;
 		$this->webhookService = $webhookService;
 	}
 
 	protected function run($argument): void {
-		foreach ($this->webhookService->dailySummaryWebhook() as $userResult) {
+		foreach ($this->webhookService->imminentEventsWebhook() as $userResult) {
 			$userId = $userResult['user_id'];
-			$this->logger->debug('Mattermost daily summary webhook for user "' . $userId . '"');
+			$this->logger->debug('Mattermost imminent events webhook for user "' . $userId . '"');
 		}
 	}
 }

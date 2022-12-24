@@ -27,6 +27,7 @@ use OCP\IDateTimeFormatter;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserManager;
+use OCP\PreConditionNotMetException;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -83,6 +84,10 @@ class WebhookService {
 		$this->dateTimeFormatter = $dateTimeFormatter;
 	}
 
+	/**
+	 * @return Generator
+	 * @throws PreConditionNotMetException
+	 */
 	public function dailySummaryWebhook(): Generator {
 		$userIds = [];
 		$this->userManager->callForAllUsers(function (IUser $user) use (&$userIds) {
@@ -100,6 +105,11 @@ class WebhookService {
 		return [];
 	}
 
+	/**
+	 * @param string $userId
+	 * @return array|null
+	 * @throws PreConditionNotMetException
+	 */
 	public function userDailySummaryWebhook(string $userId): ?array {
 		$url = $this->config->getUserValue($userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_CONFIG_KEY);
 		if ($url === '') {
@@ -111,7 +121,7 @@ class WebhookService {
 		$webhooksEnabled = $this->config->getUserValue($userId, Application::APP_ID, Application::WEBHOOKS_ENABLED_CONFIG_KEY) === '1';
 		if (!$webhooksEnabled) {
 			return [
-				'message' => 'Mattermost webhooks disabled for user',
+				'message' => 'Mattermost webhooks disabled for this user',
 				'nb_events' => null,
 			];
 		}
@@ -132,8 +142,9 @@ class WebhookService {
 		}
 		$this->config->setUserValue($userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_LAST_DATE_CONFIG_KEY, $now->format('Y-m-d'));
 
+		$endDate = $dayNow->add(new DateInterval('P1D'));
 		$content = [
-			'calendarEvents' => $this->getDailySummaryContent($userId, $dayNow),
+			'calendarEvents' => $this->getEvents($userId, $dayNow, $endDate),
 			'eventType' => 'dailySummary',
 		];
 		$secret = $this->config->getUserValue($userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY);
@@ -144,22 +155,94 @@ class WebhookService {
 	}
 
 	/**
+	 * @return Generator
+	 * @throws PreConditionNotMetException
+	 */
+	public function imminentEventsWebhook(): Generator {
+		$userIds = [];
+		$this->userManager->callForAllUsers(function (IUser $user) use (&$userIds) {
+			if ($user->isEnabled()) {
+				$userIds[] = $user->getUID();
+			}
+		});
+
+		foreach ($userIds as $userId) {
+			yield [
+				'user_id' => $userId,
+				'job_info' => $this->userImminentEventsWebhook($userId),
+			];
+		}
+		return [];
+	}
+
+	/**
 	 * @param string $userId
-	 * @param DateTimeImmutable $dayStart
+	 * @return array|null
+	 * @throws PreConditionNotMetException
+	 */
+	public function userImminentEventsWebhook(string $userId): ?array {
+		$url = $this->config->getUserValue($userId, Application::APP_ID, Application::IMMINENT_EVENTS_WEBHOOK_CONFIG_KEY);
+		if ($url === '') {
+			return [
+				'message' => 'No webhook url configured for imminent events',
+				'nb_events' => null,
+			];
+		}
+		$webhooksEnabled = $this->config->getUserValue($userId, Application::APP_ID, Application::WEBHOOKS_ENABLED_CONFIG_KEY) === '1';
+		if (!$webhooksEnabled) {
+			return [
+				'message' => 'Mattermost webhooks disabled for this user',
+				'nb_events' => null,
+			];
+		}
+
+		// check if it has already run today
+		// TODO use the user timezone or at least the server timezone
+		$now = new DateTimeImmutable();
+		$nowTs = $now->getTimestamp();
+		$lastImminentJobTimestamp = (int) $this->config->getUserValue($userId, Application::APP_ID, Application::IMMINENT_EVENTS_WEBHOOK_LAST_TS_CONFIG_KEY);
+
+		if ($nowTs < $lastImminentJobTimestamp + (30 * 60)) {
+			$ago = intdiv($nowTs - $lastImminentJobTimestamp, 60);
+			return [
+				'message' => 'Last "imminent events" job has run too recently (' . $ago . ' minutes ago)',
+				'nb_events' => null,
+			];
+		}
+
+		$endDate = $now->add(new DateInterval('PT30M'));
+		$this->config->setUserValue($userId, Application::APP_ID, Application::IMMINENT_EVENTS_WEBHOOK_LAST_TS_CONFIG_KEY, (string) $nowTs);
+
+		$content = [
+			'calendarEvents' => $this->getEvents($userId, $now, $endDate),
+			'eventType' => 'imminentEvents',
+		];
+		error_log('imminent events '.json_encode($content['calendarEvents']));
+		$secret = $this->config->getUserValue($userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY);
+		$this->sendWebhook($url, $content, $secret);
+		return [
+			'nb_events' => count($content['calendarEvents']),
+		];
+	}
+
+	/**
+	 * @param string $userId
+	 * @param DateTimeImmutable $startDate
+	 * @param DateTimeImmutable $endDate
 	 * @param int $limit
 	 * @return array
+	 * @throws Exception
 	 */
-	private function getDailySummaryContent(string $userId, DateTimeImmutable $dayStart, int $limit = 20): array {
+	private function getEvents(string $userId, DateTimeImmutable $startDate, DateTimeImmutable $endDate, int $limit = 20): array {
 		$calendars = $this->calendarManager->getCalendarsForPrincipal('principals/users/' . $userId);
 		$count = count($calendars);
 		if ($count === 0) {
 			return [];
 		}
-		$inADay = $dayStart->add(new DateInterval('P1D'));
 		$options = [
 			'timerange' => [
-				'start' => $dayStart,
-				'end' => $inADay,
+				'start' => $startDate,
+				'end' => $endDate,
 			]
 		];
 		$events = [];

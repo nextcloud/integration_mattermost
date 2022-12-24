@@ -18,7 +18,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DailySummary extends Command {
+class ImminentEvents extends Command {
 
 
 	/**
@@ -32,8 +32,8 @@ class DailySummary extends Command {
 	}
 
 	protected function configure() {
-		$this->setName('mattermost:daily-summary-webhook')
-			->setDescription('Manually trigger the "daily summary" webhook')
+		$this->setName('mattermost:imminent-events-webhook')
+			->setDescription('Manually trigger the "imminent events" webhook')
 			->addArgument(
 				'user_id',
 				InputArgument::OPTIONAL,
@@ -44,7 +44,7 @@ class DailySummary extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$userId = $input->getArgument('user_id');
 		if ($userId !== null) {
-			$jobResult = $this->webhookService->userDailySummaryWebhook($userId);
+			$jobResult = $this->webhookService->userImminentEventsWebhook($userId);
 			$nbEvents = $jobResult['nb_events'];
 			if ($nbEvents === null) {
 				$output->writeln('[' . $userId . '] ' . $jobResult['message']);
@@ -52,8 +52,8 @@ class DailySummary extends Command {
 			}
 			$output->writeln('[' . $userId . '] ' . $nbEvents . ' events sent');
 		} else {
-			$output->writeln('Trigger daily summary for all users');
-			foreach ($this->webhookService->dailySummaryWebhook() as $userResult) {
+			$output->writeln('Trigger imminent events for all users');
+			foreach ($this->webhookService->imminentEventsWebhook() as $userResult) {
 				$userId = $userResult['user_id'];
 				$jobResult = $userResult['job_info'];
 				if ($jobResult['nb_events'] === null) {
