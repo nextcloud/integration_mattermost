@@ -13,10 +13,8 @@ namespace OCA\Mattermost\Service;
 
 use Datetime;
 use Exception;
-use Generator;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
-use GuzzleHttp\RequestOptions;
 use OC\Files\Node\File;
 use OC\Files\Node\Folder;
 use OC\User\NoUserException;
@@ -27,13 +25,10 @@ use OCP\Files\NotPermittedException;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
-use OCP\IUser;
-use OCP\IUserManager;
 use OCP\Share\IShare;
 use Psr\Log\LoggerInterface;
 use OCP\Http\Client\IClientService;
 use OCP\Share\IManager as ShareManager;
-use Throwable;
 
 class MattermostAPIService {
 	/**
@@ -64,10 +59,6 @@ class MattermostAPIService {
 	 * @var IURLGenerator
 	 */
 	private $urlGenerator;
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
 
 	/**
 	 * Service to make requests to Mattermost API
@@ -79,7 +70,6 @@ class MattermostAPIService {
 								IRootFolder $root,
 								ShareManager $shareManager,
 								IURLGenerator $urlGenerator,
-								IUserManager $userManager,
 								IClientService $clientService) {
 		$this->logger = $logger;
 		$this->l10n = $l10n;
@@ -88,64 +78,6 @@ class MattermostAPIService {
 		$this->root = $root;
 		$this->shareManager = $shareManager;
 		$this->urlGenerator = $urlGenerator;
-		$this->userManager = $userManager;
-	}
-
-	public function dailySummaryWebhook(): Generator {
-		$userIds = [];
-		$this->userManager->callForAllUsers(function (IUser $user) use (&$userIds) {
-			if ($user->isEnabled()) {
-				$userIds[] = $user->getUID();
-			}
-		});
-
-		$today = (new Datetime())->format('Y-m-d');
-		foreach ($userIds as $userId) {
-			yield [
-				'user_id' => $userId,
-				'job_info' => $this->userDailySummaryWebhook($userId, $today),
-			];
-		}
-		return [];
-	}
-
-	public function userDailySummaryWebhook(string $userId, string $today): ?array {
-		$url = $this->config->getUserValue($userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_CONFIG_KEY);
-		if ($url === '') {
-			return [
-				'message' => 'No webhook url configured for daily summary',
-				'nb_events' => null,
-			];
-		}
-		$webhooksEnabled = $this->config->getUserValue($userId, Application::APP_ID, Application::WEBHOOKS_ENABLED_CONFIG_KEY) === '1';
-		if (!$webhooksEnabled) {
-			return [
-				'message' => 'Mattermost webhooks disabled for user',
-				'nb_events' => null,
-			];
-		}
-
-		// check if it has already run today
-		$lastDailyJobDate = $this->config->getUserValue($userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_LAST_DATE_CONFIG_KEY);
-		if ($lastDailyJobDate === $today) {
-			return [
-				'message' => 'Job has already been executed today',
-				'nb_events' => null,
-			];
-		}
-		$this->config->setUserValue($userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_LAST_DATE_CONFIG_KEY, $today);
-
-//		$content = $this->getDailySummaryContent($userId);
-		$content = [
-			['plop' => 'lala'],
-			['plop2' => 'lala2'],
-		];
-		$content['eventType'] = 'dailySummary';
-		$secret = $this->config->getUserValue($userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY);
-		$this->sendWebhook($url, $content, $secret);
-		return [
-			'nb_events' => count($content),
-		];
 	}
 
 	/**
@@ -809,31 +741,6 @@ class MattermostAPIService {
 		} catch (Exception $e) {
 			$this->logger->warning('Mattermost login error : '.$e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
-		}
-	}
-
-	/**
-	 * @param string $url
-	 * @param array $content
-	 * @return void
-	 */
-	public function sendWebhook(string $url, array $content, string $secret): void {
-		try {
-			$stringContent = json_encode($content);
-			$options = [
-				'headers' => [
-					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
-					'Content-Type' => 'application/json',
-				],
-				'body' => $stringContent,
-			];
-			if ($secret !== '') {
-				$hash = hash('sha256', $stringContent . $secret);
-				$options['headers']['X-Webhook-Signature'] = $hash;
-			}
-			$this->client->post($url, $options);
-		} catch (Exception | Throwable $e) {
-			$this->logger->error('Mattermost Webhook error : ' . $e->getMessage(), ['app' => Application::APP_ID]);
 		}
 	}
 }

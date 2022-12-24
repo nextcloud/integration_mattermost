@@ -31,11 +31,6 @@ use OCA\Mattermost\Dashboard\MattermostWidget;
 use OCA\Mattermost\Search\MattermostSearchMessagesProvider;
 use OCP\Util;
 
-/**
- * Class Application
- *
- * @package OCA\Mattermost\AppInfo
- */
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'integration_mattermost';
 
@@ -52,11 +47,6 @@ class Application extends App implements IBootstrap {
 	 */
 	private $config;
 
-	/**
-	 * Constructor
-	 *
-	 * @param array $urlParams
-	 */
 	public function __construct(array $urlParams = []) {
 		parent::__construct(self::APP_ID, $urlParams);
 

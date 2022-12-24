@@ -24,16 +24,12 @@
 namespace OCA\Mattermost\Listener;
 
 use OCA\Mattermost\AppInfo\Application;
-use OCA\Mattermost\Service\MattermostAPIService;
+use OCA\Mattermost\Service\WebhookService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IConfig;
 
 abstract class AbstractListener implements IEventListener {
-	/**
-	 * @var MattermostAPIService
-	 */
-	private $mattermostAPIService;
 	/**
 	 * @var IConfig
 	 */
@@ -42,13 +38,17 @@ abstract class AbstractListener implements IEventListener {
 	 * @var string|null
 	 */
 	protected $userId;
+	/**
+	 * @var WebhookService
+	 */
+	private $webhookService;
 
 	public function __construct(IConfig $config,
-								MattermostAPIService $mattermostAPIService,
+								WebhookService $webhookService,
 								?string $userId) {
-		$this->mattermostAPIService = $mattermostAPIService;
 		$this->config = $config;
 		$this->userId = $userId;
+		$this->webhookService = $webhookService;
 	}
 
 	public function handle(Event $event): void {
@@ -58,7 +58,7 @@ abstract class AbstractListener implements IEventListener {
 			[$url, $content] = $info;
 			$content['eventType'] = get_class($event);
 			$secret = $this->config->getUserValue($this->userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY);
-			$this->mattermostAPIService->sendWebhook($url, $content, $secret);
+			$this->webhookService->sendWebhook($url, $content, $secret);
 		}
 	}
 

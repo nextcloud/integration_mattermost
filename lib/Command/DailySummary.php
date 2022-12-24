@@ -12,8 +12,7 @@
 
 namespace OCA\Mattermost\Command;
 
-use DateTime;
-use OCA\Mattermost\Service\MattermostAPIService;
+use OCA\Mattermost\Service\WebhookService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,14 +20,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DailySummary extends Command {
 
-	/**
-	 * @var MattermostAPIService
-	 */
-	private $mattermostAPIService;
 
-	public function __construct(MattermostAPIService $mattermostAPIService) {
+	/**
+	 * @var WebhookService
+	 */
+	private $webhookService;
+
+	public function __construct(WebhookService $webhookService) {
 		parent::__construct();
-		$this->mattermostAPIService = $mattermostAPIService;
+		$this->webhookService = $webhookService;
 	}
 
 	protected function configure() {
@@ -44,8 +44,7 @@ class DailySummary extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$userId = $input->getArgument('user_id');
 		if ($userId !== null) {
-			$today = (new Datetime())->format('Y-m-d');
-			$jobResult = $this->mattermostAPIService->userDailySummaryWebhook($userId, $today);
+			$jobResult = $this->webhookService->userDailySummaryWebhook($userId);
 			$nbEvents = $jobResult['nb_events'];
 			if ($nbEvents === null) {
 				$output->writeln('[' . $userId . '] ' . $jobResult['message']);
@@ -54,7 +53,7 @@ class DailySummary extends Command {
 			$output->writeln('[' . $userId . '] ' . $nbEvents . ' events sent');
 		} else {
 			$output->writeln('Trigger daily summary for all users');
-			foreach ($this->mattermostAPIService->dailySummaryWebhook() as $userResult) {
+			foreach ($this->webhookService->dailySummaryWebhook() as $userResult) {
 				$userId = $userResult['user_id'];
 				$jobResult = $userResult['job_info'];
 				if ($jobResult['nb_events'] === null) {

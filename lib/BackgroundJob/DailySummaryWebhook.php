@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace OCA\Mattermost\BackgroundJob;
 
+use OCA\Mattermost\Service\WebhookService;
 use OCP\BackgroundJob\TimedJob;
 use OCP\AppFramework\Utility\ITimeFactory;
 use Psr\Log\LoggerInterface;
@@ -39,23 +40,25 @@ class DailySummaryWebhook extends TimedJob {
 	/** @var LoggerInterface */
 	protected $logger;
 	/**
-	 * @var MattermostAPIService
+	 * @var WebhookService
 	 */
-	private $mattermostAPIService;
+	private $webhookService;
 
 	public function __construct(ITimeFactory $time,
-								MattermostAPIService $mattermostAPIService,
+								WebhookService $webhookService,
 								LoggerInterface $logger) {
 		parent::__construct($time);
-		// Every hour but it will only be triggered once a day
+		// Every hour but it will only do something once a day
 		$this->setInterval(60 * 60);
 
 		$this->logger = $logger;
-		$this->mattermostAPIService = $mattermostAPIService;
+		$this->webhookService = $webhookService;
 	}
 
 	protected function run($argument): void {
-		$this->mattermostAPIService->dailySummaryWebhook();
-		$this->logger->info('Mattermost daily summary webhook');
+		foreach ($this->webhookService->dailySummaryWebhook() as $userResult) {
+			$userId = $userResult['user_id'];
+			$this->logger->debug('Mattermost daily summary webhook for user "' . $userId . '"');
+		}
 	}
 }
