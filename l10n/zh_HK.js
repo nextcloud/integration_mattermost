@@ -51,6 +51,7 @@ OC.L10N.register(
     "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "日曆事件更新了 webhook URL",
     "Daily summary webhook URL" : "每日總結 webhook URL",
+    "Upcoming events webhook URL" : "即將舉行的活動的 webhook URL",
     "Webhook secret" : "Webhook 密碼",
     "secret" : "密碼",
     "Successfully connected to Mattermost!" : "成功連線至 Mattermost！",

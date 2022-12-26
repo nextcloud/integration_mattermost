@@ -51,6 +51,7 @@ OC.L10N.register(
     "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook",
     "Calendar event updated webhook URL" : "Událost v kalendáři aktualizovala URL webového háčku",
     "Daily summary webhook URL" : "URL webového háčku pro denní souhrn",
+    "Upcoming events webhook URL" : "URL webového háčku nadcházejících událostí",
     "Webhook secret" : "Tajemství pro webový háček",
     "secret" : "tajemství",
     "Successfully connected to Mattermost!" : "Úspěšně spojeno s Mattermost!",
