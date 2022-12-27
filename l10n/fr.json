@@ -17,7 +17,7 @@
     "Put the \"Application ID\" and \"Application secret\" below. Your Nextcloud users will then see a \"Connect to Mattermost\" button in their personal settings if they select the Mattermost instance defined here." : "Mettez l'\"ID application\" et le \"secret application\" ci-dessous. Vos utilisateurs Nextcloud verront ensuite un bouton \"Se connecter à Mattermost\" dans leur paramètres personnels si ils sélectionnent l'instance Mattermost définie ici.",
     "OAuth app instance address" : "Adresse de l'instance de l'application OAuth",
     "Instance address" : "Adresse de l'instance",
-    "Application ID" : "ID Application",
+    "Application ID" : "ID de l'application",
     "ID of your Mattermost application" : "ID de votre application Mattermost",
     "Application secret" : "Secret Application",
     "Client secret of your Mattermost application" : "Secret client de votre application Mattermost",

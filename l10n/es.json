@@ -49,6 +49,7 @@
     "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "URL del webhook para evento de calendario actualizado",
     "Daily summary webhook URL" : "URL del webhook para resumen del día",
+    "Upcoming events webhook URL" : "URL del webhook para próximos eventos",
     "Webhook secret" : "Secreto del webhook",
     "secret" : "secreto",
     "Successfully connected to Mattermost!" : "¡Se conectó a Mattermost exitósamente!",
