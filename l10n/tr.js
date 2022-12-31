@@ -51,6 +51,7 @@ OC.L10N.register(
     "https://my.mattermost.org/webhook..." : "https://benim.mattermost.org/webbaglantisi...",
     "Calendar event updated webhook URL" : "Takvim etkinliği güncellendi web bağlantısı adresi",
     "Daily summary webhook URL" : "Günlük özet web bağlantısı adresi",
+    "Upcoming events webhook URL" : "Yaklaşan etkinlikler web bağlantısı adresi",
     "Webhook secret" : "Web bağlantısı parolası",
     "secret" : "parola",
     "Successfully connected to Mattermost!" : "Mattermost ile bağlantı kuruldu!",
