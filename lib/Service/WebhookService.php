@@ -225,7 +225,6 @@ class WebhookService {
 
 		$userTimeZone = $this->getUserTimeZone($userId);
 
-		// check if it has already run today
 		$now = (new DateTimeImmutable())->setTimezone($userTimeZone);
 		$nowTs = $now->getTimestamp();
 		$lastImminentJobTimestamp = (int) $this->config->getUserValue($userId, Application::APP_ID, Application::IMMINENT_EVENTS_WEBHOOK_LAST_TS_CONFIG_KEY);

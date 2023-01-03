@@ -12,6 +12,7 @@
 namespace OCA\Mattermost\Controller;
 
 use DateTime;
+use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\IURLGenerator;
@@ -165,13 +166,14 @@ class ConfigController extends Controller {
 	 * @param string|null $calendar_event_updated_url
 	 * @param string|null $calendar_event_created_url
 	 * @param string|null $daily_summary_url
+	 * @param string|null $imminent_events_url
 	 * @param bool|null $enabled
 	 * @param string|null $webhook_secret
 	 * @return DataResponse
 	 * @throws PreConditionNotMetException
 	 */
 	public function setWebhooksConfig(?string $calendar_event_updated_url = null, ?string $calendar_event_created_url = null,
-									?string $daily_summary_url = null,
+									?string $daily_summary_url = null, ?string $imminent_events_url = null,
 									?bool $enabled = null, ?string $webhook_secret = null): DataResponse {
 		$result = [];
 		if ($calendar_event_created_url !== null) {
@@ -186,6 +188,10 @@ class ConfigController extends Controller {
 			$result['daily_summary_url'] = $daily_summary_url;
 			$this->config->setUserValue($this->userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_CONFIG_KEY, $daily_summary_url);
 		}
+		if ($imminent_events_url !== null) {
+			$result['imminent_events_url'] = $imminent_events_url;
+			$this->config->setUserValue($this->userId, Application::APP_ID, Application::IMMINENT_EVENTS_WEBHOOK_CONFIG_KEY, $imminent_events_url);
+		}
 		if ($enabled !== null) {
 			$result['enabled'] = $enabled;
 			$this->config->setUserValue($this->userId, Application::APP_ID, Application::WEBHOOKS_ENABLED_CONFIG_KEY, $enabled ? '1' : '0');
@@ -193,6 +199,19 @@ class ConfigController extends Controller {
 		if ($webhook_secret !== null) {
 			$result['webhook_secret'] = $webhook_secret;
 			$this->config->setUserValue($this->userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY, $webhook_secret);
+		}
+		if (empty(array_keys($result))) {
+			$result = [
+				'error' => 'You must set at least one valid setting.',
+				'valid_keys' => [
+					'enabled',
+					'webhook_secret',
+					'calendar_event_created_url',
+					'calendar_event_updated_url',
+					'daily_summary_url',
+				],
+			];
+			return new DataResponse($result, Http::STATUS_BAD_REQUEST);
 		}
 		return new DataResponse($result);
 	}
