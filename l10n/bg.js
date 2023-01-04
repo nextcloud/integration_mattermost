@@ -51,6 +51,7 @@ OC.L10N.register(
     "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "Актуализиран URL адрес на уеб обратно повикване за събитие от календара",
     "Daily summary webhook URL" : " URL адрес на уеб обратно повикване на дневното обобщение",
+    "Upcoming events webhook URL" : "URL адрес за уеб обратно повикване на предстоящи събития",
     "Webhook secret" : " Тайна на уеб обратно повикване",
     "secret" : "тайна",
     "Successfully connected to Mattermost!" : "Успешно свързване с Mattermost!",
