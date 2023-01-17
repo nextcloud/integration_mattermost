@@ -44,6 +44,7 @@ OC.L10N.register(
     "_Send link_::_Send links_" : ["Bidali esteka","Bidali estekak"],
     "Send files to Mattermost" : "Bidali fitxategiak Mattermost-era",
     "Send to Mattermost" : "Bidali Mattermost-era",
+    "Nothing" : "Ezer ez",
     "Go to settings" : "Joan ezarpenetara",
     "Upload files" : "Igo fitxategiak",
     "Public links" : "Esteka publikoak"
