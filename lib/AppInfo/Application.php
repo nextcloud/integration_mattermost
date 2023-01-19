@@ -105,6 +105,7 @@ class Application extends App implements IBootstrap {
 						'href' => $mattermostUrl,
 						'icon' => $urlGenerator->imagePath(self::APP_ID, 'app.svg'),
 						'name' => $l10n->t('Mattermost'),
+						'target' => '_blank',
 					];
 				});
 			}
