@@ -5,6 +5,7 @@ OC.L10N.register(
     "Password" : "Awal uffir",
     "Files" : "Ifuyla",
     "Type" : "Anaw",
+    "Comment" : "Commentaire",
     "Cancel" : "Sefsex",
     "Edit" : "Ẓreg",
     "Upload files" : "Azen ifuyla"
