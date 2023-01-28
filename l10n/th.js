@@ -10,6 +10,7 @@ OC.L10N.register(
     "Set expiration date" : "กำหนดวันหมดอายุ",
     "Comment" : "ความคิดเห็น",
     "Cancel" : "ยกเลิก",
+    "View only" : "ดูเท่านั้น",
     "Edit" : "แก้ไข"
 },
 "nplurals=1; plural=0;");
