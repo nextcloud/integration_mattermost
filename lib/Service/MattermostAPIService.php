@@ -29,6 +29,7 @@ use OCP\Share\IShare;
 use Psr\Log\LoggerInterface;
 use OCP\Http\Client\IClientService;
 use OCP\Share\IManager as ShareManager;
+use Throwable;
 
 class MattermostAPIService {
 	/**
@@ -585,6 +586,9 @@ class MattermostAPIService {
 		} catch (ServerException | ClientException $e) {
 			$body = $e->getResponse()->getBody();
 			$this->logger->warning('Mattermost API error : ' . $body, ['app' => Application::APP_ID]);
+			return ['error' => $e->getMessage()];
+		} catch (Exception | Throwable $e) {
+			$this->logger->warning('Mattermost API error', ['exception' => $e, 'app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}
