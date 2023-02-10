@@ -42,7 +42,7 @@
     "Enable navigation link (link to Mattermost with a top menu item)" : "Navigationslink aktivieren (Link zu Mattermost im oberen Menü)",
     "Enable searching for messages" : "Suche nach Nachrichten aktivieren",
     "Warning, everything you type in the search bar will be sent to Mattermost." : "Achtung, alles, was Sie in die Suchleiste eingeben, wird an Mattermost gesendet.",
-    "If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks." : "Wenn Sie die Nextcloud-Integration in Mattermost eingerichtet haben, werden diese Webhooks automatisch durch Mattermost eingerichtet.",
+    "If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks." : "Wenn Sie die Nextcloud-Integration in Mattermost eingerichtet haben, werden diese Webhooks automatisch von Mattermost eingerichtet.",
     "This section does not require to be connected to Mattermost from Nextcloud." : "Dieser Bereich muss nicht mit Mattermost von Nextcloud verbunden sein.",
     "Enable webhooks" : "Webhooks aktivieren",
     "Calendar event created webhook URL" : "Vom Kalenderereignis erstellte Webhook-URL",
