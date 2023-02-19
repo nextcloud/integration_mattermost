@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Bad HTTP method" : "Phương thức HTTP không hợp lệ",
     "Login" : "Đăng nhập",
     "Password" : "Mật khẩu",
     "Files" : "Tệp",
