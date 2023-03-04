@@ -1,6 +1,10 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Error during OAuth exchanges" : "Грешко приликом OAuth размена",
+    "Bad credentials" : "Лоши креденцијали",
+    "Bad HTTP method" : "Лоша HTTP метода",
+    "OAuth access token refused" : "Одбијен је OAuth приступни жетон",
     "Login" : "Пријава",
     "Password" : "Лозинка",
     "Files" : "Фајлови",
