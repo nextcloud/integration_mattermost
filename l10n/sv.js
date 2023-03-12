@@ -10,6 +10,8 @@ OC.L10N.register(
     "Login" : "Logga in",
     "Password" : "Lösenord",
     "Connected as {user}" : "Ansluten som {user}",
+    "Enable searching for messages" : "Aktivera sökning efter meddelanden",
+    "Warning, everything you type in the search bar will be sent to Mattermost." : "Varning, allt du skriver i sökfältet kommer att skickas till Mattermost.",
     "Files" : "Filer",
     "Channel" : "Kanal",
     "Start typing to search" : "Börja skriva för att söka",
