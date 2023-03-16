@@ -4,6 +4,7 @@ OC.L10N.register(
     "Bad HTTP method" : "Phương thức HTTP không hợp lệ",
     "Login" : "Đăng nhập",
     "Password" : "Mật khẩu",
+    "Connected as {user}" : "Kết nối bởi {user}",
     "Files" : "Tệp",
     "Channel" : "Kênh",
     "Type" : "Loại",
