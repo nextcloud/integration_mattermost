@@ -1,6 +1,12 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Error getting OAuth access token. " : "خطأ في الحصول على أمارة token الوصول إلى OAuth.",
+    "Error during OAuth exchanges" : "خطأ أثناء تبادل OAuth.",
+    "Bad credentials" : "رموز التعريف غير صحيحة",
+    "Bad HTTP method" : "دالة HTTP  غير صحيحة",
+    "OAuth access token refused" : "أمارة token مرفوضة",
+    "Connected accounts" : "حسابات مترابطة",
     "Login" : "الدخول",
     "Password" : "كلمة السر",
     "Files" : "الملفات",

@@ -1,8 +1,10 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Error getting OAuth access token. " : "שגיאה בהשגת אסימון גישה ל-OAuth.",
     "Error during OAuth exchanges" : "שגיאה במהלך החלפות OAuth",
     "Bad credentials" : "פרטי גישה שגויים",
+    "Bad HTTP method" : "שגיאה במתודת HTTP",
     "OAuth access token refused" : "אסימון הגישה ב־OAuth סורב",
     "Connected accounts" : "חשבונות מקושרים",
     "Personal access token" : "אסימון גישה פרטי",
