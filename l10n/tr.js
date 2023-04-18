@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Mattermost" : "Mattermost",
     "Error getting OAuth access token. " : "OAuth erişim kodu alınırken sorun çıktı.",
-    "Error during OAuth exchanges" : "OAuth takasında sorun çıktı",
+    "Error during OAuth exchanges" : "OAuth alış verişinde sorun çıktı",
     "Mattermost messages" : "Mattermost iletileri",
     "%s in @%s at %s" : "%s, @%s içinde %s zamanında",
     "%s in #%s at %s" : "%s, #%s içinde %s zamanında",
@@ -96,7 +96,7 @@ OC.L10N.register(
     "Nothing" : "Hiçbir şey",
     "_{fileName} was sent to {channelName}_::_{count} files were sent to {channelName}_" : ["{fileName}, {channelName} kanalına gönderildi","{count} dosya {channelName} kanalına gönderildi"],
     "Failed to send files to Mattermost" : "Dosyalar Mattermost üzerine gönderilemedi",
-    "Sign in with Mattermost" : "Mattermost ile oturum aç",
+    "Sign in with Mattermost" : "Mattermost ile oturum açın",
     "Failed to save Mattermost OAuth state" : "Mattermost OAuth durumu kaydedilemedi",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "Mattermost bütünleştirmesini kullanmadan önce bir Mattermost sunucusu ile bağlantı kurmalısınız.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Kişisel ayarlarınızdaki \"Hesapları ilişkilendir\" bölümüne gitmek ister misiniz?",
