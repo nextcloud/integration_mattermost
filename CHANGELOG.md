@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.4 – 2023-05-10
+
+### Added
+
+- daily calendar summary webhook
+- upcoming events webhook
+- smart picker provider for messages
+- basic link preview for messages
+
+### Changed
+
+- update npm pkgs
+
+### Fixed
+
+- mistakes in translatable strings
+
 ## 1.0.3 – 2022-11-15
 ### Added
 - Ability to send internal links
