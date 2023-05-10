@@ -11,31 +11,11 @@ use OCA\Mattermost\AppInfo\Application;
 
 class Personal implements ISettings {
 
-	/**
-	 * @var IConfig
-	 */
-	private $config;
-	/**
-	 * @var IInitialState
-	 */
-	private $initialStateService;
-	/**
-	 * @var string|null
-	 */
-	private $userId;
-	/**
-	 * @var MattermostAPIService
-	 */
-	private $mattermostAPIService;
-
-	public function __construct(IConfig $config,
-								IInitialState $initialStateService,
-								MattermostAPIService $mattermostAPIService,
-								?string $userId) {
-		$this->config = $config;
-		$this->initialStateService = $initialStateService;
-		$this->userId = $userId;
-		$this->mattermostAPIService = $mattermostAPIService;
+	public function __construct(
+		private IConfig $config,
+		private IInitialState $initialStateService,
+		private ?string $userId
+	) {
 	}
 
 	/**
@@ -44,9 +24,9 @@ class Personal implements ISettings {
 	public function getForm(): TemplateResponse {
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
 
-		if ($token) {
+//		if ($token) {
 //			$this->mattermostAPIService->checkToken();
-		}
+//		}
 
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
 		$searchMessagesEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'search_messages_enabled', '0') === '1';

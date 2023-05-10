@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * @copyright Copyright (c) 2022, Julien Veyssier
  *
- * @author Julien Veyssier <eneiluj@posteo.net>
+ * @author Julien Veyssier <julien-nc@posteo.net>
  *
  * @license AGPL-3.0
  *
@@ -36,57 +36,19 @@ use OCP\IUser;
 use OCP\Search\IProvider;
 use OCP\Search\ISearchQuery;
 use OCP\Search\SearchResult;
+use OCP\Search\SearchResultEntry;
 
 class MattermostSearchMessagesProvider implements IProvider {
 
-	/** @var IAppManager */
-	private $appManager;
-
-	/** @var IL10N */
-	private $l10n;
-
-	/** @var IURLGenerator */
-	private $urlGenerator;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
-	/**
-	 * @var MattermostAPIService
-	 */
-	private $service;
-	/**
-	 * @var IDateTimeFormatter
-	 */
-	private $dateTimeFormatter;
-	/**
-	 * @var IDateTimeZone
-	 */
-	private $dateTimeZone;
-
-	/**
-	 * CospendSearchProvider constructor.
-	 *
-	 * @param IAppManager $appManager
-	 * @param IL10N $l10n
-	 * @param IConfig $config
-	 * @param IURLGenerator $urlGenerator
-	 * @param MattermostAPIService $service
-	 */
-	public function __construct(IAppManager $appManager,
-								IL10N $l10n,
-								IConfig $config,
-								IURLGenerator $urlGenerator,
-								IDateTimeFormatter $dateTimeFormatter,
-								IDateTimeZone $dateTimeZone,
-								MattermostAPIService $service) {
-		$this->appManager = $appManager;
-		$this->l10n = $l10n;
-		$this->config = $config;
-		$this->urlGenerator = $urlGenerator;
-		$this->service = $service;
-		$this->dateTimeFormatter = $dateTimeFormatter;
-		$this->dateTimeZone = $dateTimeZone;
+	public function __construct(
+		private IAppManager $appManager,
+		private IL10N $l10n,
+		private IConfig $config,
+		private IURLGenerator $urlGenerator,
+		private IDateTimeFormatter $dateTimeFormatter,
+		private IDateTimeZone $dateTimeZone,
+		private MattermostAPIService $service
+	) {
 	}
 
 	/**
@@ -141,9 +103,9 @@ class MattermostSearchMessagesProvider implements IProvider {
 			return SearchResult::paginated($this->getName(), [], 0);
 		}
 
-		$formattedResults = array_map(function (array $entry) use ($url): MattermostSearchResultEntry {
+		$formattedResults = array_map(function (array $entry) use ($url): SearchResultEntry {
 			$finalThumbnailUrl = $this->getThumbnailUrl($entry);
-			return new MattermostSearchResultEntry(
+			return new SearchResultEntry(
 				$finalThumbnailUrl,
 				$this->getMainText($entry),
 				$this->getSubline($entry),

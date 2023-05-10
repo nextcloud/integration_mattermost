@@ -1,8 +1,8 @@
 <?php
 /**
- * @copyright Copyright (c) 2022 Julien Veyssier <eneiluj@posteo.net>
+ * @copyright Copyright (c) 2022 Julien Veyssier <julien-nc@posteo.net>
  *
- * @author Julien Veyssier <eneiluj@posteo.net>
+ * @author Julien Veyssier <julien-nc@posteo.net>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -34,35 +34,13 @@ use OCA\Mattermost\AppInfo\Application;
 
 class MattermostWidget implements IWidget {
 
-	/** @var IL10N */
-	private $l10n;
-	/**
-	 * @var IURLGenerator
-	 */
-	private $url;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
-	/**
-	 * @var IInitialState
-	 */
-	private $initialStateService;
-	/**
-	 * @var string|null
-	 */
-	private $userId;
-
-	public function __construct(IL10N         $l10n,
-								IConfig       $config,
-								IURLGenerator $url,
-								IInitialState $initialStateService,
-								?string       $userId) {
-		$this->l10n = $l10n;
-		$this->url = $url;
-		$this->config = $config;
-		$this->initialStateService = $initialStateService;
-		$this->userId = $userId;
+	public function __construct(
+		private IL10N         $l10n,
+		private IConfig       $config,
+		private IURLGenerator $url,
+		private IInitialState $initialStateService,
+		private ?string       $userId
+	) {
 	}
 
 	/**

@@ -5,7 +5,7 @@
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
  *
- * @author Julien Veyssier <eneiluj@posteo.net>
+ * @author Julien Veyssier <julien-nc@posteo.net>
  * @copyright Julien Veyssier 2022
  */
 
@@ -29,40 +29,17 @@ use OCP\Lock\LockedException;
 
 class MattermostAPIController extends Controller {
 
-	/**
-	 * @var IConfig
-	 */
-	private $config;
-	/**
-	 * @var MattermostAPIService
-	 */
-	private $mattermostAPIService;
-	/**
-	 * @var string|null
-	 */
-	private $userId;
-	/**
-	 * @var string
-	 */
-	private $mattermostUrl;
-	/**
-	 * @var IURLGenerator
-	 */
-	private $urlGenerator;
+	private string $mattermostUrl;
 
-	public function __construct(string $appName,
-								IRequest $request,
-								IConfig $config,
-								IURLGenerator $urlGenerator,
-								MattermostAPIService $mattermostAPIService,
-								?string $userId) {
+	public function __construct(string                       $appName,
+								IRequest                     $request,
+								private IConfig              $config,
+								private IURLGenerator        $urlGenerator,
+								private MattermostAPIService $mattermostAPIService,
+								private ?string              $userId) {
 		parent::__construct($appName, $request);
-		$this->config = $config;
-		$this->mattermostAPIService = $mattermostAPIService;
-		$this->userId = $userId;
 		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 		$this->mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
-		$this->urlGenerator = $urlGenerator;
 	}
 
 	/**

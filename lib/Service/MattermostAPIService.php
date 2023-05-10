@@ -22,6 +22,7 @@ use OCA\Mattermost\AppInfo\Application;
 use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotPermittedException;
+use OCP\Http\Client\IClient;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
@@ -31,54 +32,24 @@ use OCP\Http\Client\IClientService;
 use OCP\Share\IManager as ShareManager;
 use Throwable;
 
+/**
+ * Service to make requests to Mattermost API
+ */
 class MattermostAPIService {
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
-	/**
-	 * @var IL10N
-	 */
-	private $l10n;
-	/**
-	 * @var \OCP\Http\Client\IClient
-	 */
-	private $client;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
-	/**
-	 * @var IRootFolder
-	 */
-	private $root;
-	/**
-	 * @var ShareManager
-	 */
-	private $shareManager;
-	/**
-	 * @var IURLGenerator
-	 */
-	private $urlGenerator;
 
-	/**
-	 * Service to make requests to Mattermost API
-	 */
-	public function __construct (string $appName,
-								LoggerInterface $logger,
-								IL10N $l10n,
-								IConfig $config,
-								IRootFolder $root,
-								ShareManager $shareManager,
-								IURLGenerator $urlGenerator,
-								IClientService $clientService) {
-		$this->logger = $logger;
-		$this->l10n = $l10n;
+	private IClient $client;
+
+	public function __construct(
+		string $appName,
+		private LoggerInterface $logger,
+		private IL10N $l10n,
+		private IConfig $config,
+		private IRootFolder $root,
+		private ShareManager $shareManager,
+		private IURLGenerator $urlGenerator,
+		IClientService $clientService
+	) {
 		$this->client = $clientService->newClient();
-		$this->config = $config;
-		$this->root = $root;
-		$this->shareManager = $shareManager;
-		$this->urlGenerator = $urlGenerator;
 	}
 
 	/**

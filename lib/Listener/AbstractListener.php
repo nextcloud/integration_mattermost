@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @copyright Copyright (c) 2022, Julien Veyssier <eneiluj@posteo.net>
+ * @copyright Copyright (c) 2022, Julien Veyssier <julien-nc@posteo.net>
  *
- * @author Julien Veyssier <eneiluj@posteo.net>
+ * @author Julien Veyssier <julien-nc@posteo.net>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -30,25 +30,12 @@ use OCP\EventDispatcher\IEventListener;
 use OCP\IConfig;
 
 abstract class AbstractListener implements IEventListener {
-	/**
-	 * @var IConfig
-	 */
-	protected $config;
-	/**
-	 * @var string|null
-	 */
-	protected $userId;
-	/**
-	 * @var WebhookService
-	 */
-	private $webhookService;
 
-	public function __construct(IConfig $config,
-								WebhookService $webhookService,
-								?string $userId) {
-		$this->config = $config;
-		$this->userId = $userId;
-		$this->webhookService = $webhookService;
+	public function __construct(
+		protected IConfig $config,
+		private WebhookService $webhookService,
+		protected ?string $userId
+	) {
 	}
 
 	public function handle(Event $event): void {

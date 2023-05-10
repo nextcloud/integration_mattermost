@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Julien Veyssier <eneiluj@posteo.net>
+ * Copyright (c) 2022 Julien Veyssier <julien-nc@posteo.net>
  *
  * This file is licensed under the Affero General Public License version 3
  * or later.

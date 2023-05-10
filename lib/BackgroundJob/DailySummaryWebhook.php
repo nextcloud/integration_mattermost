@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 /**
- * @copyright Copyright (c) 2022 Julien Veyssier <eneiluj@posteo.net>
+ * @copyright Copyright (c) 2022 Julien Veyssier <julien-nc@posteo.net>
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -30,22 +30,14 @@ use Psr\Log\LoggerInterface;
 
 class DailySummaryWebhook extends TimedJob {
 
-	/** @var LoggerInterface */
-	protected $logger;
-	/**
-	 * @var WebhookService
-	 */
-	private $webhookService;
-
-	public function __construct(ITimeFactory $time,
-								WebhookService $webhookService,
-								LoggerInterface $logger) {
+	public function __construct(
+		ITimeFactory $time,
+		private WebhookService $webhookService,
+		private LoggerInterface $logger
+	) {
 		parent::__construct($time);
 		// Every hour but it will only do something once a day
 		$this->setInterval(60 * 60);
-
-		$this->logger = $logger;
-		$this->webhookService = $webhookService;
 	}
 
 	protected function run($argument): void {

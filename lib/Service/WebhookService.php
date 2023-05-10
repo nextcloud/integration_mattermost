@@ -22,10 +22,10 @@ use Generator;
 use OCA\Mattermost\AppInfo\Application;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Calendar\IManager;
+use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IDateTimeFormatter;
-use OCP\IDateTimeZone;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserManager;
@@ -35,55 +35,18 @@ use Throwable;
 
 class WebhookService {
 
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
-	/**
-	 * @var IConfig
-	 */
-	private $config;
-	/**
-	 * @var \OCP\Http\Client\IClient
-	 */
-	private $client;
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
-	/**
-	 * @var IManager
-	 */
-	private $calendarManager;
-	/**
-	 * @var ITimeFactory
-	 */
-	private $timeFactory;
-	/**
-	 * @var IURLGenerator
-	 */
-	private $urlGenerator;
-	/**
-	 * @var IDateTimeFormatter
-	 */
-	private $dateTimeFormatter;
+	private IClient $client;
 
-	public function __construct (IConfig $config,
-								LoggerInterface $logger,
-								IClientService $clientService,
-								IManager $calendarManager,
-								ITimeFactory $timeFactory,
-								IURLGenerator $urlGenerator,
-								IDateTimeFormatter $dateTimeFormatter,
-								IUserManager $userManager) {
+	public function __construct(
+		private IConfig $config,
+		private LoggerInterface $logger,
+		IClientService $clientService,
+		private IManager $calendarManager,
+		private IURLGenerator $urlGenerator,
+		private IDateTimeFormatter $dateTimeFormatter,
+		private IUserManager $userManager
+	) {
 		$this->client = $clientService->newClient();
-		$this->userManager = $userManager;
-		$this->config = $config;
-		$this->logger = $logger;
-		$this->calendarManager = $calendarManager;
-		$this->timeFactory = $timeFactory;
-		$this->urlGenerator = $urlGenerator;
-		$this->dateTimeFormatter = $dateTimeFormatter;
 	}
 
 	/**

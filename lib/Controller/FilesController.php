@@ -5,7 +5,7 @@
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
  *
- * @author Julien Veyssier <eneiluj@posteo.net>
+ * @author Julien Veyssier <julien-nc@posteo.net>
  * @copyright Julien Veyssier 2022
  */
 
@@ -25,28 +25,14 @@ use OCP\IRequest;
 
 class FilesController extends Controller {
 
-	/**
-	 * @var string|null
-	 */
-	private $userId;
-	/**
-	 * @var ImageService
-	 */
-	private $imageService;
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
-
-	public function __construct(string   $appName,
-								IRequest $request,
-								ImageService $imageService,
-								LoggerInterface $logger,
-								?string  $userId) {
+	public function __construct(
+		string $appName,
+		IRequest $request,
+		private ImageService $imageService,
+		private LoggerInterface $logger,
+		private ?string  $userId
+	) {
 		parent::__construct($appName, $request);
-		$this->userId = $userId;
-		$this->imageService = $imageService;
-		$this->logger = $logger;
 	}
 
 	/**
