@@ -15,6 +15,7 @@ use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
 use OCA\Mattermost\Listener\CalendarObjectCreatedListener;
 use OCA\Mattermost\Listener\CalendarObjectUpdatedListener;
+use OCA\Mattermost\Reference\MessageReferenceProvider;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -63,6 +64,8 @@ class Application extends App implements IBootstrap {
 		// event based webhooks
 		$context->registerEventListener(CalendarObjectCreatedEvent::class, CalendarObjectCreatedListener::class);
 		$context->registerEventListener(CalendarObjectUpdatedEvent::class, CalendarObjectUpdatedListener::class);
+
+		$context->registerReferenceProvider(MessageReferenceProvider::class);
 	}
 
 	public function boot(IBootContext $context): void {
