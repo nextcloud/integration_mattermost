@@ -22,12 +22,16 @@
 
 namespace OCA\Mattermost\Reference;
 
+use OCA\Mattermost\Service\MattermostAPIService;
 use OCP\Collaboration\Reference\ADiscoverableReferenceProvider;
 use OCP\Collaboration\Reference\ISearchableReferenceProvider;
 use OC\Collaboration\Reference\ReferenceManager;
 use OCA\Mattermost\AppInfo\Application;
 use OCP\Collaboration\Reference\IReference;
+use OCP\Collaboration\Reference\Reference;
 use OCP\IConfig;
+use OCP\IDateTimeFormatter;
+use OCP\IDateTimeZone;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 
@@ -39,6 +43,9 @@ class MessageReferenceProvider extends ADiscoverableReferenceProvider implements
 		private IL10N $l10n,
 		private IURLGenerator $urlGenerator,
 		private ReferenceManager $referenceManager,
+		private IDateTimeFormatter $dateTimeFormatter,
+		private IDateTimeZone $dateTimeZone,
+		private MattermostAPIService $mattermostAPIService,
 		private ?string $userId) {
 	}
 
@@ -83,6 +90,12 @@ class MessageReferenceProvider extends ADiscoverableReferenceProvider implements
 	 * @inheritDoc
 	 */
 	public function matchReference(string $referenceText): bool {
+		if ($this->userId !== null) {
+			$mattermostUrl = $this->mattermostAPIService->getMattermostUrl($this->userId);
+			if ($mattermostUrl) {
+				return preg_match('/^' . preg_quote($mattermostUrl, '/') . '\/[^\/\?]+\/[^\/\?]+\/[^\/\?]+$/', $referenceText) === 1;
+			}
+		}
 		return false;
 	}
 
@@ -91,9 +104,51 @@ class MessageReferenceProvider extends ADiscoverableReferenceProvider implements
 	 */
 	public function resolveReference(string $referenceText): ?IReference {
 		if ($this->matchReference($referenceText)) {
+			$mattermostUrl = $this->mattermostAPIService->getMattermostUrl($this->userId);
+			$postId = $this->getPostId($mattermostUrl, $referenceText);
+			if ($postId !== null) {
+				$postInfo = $this->mattermostAPIService->getPostInfo($this->userId, $postId);
+				if (isset($postInfo['message'], $postInfo['channel_id'], $postInfo['user_id'])) {
+					$channelInfo = $this->mattermostAPIService->getChannelInfo($this->userId, $postInfo['channel_id']);
+					$userInfo = $this->mattermostAPIService->getUserInfo($this->userId, $postInfo['user_id']);
+					if (isset($channelInfo['name'], $channelInfo['type'], $userInfo['username'])) {
+						$reference = new Reference($referenceText);
+						$reference->setTitle($postInfo['message']);
+						if ($channelInfo['type'] === 'D') {
+							$description = $this->l10n->t('%s in @%s at %s', [$userInfo['username'], $userInfo['username'], $this->getFormattedDate($postInfo['create_at'])]);
+						} else {
+							$description = $this->l10n->t('%s in #%s at %s', [$userInfo['username'], $channelInfo['name'], $this->getFormattedDate($postInfo['create_at'])]);
+						}
+						$reference->setDescription($description);
+						$thumbnailUrl = $this->urlGenerator->getAbsoluteURL(
+							$this->urlGenerator->linkToRoute('integration_mattermost.mattermostAPI.getUserAvatar', ['userId' => $userInfo['id']])
+						);
+						$reference->setImageUrl($thumbnailUrl);
+						return $reference;
+					}
+				}
+			}
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param int $timestamp
+	 * @return string
+	 */
+	private function getFormattedDate(int $timestamp): string {
+		return $this->dateTimeFormatter->formatDateTime((int) ($timestamp / 1000), 'long', 'short', $this->dateTimeZone->getTimeZone());
+	}
+
+	/**
+	 * @param string $mattermostUrl
+	 * @param string $url
+	 * @return string|null
+	 */
+	private function getPostId(string $mattermostUrl, string $url): ?string {
+		preg_match('/^' . preg_quote($mattermostUrl, '/') . '\/[^\/\?]+\/[^\/\?]+\/([^\/\?]+)$/', $url, $matches);
+		return count($matches) > 1 ? $matches[1] : null;
 	}
 
 	/**

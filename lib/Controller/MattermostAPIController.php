@@ -38,8 +38,6 @@ class MattermostAPIController extends Controller {
 								private MattermostAPIService $mattermostAPIService,
 								private ?string              $userId) {
 		parent::__construct($appName, $request);
-		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
-		$this->mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 	}
 
 	/**
@@ -48,7 +46,7 @@ class MattermostAPIController extends Controller {
 	 * @return DataResponse
 	 */
 	public function getMattermostUrl(): DataResponse {
-		return new DataResponse($this->mattermostUrl);
+		return new DataResponse($this->mattermostAPIService->getMattermostUrl($this->userId));
 	}
 
 	/**
@@ -62,7 +60,7 @@ class MattermostAPIController extends Controller {
 	 * @throws \Exception
 	 */
 	public function getUserAvatar(string $userId, int $useFallback = 1) {
-		$result = $this->mattermostAPIService->getUserAvatar($this->userId, $userId, $this->mattermostUrl);
+		$result = $this->mattermostAPIService->getUserAvatar($this->userId, $userId);
 		if (isset($result['avatarContent'])) {
 			$response = new DataDisplayResponse($result['avatarContent']);
 			$response->cacheFor(60 * 60 * 24);
@@ -86,7 +84,7 @@ class MattermostAPIController extends Controller {
 	 * @throws \Exception
 	 */
 	public function getTeamAvatar(string $teamId, int $useFallback = 1)	{
-		$result = $this->mattermostAPIService->getTeamAvatar($this->userId, $teamId, $this->mattermostUrl);
+		$result = $this->mattermostAPIService->getTeamAvatar($this->userId, $teamId);
 		if (isset($result['avatarContent'])) {
 			$response = new DataDisplayResponse($result['avatarContent']);
 			$response->cacheFor(60 * 60 * 24);
@@ -107,7 +105,7 @@ class MattermostAPIController extends Controller {
 	 */
 	public function getNotifications(?int $since = null) {
 		$mmUserName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_name');
-		$result = $this->mattermostAPIService->getMentionsMe($this->userId, $mmUserName, $this->mattermostUrl, $since);
+		$result = $this->mattermostAPIService->getMentionsMe($this->userId, $mmUserName, $since);
 		if (isset($result['error'])) {
 			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
 		} else {
@@ -122,7 +120,7 @@ class MattermostAPIController extends Controller {
 	 * @throws Exception
 	 */
 	public function getChannels() {
-		$result = $this->mattermostAPIService->getMyChannels($this->userId, $this->mattermostUrl);
+		$result = $this->mattermostAPIService->getMyChannels($this->userId);
 		if (isset($result['error'])) {
 			return new DataResponse($result, Http::STATUS_BAD_REQUEST);
 		} else {
@@ -140,7 +138,7 @@ class MattermostAPIController extends Controller {
 	 * @throws Exception
 	 */
 	public function sendMessage(string $message, string $channelId, ?array $remoteFileIds = null) {
-		$result = $this->mattermostAPIService->sendMessage($this->userId, $this->mattermostUrl, $message, $channelId, $remoteFileIds);
+		$result = $this->mattermostAPIService->sendMessage($this->userId, $message, $channelId, $remoteFileIds);
 		if (isset($result['error'])) {
 			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
 		} else {
@@ -159,7 +157,7 @@ class MattermostAPIController extends Controller {
 	 * @throws NoUserException
 	 */
 	public function sendFile(int $fileId, string $channelId) {
-		$result = $this->mattermostAPIService->sendFile($this->userId, $this->mattermostUrl, $fileId, $channelId);
+		$result = $this->mattermostAPIService->sendFile($this->userId, $fileId, $channelId);
 		if (isset($result['error'])) {
 			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
 		} else {
@@ -184,7 +182,7 @@ class MattermostAPIController extends Controller {
 	public function sendPublicLinks(array $fileIds, string $channelId, string $channelName, string $comment,
 							  string $permission, ?string $expirationDate = null, ?string $password = null): DataResponse {
 		$result = $this->mattermostAPIService->sendPublicLinks(
-			$this->userId, $this->mattermostUrl, $fileIds, $channelId, $channelName,
+			$this->userId, $fileIds, $channelId, $channelName,
 			$comment, $permission, $expirationDate, $password
 		);
 		if (isset($result['error'])) {

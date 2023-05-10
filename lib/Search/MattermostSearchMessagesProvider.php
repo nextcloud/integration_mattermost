@@ -91,25 +91,24 @@ class MattermostSearchMessagesProvider implements IProvider {
 		$offset = $offset ? intval($offset) : 0;
 
 		$accessToken = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'token');
-		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
-		$url = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 		$searchMessagesEnabled = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'search_messages_enabled', '0') === '1';
 		if ($accessToken === '' || !$searchMessagesEnabled) {
 			return SearchResult::paginated($this->getName(), [], 0);
 		}
+		$mattermostUrl = $this->service->getMattermostUrl($user->getUID());
 
-		$issues = $this->service->searchMessages($user->getUID(), $url, $term, $offset, $limit);
+		$issues = $this->service->searchMessages($user->getUID(), $term, $offset, $limit);
 		if (isset($searchResult['error'])) {
 			return SearchResult::paginated($this->getName(), [], 0);
 		}
 
-		$formattedResults = array_map(function (array $entry) use ($url): SearchResultEntry {
+		$formattedResults = array_map(function (array $entry) use ($mattermostUrl): SearchResultEntry {
 			$finalThumbnailUrl = $this->getThumbnailUrl($entry);
 			return new SearchResultEntry(
 				$finalThumbnailUrl,
 				$this->getMainText($entry),
 				$this->getSubline($entry),
-				$this->getLinkToMattermost($entry, $url),
+				$this->getLinkToMattermost($entry, $mattermostUrl),
 				$finalThumbnailUrl === '' ? 'icon-mattermost-search-fallback' : '',
 				true
 			);
@@ -172,7 +171,9 @@ class MattermostSearchMessagesProvider implements IProvider {
 	protected function getThumbnailUrl(array $entry): string {
 		$userId = $entry['user_id'] ?? '';
 		return $userId
-			? $this->urlGenerator->linkToRoute('integration_mattermost.mattermostAPI.getUserAvatar', ['userId' => $userId])
+			? $this->urlGenerator->getAbsoluteURL(
+				$this->urlGenerator->linkToRoute('integration_mattermost.mattermostAPI.getUserAvatar', ['userId' => $userId])
+			)
 			: '';
 	}
 }

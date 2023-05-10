@@ -111,9 +111,7 @@ class ConfigController extends Controller {
 
 		if (isset($values['token'])) {
 			if ($values['token'] && $values['token'] !== '') {
-				$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
-				$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
-				$result = $this->storeUserInfo($mattermostUrl);
+				$result = $this->storeUserInfo();
 			} else {
 				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'user_id');
 				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'user_name');
@@ -284,7 +282,7 @@ class ConfigController extends Controller {
 				}
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $accessToken);
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $refreshToken);
-				$userInfo = $this->storeUserInfo($mattermostUrl);
+				$userInfo = $this->storeUserInfo();
 				$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0') === '1';
 				if ($usePopup) {
 					return new RedirectResponse(
@@ -336,8 +334,8 @@ class ConfigController extends Controller {
 	 * @return string
 	 * @throws PreConditionNotMetException
 	 */
-	private function storeUserInfo(string $mattermostUrl): array {
-		$info = $this->mattermostAPIService->request($this->userId, $mattermostUrl, 'users/me');
+	private function storeUserInfo(): array {
+		$info = $this->mattermostAPIService->request($this->userId, 'users/me');
 		if (isset($info['first_name'], $info['last_name'], $info['id'], $info['username'])) {
 			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $info['id'] ?? '');
 			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', $info['username'] ?? '');

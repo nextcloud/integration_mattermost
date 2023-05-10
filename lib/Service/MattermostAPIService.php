@@ -26,6 +26,8 @@ use OCP\Http\Client\IClient;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
+use OCP\Lock\LockedException;
+use OCP\PreConditionNotMetException;
 use OCP\Share\IShare;
 use Psr\Log\LoggerInterface;
 use OCP\Http\Client\IClientService;
@@ -54,13 +56,21 @@ class MattermostAPIService {
 
 	/**
 	 * @param string $userId
-	 * @param string $url
-	 * @return array
-	 * @throws Exception
+	 * @return string
 	 */
-	private function getMyTeamsInfo(string $userId, string $url): array {
+	public function getMattermostUrl(string $userId): string {
+		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		return $this->config->getUserValue($userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
+	}
+
+	/**
+	 * @param string $userId
+	 * @return array
+	 * @throws PreConditionNotMetException
+	 */
+	private function getMyTeamsInfo(string $userId): array {
 		$mattermostUserId = $this->config->getUserValue($userId, Application::APP_ID, 'user_id');
-		$teams = $this->request($userId, $url, 'users/' . $mattermostUserId . '/teams');
+		$teams = $this->request($userId, 'users/' . $mattermostUserId . '/teams');
 		if (isset($teams['error'])) {
 			return [];
 		}
@@ -73,14 +83,13 @@ class MattermostAPIService {
 
 	/**
 	 * @param string $userId
-	 * @param string $mattermostUrl
 	 * @param string $term
 	 * @param int $offset
 	 * @param int $limit
 	 * @return array
-	 * @throws Exception
+	 * @throws PreConditionNotMetException
 	 */
-	public function searchMessages(string $userId, string $mattermostUrl, string $term, int $offset = 0, int $limit = 5): array {
+	public function searchMessages(string $userId, string $term, int $offset = 0, int $limit = 5): array {
 		$params = [
 			'include_deleted_channels' => true,
 			'is_or_search' => true,
@@ -89,7 +98,7 @@ class MattermostAPIService {
 			'terms' => $term,
 			'time_zone_offset' => 7200,
 		];
-		$result = $this->request($userId, $mattermostUrl, 'posts/search', $params, 'POST');
+		$result = $this->request($userId, 'posts/search', $params, 'POST');
 		$posts = $result['posts'] ?? [];
 
 		// sort post by creation date, DESC
@@ -101,56 +110,53 @@ class MattermostAPIService {
 
 		$posts = array_slice($posts, $offset, $limit);
 
-		return $this->addPostInfos($posts, $userId, $mattermostUrl);
+		return $this->addPostInfos($posts, $userId);
 	}
 
 	/**
 	 * @param string $userId
 	 * @param string $mattermostUserId
-	 * @param string $mattermostUrl
 	 * @return array
-	 * @throws Exception
+	 * @throws PreConditionNotMetException
 	 */
-	public function getUserAvatar(string $userId, string $mattermostUserId, string $mattermostUrl): array {
-		$image = $this->request($userId, $mattermostUrl, 'users/' . $mattermostUserId . '/image', [], 'GET', false);
+	public function getUserAvatar(string $userId, string $mattermostUserId): array {
+		$image = $this->request($userId, 'users/' . $mattermostUserId . '/image', [], 'GET', false);
 		if (!is_array($image)) {
 			return ['avatarContent' => $image];
 		}
-		$image = $this->request($userId, $mattermostUrl, 'users/' . $mattermostUserId . '/image/default', [], 'GET', false);
+		$image = $this->request($userId, 'users/' . $mattermostUserId . '/image/default', [], 'GET', false);
 		if (!is_array($image)) {
 			return ['avatarContent' => $image];
 		}
 
-		$userInfo = $this->request($userId, $mattermostUrl, 'users/' . $mattermostUserId);
+		$userInfo = $this->request($userId, 'users/' . $mattermostUserId);
 		return ['userInfo' => $userInfo];
 	}
 
 	/**
 	 * @param string $userId
 	 * @param string $teamId
-	 * @param string $mattermostUrl
 	 * @return array
-	 * @throws Exception
+	 * @throws PreConditionNotMetException
 	 */
-	public function getTeamAvatar(string $userId, string $teamId, string $mattermostUrl): array {
-		$image = $this->request($userId, $mattermostUrl, 'teams/' . $teamId . '/image', [], 'GET', false);
+	public function getTeamAvatar(string $userId, string $teamId): array {
+		$image = $this->request($userId, 'teams/' . $teamId . '/image', [], 'GET', false);
 		if (!is_array($image)) {
 			return ['avatarContent' => $image];
 		}
 
-		$userInfo = $this->request($userId, $mattermostUrl, 'teams/' . $teamId);
+		$userInfo = $this->request($userId, 'teams/' . $teamId);
 		return ['teamInfo' => $userInfo];
 	}
 
 	/**
 	 * @param string $userId
 	 * @param string $mattermostUserName
-	 * @param string $mattermostUrl
 	 * @param int|null $since
 	 * @return array|string[]
-	 * @throws Exception
+	 * @throws PreConditionNotMetException
 	 */
-	public function getMentionsMe(string $userId, string $mattermostUserName, string $mattermostUrl, ?int $since = null): array {
+	public function getMentionsMe(string $userId, string $mattermostUserName, ?int $since = null): array {
 		$params = [
 			'include_deleted_channels' => true,
 			'is_or_search' => true,
@@ -159,7 +165,7 @@ class MattermostAPIService {
 			'terms' => '@' . $mattermostUserName . ' ',
 			'time_zone_offset' => 7200,
 		];
-		$result = $this->request($userId, $mattermostUrl, 'posts/search', $params, 'POST');
+		$result = $this->request($userId, 'posts/search', $params, 'POST');
 		if (isset($result['error'])) {
 			return $result;
 		}
@@ -171,7 +177,7 @@ class MattermostAPIService {
 			return $postTs > $since;
 		});
 
-		$posts = $this->addPostInfos($posts, $userId, $mattermostUrl);
+		$posts = $this->addPostInfos($posts, $userId);
 
 		// sort post by creation date, DESC
 		usort($posts, function($a, $b) {
@@ -183,16 +189,45 @@ class MattermostAPIService {
 	}
 
 	/**
+	 * @param string $userId
+	 * @param string $postId
+	 * @return array|string[]
+	 * @throws PreConditionNotMetException
+	 */
+	public function getPostInfo(string $userId, string $postId): array {
+		return $this->request($userId, 'posts/' . $postId);
+	}
+
+	/**
+	 * @param string $userId
+	 * @param string $channelId
+	 * @return array|string[]
+	 * @throws PreConditionNotMetException
+	 */
+	public function getChannelInfo(string $userId, string $channelId): array {
+		return $this->request($userId, 'channels/' . $channelId);
+	}
+
+	/**
+	 * @param string $userId
+	 * @param string $mattermostUserId
+	 * @return array|string[]
+	 * @throws PreConditionNotMetException
+	 */
+	public function getUserInfo(string $userId, string $mattermostUserId): array {
+		return $this->request($userId, 'users/' . $mattermostUserId);
+	}
+
+	/**
 	 * @param array $posts
 	 * @param string $userId
-	 * @param string $mattermostUrl
 	 * @return array
-	 * @throws Exception
+	 * @throws PreConditionNotMetException
 	 */
-	public function addPostInfos(array $posts, string $userId, string $mattermostUrl): array {
+	public function addPostInfos(array $posts, string $userId): array {
 		if (count($posts) > 0) {
-			$channelsPerId = $this->getMyChannelsPerId($userId, $mattermostUrl);
-			$teamsPerId = $this->getMyTeamsInfo($userId, $mattermostUrl);
+			$channelsPerId = $this->getMyChannelsPerId($userId);
+			$teamsPerId = $this->getMyTeamsInfo($userId);
 			$teamIds = array_keys($teamsPerId);
 			$fallbackTeamId = end($teamIds);
 			// get channel and team information for each post
@@ -218,7 +253,7 @@ class MattermostAPIService {
 				$usersById[$post['user_id']] = [];
 			}
 			foreach ($usersById as $mmUserId => $user) {
-				$userInfo = $this->request($userId, $mattermostUrl, 'users/' . $mmUserId);
+				$userInfo = $this->request($userId, 'users/' . $mmUserId);
 				if (isset($userInfo['username'], $userInfo['first_name'], $userInfo['last_name'])) {
 					$usersById[$mmUserId]['user_name'] = $userInfo['username'];
 					$usersById[$mmUserId]['user_display_name'] = $userInfo['first_name'] . ' ' . $userInfo['last_name'];
@@ -235,12 +270,11 @@ class MattermostAPIService {
 
 	/**
 	 * @param string $userId
-	 * @param string $mattermostUrl
 	 * @return array|string[]
-	 * @throws Exception
+	 * @throws PreConditionNotMetException
 	 */
-	public function getMyChannelsPerId(string $userId, string $mattermostUrl): array {
-		$result = $this->getMyChannels($userId, $mattermostUrl);
+	public function getMyChannelsPerId(string $userId): array {
+		$result = $this->getMyChannels($userId);
 		if (isset($result['error'])) {
 			return $result;
 		}
@@ -253,13 +287,12 @@ class MattermostAPIService {
 
 	/**
 	 * @param string $userId
-	 * @param string $mattermostUrl
 	 * @return array|string[]
-	 * @throws Exception
+	 * @throws PreConditionNotMetException
 	 */
-	public function getMyChannels(string $userId, string $mattermostUrl): array {
+	public function getMyChannels(string $userId): array {
 		$mattermostUserId = $this->config->getUserValue($userId, Application::APP_ID, 'user_id');
-		$channelResult = $this->request($userId, $mattermostUrl, 'users/' . $mattermostUserId . '/channels');
+		$channelResult = $this->request($userId, 'users/' . $mattermostUserId . '/channels');
 		if (isset($channelResult['error'])) {
 			return $channelResult;
 		}
@@ -276,7 +309,7 @@ class MattermostAPIService {
 		}
 		$teamDisplayNamesById = [];
 		foreach ($teamIds as $teamId) {
-			$teamResult = $this->request($userId, $mattermostUrl, 'teams/' . $teamId);
+			$teamResult = $this->request($userId, 'teams/' . $teamId);
 			if (!isset($teamResult['error'])) {
 				$teamDisplayNamesById[$teamId] = $teamResult['display_name'];
 			}
@@ -297,7 +330,7 @@ class MattermostAPIService {
 				if ($directUserId === $mattermostUserId) {
 					$directUserId = $names[1];
 				}
-				$userResult = $this->request($userId, $mattermostUrl, 'users/' . $directUserId);
+				$userResult = $this->request($userId, 'users/' . $directUserId);
 				if (!isset($userResult['error'])) {
 					$userDisplayName = preg_replace('/^\s+$/', '', $userResult['first_name'] . ' ' . $userResult['last_name']);
 					$userDisplayName = $userDisplayName ?: $userResult['username'];
@@ -315,14 +348,13 @@ class MattermostAPIService {
 
 	/**
 	 * @param string $userId
-	 * @param string $mattermostUrl
 	 * @param string $message
 	 * @param string $channelId
 	 * @param array|null $remoteFileIds
 	 * @return array|string[]
-	 * @throws Exception
+	 * @throws PreConditionNotMetException
 	 */
-	public function sendMessage(string $userId, string $mattermostUrl, string $message, string $channelId, ?array $remoteFileIds = null): array {
+	public function sendMessage(string $userId, string $message, string $channelId, ?array $remoteFileIds = null): array {
 		$params = [
 			'channel_id' => $channelId,
 			'message' => $message,
@@ -330,12 +362,11 @@ class MattermostAPIService {
 		if ($remoteFileIds !== null) {
 			$params['file_ids'] = $remoteFileIds;
 		}
-		return $this->request($userId, $mattermostUrl, 'posts', $params, 'POST');
+		return $this->request($userId, 'posts', $params, 'POST');
 	}
 
 	/**
 	 * @param string $userId
-	 * @param string $mattermostUrl
 	 * @param array $fileIds
 	 * @param string $channelId
 	 * @param string $channelName
@@ -344,10 +375,11 @@ class MattermostAPIService {
 	 * @param string|null $expirationDate
 	 * @param string|null $password
 	 * @return array|string[]
-	 * @throws NotPermittedException
 	 * @throws NoUserException
+	 * @throws NotPermittedException
+	 * @throws PreConditionNotMetException
 	 */
-	public function sendPublicLinks(string $userId, string $mattermostUrl, array $fileIds,
+	public function sendPublicLinks(string $userId, array $fileIds,
 							  string $channelId, string $channelName, string $comment,
 							  string $permission, ?string $expirationDate = null, ?string $password = null): array {
 		$links = [];
@@ -411,7 +443,7 @@ class MattermostAPIService {
 				'channel_id' => $channelId,
 				'message' => $message,
 			];
-			return $this->request($userId, $mattermostUrl, 'posts', $params, 'POST');
+			return $this->request($userId, 'posts', $params, 'POST');
 		} else {
 			return ['error' => 'Files not found'];
 		}
@@ -419,21 +451,20 @@ class MattermostAPIService {
 
 	/**
 	 * @param string $userId
-	 * @param string $mattermostUrl
 	 * @param int $fileId
 	 * @param string $channelId
 	 * @return array|string[]
-	 * @throws \OCP\Files\NotPermittedException
-	 * @throws \OCP\Lock\LockedException
-	 * @throws \OC\User\NoUserException
+	 * @throws NoUserException
+	 * @throws NotPermittedException
+	 * @throws LockedException
 	 */
-	public function sendFile(string $userId, string $mattermostUrl, int $fileId, string $channelId): array {
+	public function sendFile(string $userId, int $fileId, string $channelId): array {
 		$userFolder = $this->root->getUserFolder($userId);
 		$files = $userFolder->getById($fileId);
 		if (count($files) > 0 && $files[0] instanceof File) {
 			$file = $files[0];
 			$endpoint = 'files?channel_id=' . urlencode($channelId) . '&filename=' . urlencode($file->getName());
-			$sendResult = $this->requestSendFile($userId, $mattermostUrl, $endpoint, $file->fopen('r'));
+			$sendResult = $this->requestSendFile($userId, $endpoint, $file->fopen('r'));
 			if (isset($sendResult['error'])) {
 				return $sendResult;
 			}
@@ -453,17 +484,17 @@ class MattermostAPIService {
 
 	/**
 	 * @param string $userId
-	 * @param string $url
 	 * @param string $endPoint
 	 * @param $fileResource
 	 * @return array|mixed|resource|string|string[]
-	 * @throws Exception
+	 * @throws PreConditionNotMetException
 	 */
-	public function requestSendFile(string $userId, string $url, string $endPoint, $fileResource) {
-		$this->checkTokenExpiration($userId, $url);
+	public function requestSendFile(string $userId, string $endPoint, $fileResource) {
+		$mattermostUrl = $this->getMattermostUrl($userId);
+		$this->checkTokenExpiration($userId, $mattermostUrl);
 		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
 		try {
-			$url = $url . '/api/v4/' . $endPoint;
+			$url = $mattermostUrl . '/api/v4/' . $endPoint;
 			$options = [
 				'headers' => [
 					'Authorization'  => 'Bearer ' . $accessToken,
@@ -489,20 +520,20 @@ class MattermostAPIService {
 
 	/**
 	 * @param string $userId
-	 * @param string $url
 	 * @param string $endPoint
 	 * @param array $params
 	 * @param string $method
 	 * @param bool $jsonResponse
 	 * @return array|mixed|resource|string|string[]
-	 * @throws Exception
+	 * @throws PreConditionNotMetException
 	 */
-	public function request(string $userId, string $url, string $endPoint, array $params = [], string $method = 'GET',
+	public function request(string $userId, string $endPoint, array $params = [], string $method = 'GET',
 							bool $jsonResponse = true) {
-		$this->checkTokenExpiration($userId, $url);
+		$mattermostUrl = $this->getMattermostUrl($userId);
+		$this->checkTokenExpiration($userId, $mattermostUrl);
 		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
 		try {
-			$url = $url . '/api/v4/' . $endPoint;
+			$url = $mattermostUrl . '/api/v4/' . $endPoint;
 			$options = [
 				'headers' => [
 					'Authorization'  => 'Bearer ' . $accessToken,
