@@ -1,9 +1,10 @@
 { "translations": {
     "Error getting OAuth access token. " : "خطأ في الحصول على أمارة token الوصول إلى OAuth.",
     "Error during OAuth exchanges" : "خطأ أثناء تبادل OAuth.",
-    "Bad credentials" : "رموز التعريف غير صحيحة",
+    "Bad credentials" : "معلومات تسجيل الدخول غير صحيحة",
     "Bad HTTP method" : "دالة HTTP  غير صحيحة",
     "OAuth access token refused" : "أمارة token مرفوضة",
+    "Invalid credentials" : "معلومات تسجيل الدخول غير صحيحة",
     "Connected accounts" : "حسابات مترابطة",
     "Make sure you set the \"Redirect URI\" to" : "تأكد من تعيين \"إعادة توجيه العنوان URI\" إلى ",
     "Application ID" : "الرقم المُعرّف للتطبيق ",

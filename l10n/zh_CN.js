@@ -12,6 +12,7 @@ OC.L10N.register(
     "Instance address" : "实例地址",
     "Application ID" : "应用 ID",
     "Application secret" : "应用密码",
+    "Use a popup to authenticate" : "使用弹出窗口进行验证",
     "Personal access token" : "个人访问令牌",
     "Login" : "登录",
     "Password" : "密码",
