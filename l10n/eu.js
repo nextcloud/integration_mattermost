@@ -13,7 +13,6 @@ OC.L10N.register(
     "Connected accounts" : "Konektatutako kontuak",
     "Mattermost integration" : "Mattermost integrazioa",
     "Integration of Mattermost" : "Mattermost integrazioa",
-    "Mattermost integration provides a dashboard widget displaying your most important notifications\n    and a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files." : "Mattermost integrazioak zure jakinarazpen garrantzitsuak erakusten dituen panel-trepeta eskaintzen du.\n\t eta biltegi, issue eta merge request-entzat bilatzaile bateratua. Aukera ematen dizu baita ere fitxategiak bidaltzeko Mattermostera zure nextcloud fitxategietatik.",
     "Make sure you set the \"Redirect URI\" to" : "Ziurtatu \"Birbideratze URLa\" ezartzen duzula hona:",
     "OAuth app instance address" : "OAuth aplikazioaren instantziaren helbidea",
     "Instance address" : "Instantzia helbidea",

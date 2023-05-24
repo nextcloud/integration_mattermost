@@ -15,7 +15,6 @@ OC.L10N.register(
     "Connected accounts" : "Повезани налози",
     "Mattermost integration" : "Mattermost интеграција",
     "Integration of Mattermost" : "Интеграција Mattermost сервиса",
-    "Mattermost integration provides a dashboard widget displaying your most important notifications\n    and a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files." : "Mattermost интеграција обезбеђује виџет контролне табле који приказује ваша најважнија обавештења\n    и обједињену претрагу порука. Такође вам омогућава да на Mattermost шаљете фајлове из Nextcloud Фајлова.",
     "If you want to allow your Nextcloud users to use OAuth to authenticate to a Mattermost instance of your choice, create an application in your Mattermost settings and set the ID and secret here." : "Ако желите да ваши Nextcloud корисници користе OAuth за пријављивање на Mattermost инстанцу по вашем избору, креирајте апликацију у својим Mattermost подешавањима и овде поставите ID и тајну.",
     "Make sure you set the \"Redirect URI\" to" : "Осигурајте да поставите „Redirect URI” на",
     "Put the \"Application ID\" and \"Application secret\" below. Your Nextcloud users will then see a \"Connect to Mattermost\" button in their personal settings if they select the Mattermost instance defined here." : "Унесите испод „ID апликације” и „Тајна апликације”. Тада ће ваши Nextcloud корисници у својим личним подешавањима видети дугме „Повежи се са Mattermost” ако изаберу Mattermost инстанцу дефинисану овде.",
