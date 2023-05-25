@@ -15,6 +15,7 @@ OC.L10N.register(
     "Connected accounts" : "Propojené účty",
     "Mattermost integration" : "Napojení na Mattermost",
     "Integration of Mattermost" : "Napojení na Mattermost",
+    "Mattermost integration provides a dashboard widget displaying your most important notifications\nand a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files." : "Napojení na Mattermost poskytuje ovládací prvek pro nástěnku, zobrazující nejdůležitější upozornění pro vás\na poskytovatele do sjednoceného vyhledávání pro hledání ve zprávách. Také umožňuje posílat soubory do Mattermost z Nextcloud Soubory.",
     "If you want to allow your Nextcloud users to use OAuth to authenticate to a Mattermost instance of your choice, create an application in your Mattermost settings and set the ID and secret here." : "Pokud chcete svým Nextcloud uživatelům umožnit použití ověření pomocí vámi zvolené instance Mattermost OAuth, vytvořte v nastavení Mattermost aplikaci a nastavte zde identifikátor a tajemství.",
     "Make sure you set the \"Redirect URI\" to" : "Ověřte, že je „Redirect URI“ nastavené na",
     "Put the \"Application ID\" and \"Application secret\" below. Your Nextcloud users will then see a \"Connect to Mattermost\" button in their personal settings if they select the Mattermost instance defined here." : "Níže vložte „Identif. aplikace“ a „Tajemství pro aplikaci“. Pokud vyberou zde definovanou instanci Mattermost, vaši Nextcloud uživatelé pak ve svých osobních nastaveních uvidí tlačítko „Připojit k Mattermost“.",

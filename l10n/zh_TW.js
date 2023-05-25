@@ -15,6 +15,7 @@ OC.L10N.register(
     "Connected accounts" : "已連線的帳號",
     "Mattermost integration" : "Mattermost 整合",
     "Integration of Mattermost" : "Mattermost 整合",
+    "Mattermost integration provides a dashboard widget displaying your most important notifications\nand a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files." : "Mattermost 整合提供了一個儀表板小工具，顯示您最重要的通知\n與訊息的統一搜尋提供者。其也讓您可以將檔案從 Nextcloud Files 傳送至 Mattermost。",
     "If you want to allow your Nextcloud users to use OAuth to authenticate to a Mattermost instance of your choice, create an application in your Mattermost settings and set the ID and secret here." : "如果您想要讓您的 Nextcloud 使用者使用 OAuth 來驗證您選擇的 Mattermost 站台的話，在您的 Mattermost 設定中建立應用程式，然後在此處設定 ID 與密碼。",
     "Make sure you set the \"Redirect URI\" to" : "確保您將「重新導向 URI」設定為",
     "Put the \"Application ID\" and \"Application secret\" below. Your Nextcloud users will then see a \"Connect to Mattermost\" button in their personal settings if they select the Mattermost instance defined here." : "在下方填入「應用程式 ID」與「應用程式密碼」。如果您的 Nextcloud 使用者選取了在此定義的 Mattermost 站台，他們將會在個人設定中看到「連線至 Mattermost」按鈕。",
