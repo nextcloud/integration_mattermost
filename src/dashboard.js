@@ -9,8 +9,11 @@
  * @copyright Julien Veyssier 2022
  */
 
-__webpack_nonce__ = btoa(OC.requestToken) // eslint-disable-line
-__webpack_public_path__ = OC.linkTo('integration_mattermost', 'js/') // eslint-disable-line
+import { linkTo } from '@nextcloud/router'
+import { getRequestToken } from '@nextcloud/auth'
+
+__webpack_nonce__ = btoa(getRequestToken()) // eslint-disable-line
+__webpack_public_path__ = linkTo('integration_mattermost', 'js/') // eslint-disable-line
 
 document.addEventListener('DOMContentLoaded', () => {
 	OCA.Dashboard.register('mattermost_notifications', async (el, { widget }) => {
