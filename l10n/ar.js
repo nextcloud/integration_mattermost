@@ -9,6 +9,7 @@ OC.L10N.register(
     "Invalid credentials" : "معلومات تسجيل الدخول غير صحيحة",
     "Connected accounts" : "حسابات مترابطة",
     "Make sure you set the \"Redirect URI\" to" : "تأكد من تعيين \"إعادة توجيه العنوان URI\" إلى ",
+    "Instance address" : "عنوان نسخة التطبيق العاملة",
     "Application ID" : "الرقم المُعرّف للتطبيق ",
     "Application secret" : "الرمر السري للتطبيق",
     "Use a popup to authenticate" : "استخدم النافذة المنبثقة للتعريف عن نفسك ",
