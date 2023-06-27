@@ -7,6 +7,7 @@ OC.L10N.register(
     "Bad HTTP method" : "دالة HTTP  غير صحيحة",
     "OAuth access token refused" : "أمارة token مرفوضة",
     "Invalid credentials" : "معلومات تسجيل الدخول غير صحيحة",
+    "Invalid response" : "إستجابة غير صحيحة",
     "Connected accounts" : "حسابات مترابطة",
     "Make sure you set the \"Redirect URI\" to" : "تأكد من تعيين \"إعادة توجيه العنوان URI\" إلى ",
     "Instance address" : "عنوان نسخة التطبيق العاملة",
