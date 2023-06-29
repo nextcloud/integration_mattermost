@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bad credentials" : "Погані облікові дані",
     "Bad HTTP method" : "Поганий метод HTTP",
     "OAuth access token refused" : "Маркер доступу OAuth відхилено",
+    "Connected accounts" : "Підключені облікові записи",
     "Login" : "Логін",
     "Password" : "Пароль",
     "Files" : "Файли",
