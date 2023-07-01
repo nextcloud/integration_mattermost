@@ -7,6 +7,7 @@
     "Invalid credentials" : "معلومات تسجيل الدخول غير صحيحة",
     "Invalid response" : "إستجابة غير صحيحة",
     "Connected accounts" : "حسابات مترابطة",
+    "Mattermost integration provides a dashboard widget displaying your most important notifications\nand a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files." : "يوفر تكامل ماتر موست \"Mattermost\" لوحة معلومات عناصر واجهة المستخدم والتي تعرض أهم الإخطارات الخاصة بك\nومزود بحث موحد للرسائل. يتيح لك أيضًا إرسال الملفات إلى ماتر موست من ملفات نكست كلود.",
     "Make sure you set the \"Redirect URI\" to" : "تأكد من تعيين \"إعادة توجيه العنوان URI\" إلى ",
     "Instance address" : "عنوان نسخة التطبيق العاملة",
     "Application ID" : "الرقم المُعرّف للتطبيق ",
