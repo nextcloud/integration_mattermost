@@ -4,6 +4,7 @@ OC.L10N.register(
     "Mattermost" : "Mattermost",
     "Error getting OAuth access token. " : "Produciuse un erro ao obter o testemuño de acceso OAuth.",
     "Error during OAuth exchanges" : "Produciuse un erro durante os intercambios de OAuth",
+    "%s in #%s at %s" : "%s en #%s ás %s",
     "Bad credentials" : "Credenciais incorrectas",
     "Bad HTTP method" : "Método HTTP incorrecto",
     "OAuth access token refused" : "Foi rexeitado o testemuño de acceso de OAuth",
@@ -32,6 +33,7 @@ OC.L10N.register(
     "Cancel" : "Cancelar",
     "View only" : "Só ver",
     "Edit" : "Editar",
+    "{name} in #{channel} at {date}" : "{name} en #{channel} ás {date}",
     "Upload files" : "Enviar ficheiros"
 },
 "nplurals=2; plural=(n != 1);");
