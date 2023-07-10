@@ -56,36 +56,36 @@
 						</strong>
 					</span>
 				</span>
-				<NcMultiselect
-					:value="selectedChannel"
-					:placeholder="t('integration_mattermost', 'Choose a channel')"
-					:options="sortedChannels"
-					:user-select="true"
-					label="display_name"
-					track-by="id"
-					:internal-search="true"
+				<NcSelect
+					v-model="selectedChannel"
 					class="channel-select"
-					@search-change="query = $event"
-					@input="onChannelSelected">
-					<template #option="{option}">
-						<NcAvatar v-if="option.team_display_name"
-							:size="34"
-							:url="getTeamIconUrl(option.team_id)"
-							display-name="#" />
-						<NcAvatar v-else-if="option.direct_message_display_name"
-							:size="34"
-							:url="getUserIconUrl(option.direct_message_user_id)"
-							display-name="U" />
-						<NcHighlight v-if="option.team_display_name"
-							:text="'[' + option.team_display_name + '] ' + option.display_name"
-							:search="query"
-							class="multiselect-name" />
-						<NcHighlight v-else-if="option.direct_message_display_name"
-							:text="option.direct_message_display_name"
-							:search="query"
-							class="multiselect-name" />
+					:options="sortedChannels"
+					label="display_name"
+					:append-to-body="false"
+					:placeholder="t('integration_mattermost', 'Choose a channel')"
+					input-id="mattermost-channel-select"
+					@search="query = $event">
+					<template #option="option">
+						<div class="select-option">
+							<NcAvatar v-if="option.team_display_name"
+								:size="34"
+								:url="getTeamIconUrl(option.team_id)"
+								display-name="#" />
+							<NcAvatar v-else-if="option.direct_message_display_name"
+								:size="34"
+								:url="getUserIconUrl(option.direct_message_user_id)"
+								display-name="U" />
+							<NcHighlight v-if="option.team_display_name"
+								:text="'[' + option.team_display_name + '] ' + option.display_name"
+								:search="query"
+								class="multiselect-name" />
+							<NcHighlight v-else-if="option.direct_message_display_name"
+								:text="option.direct_message_display_name"
+								:search="query"
+								class="multiselect-name" />
+						</div>
 					</template>
-					<template #singleLabel="{option}">
+					<template #selected-option="option">
 						<NcAvatar v-if="option.team_display_name"
 							:size="34"
 							:url="getTeamIconUrl(option.team_id)"
@@ -103,10 +103,7 @@
 							{{ option.direct_message_display_name }}
 						</span>
 					</template>
-					<template #noOptions>
-						{{ t('integration_mattermost', 'Start typing to search') }}
-					</template>
-				</NcMultiselect>
+				</NcSelect>
 				<div class="advanced-options">
 					<span class="field-label">
 						<PackageUpIcon />
@@ -213,7 +210,7 @@
 </template>
 
 <script>
-import NcMultiselect from '@nextcloud/vue/dist/Components/NcMultiselect.js'
+import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
 import NcHighlight from '@nextcloud/vue/dist/Components/NcHighlight.js'
 import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 import NcDatetimePicker from '@nextcloud/vue/dist/Components/NcDatetimePicker.js'
@@ -250,7 +247,7 @@ export default {
 
 	components: {
 		MattermostIcon,
-		NcMultiselect,
+		NcSelect,
 		NcCheckboxRadioSwitch,
 		NcDatetimePicker,
 		NcHighlight,
@@ -428,11 +425,16 @@ export default {
 
 <style scoped lang="scss">
 .mattermost-modal-content {
-	//width: 100%;
+	width: 100%;
 	padding: 16px;
 	display: flex;
 	flex-direction: column;
 	overflow-y: scroll;
+
+	.select-option {
+		display: flex;
+		align-items: center;
+	}
 
 	> *:not(.mattermost-footer) {
 		margin-bottom: 16px;
