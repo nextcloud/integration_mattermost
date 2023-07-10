@@ -20,6 +20,7 @@ OC.L10N.register(
     "Login" : "الدخول",
     "Password" : "كلمة السر",
     "Connected as {user}" : "متصل بصفته {user}",
+    "Invalid access token" : "أَمَارَة وصول token غير صحيحة",
     "Files" : "الملفات",
     "Channel" : "قناة",
     "Start typing to search" : "اكتب هنا للبحث",
