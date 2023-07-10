@@ -425,7 +425,7 @@ export default {
 
 <style scoped lang="scss">
 .mattermost-modal-content {
-	width: 100%;
+	//width: 100%;
 	padding: 16px;
 	display: flex;
 	flex-direction: column;
