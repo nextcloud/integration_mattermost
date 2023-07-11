@@ -4,7 +4,6 @@ OC.L10N.register(
     "Login" : "Anv arveriad",
     "Password" : "Ger-tremen",
     "Files" : "Restroù",
-    "Start typing to search" : "Krogit da skrivañ evit klask",
     "Type" : "Stumm",
     "Set expiration date" : "Lakaat un deizat termen",
     "Comment" : "Displegadenn",

@@ -29,7 +29,6 @@ OC.L10N.register(
     "Files" : "Tiedostot",
     "Channel" : "Kanava",
     "Choose a channel" : "Valitse kanava",
-    "Start typing to search" : "Aloita kirjoittaminen hakeaksesi",
     "Type" : "Tyyppi",
     "Set expiration date" : "Aseta vanhenemispäivä",
     "Expires on" : "Vanhenee",

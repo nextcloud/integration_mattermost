@@ -63,7 +63,6 @@ OC.L10N.register(
     "Files" : "Soubory",
     "Channel" : "Kanál",
     "Choose a channel" : "Zvolte kanál",
-    "Start typing to search" : "Hledejte psaním",
     "Type" : "Typ",
     "Set expiration date" : "Nastavit datum skončení platnosti",
     "Expires on" : "Platnost skončí",

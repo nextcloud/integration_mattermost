@@ -14,7 +14,6 @@ OC.L10N.register(
     "Warning, everything you type in the search bar will be sent to Mattermost." : "Varning, allt du skriver i sökfältet kommer att skickas till Mattermost.",
     "Files" : "Filer",
     "Channel" : "Kanal",
-    "Start typing to search" : "Börja skriva för att söka",
     "Type" : "Typ",
     "Set expiration date" : "Välj utgångsdatum",
     "Comment" : "Kommentar",

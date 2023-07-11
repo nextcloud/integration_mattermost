@@ -63,7 +63,6 @@ OC.L10N.register(
     "Files" : "Dosyalar",
     "Channel" : "Kanal",
     "Choose a channel" : "Bir kanal seçin",
-    "Start typing to search" : "Aramak için yazmaya başlayın",
     "Type" : "Tür",
     "Set expiration date" : "Son kullanma tarihini ayarla",
     "Expires on" : "Geçerlilik sonu",

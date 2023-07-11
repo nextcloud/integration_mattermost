@@ -62,7 +62,6 @@ OC.L10N.register(
     "Files" : "Файлове",
     "Channel" : "Канал",
     "Choose a channel" : "Избор на канал",
-    "Start typing to search" : "Започнете да пишете, за търсене",
     "Type" : "Тип",
     "Set expiration date" : "Срок на валидност",
     "Expires on" : "Изтича на",

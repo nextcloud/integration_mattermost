@@ -4,7 +4,6 @@ OC.L10N.register(
     "Login" : "Login",
     "Password" : "Pasvorto",
     "Files" : "Dosieroj",
-    "Start typing to search" : "Ektajpu por serĉi",
     "Type" : "Tipo",
     "Set expiration date" : "Uzi limdaton",
     "Comment" : "Komento",

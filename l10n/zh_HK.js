@@ -63,7 +63,6 @@ OC.L10N.register(
     "Files" : "檔案",
     "Channel" : "頻道",
     "Choose a channel" : "選擇頻道",
-    "Start typing to search" : "輸入文字以搜尋",
     "Type" : "類型",
     "Set expiration date" : "設定屆滿日期",
     "Expires on" : "過期於",

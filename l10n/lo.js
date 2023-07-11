@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Password" : "ລະຫັດຜ່ານ",
     "Files" : "ຟາຍ",
-    "Start typing to search" : "ເລີ່ມພິມເພື່ອຄົ້ນຫາ",
     "Type" : "ພິມ",
     "Set expiration date" : "ກໍານົດວັນໝົດອາຍຸ",
     "Cancel" : "ຍົກເລີກ",

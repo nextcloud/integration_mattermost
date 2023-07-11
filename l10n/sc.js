@@ -18,7 +18,6 @@ OC.L10N.register(
     "Connected as {user}" : "Connètidu comente {user}",
     "Files" : "Archìvios",
     "Channel" : "Canale",
-    "Start typing to search" : "Cumintza a iscrìere pro chircare",
     "Type" : "Genia",
     "Set expiration date" : "Imposta data de iscadèntzia",
     "Comment" : "Cummentu",

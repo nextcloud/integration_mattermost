@@ -15,7 +15,6 @@ OC.L10N.register(
     "Connected as {user}" : "Prisijungta kaip {user}",
     "Files" : "Failai",
     "Channel" : "Kanalas",
-    "Start typing to search" : "Norėdami atlikti paiešką, pradėkite rašyti",
     "Type" : "Tipas",
     "Set expiration date" : "Nustatyti galiojimo pabaigos datą",
     "Comment" : "Komentaras",

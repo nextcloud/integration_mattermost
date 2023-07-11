@@ -6,7 +6,6 @@ OC.L10N.register(
     "Password" : "Adgangskode",
     "Connected as {user}" : "Forbundet som {user}",
     "Files" : "Filer",
-    "Start typing to search" : "Start med at skrive for at søge",
     "Type" : "Type",
     "Set expiration date" : "Angiv udløbsdato",
     "Comment" : "Kommentér",

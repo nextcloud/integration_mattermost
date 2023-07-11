@@ -9,7 +9,6 @@ OC.L10N.register(
     "Login" : "Логін",
     "Password" : "Пароль",
     "Files" : "Файли",
-    "Start typing to search" : "Що шукаємо?",
     "Type" : "Тип",
     "Set expiration date" : "Встановити термін дії",
     "Comment" : "Коментар",

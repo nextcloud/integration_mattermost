@@ -25,7 +25,6 @@ OC.L10N.register(
     "Invalid login/password" : "O acceso/contrasinal non é válido",
     "Files" : "Ficheiros",
     "Channel" : "Canle",
-    "Start typing to search" : "Comece a escribir para buscar",
     "Type" : "Tipo",
     "Set expiration date" : "Estabelecer a data de caducidade",
     "Expires on" : "Caduca o",

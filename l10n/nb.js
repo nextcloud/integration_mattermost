@@ -8,7 +8,6 @@ OC.L10N.register(
     "Login" : "Logg inn",
     "Password" : "Passord",
     "Files" : "Filer",
-    "Start typing to search" : "Start å skrive for å søke",
     "Type" : "Type",
     "Set expiration date" : "Sett utløpsdato",
     "Comment" : "Kommentar",

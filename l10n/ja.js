@@ -13,7 +13,6 @@ OC.L10N.register(
     "Connected as {user}" : "{user} に接続済み",
     "Files" : "ファイル",
     "Channel" : "チャンネル",
-    "Start typing to search" : "入力して検索を開始します",
     "Type" : "タイプ",
     "Set expiration date" : "有効期限を設定",
     "Comment" : "コメント",

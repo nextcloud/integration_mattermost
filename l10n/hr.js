@@ -18,7 +18,6 @@ OC.L10N.register(
     "Connected as {user}" : "Povezan kao {user}",
     "Files" : "Datoteke",
     "Channel" : "Kanal",
-    "Start typing to search" : "Počnite unositi tekst za pretraživanje",
     "Type" : "Vrsta",
     "Set expiration date" : "Postavi datum isteka",
     "Comment" : "Komentar",

@@ -21,7 +21,6 @@ OC.L10N.register(
     "Invalid access token" : "Nieprawidłowy token dostępu",
     "Files" : "Pliki",
     "Channel" : "Kanał",
-    "Start typing to search" : "Zacznij pisać, aby wyszukać",
     "Type" : "Rodzaj",
     "Set expiration date" : "Ustaw datę wygaśnięcia",
     "Comment" : "Komentarz",

@@ -20,7 +20,6 @@ OC.L10N.register(
     "Connected as {user}" : "Συνδεδεμένος ως {user}",
     "Files" : "Αρχεία",
     "Channel" : "Κανάλι",
-    "Start typing to search" : "Ξεκινήστε την πληκτρολόγηση για αναζήτηση",
     "Type" : "Τύπος",
     "Set expiration date" : "Ορισμός ημερομηνίας λήξης",
     "Comment" : "Σχόλιο",

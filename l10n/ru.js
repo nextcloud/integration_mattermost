@@ -22,7 +22,6 @@ OC.L10N.register(
     "Invalid login/password" : "Неверное имя пользователя/пароль",
     "Files" : "Файлы",
     "Channel" : "Канал",
-    "Start typing to search" : "Начините вводить символы для поиска",
     "Type" : "Тип",
     "Set expiration date" : "Установить крайний срок для ответов",
     "Comment" : "Комментарий",

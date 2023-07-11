@@ -8,7 +8,6 @@ OC.L10N.register(
     "Connected as {user}" : "Connectat coma {user}",
     "Files" : "Fichièrs",
     "Channel" : "Cadena",
-    "Start typing to search" : "Començatz de picar per recercar",
     "Type" : "Tipe",
     "Set expiration date" : "Especificar una data d'expiracion",
     "Comment" : "Comentaris",

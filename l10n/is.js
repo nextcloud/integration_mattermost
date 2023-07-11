@@ -9,7 +9,6 @@ OC.L10N.register(
     "Password" : "Lykilorð",
     "Connected as {user}" : "Tengt sem {user}",
     "Files" : "Skrár",
-    "Start typing to search" : "Skrifaðu hér til að leita",
     "Type" : "Tegund",
     "Set expiration date" : "Setja gildistíma",
     "Comment" : "Athugasemd",

@@ -11,7 +11,6 @@ OC.L10N.register(
     "Connected as {user}" : "{user}로 연결됨",
     "Files" : "파일",
     "Channel" : "채널",
-    "Start typing to search" : "검색어 입력",
     "Type" : "종류",
     "Set expiration date" : "만료기한 설정",
     "Comment" : "설명",

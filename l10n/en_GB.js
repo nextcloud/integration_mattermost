@@ -63,7 +63,6 @@ OC.L10N.register(
     "Files" : "Files",
     "Channel" : "Channel",
     "Choose a channel" : "Choose a channel",
-    "Start typing to search" : "Start typing to search",
     "Type" : "Type",
     "Set expiration date" : "Set expiration date",
     "Expires on" : "Expires on",

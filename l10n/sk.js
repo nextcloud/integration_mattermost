@@ -20,7 +20,6 @@ OC.L10N.register(
     "Invalid access token" : "Nesprávny prístupový token",
     "Files" : "Súbory",
     "Channel" : "Kanál",
-    "Start typing to search" : "Začnite písať pre vyhľadanie",
     "Type" : "Typ",
     "Set expiration date" : "Nastaviť dátum expirácie",
     "Comment" : "Komentár",

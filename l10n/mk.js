@@ -10,7 +10,6 @@ OC.L10N.register(
     "Password" : "Лозинка",
     "Connected as {user}" : "Поврзан како {user}",
     "Files" : "Датотеки",
-    "Start typing to search" : "Напишете нешто за пребарување",
     "Type" : "Вид",
     "Set expiration date" : "Постави рок на траење",
     "Comment" : "Коментар",

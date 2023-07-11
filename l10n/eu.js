@@ -41,7 +41,6 @@ OC.L10N.register(
     "Files" : "Fitxategiak",
     "Channel" : "Kanala",
     "Choose a channel" : "Aukeratu kanal bat",
-    "Start typing to search" : "Hasi idazten bilatzeko",
     "Type" : "Mota",
     "Set expiration date" : "Ezarri iraungitze-data",
     "Expires on" : "Iraungitze-data",

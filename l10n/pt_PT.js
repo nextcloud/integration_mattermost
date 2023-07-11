@@ -7,7 +7,6 @@ OC.L10N.register(
     "Login" : "Iniciar sessão",
     "Password" : "Palavra-passe",
     "Files" : "Ficheiros",
-    "Start typing to search" : "Digitar para pesquisar",
     "Type" : "Tipo",
     "Set expiration date" : "Definir a data de expiração",
     "Comment" : "Comentário",

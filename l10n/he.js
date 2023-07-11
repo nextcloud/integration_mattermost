@@ -12,7 +12,6 @@ OC.L10N.register(
     "Password" : "ססמה",
     "Files" : "קבצים",
     "Channel" : "ערוץ",
-    "Start typing to search" : "להתחלת החיפוש יש להקליד",
     "Type" : "סוג",
     "Set expiration date" : "הגדרת תאריך תפוגה",
     "Comment" : "הערה",

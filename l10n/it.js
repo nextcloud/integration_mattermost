@@ -19,7 +19,6 @@ OC.L10N.register(
     "Connected as {user}" : "Connesso come {user}",
     "Files" : "File",
     "Channel" : "Canale",
-    "Start typing to search" : "Inizia a digitare per cercare",
     "Type" : "Tipo",
     "Set expiration date" : "Imposta data di scadenza",
     "Comment" : "Commento",

@@ -63,7 +63,6 @@ OC.L10N.register(
     "Files" : "Arquivos",
     "Channel" : "Canal",
     "Choose a channel" : "Escolha um canal",
-    "Start typing to search" : "Comece a digitar para pesquisar",
     "Type" : "Tipo",
     "Set expiration date" : "Definir data de vencimento",
     "Expires on" : "Expira em",

@@ -63,7 +63,6 @@ OC.L10N.register(
     "Files" : "Fájlok",
     "Channel" : "Csatorna",
     "Choose a channel" : "Csatorna kiválasztása",
-    "Start typing to search" : "Kezdjen el gépelni a kereséshez",
     "Type" : "Típus",
     "Set expiration date" : "Lejárati idő beállítása",
     "Expires on" : "Lejárat:",

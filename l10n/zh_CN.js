@@ -19,7 +19,6 @@ OC.L10N.register(
     "Connected as {user}" : "以 {user} 身份连接",
     "Files" : "文件",
     "Channel" : "频道",
-    "Start typing to search" : "开始输入搜索内容",
     "Type" : "类型",
     "Set expiration date" : "设置过期日期",
     "Comment" : "备注",

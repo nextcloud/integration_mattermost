@@ -18,7 +18,6 @@ OC.L10N.register(
     "Connected as {user}" : "Verbonden als {user}",
     "Files" : "Bestanden",
     "Channel" : "Kanaal",
-    "Start typing to search" : "Begin met typen om te zoeken",
     "Type" : "Type",
     "Set expiration date" : "Instellen vervaldatum",
     "Comment" : "Notitie",

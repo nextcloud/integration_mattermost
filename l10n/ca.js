@@ -19,7 +19,6 @@ OC.L10N.register(
     "Connected as {user}" : "S'ha connectat com a {user}",
     "Files" : "Fitxers",
     "Channel" : "Canal",
-    "Start typing to search" : "Comenceu a escriure per cercar",
     "Type" : "Tipus",
     "Set expiration date" : "Defineix una data de tancament",
     "Comment" : "Comentari",
