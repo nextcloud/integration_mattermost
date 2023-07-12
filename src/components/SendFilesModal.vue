@@ -67,40 +67,39 @@
 					@search="query = $event">
 					<template #option="option">
 						<div class="select-option">
-							<NcAvatar v-if="option.team_display_name"
+							<NcAvatar v-if="option.type === 'channel'"
 								:size="34"
-								:url="getTeamIconUrl(option.team_id)"
 								display-name="#" />
-							<NcAvatar v-else-if="option.direct_message_display_name"
+							<NcAvatar v-else-if="option.type === 'group'">
+								<template #icon>
+									<AccountMultiple :size="34" />
+								</template>
+							</NcAvatar>
+							<NcAvatar v-else-if="option.type === 'direct'"
 								:size="34"
-								:url="getUserIconUrl(option.direct_message_user_id)"
+								:url="getUserIconUrl(option.id)"
 								display-name="U" />
-							<NcHighlight v-if="option.team_display_name"
-								:text="'[' + option.team_display_name + '] ' + option.display_name"
-								:search="query"
-								class="multiselect-name" />
-							<NcHighlight v-else-if="option.direct_message_display_name"
-								:text="option.direct_message_display_name"
+							<NcHighlight
+								:text="option.name"
 								:search="query"
 								class="multiselect-name" />
 						</div>
 					</template>
 					<template #selected-option="option">
-						<NcAvatar v-if="option.team_display_name"
+						<NcAvatar v-if="option.type === 'channel'"
 							:size="34"
-							:url="getTeamIconUrl(option.team_id)"
 							display-name="#" />
-						<NcAvatar v-else-if="option.direct_message_display_name"
+						<NcAvatar v-else-if="option.type === 'group'">
+							<template #icon>
+								<AccountMultiple :size="34" />
+							</template>
+						</NcAvatar>
+						<NcAvatar v-else-if="option.type === 'direct'"
 							:size="34"
-							:url="getUserIconUrl(option.direct_message_user_id)"
+							:url="getUserIconUrl(option.id)"
 							display-name="U" />
-						<span v-if="option.team_display_name"
-							class="multiselect-name">
-							{{ '[' + option.team_display_name + '] ' + option.display_name }}
-						</span>
-						<span v-else-if="option.direct_message_display_name"
-							class="multiselect-name">
-							{{ option.direct_message_display_name }}
+						<span class="multiselect-name">
+							{{ option.name }}
 						</span>
 					</template>
 				</NcSelect>
@@ -229,6 +228,7 @@ import CheckCircleIcon from 'vue-material-design-icons/CheckCircle.vue'
 import AlertBoxIcon from 'vue-material-design-icons/AlertBox.vue'
 import PencilIcon from 'vue-material-design-icons/Pencil.vue'
 import EyeIcon from 'vue-material-design-icons/Eye.vue'
+import AccountMultiple from 'vue-material-design-icons/AccountMultiple.vue'
 
 import RadioElementSet from './RadioElementSet.vue'
 import axios from '@nextcloud/axios'
@@ -264,6 +264,7 @@ export default {
 		CheckCircleIcon,
 		AlertBoxIcon,
 		CloseIcon,
+		AccountMultiple,
 	},
 
 	props: [],
@@ -308,15 +309,7 @@ export default {
 				&& this.files.length > 0
 		},
 		sortedChannels() {
-			return this.channels.slice().sort((a, b) => {
-				const lpa = a.last_post_at
-				const lpb = b.last_post_at
-				return lpa < lpb
-					? 1
-					: lpa > lpb
-						? -1
-						: 0
-			})
+			return this.channels.slice().sort((a, b) => b.updated - a.updated)
 		},
 	},
 
@@ -382,7 +375,6 @@ export default {
 			}).catch((error) => {
 				showError(t('integration_slack', 'Failed to load Slack channels'))
 				console.error(error)
-				console.error(error.response?.data?.error)
 			})
 		},
 		getFilePreviewUrl(fileId, fileType) {
@@ -397,11 +389,8 @@ export default {
 		fileFinished(id) {
 			this.$set(this.fileStates, id, STATES.FINISHED)
 		},
-		getTeamIconUrl(teamId) {
-			return generateUrl('/apps/integration_slack/teams/{teamId}/image', { teamId }) + '?useFallback=0'
-		},
-		getUserIconUrl(userId) {
-			return generateUrl('/apps/integration_slack/users/{userId}/image', { userId }) + '?useFallback=0'
+		getUserIconUrl(slackUserId) {
+			return generateUrl('/apps/integration_slack/users/{slackUserId}/image', { slackUserId }) + '?useFallback=0'
 		},
 		isDateDisabled(d) {
 			const now = new Date()

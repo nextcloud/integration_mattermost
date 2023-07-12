@@ -8,10 +8,6 @@
 			{{ t('integration_slack', 'The admin must fill in client ID and client secret for you to continue from here') }}
 		</p>
 		<br>
-		<p>User Id: {{ state.user_id }}</p>
-		<p>User Avatar: {{ state.user_avatar }}</p>
-		<p>User Display Name: {{ state.user_displayname }}</p>
-		<p>Client ID: {{ state.client_id }}</p>
 		<div id="slack-content">
 			<div id="slack-connect-block">
 				<NcButton v-if="!connected"
@@ -25,16 +21,11 @@
 					{{ t('integration_slack', 'Connect to Slack') }}
 				</NcButton>
 				<div v-if="connected" class="line">
-					<NcAvatar v-if="state.user_avatar"
-						:url="state.user_avatar"
-						:size="48"
-						class="avatar" />
-					<NcAvatar v-else
-						:display-name="state.user_displayname"
-						:size="48"
-						class="avatar" />
+					<NcAvatar :url="getUserIconUrl()" :size="48" dispay-name="User" />
 					<label class="slack-connected">
-						{{ t('integration_slack', 'Connected as {user}', { user: connectedDisplayName }) }}
+						{{ t('integration_slack', 'Connected as') }}
+						{{ " " }}
+						<b>{{ connectedDisplayName }}</b>
 					</label>
 					<NcButton id="slack-rm-cred" @click="onLogoutClick">
 						<template #icon>
@@ -116,16 +107,21 @@ export default {
 	},
 
 	methods: {
+		getUserIconUrl() {
+			return generateUrl(
+				'/apps/integration_slack/users/{slackUserId}/image',
+				{ slackUserId: this.state.user_id }
+			) + '?useFallback=1'
+		},
 		onLogoutClick() {
 			this.state.token = ''
 			this.state.user_id = ''
 			this.state.user_displayname = ''
-			this.state.user_avatar = ''
 
 			this.saveOptions({
 				token: '',
 				user_id: '',
-				user_avatar: '',
+				user_displayname: '',
 			})
 		},
 		onCheckboxChanged(newValue, key) {

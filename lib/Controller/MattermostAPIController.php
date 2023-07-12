@@ -39,51 +39,25 @@ class MattermostAPIController extends Controller {
 		parent::__construct($appName, $request);
 	}
 
-	// TODO: check if this is still needed
-	// --> user_avatar
 	/**
-	 * get mattermost user avatar
+	 * Get Slack user avatar
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
-	 * @param string $userId
+	 * @param string $slackUserId
 	 * @param int $useFallback
 	 * @return DataDisplayResponse|RedirectResponse
 	 * @throws \Exception
 	 */
-	public function getUserAvatar(string $userId, int $useFallback = 1) {
-		$result = $this->mattermostAPIService->getUserAvatar($this->userId, $userId);
+	public function getUserAvatar(string $slackUserId, int $useFallback = 1) {
+		$result = $this->mattermostAPIService->getUserAvatar($this->userId, $slackUserId);
 		if (isset($result['avatarContent'])) {
 			$response = new DataDisplayResponse($result['avatarContent']);
 			$response->cacheFor(60 * 60 * 24);
 			return $response;
-		} elseif ($useFallback !== 0 && isset($result['userInfo'])) {
-			$userName = $result['userInfo']['username'] ?? '??';
-			$fallbackAvatarUrl = $this->urlGenerator->linkToRouteAbsolute('core.GuestAvatar.getAvatar', ['guestName' => $userName, 'size' => 44]);
-			return new RedirectResponse($fallbackAvatarUrl);
 		}
-		return new DataDisplayResponse('', Http::STATUS_NOT_FOUND);
-	}
-
-	/**
-	 * get Mattermost team icon/avatar
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @param string $teamId
-	 * @param int $useFallback
-	 * @return DataDisplayResponse|RedirectResponse
-	 * @throws \Exception
-	 */
-	public function getTeamAvatar(string $teamId, int $useFallback = 1): DataDisplayResponse | RedirectResponse	{
-		$result = $this->mattermostAPIService->getTeamAvatar($this->userId, $teamId);
-		if (isset($result['avatarContent'])) {
-			$response = new DataDisplayResponse($result['avatarContent']);
-			$response->cacheFor(60 * 60 * 24);
-			return $response;
-		} elseif ($useFallback !== 0 && isset($result['teamInfo'])) {
-			$projectName = $result['teamInfo']['display_name'] ?? '??';
-			$fallbackAvatarUrl = $this->urlGenerator->linkToRouteAbsolute('core.GuestAvatar.getAvatar', ['guestName' => $projectName, 'size' => 44]);
+		if ($useFallback !== 0 && isset($result['displayName'])) {
+			$fallbackAvatarUrl = $this->urlGenerator->linkToRouteAbsolute('core.GuestAvatar.getAvatar', ['guestName' => $result['displayName'], 'size' => 44]);
 			return new RedirectResponse($fallbackAvatarUrl);
 		}
 		return new DataDisplayResponse('', Http::STATUS_NOT_FOUND);
@@ -99,9 +73,8 @@ class MattermostAPIController extends Controller {
 		$result = $this->mattermostAPIService->getMyChannels($this->userId);
 		if (isset($result['error'])) {
 			return new DataResponse($result, Http::STATUS_BAD_REQUEST);
-		} else {
-			return new DataResponse($result);
 		}
+		return new DataResponse($result);
 	}
 
 	/**

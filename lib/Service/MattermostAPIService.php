@@ -55,138 +55,132 @@ class MattermostAPIService {
 	}
 
 	/**
+	 * @param string $url
+	 * @return mixed
+	 */
+	public function downloadAvatar(string $url)  {
+		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
+		$options = [
+			'Authorization'  => 'Bearer ' . $accessToken,
+			'Content-Type' => 'application/x-www-form-urlencoded',
+			'User-Agent'  => Application::INTEGRATION_USER_AGENT,
+		];
+
+		try {
+			$response = $this->client->get($url, $options);
+			$body = $response->getBody();
+			$respCode = $response->getStatusCode();
+
+			if ($respCode >= 400) {
+				$this->logger->error('Error while downloading avatar: ' . $respCode . ' ' . $body);
+				return null;
+			}
+
+			return $body;
+		} catch (Exception $e) {
+			$this->logger->error('Error while downloading avatar: ' . $e->getMessage());
+			return null;
+		}
+	}
+
+	/**
 	 * @param string $userId
+	 * @param string $slackUserId
 	 * @return array
 	 * @throws PreConditionNotMetException
 	 */
-	private function getMyTeamsInfo(string $userId): array {
-		$mattermostUserId = $this->config->getUserValue($userId, Application::APP_ID, 'user_id');
-		$teams = $this->request($userId, 'users/' . $mattermostUserId . '/teams');
-		if (isset($teams['error'])) {
-			return [];
+	public function getUserAvatar(string $userId, string $slackUserId): array {
+		$userInfo = $this->request($userId, 'users.info', ['user' => $slackUserId]);
+
+		if (isset($userInfo['user'], $userInfo['user']['profile'], $userInfo['user']['profile']['image_48'])) {
+			$image = $this->downloadAvatar($userInfo['user']['profile']['image_48']);
+			if (!is_array($image)) {
+				return ['avatarContent' => $image];
+			}
 		}
-		$teamsById = [];
-		foreach ($teams as $team) {
-			$teamsById[$team['id']] = $team;
+
+		if (isset($userInfo['user'], $userInfo['user']['real_name'])) {
+			return ['displayName' => $userInfo['user']['real_name']];
 		}
-		return $teamsById;
+
+		return ['displayName' => 'User'];
 	}
 
 	/**
 	 * @param string $userId
-	 * @param string $mattermostUserId
+	 * @param string $slackUserId
+	 * @return string|null
+	 */
+	private function getUserRealName(string $userId, string $slackUserId): string|null {
+		$userInfo = $this->request($userId, 'users.info', ['user' => $slackUserId]);
+		if (isset($userInfo['error'])) {
+			return null;
+		}
+		if (!isset($userInfo['user'], $userInfo['user']['real_name'])) {
+			return null;
+		}
+		return $userInfo['user']['real_name'];
+	}
+
+	/**
+	 * @param string $userId
 	 * @return array
-	 * @throws PreConditionNotMetException
-	 */
-	public function getUserAvatar(string $userId, string $mattermostUserId): array {
-		$image = $this->request($userId, 'users/' . $mattermostUserId . '/image', [], 'GET', false);
-		if (!is_array($image)) {
-			return ['avatarContent' => $image];
-		}
-		$image = $this->request($userId, 'users/' . $mattermostUserId . '/image/default', [], 'GET', false);
-		if (!is_array($image)) {
-			return ['avatarContent' => $image];
-		}
-
-		$userInfo = $this->request($userId, 'users/' . $mattermostUserId);
-		return ['userInfo' => $userInfo];
-	}
-
-	/**
-	 * @param string $userId
-	 * @param string $teamId
-	 * @return array
-	 * @throws PreConditionNotMetException
-	 */
-	public function getTeamAvatar(string $userId, string $teamId): array {
-		$image = $this->request($userId, 'teams/' . $teamId . '/image', [], 'GET', false);
-		if (!is_array($image)) {
-			return ['avatarContent' => $image];
-		}
-
-		$userInfo = $this->request($userId, 'teams/' . $teamId);
-		return ['teamInfo' => $userInfo];
-	}
-
-	/**
-	 * @param string $userId
-	 * @param string $channelId
-	 * @return array|string[]
-	 * @throws PreConditionNotMetException
-	 */
-	public function getChannelInfo(string $userId, string $channelId): array {
-		return $this->request($userId, 'channels/' . $channelId);
-	}
-
-	/**
-	 * @param string $userId
-	 * @param string $mattermostUserId
-	 * @return array|string[]
-	 * @throws PreConditionNotMetException
-	 */
-	public function getUserInfo(string $userId, string $mattermostUserId): array {
-		return $this->request($userId, 'users/' . $mattermostUserId);
-	}
-
-	/**
-	 * @param string $userId
-	 * @return array|string[]
 	 * @throws PreConditionNotMetException
 	 */
 	public function getMyChannels(string $userId): array {
-		$mattermostUserId = $this->config->getUserValue($userId, Application::APP_ID, 'user_id');
-		$channelResult = $this->request($userId, 'users/' . $mattermostUserId . '/channels');
+		$slackUserId = $this->config->getUserValue($userId, Application::APP_ID, 'user_id');
+		$channelResult = $this->request($userId, 'conversations.list', [
+			'exclude_archived' => true,
+			'types' => 'public_channel,private_channel,im,mpim'
+		]);
+
 		if (isset($channelResult['error'])) {
 			return $channelResult;
 		}
 
-		// get team names
-		$teamIds = [];
-		foreach ($channelResult as $channel) {
-			if ($channel['type'] === 'O') {
-				$teamId = $channel['team_id'];
-				if (!in_array($teamId, $teamIds)) {
-					$teamIds[] = $teamId;
-				}
-			}
-		}
-		$teamDisplayNamesById = [];
-		foreach ($teamIds as $teamId) {
-			$teamResult = $this->request($userId, 'teams/' . $teamId);
-			if (!isset($teamResult['error'])) {
-				$teamDisplayNamesById[$teamId] = $teamResult['display_name'];
-			}
-		}
-		// put it back in the channels
-		foreach ($channelResult as $i => $channel) {
-			$channelResult[$i]['team_display_name'] = $teamDisplayNamesById[$channel['team_id']] ?? null;
+		if (!isset($channelResult['channels']) || !is_array($channelResult['channels'])) {
+			return ['error' => 'No channels found'];
 		}
 
-		// get direct message author names
-		foreach ($channelResult as $i => $channel) {
-			if ($channel['type'] === 'D') {
-				$names = explode('__', $channel['name']);
-				if (count($names) !== 2) {
+		/* Cheat sheet:
+		 * name, is_channel => channel
+		 * name, is_group => group
+		 * user, is_im => direct
+		 */
+
+		$channels = [];
+
+		foreach($channelResult['channels'] as $channel) {
+			if (isset($channel['name'], $channel['is_channel']) && $channel['is_channel']) {
+				$channels[] = [
+					'id' => $channel['id'],
+					'name' => $channel['name'],
+					'type' => 'channel',
+					'updated' => $channel['updated'] ?? 0,
+				];
+			} else if (isset($channel['name'], $channel['is_group']) && $channel['is_group']) {
+				$channels[] = [
+					'id' => $channel['id'],
+					'name' => $channel['name'],
+					'type' => 'group',
+					'updated' => $channel['updated'] ?? 0,
+				];
+			} else if (isset($channel['user'], $channel['is_im']) && $channel['is_im']) {
+				$realName = $this->getUserRealName($userId, $channel['user']);
+				if (is_null($realName)) {
 					continue;
 				}
-				$directUserId = $names[0];
-				if ($directUserId === $mattermostUserId) {
-					$directUserId = $names[1];
-				}
-				$userResult = $this->request($userId, 'users/' . $directUserId);
-				if (!isset($userResult['error'])) {
-					$userDisplayName = preg_replace('/^\s+$/', '', $userResult['first_name'] . ' ' . $userResult['last_name']);
-					$userDisplayName = $userDisplayName ?: $userResult['username'];
-					$userName = $userResult['username'];
-					$channelResult[$i]['display_name'] = $userDisplayName;
-					$channelResult[$i]['direct_message_display_name'] = $userDisplayName;
-					$channelResult[$i]['direct_message_user_name'] = $userName;
-					$channelResult[$i]['direct_message_user_id'] = $directUserId;
-				}
+
+				$channels[] = [
+					'id' => $channel['user'],
+					'name' => $realName,
+					'type' => 'direct',
+					'updated' => $channel['updated'] ?? 0,
+				];
 			}
 		}
 
-		return $channelResult;
+		return $channels;
 	}
 
 	/**

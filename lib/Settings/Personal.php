@@ -24,7 +24,6 @@ class Personal implements ISettings {
 	public function getForm(): TemplateResponse {
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
 		$userId = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_id');
-		$userAvatar = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_avatar');
 		$userDisplayName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_displayname');
 		$fileActionEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'file_action_enabled', '1') === '1';
 
@@ -37,7 +36,6 @@ class Personal implements ISettings {
 			'client_id' => $clientID,
 			'use_popup' => ($usePopup === '1'),
 			'user_id' => $userId,
-			'user_avatar' => $userAvatar,
 			'user_displayname' => $userDisplayName,
 			'file_action_enabled' => $fileActionEnabled,
 		];

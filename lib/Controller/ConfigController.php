@@ -104,11 +104,9 @@ class ConfigController extends Controller {
 			if ($values['token'] === '') {
 				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'user_id');
 				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'user_displayname');
-				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'user_avatar');
 				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'token');
 				$result['user_id'] = '';
 				$result['user_displayname'] = '';
-				$result['user_avatar'] = '';
 			}
 
 			// if the token is set, cleanup refresh token and expiration date
@@ -131,21 +129,19 @@ class ConfigController extends Controller {
 		return new DataResponse(1);
 	}
 
-	// TODO: id, avatar?
+	// TODO: id?
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
 	 * @param string $user_id
 	 * @param string $user_displayname
-	 * @param string $user_avatar
 	 * @return TemplateResponse
 	 */
-	public function popupSuccessPage(string $user_name, string $user_displayname, string $user_avatar): TemplateResponse {
+	public function popupSuccessPage(string $user_name, string $user_displayname): TemplateResponse {
 		$this->initialStateService->provideInitialState('popup-data', [
 			'user_id' => $user_name,
 			'user_displayname' => $user_displayname,
-			'user_avatar' => $user_avatar
 		]);
 		return new TemplateResponse(Application::APP_ID, 'popupSuccess', [], TemplateResponse::RENDER_AS_GUEST);
 	}
@@ -199,7 +195,6 @@ class ConfigController extends Controller {
 						$this->urlGenerator->linkToRoute('integration_slack.config.popupSuccessPage', [
 							'user_id' => $userInfo['user_id'] ?? '',
 							'user_displayname' => $userInfo['user_displayname'] ?? '',
-							'user_avatar' => $userInfo['user_avatar'] ?? '',
 						])
 					);
 				} else {
@@ -247,30 +242,22 @@ class ConfigController extends Controller {
 			'user' => $slackUserId,
 		]);
 
-		if (isset(
-			$info['user'], $info['user']['id'],
-			$info['user']['real_name'],
-			$info['user']['profile'],
-			$info['user']['profile']['image_48'])
+		if (isset($info['user'], $info['user']['id'], $info['user']['real_name'])
 		) {
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $info['user']['id'] ?? '');
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $info['user']['id']);
 			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_displayname', $info['user']['real_name']);
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_avatar', $info['user']['profile']['image_48']);
 
 			return [
-				'user_id' => $info['user']['id'] ?? '',
+				'user_id' => $info['user']['id'],
 				'user_displayname' => $info['user']['real_name'],
-				'user_avatar' => $info['user']['profile']['image_48'] ?? '',
 			];
 		} else {
 			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', '');
 			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_displayname', '');
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_avatar', '');
 
 			return [
 				'user_id' => '',
 				'user_displayname' => '',
-				'user_avatar' => '',
 			];
 		}
 	}

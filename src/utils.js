@@ -27,7 +27,7 @@ export function oauthConnect(clientId, oauthOrigin, usePopup = false) {
 		+ '&redirect_uri=' + encodeURIComponent(redirectUri)
 		+ '&state=' + encodeURIComponent(oauthState)
 		// TODO: refine this further
-		+ '&user_scope=' + encodeURIComponent('channels:history,channels:read,chat:write,files:write,links:write,remote_files:share,users:read')
+		+ '&user_scope=' + encodeURIComponent('channels:read,groups:read,im:read,mpim:read,users:read,chat:write,files:write,links:write,remote_files:share')
 
 	const req = {
 		values: {

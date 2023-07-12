@@ -22,8 +22,7 @@ return [
 		['name' => 'mattermostAPI#sendPublicLinks', 'url' => '/sendPublicLinks', 'verb' => 'POST'],
 		['name' => 'mattermostAPI#sendFile', 'url' => '/sendFile', 'verb' => 'POST'],
 		['name' => 'mattermostAPI#getChannels', 'url' => '/channels', 'verb' => 'GET'],
-		['name' => 'mattermostAPI#getUserAvatar', 'url' => '/users/{userId}/image', 'verb' => 'GET'],
-		['name' => 'mattermostAPI#getTeamAvatar', 'url' => '/teams/{teamId}/image', 'verb' => 'GET'],
+		['name' => 'mattermostAPI#getUserAvatar', 'url' => '/users/{slackUserId}/image', 'verb' => 'GET'],
 
 		['name' => 'files#getFileImage', 'url' => '/preview', 'verb' => 'GET'],
 	]
