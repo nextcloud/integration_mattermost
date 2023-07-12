@@ -2,9 +2,9 @@
 host     = https://www.transifex.com
 lang_map = cs_CZ: cs, fi_FI: fi, hu_HU: hu, nb_NO: nb, sk_SK: sk, th_TH: th, ja_JP: ja, bg_BG: bg
 
-[o:nextcloud:p:nextcloud:r:integration_mattermost]
-file_filter = translationfiles/<lang>/integration_mattermost.po
-source_file = translationfiles/templates/integration_mattermost.pot
+[o:nextcloud:p:nextcloud:r:integration_slack]
+file_filter = translationfiles/<lang>/integration_slack.po
+source_file = translationfiles/templates/integration_slack.pot
 source_lang = en
 type        = PO
 

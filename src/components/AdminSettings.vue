@@ -1,64 +1,53 @@
 <template>
-	<div id="mattermost_prefs" class="section">
+	<div id="slack_prefs" class="section">
 		<h2>
 			<MattermostIcon class="icon" />
-			{{ t('integration_mattermost', 'Mattermost integration') }}
+			{{ t('integration_slack', 'Slack integration') }}
 		</h2>
 		<p class="settings-hint">
-			{{ t('integration_mattermost', 'If you want to allow your Nextcloud users to use OAuth to authenticate to a Mattermost instance of your choice, create an application in your Mattermost settings and set the ID and secret here.') }}
+			{{ t('integration_slack', 'If you want to allow your Nextcloud users to use OAuth to authenticate to the Slack app, create a Slack application and set the ID and secret here.') }}
 		</p>
 		<br>
 		<p class="settings-hint">
 			<InformationOutlineIcon :size="24" class="icon" />
-			{{ t('integration_mattermost', 'Make sure you set the "Redirect URI" to') }}
+			{{ t('integration_slack', 'Make sure you set the "Redirect URI" to') }}
 		</p>
 		<strong>{{ redirect_uri }}</strong>
 		<br><br>
 		<p class="settings-hint">
-			{{ t('integration_mattermost', 'Put the "Application ID" and "Application secret" below. Your Nextcloud users will then see a "Connect to Mattermost" button in their personal settings if they select the Mattermost instance defined here.') }}
+			{{ t('integration_slack', 'Put the "Client ID" and "Client secret" below. Your Nextcloud users will then see a "Connect to Slack" button in their personal settings if they select the Slack instance defined here.') }}
 		</p>
-		<div id="mattermost-content">
+		<div id="slack-content">
 			<div class="line">
-				<label for="mattermost-oauth-instance">
-					<EarthIcon :size="20" class="icon" />
-					{{ t('integration_mattermost', 'OAuth app instance address') }}
-				</label>
-				<input id="mattermost-oauth-instance"
-					v-model="state.oauth_instance_url"
-					type="text"
-					:placeholder="t('integration_mattermost', 'Instance address')"
-					@input="onInput">
-			</div>
-			<div class="line">
-				<label for="mattermost-client-id">
+				<label for="slack-client-id">
 					<KeyIcon :size="20" class="icon" />
-					{{ t('integration_mattermost', 'Application ID') }}
+					{{ t('integration_slack', 'Client ID') }}
 				</label>
-				<input id="mattermost-client-id"
+				<input id="slack-client-id"
 					v-model="state.client_id"
 					type="password"
 					:readonly="readonly"
-					:placeholder="t('integration_mattermost', 'ID of your Mattermost application')"
+					:placeholder="t('integration_slack', 'ID of your Slack application')"
 					@input="onInput"
 					@focus="readonly = false">
 			</div>
 			<div class="line">
-				<label for="mattermost-client-secret">
+				<label for="slack-client-secret">
 					<KeyIcon :size="20" class="icon" />
-					{{ t('integration_mattermost', 'Application secret') }}
+					{{ t('integration_slack', 'Application secret') }}
 				</label>
-				<input id="mattermost-client-secret"
+				<input id="slack-client-secret"
 					v-model="state.client_secret"
 					type="password"
 					:readonly="readonly"
-					:placeholder="t('integration_mattermost', 'Client secret of your Mattermost application')"
+					:placeholder="t('integration_slack', 'Client secret of your Slack application')"
 					@focus="readonly = false"
 					@input="onInput">
 			</div>
 			<NcCheckboxRadioSwitch
 				:checked.sync="state.use_popup"
 				@update:checked="onUsePopupChanged">
-				{{ t('integration_mattermost', 'Use a popup to authenticate') }}
+				{{ t('integration_slack', 'Use a popup to authenticate') }}
 			</NcCheckboxRadioSwitch>
 		</div>
 	</div>
@@ -66,7 +55,6 @@
 
 <script>
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue'
-import EarthIcon from 'vue-material-design-icons/Earth.vue'
 import KeyIcon from 'vue-material-design-icons/Key.vue'
 
 import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
@@ -85,7 +73,6 @@ export default {
 		MattermostIcon,
 		NcCheckboxRadioSwitch,
 		InformationOutlineIcon,
-		EarthIcon,
 		KeyIcon,
 	},
 
@@ -93,10 +80,10 @@ export default {
 
 	data() {
 		return {
-			state: loadState('integration_mattermost', 'admin-config'),
+			state: loadState('integration_slack', 'admin-config'),
 			// to prevent some browsers to fill fields with remembered passwords
 			readonly: true,
-			redirect_uri: window.location.protocol + '//' + window.location.host + generateUrl('/apps/integration_mattermost/oauth-redirect'),
+			redirect_uri: window.location.protocol + '//' + window.location.host + generateUrl('/apps/integration_slack/oauth-redirect'),
 		}
 	},
 
@@ -115,7 +102,6 @@ export default {
 				this.saveOptions({
 					client_id: this.state.client_id,
 					client_secret: this.state.client_secret,
-					oauth_instance_url: this.state.oauth_instance_url,
 				})
 			}, 2000)()
 		},
@@ -123,15 +109,15 @@ export default {
 			const req = {
 				values,
 			}
-			const url = generateUrl('/apps/integration_mattermost/admin-config')
-			axios.put(url, req).then((response) => {
-				showSuccess(t('integration_mattermost', 'Mattermost admin options saved'))
+			const url = generateUrl('/apps/integration_slack/admin-config')
+			axios.put(url, req).then(() => {
+				showSuccess(t('integration_slack', 'Slack admin options saved'))
 			}).catch((error) => {
 				showError(
-					t('integration_mattermost', 'Failed to save Mattermost admin options')
+					t('integration_slack', 'Failed to save Slack admin options')
 					+ ': ' + (error.response?.request?.responseText ?? '')
 				)
-				console.debug(error)
+				console.error(error)
 			})
 		},
 	},
@@ -139,8 +125,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#mattermost_prefs {
-	#mattermost-content {
+#slack_prefs {
+	#slack-content {
 		margin-left: 40px;
 	}
 

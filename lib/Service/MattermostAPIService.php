@@ -9,7 +9,7 @@
  * @copyright Julien Veyssier 2022
  */
 
-namespace OCA\Mattermost\Service;
+namespace OCA\Slack\Service;
 
 use Datetime;
 use Exception;
@@ -18,7 +18,7 @@ use GuzzleHttp\Exception\ServerException;
 use OC\Files\Node\File;
 use OC\Files\Node\Folder;
 use OC\User\NoUserException;
-use OCA\Mattermost\AppInfo\Application;
+use OCA\Slack\AppInfo\Application;
 use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotPermittedException;
@@ -56,15 +56,6 @@ class MattermostAPIService {
 
 	/**
 	 * @param string $userId
-	 * @return string
-	 */
-	public function getMattermostUrl(string $userId): string {
-		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
-		return $this->config->getUserValue($userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
-	}
-
-	/**
-	 * @param string $userId
 	 * @return array
 	 * @throws PreConditionNotMetException
 	 */
@@ -79,38 +70,6 @@ class MattermostAPIService {
 			$teamsById[$team['id']] = $team;
 		}
 		return $teamsById;
-	}
-
-	/**
-	 * @param string $userId
-	 * @param string $term
-	 * @param int $offset
-	 * @param int $limit
-	 * @return array
-	 * @throws PreConditionNotMetException
-	 */
-	public function searchMessages(string $userId, string $term, int $offset = 0, int $limit = 5): array {
-		$params = [
-			'include_deleted_channels' => true,
-			'is_or_search' => true,
-			'page' => 0,
-			'per_page' => 60,
-			'terms' => $term,
-			'time_zone_offset' => 7200,
-		];
-		$result = $this->request($userId, 'posts/search', $params, 'POST');
-		$posts = $result['posts'] ?? [];
-
-		// sort post by creation date, DESC
-		usort($posts, function($a, $b) {
-			$ta = (int) $a['create_at'];
-			$tb = (int) $b['create_at'];
-			return ($ta > $tb) ? -1 : 1;
-		});
-
-		$posts = array_slice($posts, $offset, $limit);
-
-		return $this->addPostInfos($posts, $userId);
 	}
 
 	/**
@@ -151,55 +110,6 @@ class MattermostAPIService {
 
 	/**
 	 * @param string $userId
-	 * @param string $mattermostUserName
-	 * @param int|null $since
-	 * @return array|string[]
-	 * @throws PreConditionNotMetException
-	 */
-	public function getMentionsMe(string $userId, string $mattermostUserName, ?int $since = null): array {
-		$params = [
-			'include_deleted_channels' => true,
-			'is_or_search' => true,
-			'page' => 0,
-			'per_page' => 20,
-			'terms' => '@' . $mattermostUserName . ' ',
-			'time_zone_offset' => 7200,
-		];
-		$result = $this->request($userId, 'posts/search', $params, 'POST');
-		if (isset($result['error'])) {
-			return $result;
-		}
-		$posts = $result['posts'] ?? [];
-
-		// since filter
-		$posts = array_filter($posts, function(array $post) use ($since) {
-			$postTs = (int) $post['create_at'];
-			return $postTs > $since;
-		});
-
-		$posts = $this->addPostInfos($posts, $userId);
-
-		// sort post by creation date, DESC
-		usort($posts, function($a, $b) {
-			$ta = (int) $a['create_at'];
-			$tb = (int) $b['create_at'];
-			return ($ta > $tb) ? -1 : 1;
-		});
-		return $posts;
-	}
-
-	/**
-	 * @param string $userId
-	 * @param string $postId
-	 * @return array|string[]
-	 * @throws PreConditionNotMetException
-	 */
-	public function getPostInfo(string $userId, string $postId): array {
-		return $this->request($userId, 'posts/' . $postId);
-	}
-
-	/**
-	 * @param string $userId
 	 * @param string $channelId
 	 * @return array|string[]
 	 * @throws PreConditionNotMetException
@@ -216,73 +126,6 @@ class MattermostAPIService {
 	 */
 	public function getUserInfo(string $userId, string $mattermostUserId): array {
 		return $this->request($userId, 'users/' . $mattermostUserId);
-	}
-
-	/**
-	 * @param array $posts
-	 * @param string $userId
-	 * @return array
-	 * @throws PreConditionNotMetException
-	 */
-	public function addPostInfos(array $posts, string $userId): array {
-		if (count($posts) > 0) {
-			$channelsPerId = $this->getMyChannelsPerId($userId);
-			$teamsPerId = $this->getMyTeamsInfo($userId);
-			$teamIds = array_keys($teamsPerId);
-			$fallbackTeamId = end($teamIds);
-			// get channel and team information for each post
-			foreach ($posts as $postId => $post) {
-				$channelId = $post['channel_id'];
-				$teamId = $channelsPerId[$channelId]['team_id'] ?? '';
-				$posts[$postId]['channel_type'] = $channelsPerId[$channelId]['type'] ?? '';
-				$posts[$postId]['channel_name'] = $channelsPerId[$channelId]['name'] ?? '';
-				$posts[$postId]['channel_display_name'] = $channelsPerId[$channelId]['display_name'] ?? '';
-				$posts[$postId]['team_id'] = $teamId;
-				$posts[$postId]['team_name'] = $teamsPerId[$teamId]['name'] ?? '';
-				$posts[$postId]['team_display_name'] = $teamsPerId[$teamId]['display_name'] ?? '';
-				if ($channelsPerId[$channelId]['type'] === 'D') {
-					$posts[$postId]['direct_message_user_name'] = $channelsPerId[$channelId]['direct_message_user_name'] ?? '';
-					// add any team to direct messages as it apparently does not matter but is needed...
-					$posts[$postId]['team_name'] = $teamsPerId[$fallbackTeamId]['name'] ?? '';
-				}
-			}
-
-			// get user/author info
-			$usersById = [];
-			foreach ($posts as $postId => $post) {
-				$usersById[$post['user_id']] = [];
-			}
-			foreach ($usersById as $mmUserId => $user) {
-				$userInfo = $this->request($userId, 'users/' . $mmUserId);
-				if (isset($userInfo['username'], $userInfo['first_name'], $userInfo['last_name'])) {
-					$usersById[$mmUserId]['user_name'] = $userInfo['username'];
-					$usersById[$mmUserId]['user_display_name'] = $userInfo['first_name'] . ' ' . $userInfo['last_name'];
-				}
-			}
-			foreach ($posts as $postId => $post) {
-				$mmUserId = $post['user_id'];
-				$posts[$postId]['user_name'] = $usersById[$mmUserId]['user_name'] ?? '';
-				$posts[$postId]['user_display_name'] = $usersById[$mmUserId]['user_display_name'] ?? '';
-			}
-		}
-		return $posts;
-	}
-
-	/**
-	 * @param string $userId
-	 * @return array|string[]
-	 * @throws PreConditionNotMetException
-	 */
-	public function getMyChannelsPerId(string $userId): array {
-		$result = $this->getMyChannels($userId);
-		if (isset($result['error'])) {
-			return $result;
-		}
-		$perId = [];
-		foreach ($result as $channel) {
-			$perId[$channel['id']] = $channel;
-		}
-		return $perId;
 	}
 
 	/**
@@ -490,11 +333,12 @@ class MattermostAPIService {
 	 * @throws PreConditionNotMetException
 	 */
 	public function requestSendFile(string $userId, string $endPoint, $fileResource) {
-		$mattermostUrl = $this->getMattermostUrl($userId);
-		$this->checkTokenExpiration($userId, $mattermostUrl);
+		/* TODO: check token expiration */
+		$this->checkTokenExpiration($userId);
 		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
+
 		try {
-			$url = $mattermostUrl . '/api/v4/' . $endPoint;
+			$url = Application::SLACK_API_URL . $endPoint;
 			$options = [
 				'headers' => [
 					'Authorization'  => 'Bearer ' . $accessToken,
@@ -513,7 +357,7 @@ class MattermostAPIService {
 				return json_decode($body, true);
 			}
 		} catch (ServerException | ClientException $e) {
-			$this->logger->warning('Mattermost API send file error : '.$e->getMessage(), ['app' => Application::APP_ID]);
+			$this->logger->warning('Slack API send file error : '.$e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}
@@ -529,11 +373,11 @@ class MattermostAPIService {
 	 */
 	public function request(string $userId, string $endPoint, array $params = [], string $method = 'GET',
 							bool $jsonResponse = true) {
-		$mattermostUrl = $this->getMattermostUrl($userId);
-		$this->checkTokenExpiration($userId, $mattermostUrl);
+		$this->checkTokenExpiration($userId);
 		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
+
 		try {
-			$url = $mattermostUrl . '/api/v4/' . $endPoint;
+			$url = Application::SLACK_API_URL . $endPoint;
 			$options = [
 				'headers' => [
 					'Authorization'  => 'Bearer ' . $accessToken,
@@ -578,30 +422,27 @@ class MattermostAPIService {
 
 			if ($respCode >= 400) {
 				return ['error' => $this->l10n->t('Bad credentials')];
-			} else {
-				if ($jsonResponse) {
-					return json_decode($body, true);
-				} else {
-					return $body;
-				}
 			}
+			if ($jsonResponse) {
+				return json_decode($body, true);
+			}
+			return $body;
 		} catch (ServerException | ClientException $e) {
 			$body = $e->getResponse()->getBody();
-			$this->logger->warning('Mattermost API error : ' . $body, ['app' => Application::APP_ID]);
+			$this->logger->warning('Slack API error : ' . $body, ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		} catch (Exception | Throwable $e) {
-			$this->logger->warning('Mattermost API error', ['exception' => $e, 'app' => Application::APP_ID]);
+			$this->logger->warning('Slack API error', ['exception' => $e, 'app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}
 
 	/**
 	 * @param string $userId
-	 * @param string $url
 	 * @return void
 	 * @throws \OCP\PreConditionNotMetException
 	 */
-	private function checkTokenExpiration(string $userId, string $url): void {
+	private function checkTokenExpiration(string $userId): void {
 		$refreshToken = $this->config->getUserValue($userId, Application::APP_ID, 'refresh_token');
 		$expireAt = $this->config->getUserValue($userId, Application::APP_ID, 'token_expires_at');
 		if ($refreshToken !== '' && $expireAt !== '') {
@@ -609,44 +450,48 @@ class MattermostAPIService {
 			$expireAt = (int) $expireAt;
 			// if token expires in less than a minute or is already expired
 			if ($nowTs > $expireAt - 60) {
-				$this->refreshToken($userId, $url);
+				$this->refreshToken($userId);
 			}
 		}
 	}
 
 	/**
 	 * @param string $userId
-	 * @param string $url
 	 * @return bool
 	 * @throws \OCP\PreConditionNotMetException
 	 */
-	private function refreshToken(string $userId, string $url): bool {
+	private function refreshToken(string $userId): bool {
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
 		$redirect_uri = $this->config->getUserValue($userId, Application::APP_ID, 'redirect_uri');
 		$refreshToken = $this->config->getUserValue($userId, Application::APP_ID, 'refresh_token');
+
 		if (!$refreshToken) {
-			$this->logger->error('No Mattermost refresh token found', ['app' => Application::APP_ID]);
+			$this->logger->error('No Slack refresh token found', ['app' => Application::APP_ID]);
 			return false;
 		}
-		$result = $this->requestOAuthAccessToken($url, [
+
+		$result = $this->requestOAuthAccessToken(Application::SLACK_OAUTH_ACCESS_URL, [
 			'client_id' => $clientID,
 			'client_secret' => $clientSecret,
 			'grant_type' => 'refresh_token',
-			'redirect_uri' => $redirect_uri,
 			'refresh_token' => $refreshToken,
 		], 'POST');
-		if (isset($result['access_token'])) {
-			$this->logger->info('Mattermost access token successfully refreshed', ['app' => Application::APP_ID]);
-			$accessToken = $result['access_token'];
-			$refreshToken = $result['refresh_token'];
+
+		if (isset($result['authed_user'], $result['authed_user']['access_token'])) {
+			$this->logger->info('Slack access token successfully refreshed', ['app' => Application::APP_ID]);
+
+			$accessToken = $result['authed_user']['access_token'];
+			$refreshToken = $result['authed_user']['refresh_token'];
 			$this->config->setUserValue($userId, Application::APP_ID, 'token', $accessToken);
 			$this->config->setUserValue($userId, Application::APP_ID, 'refresh_token', $refreshToken);
-			if (isset($result['expires_in'])) {
+
+			if (isset($result['authed_user']['expires_in'])) {
 				$nowTs = (new Datetime())->getTimestamp();
-				$expiresAt = $nowTs + (int) $result['expires_in'];
+				$expiresAt = $nowTs + (int) $result['authed_user']['expires_in'];
 				$this->config->setUserValue($userId, Application::APP_ID, 'token_expires_at', $expiresAt);
 			}
+
 			return true;
 		} else {
 			// impossible to refresh the token
@@ -656,6 +501,7 @@ class MattermostAPIService {
 					. $result['error_description'] ?? '[no error description]',
 				['app' => Application::APP_ID]
 			);
+
 			return false;
 		}
 	}
@@ -668,7 +514,6 @@ class MattermostAPIService {
 	 */
 	public function requestOAuthAccessToken(string $url, array $params = [], string $method = 'GET'): array {
 		try {
-			$url = $url . '/oauth/access_token';
 			$options = [
 				'headers' => [
 					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
@@ -704,48 +549,7 @@ class MattermostAPIService {
 				return json_decode($body, true);
 			}
 		} catch (Exception $e) {
-			$this->logger->warning('Mattermost OAuth error : '.$e->getMessage(), ['app' => Application::APP_ID]);
-			return ['error' => $e->getMessage()];
-		}
-	}
-
-	/**
-	 * @param string $baseUrl
-	 * @param string $login
-	 * @param string $password
-	 * @return array
-	 */
-	public function login(string $baseUrl, string $login, string $password): array {
-		try {
-			$url = $baseUrl . '/api/v4/users/login';
-			$options = [
-				'headers' => [
-					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
-					'Content-Type' => 'application/x-www-form-urlencoded',
-				],
-				'json' => [
-					'login_id' => $login,
-					'password' => $password,
-				],
-			];
-			$response = $this->client->post($url, $options);
-			$body = $response->getBody();
-			$respCode = $response->getStatusCode();
-
-			if ($respCode >= 400) {
-				return ['error' => $this->l10n->t('Invalid credentials')];
-			} else {
-				$token = $response->getHeader('Token');
-				if ($token) {
-					return [
-						'token' => $token,
-						'info' => json_decode($body, true),
-					];
-				}
-				return ['error' => $this->l10n->t('Invalid response')];
-			}
-		} catch (Exception $e) {
-			$this->logger->warning('Mattermost login error : '.$e->getMessage(), ['app' => Application::APP_ID]);
+			$this->logger->warning('Slack OAuth error : '.$e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}

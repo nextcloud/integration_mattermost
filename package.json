@@ -1,11 +1,7 @@
 {
-	"name": "integration_mattermost",
-	"version": "0.0.1",
-	"description": "Mattermost integration",
-	"main": "index.js",
-	"directories": {
-		"test": "tests"
-	},
+	"name": "integration_slack",
+	"version": "1.0.0",
+	"description": "Slack integration",
 	"scripts": {
 		"build": "NODE_ENV=production webpack --progress --config webpack.js",
 		"dev": "NODE_ENV=development webpack --progress --config webpack.js",
@@ -17,17 +13,17 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/julien-nc/integration_mattermost"
+		"url": "https://github.com/nextcloud/integration_slack"
 	},
 	"keywords": [
-		"mattermost"
+		"slack"
 	],
-	"author": "Julien Veyssier",
+	"author": "Anupam Kumar",
 	"license": "AGPL-3.0",
 	"bugs": {
-		"url": "https://github.com/julien-nc/integration_mattermost/issues"
+		"url": "https://github.com/nextcloud/integration_slack/issues"
 	},
-	"homepage": "https://github.com/julien-nc/integration_mattermost",
+	"homepage": "https://github.com/nextcloud/integration_slack",
 	"browserslist": [
 		"extends @nextcloud/browserslist-config"
 	],

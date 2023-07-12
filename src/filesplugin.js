@@ -22,19 +22,19 @@ import './bootstrap.js'
 const DEBUG = false
 
 function openChannelSelector(files) {
-	OCA.Mattermost.filesToSend = files
-	const modalVue = OCA.Mattermost.MattermostSendModalVue
+	OCA.Slack.filesToSend = files
+	const modalVue = OCA.Slack.SlackSendModalVue
 	modalVue.updateChannels()
 	modalVue.setFiles([...files])
 	modalVue.showModal()
 }
 
 (function() {
-	if (!OCA.Mattermost) {
+	if (!OCA.Slack) {
 		/**
 		 * @namespace
 		 */
-		OCA.Mattermost = {
+		OCA.Slack = {
 			filesToSend: [],
 		}
 	}
@@ -42,25 +42,25 @@ function openChannelSelector(files) {
 	/**
 	 * @namespace
 	 */
-	OCA.Mattermost.FilesPlugin = {
+	OCA.Slack.FilesPlugin = {
 		ignoreLists: [
 			'trashbin',
 			'files.public',
 		],
 
 		attach(fileList) {
-			if (DEBUG) console.debug('[Mattermost] begin of attach')
+			if (DEBUG) console.debug('[Slack] begin of attach')
 			if (this.ignoreLists.indexOf(fileList.id) >= 0) {
 				return
 			}
 
-			if (DEBUG) console.debug('[Mattermost] before checkIfFilesToSend')
+			if (DEBUG) console.debug('[Slack] before checkIfFilesToSend')
 			this.checkIfFilesToSend(fileList)
 
 			fileList.registerMultiSelectFileAction({
-				name: 'mattermostSendMulti',
-				displayName: t('integration_mattermost', 'Send files to Mattermost'),
-				iconClass: 'icon-mattermost',
+				name: 'slackSendMulti',
+				displayName: t('integration_slack', 'Send files to Slack'),
+				iconClass: 'icon-slack',
 				order: -2,
 				action: (selectedFiles) => {
 					const filesToSend = selectedFiles.map((f) => {
@@ -71,10 +71,10 @@ function openChannelSelector(files) {
 							size: f.size,
 						}
 					})
-					if (OCA.Mattermost.mattermostConnected) {
+					if (OCA.Slack.slackConnected) {
 						openChannelSelector(filesToSend)
-					} else if (OCA.Mattermost.oauthPossible) {
-						this.connectToMattermost(filesToSend)
+					} else if (OCA.Slack.oauthPossible) {
+						this.connectToSlack(filesToSend)
 					} else {
 						gotoSettingsConfirmDialog()
 					}
@@ -82,13 +82,13 @@ function openChannelSelector(files) {
 			})
 
 			fileList.fileActions.registerAction({
-				name: 'mattermostSendSingle',
-				displayName: t('integration_mattermost', 'Send to Mattermost'),
-				iconClass: 'icon-mattermost',
+				name: 'slackSendSingle',
+				displayName: t('integration_slack', 'Send to Slack'),
+				iconClass: 'icon-slack',
 				mime: 'all',
 				order: -139,
 				permissions: OC.PERMISSION_READ,
-				actionHandler: (fileName, context) => {
+				actionHandler: (_, context) => {
 					const filesToSend = [
 						{
 							id: context.fileInfoModel.attributes.id,
@@ -97,10 +97,10 @@ function openChannelSelector(files) {
 							size: context.fileInfoModel.attributes.size,
 						},
 					]
-					if (OCA.Mattermost.mattermostConnected) {
+					if (OCA.Slack.slackConnected) {
 						openChannelSelector(filesToSend)
-					} else if (OCA.Mattermost.oauthPossible) {
-						this.connectToMattermost(filesToSend)
+					} else if (OCA.Slack.oauthPossible) {
+						this.connectToSlack(filesToSend)
 					} else {
 						gotoSettingsConfirmDialog()
 					}
@@ -109,17 +109,19 @@ function openChannelSelector(files) {
 		},
 
 		checkIfFilesToSend(fileList) {
-			const urlCheckConnection = generateUrl('/apps/integration_mattermost/files-to-send')
+			const urlCheckConnection = generateUrl('/apps/integration_slack/files-to-send')
 			axios.get(urlCheckConnection).then((response) => {
 				const fileIdsStr = response.data.file_ids_to_send_after_oauth
 				const currentDir = response.data.current_dir_after_oauth
+
 				if (fileIdsStr && currentDir) {
 					this.sendFileIdsAfterOAuth(fileList, fileIdsStr, currentDir)
 				} else {
-					if (DEBUG) console.debug('[Mattermost] nothing to send')
+					if (DEBUG) console.debug('[Slack] nothing to send')
 				}
 			}).catch((error) => {
 				console.error(error)
+				// TODO: connectToSlack?
 			})
 		},
 
@@ -133,8 +135,10 @@ function openChannelSelector(files) {
 		 */
 		sendFileIdsAfterOAuth: (fileList, fileIdsStr, currentDir) => {
 			if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, fileIdsStr, currentDir', fileIdsStr, currentDir)
+
 			// this is only true after an OAuth connection initated from a file action
 			if (fileIdsStr) {
+				// TODO: n2 loop?
 				// trick to make sure the file list is loaded (didn't find an event or a good alternative)
 				// force=true to make sure we get a promise
 				fileList.changeDirectory(currentDir, true, true).then(() => {
@@ -151,29 +155,30 @@ function openChannelSelector(files) {
 						}
 						return null
 					}).filter((e) => e !== null)
-					if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, after changeDirectory, files:', files)
+
+					if (DEBUG) console.debug('[Slack] in sendFileIdsAfterOAuth, after changeDirectory, files:', files)
+
 					if (files.length) {
-						if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, after changeDirectory, call openChannelSelector')
+						if (DEBUG) console.debug('[Slack] in sendFileIdsAfterOAuth, after changeDirectory, call openChannelSelector')
 						openChannelSelector(files)
 					}
 				})
 			}
 		},
 
-		connectToMattermost: (selectedFiles = []) => {
-			oauthConnectConfirmDialog(OCA.Mattermost.mattermostUrl).then((result) => {
+		connectToSlack: (selectedFiles = []) => {
+			oauthConnectConfirmDialog().then((result) => {
 				if (result) {
-					if (OCA.Mattermost.usePopup) {
-						oauthConnect(OCA.Mattermost.mattermostUrl, OCA.Mattermost.clientId, null, true)
-							.then((data) => {
-								OCA.Mattermost.mattermostConnected = true
+					if (OCA.Slack.usePopup) {
+						oauthConnect(OCA.Slack.clientId, null, true)
+							.then(() => {
+								OCA.Slack.slackConnected = true
 								openChannelSelector(selectedFiles)
 							})
 					} else {
 						const selectedFilesIds = selectedFiles.map(f => f.id)
 						oauthConnect(
-							OCA.Mattermost.mattermostUrl,
-							OCA.Mattermost.clientId,
+							OCA.Slack.clientId,
 							'files--' + OCA.Files.App.fileList._currentDirectory + '--' + selectedFilesIds.join(',')
 						)
 					}
@@ -186,7 +191,7 @@ function openChannelSelector(files) {
 
 function sendPublicLinks(channelId, channelName, comment, permission, expirationDate, password) {
 	const req = {
-		fileIds: OCA.Mattermost.filesToSend.map((f) => f.id),
+		fileIds: OCA.Slack.filesToSend.map((f) => f.id),
 		channelId,
 		channelName,
 		comment,
@@ -194,29 +199,29 @@ function sendPublicLinks(channelId, channelName, comment, permission, expiration
 		expirationDate: expirationDate ? moment(expirationDate).format('YYYY-MM-DD') : undefined,
 		password,
 	}
-	const url = generateUrl('apps/integration_mattermost/sendPublicLinks')
+	const url = generateUrl('apps/integration_slack/sendPublicLinks')
 	axios.post(url, req).then((response) => {
-		const number = OCA.Mattermost.filesToSend.length
+		const number = OCA.Slack.filesToSend.length
 		showSuccess(
 			n(
-				'integration_mattermost',
+				'integration_slack',
 				'A link to {fileName} was sent to {channelName}',
 				'{number} links were sent to {channelName}',
 				number,
 				{
-					fileName: OCA.Mattermost.filesToSend[0].name,
+					fileName: OCA.Slack.filesToSend[0].name,
 					channelName,
 					number,
 				}
 			)
 		)
-		OCA.Mattermost.MattermostSendModalVue.success()
+		OCA.Slack.SlackSendModalVue.success()
 	}).catch((error) => {
 		console.error(error)
-		OCA.Mattermost.MattermostSendModalVue.failure()
-		OCA.Mattermost.filesToSend = []
+		OCA.Slack.SlackSendModalVue.failure()
+		OCA.Slack.filesToSend = []
 		showError(
-			t('integration_mattermost', 'Failed to send links to Mattermost')
+			t('integration_slack', 'Failed to send links to Slack')
 			+ ' ' + error.response?.request?.responseText
 		)
 	})
@@ -224,42 +229,42 @@ function sendPublicLinks(channelId, channelName, comment, permission, expiration
 
 function sendInternalLinks(channelId, channelName, comment) {
 	sendMessage(channelId, comment).then((response) => {
-		OCA.Mattermost.filesToSend.forEach(f => {
+		OCA.Slack.filesToSend.forEach(f => {
 			const link = window.location.protocol + '//' + window.location.host + generateUrl('/f/' + f.id)
 			const message = f.name + ': ' + link
 			sendMessage(channelId, message)
 		})
-		const number = OCA.Mattermost.filesToSend.length
+		const number = OCA.Slack.filesToSend.length
 		showSuccess(
 			n(
-				'integration_mattermost',
+				'integration_slack',
 				'A link to {fileName} was sent to {channelName}',
 				'{number} links were sent to {channelName}',
 				number,
 				{
-					fileName: OCA.Mattermost.filesToSend[0].name,
+					fileName: OCA.Slack.filesToSend[0].name,
 					channelName,
 					number,
 				}
 			)
 		)
-		OCA.Mattermost.MattermostSendModalVue.success()
+		OCA.Slack.SlackSendModalVue.success()
 	}).catch((error) => {
 		console.error(error)
-		OCA.Mattermost.MattermostSendModalVue.failure()
-		OCA.Mattermost.filesToSend = []
+		OCA.Slack.SlackSendModalVue.failure()
+		OCA.Slack.filesToSend = []
 		showError(
-			t('integration_mattermost', 'Failed to send internal links to Mattermost')
+			t('integration_slack', 'Failed to send internal links to Slack')
 			+ ': ' + error.response?.request?.responseText
 		)
 	})
 }
 
 function sendFileLoop(channelId, channelName, comment) {
-	const file = OCA.Mattermost.filesToSend.shift()
+	const file = OCA.Slack.filesToSend.shift()
 	// skip directories
 	if (file.type === 'dir') {
-		if (OCA.Mattermost.filesToSend.length === 0) {
+		if (OCA.Slack.filesToSend.length === 0) {
 			// we are done, no next file
 			sendMessageAfterFilesUpload(channelId, channelName, comment)
 		} else {
@@ -268,17 +273,21 @@ function sendFileLoop(channelId, channelName, comment) {
 		}
 		return
 	}
-	OCA.Mattermost.MattermostSendModalVue.fileStarted(file.id)
+
+	OCA.Slack.SlackSendModalVue.fileStarted(file.id)
+
 	const req = {
 		fileId: file.id,
 		channelId,
 	}
-	const url = generateUrl('apps/integration_mattermost/sendFile')
+	const url = generateUrl('apps/integration_slack/sendFile')
+
 	axios.post(url, req).then((response) => {
-		OCA.Mattermost.remoteFileIds.push(response.data.remote_file_id)
-		OCA.Mattermost.sentFileNames.push(file.name)
-		OCA.Mattermost.MattermostSendModalVue.fileFinished(file.id)
-		if (OCA.Mattermost.filesToSend.length === 0) {
+		OCA.Slack.remoteFileIds.push(response.data.remote_file_id)
+		OCA.Slack.sentFileNames.push(file.name)
+		OCA.Slack.SlackSendModalVue.fileFinished(file.id)
+
+		if (OCA.Slack.filesToSend.length === 0) {
 			// finished
 			sendMessageAfterFilesUpload(channelId, channelName, comment)
 		} else {
@@ -287,23 +296,26 @@ function sendFileLoop(channelId, channelName, comment) {
 		}
 	}).catch((error) => {
 		console.error(error)
-		OCA.Mattermost.MattermostSendModalVue.failure()
-		OCA.Mattermost.filesToSend = []
-		OCA.Mattermost.sentFileNames = []
+
+		OCA.Slack.SlackSendModalVue.failure()
+		OCA.Slack.filesToSend = []
+		OCA.Slack.sentFileNames = []
+
 		showError(
-			t('integration_mattermost', 'Failed to send {name} to Mattermost', { name: file.name })
+			t('integration_slack', 'Failed to send {name} to Slack', { name: file.name })
 			+ ' ' + error.response?.request?.responseText
 		)
 	})
 }
 
 function sendMessageAfterFilesUpload(channelId, channelName, comment) {
-	const count = OCA.Mattermost.sentFileNames.length
-	const lastFileName = count === 0 ? t('integration_mattermost', 'Nothing') : OCA.Mattermost.sentFileNames[count - 1]
-	sendMessage(channelId, comment, OCA.Mattermost.remoteFileIds).then((response) => {
+	const count = OCA.Slack.sentFileNames.length
+	const lastFileName = count === 0 ? t('integration_slack', 'Nothing') : OCA.Slack.sentFileNames[count - 1]
+
+	sendMessage(channelId, comment, OCA.Slack.remoteFileIds).then((response) => {
 		showSuccess(
 			n(
-				'integration_mattermost',
+				'integration_slack',
 				'{fileName} was sent to {channelName}',
 				'{count} files were sent to {channelName}',
 				count,
@@ -314,18 +326,20 @@ function sendMessageAfterFilesUpload(channelId, channelName, comment) {
 				}
 			)
 		)
-		OCA.Mattermost.MattermostSendModalVue.success()
+
+		OCA.Slack.SlackSendModalVue.success()
 	}).catch((error) => {
 		console.error(error)
-		OCA.Mattermost.MattermostSendModalVue.failure()
+
+		OCA.Slack.SlackSendModalVue.failure()
 		showError(
-			t('integration_mattermost', 'Failed to send files to Mattermost')
+			t('integration_slack', 'Failed to send files to Slack')
 			+ ': ' + error.response?.request?.responseText
 		)
 	}).then(() => {
-		OCA.Mattermost.filesToSend = []
-		OCA.Mattermost.remoteFileIds = []
-		OCA.Mattermost.sentFileNames = []
+		OCA.Slack.filesToSend = []
+		OCA.Slack.remoteFileIds = []
+		OCA.Slack.sentFileNames = []
 	})
 }
 
@@ -335,49 +349,48 @@ function sendMessage(channelId, message, remoteFileIds = undefined) {
 		channelId,
 		remoteFileIds,
 	}
-	const url = generateUrl('apps/integration_mattermost/sendMessage')
+	const url = generateUrl('apps/integration_slack/sendMessage')
 	return axios.post(url, req)
 }
 
 // send file modal
-const modalId = 'mattermostSendModal'
+const modalId = 'slackSendModal'
 const modalElement = document.createElement('div')
 modalElement.id = modalId
 document.body.append(modalElement)
 
 const View = Vue.extend(SendFilesModal)
-OCA.Mattermost.MattermostSendModalVue = new View().$mount(modalElement)
+OCA.Slack.SlackSendModalVue = new View().$mount(modalElement)
 
-OCA.Mattermost.MattermostSendModalVue.$on('closed', () => {
-	if (DEBUG) console.debug('[Mattermost] modal closed')
+OCA.Slack.SlackSendModalVue.$on('closed', () => {
+	if (DEBUG) console.debug('[Slack] modal closed')
 })
-OCA.Mattermost.MattermostSendModalVue.$on('validate', ({ filesToSend, channelId, channelName, type, comment, permission, expirationDate, password }) => {
-	OCA.Mattermost.filesToSend = filesToSend
+OCA.Slack.SlackSendModalVue.$on('validate', ({ filesToSend, channelId, channelName, type, comment, permission, expirationDate, password }) => {
+	OCA.Slack.filesToSend = filesToSend
 	if (type === SEND_TYPE.public_link.id) {
 		sendPublicLinks(channelId, channelName, comment, permission, expirationDate, password)
 	} else if (type === SEND_TYPE.internal_link.id) {
 		sendInternalLinks(channelId, channelName, comment)
 	} else {
-		OCA.Mattermost.remoteFileIds = []
-		OCA.Mattermost.sentFileNames = []
+		OCA.Slack.remoteFileIds = []
+		OCA.Slack.sentFileNames = []
 		sendFileLoop(channelId, channelName, comment)
 	}
 })
 
-// get Mattermost state
-const urlCheckConnection = generateUrl('/apps/integration_mattermost/is-connected')
+// get Slack state
+const urlCheckConnection = generateUrl('/apps/integration_slack/is-connected')
 axios.get(urlCheckConnection).then((response) => {
-	OCA.Mattermost.mattermostConnected = response.data.connected
-	OCA.Mattermost.oauthPossible = response.data.oauth_possible
-	OCA.Mattermost.usePopup = response.data.use_popup
-	OCA.Mattermost.clientId = response.data.client_id
-	OCA.Mattermost.mattermostUrl = response.data.url
-	if (DEBUG) console.debug('[Mattermost] OCA.Mattermost', OCA.Mattermost)
+	OCA.Slack.slackConnected = response.data.connected
+	OCA.Slack.oauthPossible = response.data.oauth_possible
+	OCA.Slack.usePopup = response.data.use_popup
+	OCA.Slack.clientId = response.data.client_id
+	if (DEBUG) console.debug('[Slack] OCA.Slack', OCA.Slack)
 }).catch((error) => {
 	console.error(error)
 })
 
 document.addEventListener('DOMContentLoaded', () => {
-	if (DEBUG) console.debug('[Mattermost] before register files plugin')
-	OC.Plugins.register('OCA.Files.FileList', OCA.Mattermost.FilesPlugin)
+	if (DEBUG) console.debug('[Slack] before register files plugin')
+	OC.Plugins.register('OCA.Files.FileList', OCA.Slack.FilesPlugin)
 })

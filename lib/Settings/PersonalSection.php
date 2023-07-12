@@ -1,5 +1,5 @@
 <?php
-namespace OCA\Mattermost\Settings;
+namespace OCA\Slack\Settings;
 
 use OCP\IURLGenerator;
 use OCP\IL10N;

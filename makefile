@@ -1,4 +1,4 @@
-app_name=integration_mattermost
+app_name=integration_slack
 app_version=$(version)
 project_dir=.
 build_dir=/tmp/build

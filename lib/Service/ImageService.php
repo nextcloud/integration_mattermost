@@ -10,7 +10,7 @@
  * @copyright Julien Veyssier 2022
  */
 
-namespace OCA\Mattermost\Service;
+namespace OCA\Slack\Service;
 
 use OC\Files\Node\File;
 use OCP\Files\IMimeTypeDetector;

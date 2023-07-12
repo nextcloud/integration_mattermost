@@ -9,7 +9,7 @@
  * @copyright Julien Veyssier 2022
  */
 
-namespace OCA\Mattermost\Controller;
+namespace OCA\Slack\Controller;
 
 use DateTime;
 use OCP\AppFramework\Http;
@@ -23,8 +23,8 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
-use OCA\Mattermost\Service\MattermostAPIService;
-use OCA\Mattermost\AppInfo\Application;
+use OCA\Slack\Service\MattermostAPIService;
+use OCA\Slack\AppInfo\Application;
 use OCP\PreConditionNotMetException;
 
 class ConfigController extends Controller {
@@ -48,20 +48,16 @@ class ConfigController extends Controller {
 	 * @return DataResponse
 	 */
 	public function isUserConnected(): DataResponse {
-		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
-		$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
-
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
-		$oauthPossible = $clientID !== '' && $clientSecret !== '' && $mattermostUrl === $adminOauthUrl;
+		$oauthPossible = $clientID !== '' && $clientSecret !== '';
 		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
 
 		return new DataResponse([
-			'connected' => $mattermostUrl && $token,
+			'connected' => ($token !== ''),
 			'oauth_possible' => $oauthPossible,
 			'use_popup' => ($usePopup === '1'),
-			'url' => $mattermostUrl,
 			'client_id' => $clientID,
 		]);
 	}
@@ -72,23 +68,21 @@ class ConfigController extends Controller {
 	 * @return DataResponse
 	 */
 	public function getFilesToSend(): DataResponse {
-		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
-		$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
-		$isConnected = $mattermostUrl && $token;
 
-		if ($isConnected) {
-			$fileIdsToSendAfterOAuth = $this->config->getUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
-			$this->config->deleteUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
-			$currentDirAfterOAuth = $this->config->getUserValue($this->userId, Application::APP_ID, 'current_dir_after_oauth');
-			$this->config->deleteUserValue($this->userId, Application::APP_ID, 'current_dir_after_oauth');
-
-			return new DataResponse([
-				'file_ids_to_send_after_oauth' => $fileIdsToSendAfterOAuth,
-				'current_dir_after_oauth' => $currentDirAfterOAuth,
-			]);
+		if ($token === '') {
+			return new DataResponse(['message' => 'Not connected']);
 		}
-		return new DataResponse(['message' => 'Not connected']);
+
+		$fileIdsToSendAfterOAuth = $this->config->getUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
+		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'file_ids_to_send_after_oauth');
+		$currentDirAfterOAuth = $this->config->getUserValue($this->userId, Application::APP_ID, 'current_dir_after_oauth');
+		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'current_dir_after_oauth');
+
+		return new DataResponse([
+			'file_ids_to_send_after_oauth' => $fileIdsToSendAfterOAuth,
+			'current_dir_after_oauth' => $currentDirAfterOAuth,
+		]);
 	}
 
 	/**
@@ -100,121 +94,28 @@ class ConfigController extends Controller {
 	 * @throws PreConditionNotMetException
 	 */
 	public function setConfig(array $values): DataResponse {
-		if (isset($values['url'], $values['login'], $values['password'])) {
-			return $this->loginWithCredentials($values['url'], $values['login'], $values['password']);
-		}
-
 		foreach ($values as $key => $value) {
 			$this->config->setUserValue($this->userId, Application::APP_ID, $key, $value);
 		}
+
 		$result = [];
 
 		if (isset($values['token'])) {
-			if ($values['token'] && $values['token'] !== '') {
-				$result = $this->storeUserInfo();
-			} else {
+			if ($values['token'] === '') {
 				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'user_id');
-				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'user_name');
 				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'user_displayname');
+				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'user_avatar');
 				$this->config->deleteUserValue($this->userId, Application::APP_ID, 'token');
 				$result['user_id'] = '';
-				$result['user_name'] = '';
 				$result['user_displayname'] = '';
+				$result['user_avatar'] = '';
 			}
+
 			// if the token is set, cleanup refresh token and expiration date
 			$this->config->deleteUserValue($this->userId, Application::APP_ID, 'refresh_token');
 			$this->config->deleteUserValue($this->userId, Application::APP_ID, 'token_expires_at');
 		}
 		return new DataResponse($result);
-	}
-
-	/**
-	 * @NoCSRFRequired
-	 * @NoAdminRequired
-	 *
-	 * @param string|null $calendar_event_updated_url
-	 * @param string|null $calendar_event_created_url
-	 * @param string|null $daily_summary_url
-	 * @param string|null $imminent_events_url
-	 * @param bool|null $enabled
-	 * @param string|null $webhook_secret
-	 * @return DataResponse
-	 * @throws PreConditionNotMetException
-	 */
-	public function setWebhooksConfig(?string $calendar_event_updated_url = null, ?string $calendar_event_created_url = null,
-									?string $daily_summary_url = null, ?string $imminent_events_url = null,
-									?bool $enabled = null, ?string $webhook_secret = null): DataResponse {
-		$result = [];
-		if ($calendar_event_created_url !== null) {
-			$result['calendar_event_created_url'] = $calendar_event_created_url;
-			$this->config->setUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY, $calendar_event_created_url);
-		}
-		if ($calendar_event_updated_url !== null) {
-			$result['calendar_event_updated_url'] = $calendar_event_updated_url;
-			$this->config->setUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY, $calendar_event_updated_url);
-		}
-		if ($daily_summary_url !== null) {
-			$result['daily_summary_url'] = $daily_summary_url;
-			$this->config->setUserValue($this->userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_CONFIG_KEY, $daily_summary_url);
-		}
-		if ($imminent_events_url !== null) {
-			$result['imminent_events_url'] = $imminent_events_url;
-			$this->config->setUserValue($this->userId, Application::APP_ID, Application::IMMINENT_EVENTS_WEBHOOK_CONFIG_KEY, $imminent_events_url);
-		}
-		if ($enabled !== null) {
-			$result['enabled'] = $enabled;
-			$this->config->setUserValue($this->userId, Application::APP_ID, Application::WEBHOOKS_ENABLED_CONFIG_KEY, $enabled ? '1' : '0');
-		}
-		if ($webhook_secret !== null) {
-			$result['webhook_secret'] = $webhook_secret;
-			$this->config->setUserValue($this->userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY, $webhook_secret);
-		}
-		if (empty(array_keys($result))) {
-			$result = [
-				'error' => 'You must set at least one valid setting.',
-				'valid_keys' => [
-					'enabled',
-					'webhook_secret',
-					'calendar_event_created_url',
-					'calendar_event_updated_url',
-					'daily_summary_url',
-				],
-			];
-			return new DataResponse($result, Http::STATUS_BAD_REQUEST);
-		}
-		return new DataResponse($result);
-	}
-
-	/**
-	 * @param string $url
-	 * @param string $login
-	 * @param string $password
-	 * @return DataResponse
-	 * @throws \OCP\PreConditionNotMetException
-	 */
-	private function loginWithCredentials(string $url, string $login, string $password): DataResponse {
-		// cleanup refresh token and expiration date on classic login
-		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'refresh_token');
-		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'token_expires_at');
-
-		$result = $this->mattermostAPIService->login($url, $login, $password);
-		if (isset($result['token'])) {
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $result['token']);
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $result['info']['id'] ?? '');
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', $result['info']['username'] ?? '');
-			$userDisplayName = ($result['info']['first_name'] ?? '') . ' ' . ($result['info']['last_name'] ?? '');
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_displayname', $userDisplayName);
-			return new DataResponse([
-				'user_id' => $result['info']['id'] ?? '',
-				'user_name' => $result['info']['username'] ?? '',
-				'user_displayname' => $userDisplayName,
-			]);
-		}
-		return new DataResponse([
-			'user_id' => '',
-			'user_name' => '',
-			'user_displayname' => '',
-		]);
 	}
 
 	/**
@@ -230,16 +131,22 @@ class ConfigController extends Controller {
 		return new DataResponse(1);
 	}
 
+	// TODO: id, avatar?
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
-	 * @param string $user_name
+	 * @param string $user_id
 	 * @param string $user_displayname
+	 * @param string $user_avatar
 	 * @return TemplateResponse
 	 */
-	public function popupSuccessPage(string $user_name, string $user_displayname): TemplateResponse {
-		$this->initialStateService->provideInitialState('popup-data', ['user_name' => $user_name, 'user_displayname' => $user_displayname]);
+	public function popupSuccessPage(string $user_name, string $user_displayname, string $user_avatar): TemplateResponse {
+		$this->initialStateService->provideInitialState('popup-data', [
+			'user_id' => $user_name,
+			'user_displayname' => $user_displayname,
+			'user_avatar' => $user_avatar
+		]);
 		return new TemplateResponse(Application::APP_ID, 'popupSuccess', [], TemplateResponse::RENDER_AS_GUEST);
 	}
 
@@ -262,46 +169,47 @@ class ConfigController extends Controller {
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_state');
 
 		if ($clientID && $clientSecret && $configState !== '' && $configState === $state) {
-			$redirect_uri = $this->config->getUserValue($this->userId, Application::APP_ID, 'redirect_uri');
-			$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
-			$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
-			$result = $this->mattermostAPIService->requestOAuthAccessToken($mattermostUrl, [
+			$redirect_uri = $this->config->getUserValue($this->userId, Application::APP_ID, 'redirect_uri', '');
+			$result = $this->mattermostAPIService->requestOAuthAccessToken(Application::SLACK_OAUTH_ACCESS_URL, [
 				'client_id' => $clientID,
 				'client_secret' => $clientSecret,
 				'code' => $code,
 				'redirect_uri' => $redirect_uri,
 				'grant_type' => 'authorization_code'
 			], 'POST');
-			if (isset($result['access_token'])) {
-				$accessToken = $result['access_token'];
-				$refreshToken = $result['refresh_token'] ?? '';
-				if (isset($result['expires_in'])) {
+
+			if (isset($result['authed_user'], $result['authed_user']['access_token'], $result['authed_user']['id'])) {
+				$accessToken = $result['authed_user']['access_token'];
+				$refreshToken = $result['authed_user']['refresh_token'] ?? '';
+
+				if (isset($result['authed_user']['expires_in'])) {
 					$nowTs = (new Datetime())->getTimestamp();
-					$expiresAt = $nowTs + (int) $result['expires_in'];
+					$expiresAt = $nowTs + (int) $result['authed_user']['expires_in'];
 					$this->config->setUserValue($this->userId, Application::APP_ID, 'token_expires_at', $expiresAt);
 				}
+
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $accessToken);
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $refreshToken);
-				$userInfo = $this->storeUserInfo();
+
+				$userInfo = $this->storeUserInfo($result['authed_user']['id']);
 				$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0') === '1';
+
 				if ($usePopup) {
 					return new RedirectResponse(
-						$this->urlGenerator->linkToRoute('integration_mattermost.config.popupSuccessPage', [
-							'user_name' => $userInfo['user_name'] ?? '',
+						$this->urlGenerator->linkToRoute('integration_slack.config.popupSuccessPage', [
+							'user_id' => $userInfo['user_id'] ?? '',
 							'user_displayname' => $userInfo['user_displayname'] ?? '',
+							'user_avatar' => $userInfo['user_avatar'] ?? '',
 						])
 					);
 				} else {
 					$oauthOrigin = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_origin');
 					$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_origin');
+
 					if ($oauthOrigin === 'settings') {
 						return new RedirectResponse(
 							$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']) .
-							'?mattermostToken=success'
-						);
-					} elseif ($oauthOrigin === 'dashboard') {
-						return new RedirectResponse(
-							$this->urlGenerator->linkToRoute('dashboard.dashboard.index')
+							'?result=success'
 						);
 					} elseif (preg_match('/^files--.*/', $oauthOrigin)) {
 						$parts = explode('--', $oauthOrigin);
@@ -319,42 +227,50 @@ class ConfigController extends Controller {
 					}
 				}
 			}
-			$result = $this->l->t('Error getting OAuth access token. ' . $result['error']);
+
+			$result = $this->l->t('Error getting OAuth access token. ' . $result['error'] ?? '');
 		} else {
 			$result = $this->l->t('Error during OAuth exchanges');
 		}
 		return new RedirectResponse(
 			$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']) .
-			'?mattermostToken=error&message=' . urlencode($result)
+			'?result=error&message=' . urlencode($result)
 		);
 	}
 
 	/**
-	 * @param string $mattermostUrl
 	 * @return string
 	 * @throws PreConditionNotMetException
 	 */
-	private function storeUserInfo(): array {
-		$info = $this->mattermostAPIService->request($this->userId, 'users/me');
-		if (isset($info['first_name'], $info['last_name'], $info['id'], $info['username'])) {
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $info['id'] ?? '');
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', $info['username'] ?? '');
-			$userDisplayName = ($info['first_name'] ?? '') . ' ' . ($info['last_name'] ?? '');
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_displayname', $userDisplayName);
+	private function storeUserInfo(string $slackUserId = ''): array {
+		$info = $this->mattermostAPIService->request($this->userId, 'users.info', [
+			'user' => $slackUserId,
+		]);
+
+		if (isset(
+			$info['user'], $info['user']['id'],
+			$info['user']['real_name'],
+			$info['user']['profile'],
+			$info['user']['profile']['image_48'])
+		) {
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $info['user']['id'] ?? '');
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_displayname', $info['user']['real_name']);
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_avatar', $info['user']['profile']['image_48']);
 
 			return [
-				'user_id' => $info['id'] ?? '',
-				'user_name' => $info['username'] ?? '',
-				'user_displayname' => $userDisplayName,
+				'user_id' => $info['user']['id'] ?? '',
+				'user_displayname' => $info['user']['real_name'],
+				'user_avatar' => $info['user']['profile']['image_48'] ?? '',
 			];
 		} else {
 			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', '');
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', '');
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_displayname', '');
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_avatar', '');
+
 			return [
 				'user_id' => '',
-				'user_name' => '',
 				'user_displayname' => '',
-				// TODO change perso settings to get/check user name errors correctly
+				'user_avatar' => '',
 			];
 		}
 	}

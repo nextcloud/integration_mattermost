@@ -1,90 +1,46 @@
 <template>
-	<div id="mattermost_prefs" class="section">
+	<div id="slack_prefs" class="section">
 		<h2>
 			<MattermostIcon class="icon" />
-			{{ t('integration_mattermost', 'Mattermost integration') }}
+			{{ t('integration_slack', 'Slack integration') }}
 		</h2>
+		<p v-if="state.client_id === ''" class="settings-hint">
+			{{ t('integration_slack', 'The admin must fill in client ID and client secret for you to continue from here') }}
+		</p>
 		<br>
-		<div id="mattermost-content">
-			<div id="mattermost-connect-block">
-				<p v-if="!showOAuth && !connected" class="settings-hint">
-					<InformationOutlineIcon :size="24" class="icon" />
-					{{ t('integration_mattermost', 'If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens.') }}
-				</p>
-				<p v-if="!showOAuth && !connected" class="settings-hint">
-					{{ t('integration_mattermost', 'You can connect with a personal token OR just with your login/password.') }}
-				</p>
-				<div class="line">
-					<label for="mattermost-url">
-						<EarthIcon :size="20" class="icon" />
-						{{ t('integration_mattermost', 'Mattermost instance address') }}
-					</label>
-					<input id="mattermost-url"
-						v-model="state.url"
-						type="text"
-						:disabled="connected === true"
-						:placeholder="t('integration_mattermost', 'Mattermost instance address')"
-						@input="onInput">
-				</div>
-				<div v-show="showToken"
-					class="line">
-					<label for="mattermost-token">
-						<KeyIcon :size="20" class="icon" />
-						{{ t('integration_mattermost', 'Personal access token') }}
-					</label>
-					<input id="mattermost-token"
-						v-model="state.token"
-						type="password"
-						:disabled="connected === true"
-						:placeholder="t('integration_mattermost', 'Mattermost personal access token')"
-						@keyup.enter="onConnectClick">
-				</div>
-				<div v-show="showLoginPassword"
-					class="line">
-					<label
-						for="mattermost-login">
-						<AccountIcon :size="20" class="icon" />
-						{{ t('integration_mattermost', 'Login') }}
-					</label>
-					<input id="mattermost-login"
-						v-model="login"
-						type="text"
-						:placeholder="t('integration_mattermost', 'Mattermost login')"
-						@keyup.enter="onConnectClick">
-				</div>
-				<div v-show="showLoginPassword"
-					class="line">
-					<label
-						for="mattermost-password">
-						<LockIcon :size="20" class="icon" />
-						{{ t('integration_mattermost', 'Password') }}
-					</label>
-					<input id="mattermost-password"
-						v-model="password"
-						type="password"
-						:placeholder="t('integration_mattermost', 'Mattermost password')"
-						@keyup.enter="onConnectClick">
-				</div>
+		<p>User Id: {{ state.user_id }}</p>
+		<p>User Avatar: {{ state.user_avatar }}</p>
+		<p>User Display Name: {{ state.user_displayname }}</p>
+		<p>Client ID: {{ state.client_id }}</p>
+		<div id="slack-content">
+			<div id="slack-connect-block">
 				<NcButton v-if="!connected"
-					id="mattermost-connect"
-					:disabled="loading === true || (!showOAuth && !state.token && !(login && password))"
+					id="slack-connect"
+					:disabled="loading === true || state.client_id === ''"
 					:class="{ loading }"
-					@click="onConnectClick">
+					@click="connectWithOauth">
 					<template #icon>
 						<OpenInNewIcon />
 					</template>
-					{{ t('integration_mattermost', 'Connect to Mattermost') }}
+					{{ t('integration_slack', 'Connect to Slack') }}
 				</NcButton>
 				<div v-if="connected" class="line">
-					<label class="mattermost-connected">
-						<CheckIcon :size="20" class="icon" />
-						{{ t('integration_mattermost', 'Connected as {user}', { user: connectedDisplayName }) }}
+					<NcAvatar v-if="state.user_avatar"
+						:url="state.user_avatar"
+						:size="48"
+						class="avatar" />
+					<NcAvatar v-else
+						:display-name="state.user_displayname"
+						:size="48"
+						class="avatar" />
+					<label class="slack-connected">
+						{{ t('integration_slack', 'Connected as {user}', { user: connectedDisplayName }) }}
 					</label>
-					<NcButton id="mattermost-rm-cred" @click="onLogoutClick">
+					<NcButton id="slack-rm-cred" @click="onLogoutClick">
 						<template #icon>
 							<CloseIcon />
 						</template>
-						{{ t('integration_mattermost', 'Disconnect from Mattermost') }}
+						{{ t('integration_slack', 'Disconnect from Slack') }}
 					</NcButton>
 				</div>
 			</div>
@@ -92,119 +48,26 @@
 			<NcCheckboxRadioSwitch
 				:checked.sync="state.file_action_enabled"
 				@update:checked="onCheckboxChanged($event, 'file_action_enabled')">
-				{{ t('integration_mattermost', 'Add file action to send files to Mattermost') }}
+				{{ t('integration_slack', 'Add file action to send files to Slack') }}
 			</NcCheckboxRadioSwitch>
-			<NcCheckboxRadioSwitch
-				:checked.sync="state.navigation_enabled"
-				@update:checked="onNavigationChange">
-				{{ t('integration_mattermost', 'Enable navigation link (link to Mattermost with a top menu item)') }}
-			</NcCheckboxRadioSwitch>
-			<div v-if="connected" id="mattermost-search-block">
-				<NcCheckboxRadioSwitch
-					:checked.sync="state.search_messages_enabled"
-					@update:checked="onSearchChange">
-					{{ t('integration_mattermost', 'Enable searching for messages') }}
-				</NcCheckboxRadioSwitch>
-				<br>
-				<p v-if="state.search_messages_enabled" class="settings-hint">
-					<InformationOutlineIcon :size="24" class="icon" />
-					{{ t('integration_mattermost', 'Warning, everything you type in the search bar will be sent to Mattermost.') }}
-				</p>
-			</div>
-			<br>
-			<div id="mattermost-webhooks-block">
-				<p class="settings-hint">
-					<InformationOutlineIcon :size="24" class="icon" />
-					{{ t('integration_mattermost', 'If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks.') }}
-					{{ t('integration_mattermost', 'This section does not require to be connected to Mattermost from Nextcloud.') }}
-				</p>
-				<NcCheckboxRadioSwitch
-					:checked.sync="state.webhooks_enabled"
-					@update:checked="onCheckboxChanged($event, 'webhooks_enabled')">
-					{{ t('integration_mattermost', 'Enable webhooks') }}
-				</NcCheckboxRadioSwitch>
-				<div v-if="state.webhooks_enabled" id="webhook-fields">
-					<div class="line">
-						<label for="mattermost-cal-event-add">
-							<WebhookIcon :size="20" class="icon" />
-							{{ t('integration_mattermost', 'Calendar event created webhook URL') }}
-						</label>
-						<input id="mattermost-cal-event-add"
-							v-model="state.calendar_event_created_webhook"
-							type="text"
-							:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
-							@input="onInput">
-					</div>
-					<div class="line">
-						<label for="mattermost-cal-event-edit">
-							<WebhookIcon :size="20" class="icon" />
-							{{ t('integration_mattermost', 'Calendar event updated webhook URL') }}
-						</label>
-						<input id="mattermost-cal-event-edit"
-							v-model="state.calendar_event_updated_webhook"
-							type="text"
-							:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
-							@input="onInput">
-					</div>
-					<div class="line">
-						<label for="mattermost-daily-summary">
-							<WebhookIcon :size="20" class="icon" />
-							{{ t('integration_mattermost', 'Daily summary webhook URL') }}
-						</label>
-						<input id="mattermost-daily-summary"
-							v-model="state.daily_summary_webhook"
-							type="text"
-							:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
-							@input="onInput">
-					</div>
-					<div class="line">
-						<label for="mattermost-imminent-events">
-							<WebhookIcon :size="20" class="icon" />
-							{{ t('integration_mattermost', 'Upcoming events webhook URL') }}
-						</label>
-						<input id="mattermost-imminent-events"
-							v-model="state.imminent_events_webhook"
-							type="text"
-							:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
-							@input="onInput">
-					</div>
-					<div class="line">
-						<label for="mattermost-webhook-secret">
-							<KeyIcon :size="20" class="icon" />
-							{{ t('integration_mattermost', 'Webhook secret') }}
-						</label>
-						<input id="mattermost-webhook-secret"
-							v-model="state.webhook_secret"
-							type="password"
-							:placeholder="t('integration_mattermost', 'secret')"
-							@input="onInput">
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import LockIcon from 'vue-material-design-icons/Lock.vue'
-import AccountIcon from 'vue-material-design-icons/Account.vue'
-import KeyIcon from 'vue-material-design-icons/Key.vue'
 import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
 import CloseIcon from 'vue-material-design-icons/Close.vue'
-import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue'
-import WebhookIcon from 'vue-material-design-icons/Webhook.vue'
-import EarthIcon from 'vue-material-design-icons/Earth.vue'
-import CheckIcon from 'vue-material-design-icons/Check.vue'
 
 import MattermostIcon from './icons/MattermostIcon.vue'
 
+import NcAvatar from '@nextcloud/vue/dist/Components/NcAvatar.js'
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
-import { delay, oauthConnect } from '../utils.js'
+import { oauthConnect } from '../utils.js'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 
 export default {
@@ -212,48 +75,29 @@ export default {
 
 	components: {
 		MattermostIcon,
+		NcAvatar,
 		NcCheckboxRadioSwitch,
 		NcButton,
 		OpenInNewIcon,
 		CloseIcon,
-		InformationOutlineIcon,
-		WebhookIcon,
-		EarthIcon,
-		CheckIcon,
-		LockIcon,
-		KeyIcon,
-		AccountIcon,
 	},
 
 	props: [],
 
 	data() {
 		return {
-			state: loadState('integration_mattermost', 'user-config'),
+			state: loadState('integration_slack', 'user-config'),
 			loading: false,
-			redirect_uri: window.location.protocol + '//' + window.location.host + generateUrl('/apps/integration_mattermost/oauth-redirect'),
-			login: '',
-			password: '',
+			redirect_uri: window.location.protocol + '//' + window.location.host + generateUrl('/apps/integration_slack/oauth-redirect'),
 		}
 	},
 
 	computed: {
-		showOAuth() {
-			return (this.state.url === this.state.oauth_instance_url) && this.state.client_id && this.state.client_secret
-		},
 		connected() {
-			return !!this.state.token
-				&& !!this.state.url
-				&& !!this.state.user_name
+			return !!this.state.token && !!this.state.user_id
 		},
 		connectedDisplayName() {
-			return this.state.user_displayname + ' (' + this.state.user_name + ')'
-		},
-		showLoginPassword() {
-			return !this.showOAuth && !this.connected && !this.state.token
-		},
-		showToken() {
-			return !this.showOAuth && !this.login && !this.password
+			return this.state.user_displayname
 		},
 	},
 
@@ -262,73 +106,57 @@ export default {
 
 	mounted() {
 		const paramString = window.location.search.substr(1)
-		// eslint-disable-next-line
 		const urlParams = new URLSearchParams(paramString)
-		const glToken = urlParams.get('mattermostToken')
+		const glToken = urlParams.get('result')
 		if (glToken === 'success') {
-			showSuccess(t('integration_mattermost', 'Successfully connected to Mattermost!'))
+			showSuccess(t('integration_slack', 'Successfully connected to Slack!'))
 		} else if (glToken === 'error') {
-			showError(t('integration_mattermost', 'Error connecting to Mattermost:') + ' ' + urlParams.get('message'))
+			showError(t('integration_slack', 'Error connecting to Slack:') + ' ' + urlParams.get('message'))
 		}
 	},
 
 	methods: {
 		onLogoutClick() {
 			this.state.token = ''
-			this.login = ''
-			this.password = ''
-			this.saveOptions({ token: '' })
+			this.state.user_id = ''
+			this.state.user_displayname = ''
+			this.state.user_avatar = ''
+
+			this.saveOptions({
+				token: '',
+				user_id: '',
+				user_avatar: '',
+			})
 		},
 		onCheckboxChanged(newValue, key) {
-			this.saveOptions({ [key]: newValue ? '1' : '0' })
+			this.saveOptions({ [key]: newValue ? '1' : '0' }, true)
 		},
-		onSearchChange(newValue) {
-			this.saveOptions({ search_messages_enabled: newValue ? '1' : '0' })
-		},
-		onNavigationChange(newValue) {
-			this.saveOptions({ navigation_enabled: newValue ? '1' : '0' })
-		},
-		onInput() {
-			this.loading = true
-			delay(() => {
-				this.saveOptions({
-					url: this.state.url,
-					webhook_secret: this.state.webhook_secret,
-					calendar_event_created_webhook: this.state.calendar_event_created_webhook,
-					calendar_event_updated_webhook: this.state.calendar_event_updated_webhook,
-					daily_summary_webhook: this.state.daily_summary_webhook,
-					imminent_events_webhook: this.state.imminent_events_webhook,
-				})
-			}, 2000)()
-		},
-		saveOptions(values) {
+		saveOptions(values, checkboxChanged = false) {
 			const req = {
 				values,
 			}
-			const url = generateUrl('/apps/integration_mattermost/config')
+			const url = generateUrl('/apps/integration_slack/config')
 			axios.put(url, req)
 				.then((response) => {
-					if (response.data.user_name !== undefined) {
-						this.state.user_name = response.data.user_name
-						if (this.state.token && response.data.user_name === '') {
-							showError(t('integration_mattermost', 'Invalid access token'))
-							this.state.token = ''
-						} else if (this.login && this.password && response.data.user_name === '') {
-							showError(t('integration_mattermost', 'Invalid login/password'))
-						} else if (response.data.user_name) {
-							showSuccess(t('integration_mattermost', 'Successfully connected to Mattermost!'))
+					if (checkboxChanged) {
+						showSuccess(t('integration_slack', 'Slack options saved'))
+						return
+					}
+
+					if (response.data.user_id) {
+						this.state.user_id = response.data.user_id
+						if (!!this.state.token && !!this.state.user_id) {
+							showSuccess(t('integration_slack', 'Successfully connected to Slack!'))
 							this.state.user_id = response.data.user_id
-							this.state.user_name = response.data.user_name
 							this.state.user_displayname = response.data.user_displayname
-							this.state.token = 'dumdum'
+						} else {
+							showError(t('integration_slack', 'Invalid access token'))
 						}
-					} else {
-						showSuccess(t('integration_mattermost', 'Mattermost options saved'))
 					}
 				})
 				.catch((error) => {
 					showError(
-						t('integration_mattermost', 'Failed to save Mattermost options')
+						t('integration_slack', 'Failed to save Slack options')
 						+ ': ' + (error.response?.request?.responseText ?? '')
 					)
 					console.error(error)
@@ -337,39 +165,15 @@ export default {
 					this.loading = false
 				})
 		},
-		onConnectClick() {
-			if (this.showOAuth) {
-				this.connectWithOauth()
-			} else if (this.login && this.password) {
-				this.connectWithCredentials()
-			} else {
-				this.connectWithToken()
-			}
-		},
-		connectWithToken() {
-			this.loading = true
-			this.saveOptions({
-				token: this.state.token,
-			})
-		},
-		connectWithCredentials() {
-			this.loading = true
-			this.saveOptions({
-				login: this.login,
-				password: this.password,
-				url: this.state.url,
-			})
-		},
 		connectWithOauth() {
 			if (this.state.use_popup) {
-				oauthConnect(this.state.url, this.state.client_id, null, true)
+				oauthConnect(this.state.client_id, null, true)
 					.then((data) => {
-						this.state.token = 'dummyToken'
-						this.state.user_name = data.userName
+						this.state.user_id = data.userId
 						this.state.user_displayname = data.userDisplayName
 					})
 			} else {
-				oauthConnect(this.state.url, this.state.client_id, 'settings')
+				oauthConnect(this.state.client_id, 'settings')
 			}
 		},
 	},
@@ -377,8 +181,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#mattermost_prefs {
-	#mattermost-content {
+#slack_prefs {
+	#slack-content {
 		margin-left: 40px;
 	}
 
@@ -397,14 +201,10 @@ export default {
 	}
 
 	.line {
-		> label {
-			width: 300px;
-			display: flex;
-			align-items: center;
-		}
-		> input {
-			width: 300px;
-		}
+		width: 450px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 }
 </style>

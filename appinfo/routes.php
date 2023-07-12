@@ -15,7 +15,6 @@ return [
 		['name' => 'config#getFilesToSend', 'url' => '/files-to-send', 'verb' => 'GET'],
 		['name' => 'config#oauthRedirect', 'url' => '/oauth-redirect', 'verb' => 'GET'],
 		['name' => 'config#setConfig', 'url' => '/config', 'verb' => 'PUT'],
-		['name' => 'config#setWebhooksConfig', 'url' => '/webhooks', 'verb' => 'POST'],
 		['name' => 'config#setAdminConfig', 'url' => '/admin-config', 'verb' => 'PUT'],
 		['name' => 'config#popupSuccessPage', 'url' => '/popup-success', 'verb' => 'GET'],
 
@@ -23,8 +22,6 @@ return [
 		['name' => 'mattermostAPI#sendPublicLinks', 'url' => '/sendPublicLinks', 'verb' => 'POST'],
 		['name' => 'mattermostAPI#sendFile', 'url' => '/sendFile', 'verb' => 'POST'],
 		['name' => 'mattermostAPI#getChannels', 'url' => '/channels', 'verb' => 'GET'],
-		['name' => 'mattermostAPI#getNotifications', 'url' => '/notifications', 'verb' => 'GET'],
-		['name' => 'mattermostAPI#getMattermostUrl', 'url' => '/url', 'verb' => 'GET'],
 		['name' => 'mattermostAPI#getUserAvatar', 'url' => '/users/{userId}/image', 'verb' => 'GET'],
 		['name' => 'mattermostAPI#getTeamAvatar', 'url' => '/teams/{teamId}/image', 'verb' => 'GET'],
 

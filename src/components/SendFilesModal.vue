@@ -1,15 +1,15 @@
 <template>
-	<div class="mattermost-modal-container">
+	<div class="slack-modal-container">
 		<NcModal v-if="show"
 			size="normal"
 			@close="closeModal">
-			<div class="mattermost-modal-content">
+			<div class="slack-modal-content">
 				<h2 class="modal-title">
 					<MattermostIcon />
 					<span>
 						{{ sendType === SEND_TYPE.file.id
-							? n('integration_mattermost', 'Send file to Mattermost', 'Send files to Mattermost', files.length)
-							: n('integration_mattermost', 'Send link to Mattermost', 'Send links to Mattermost', files.length)
+							? n('integration_slack', 'Send file to Slack', 'Send files to Slack', files.length)
+							: n('integration_slack', 'Send link to Slack', 'Send links to Slack', files.length)
 						}}
 					</span>
 				</h2>
@@ -17,7 +17,7 @@
 					<FileIcon />
 					<span>
 						<strong>
-							{{ t('integration_mattermost', 'Files') }}
+							{{ t('integration_slack', 'Files') }}
 						</strong>
 					</span>
 				</span>
@@ -52,7 +52,7 @@
 					<PoundBoxIcon />
 					<span>
 						<strong>
-							{{ t('integration_mattermost', 'Channel') }}
+							{{ t('integration_slack', 'Channel') }}
 						</strong>
 					</span>
 				</span>
@@ -62,8 +62,8 @@
 					:options="sortedChannels"
 					label="display_name"
 					:append-to-body="false"
-					:placeholder="t('integration_mattermost', 'Choose a channel')"
-					input-id="mattermost-channel-select"
+					:placeholder="t('integration_slack', 'Choose a channel')"
+					input-id="slack-channel-select"
 					@search="query = $event">
 					<template #option="option">
 						<div class="select-option">
@@ -109,7 +109,7 @@
 						<PackageUpIcon />
 						<span>
 							<strong>
-								{{ t('integration_mattermost', 'Type') }}
+								{{ t('integration_slack', 'Type') }}
 							</strong>
 						</span>
 					</span>
@@ -142,20 +142,20 @@
 					<div v-show="sendType === SEND_TYPE.public_link.id"
 						class="expiration-field">
 						<NcCheckboxRadioSwitch :checked.sync="expirationEnabled">
-							{{ t('integration_mattermost', 'Set expiration date') }}
+							{{ t('integration_slack', 'Set expiration date') }}
 						</NcCheckboxRadioSwitch>
 						<div class="spacer" />
 						<NcDatetimePicker v-show="expirationEnabled"
 							id="expiration-datepicker"
 							v-model="expirationDate"
 							:disabled-date="isDateDisabled"
-							:placeholder="t('integration_mattermost', 'Expires on')"
+							:placeholder="t('integration_slack', 'Expires on')"
 							:clearable="true" />
 					</div>
 					<div v-show="sendType === SEND_TYPE.public_link.id"
 						class="password-field">
 						<NcCheckboxRadioSwitch :checked.sync="passwordEnabled">
-							{{ t('integration_mattermost', 'Set link password') }}
+							{{ t('integration_slack', 'Set link password') }}
 						</NcCheckboxRadioSwitch>
 						<div class="spacer" />
 						<input v-show="passwordEnabled"
@@ -168,7 +168,7 @@
 						<CommentIcon />
 						<span>
 							<strong>
-								{{ t('integration_mattermost', 'Comment') }}
+								{{ t('integration_slack', 'Comment') }}
 							</strong>
 						</span>
 					</span>
@@ -182,14 +182,14 @@
 					class="warning-container">
 					<AlertBoxIcon class="warning-icon" />
 					<label>
-						{{ t('integration_mattermost', 'Directories will be skipped, they can only be sent as links.') }}
+						{{ t('integration_slack', 'Directories will be skipped, they can only be sent as links.') }}
 					</label>
 				</span>
-				<div class="mattermost-footer">
+				<div class="slack-footer">
 					<div class="spacer" />
 					<NcButton
 						@click="closeModal">
-						{{ t('integration_mattermost', 'Cancel') }}
+						{{ t('integration_slack', 'Cancel') }}
 					</NcButton>
 					<NcButton type="primary"
 						:class="{ loading, okButton: true }"
@@ -199,8 +199,8 @@
 							<SendIcon />
 						</template>
 						{{ sendType === SEND_TYPE.file.id
-							? n('integration_mattermost', 'Send file', 'Send files', files.length)
-							: n('integration_mattermost', 'Send link', 'Send links', files.length)
+							? n('integration_slack', 'Send file', 'Send files', files.length)
+							: n('integration_slack', 'Send link', 'Send links', files.length)
 						}}
 					</NcButton>
 				</div>
@@ -285,12 +285,12 @@ export default {
 			expirationDate: null,
 			passwordEnabled: false,
 			password: '',
-			passwordPlaceholder: t('integration_mattermost', 'password'),
+			passwordPlaceholder: t('integration_slack', 'password'),
 			STATES,
-			commentPlaceholder: t('integration_mattermost', 'Message to send with the files'),
+			commentPlaceholder: t('integration_slack', 'Message to send with the files'),
 			permissionOptions: {
-				view: { label: t('integration_mattermost', 'View only'), icon: EyeIcon },
-				edit: { label: t('integration_mattermost', 'Edit'), icon: PencilIcon },
+				view: { label: t('integration_slack', 'View only'), icon: EyeIcon },
+				edit: { label: t('integration_slack', 'Edit'), icon: PencilIcon },
 			},
 		}
 	},
@@ -373,14 +373,14 @@ export default {
 			this.loading = false
 		},
 		updateChannels() {
-			const url = generateUrl('apps/integration_mattermost/channels')
+			const url = generateUrl('apps/integration_slack/channels')
 			axios.get(url).then((response) => {
 				this.channels = response.data
 				if (this.sortedChannels.length > 0) {
 					this.selectedChannel = this.sortedChannels[0]
 				}
 			}).catch((error) => {
-				showError(t('integration_mattermost', 'Failed to load Mattermost channels'))
+				showError(t('integration_slack', 'Failed to load Slack channels'))
 				console.error(error)
 				console.error(error.response?.data?.error)
 			})
@@ -389,7 +389,7 @@ export default {
 			if (fileType === 'dir') {
 				return generateUrl('/apps/theming/img/core/filetypes/folder.svg')
 			}
-			return generateUrl('/apps/integration_mattermost/preview?id={fileId}&x=100&y=100', { fileId })
+			return generateUrl('/apps/integration_slack/preview?id={fileId}&x=100&y=100', { fileId })
 		},
 		fileStarted(id) {
 			this.$set(this.fileStates, id, STATES.IN_PROGRESS)
@@ -398,10 +398,10 @@ export default {
 			this.$set(this.fileStates, id, STATES.FINISHED)
 		},
 		getTeamIconUrl(teamId) {
-			return generateUrl('/apps/integration_mattermost/teams/{teamId}/image', { teamId }) + '?useFallback=0'
+			return generateUrl('/apps/integration_slack/teams/{teamId}/image', { teamId }) + '?useFallback=0'
 		},
 		getUserIconUrl(userId) {
-			return generateUrl('/apps/integration_mattermost/users/{userId}/image', { userId }) + '?useFallback=0'
+			return generateUrl('/apps/integration_slack/users/{userId}/image', { userId }) + '?useFallback=0'
 		},
 		isDateDisabled(d) {
 			const now = new Date()
@@ -424,7 +424,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.mattermost-modal-content {
+.slack-modal-content {
 	//width: 100%;
 	padding: 16px;
 	display: flex;
@@ -436,7 +436,7 @@ export default {
 		align-items: center;
 	}
 
-	> *:not(.mattermost-footer) {
+	> *:not(.slack-footer) {
 		margin-bottom: 16px;
 	}
 
@@ -449,7 +449,7 @@ export default {
 		}
 	}
 
-	> *:not(.field-label):not(.advanced-options):not(.mattermost-footer):not(.warning-container),
+	> *:not(.field-label):not(.advanced-options):not(.slack-footer):not(.warning-container),
 	.advanced-options > *:not(.field-label) {
 		margin-left: 10px;
 	}
@@ -558,7 +558,7 @@ export default {
 	flex-grow: 1;
 }
 
-.mattermost-footer {
+.slack-footer {
 	display: flex;
 	> * {
 		margin-left: 8px;

@@ -1,39 +1,28 @@
 <?xml version="1.0"?>
 <info>
-	<id>integration_mattermost</id>
-	<name>Mattermost integration</name>
-	<summary>Integration of Mattermost</summary>
-	<description><![CDATA[Mattermost integration provides a dashboard widget displaying your most important notifications
-and a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files.]]></description>
-	<version>1.0.4</version>
+	<id>integration_slack</id>
+	<name>Slack Integration</name>
+	<summary>Integration of Slack</summary>
+	<description><![CDATA[Slack integration lets you send files to Slack from Nextcloud Files.]]></description>
+	<version>1.0.0</version>
 	<licence>agpl</licence>
-	<author>Julien Veyssier</author>
-	<namespace>Mattermost</namespace>
+	<author>Anupam Kumar</author>
+	<namespace>Slack</namespace>
 	<documentation>
-		<developer>https://github.com/nextcloud/integration_mattermost</developer>
+		<developer>https://github.com/nextcloud/integration_slack</developer>
 	</documentation>
 	<category>integration</category>
-	<category>dashboard</category>
-	<website>https://github.com/nextcloud/integration_mattermost</website>
-	<bugs>https://github.com/nextcloud/integration_mattermost/issues</bugs>
-	<screenshot>https://raw.githubusercontent.com/nextcloud/integration_mattermost/main/img/screenshot1.jpg</screenshot>
-	<screenshot>https://raw.githubusercontent.com/nextcloud/integration_mattermost/main/img/screenshot2.jpg</screenshot>
-	<screenshot>https://raw.githubusercontent.com/nextcloud/integration_mattermost/main/img/screenshot3.jpg</screenshot>
+	<website>https://github.com/nextcloud/integration_slack</website>
+	<bugs>https://github.com/nextcloud/integration_slack/issues</bugs>
+	<!-- TODO: 3 -->
+	<!-- <screenshot>https://raw.githubusercontent.com/nextcloud/integration_mattermost/main/img/screenshot1.jpg</screenshot> -->
 	<dependencies>
 		<nextcloud min-version="26" max-version="28"/>
 	</dependencies>
-	<background-jobs>
-		<job>OCA\Mattermost\BackgroundJob\DailySummaryWebhook</job>
-		<job>OCA\Mattermost\BackgroundJob\ImminentEventsWebhook</job>
-	</background-jobs>
-	<commands>
-		<command>OCA\Mattermost\Command\DailySummary</command>
-		<command>OCA\Mattermost\Command\ImminentEvents</command>
-	</commands>
 	<settings>
-		<admin>OCA\Mattermost\Settings\Admin</admin>
-		<admin-section>OCA\Mattermost\Settings\AdminSection</admin-section>
-		<personal>OCA\Mattermost\Settings\Personal</personal>
-		<personal-section>OCA\Mattermost\Settings\PersonalSection</personal-section>
+		<admin>OCA\Slack\Settings\Admin</admin>
+		<admin-section>OCA\Slack\Settings\AdminSection</admin-section>
+		<personal>OCA\Slack\Settings\Personal</personal>
+		<personal-section>OCA\Slack\Settings\PersonalSection</personal-section>
 	</settings>
 </info>

@@ -1,6 +1,6 @@
 <?php
-$appId = OCA\Mattermost\AppInfo\Application::APP_ID;
+$appId = OCA\Slack\AppInfo\Application::APP_ID;
 \OCP\Util::addScript($appId, $appId . '-personalSettings');
 ?>
 
-<div id="mattermost_prefs"></div>
+<div id="slack_prefs"></div>

@@ -9,14 +9,14 @@
  * @copyright Julien Veyssier 2022
  */
 
-namespace OCA\Mattermost\Controller;
+namespace OCA\Slack\Controller;
 
 use Exception;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Response;
 use Psr\Log\LoggerInterface;
 use Throwable;
-use OCA\Mattermost\Service\ImageService;
+use OCA\Slack\Service\ImageService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\AppFramework\Http\DataResponse;

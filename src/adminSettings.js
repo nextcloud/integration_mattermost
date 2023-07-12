@@ -15,5 +15,8 @@ import Vue from 'vue'
 import './bootstrap.js'
 import AdminSettings from './components/AdminSettings.vue'
 
+/* TODO: remove this */
+Vue.config.devtools = true
+
 const VueAdminSettings = Vue.extend(AdminSettings)
-new VueAdminSettings().$mount('#mattermost_prefs')
+new VueAdminSettings().$mount('#slack_prefs')

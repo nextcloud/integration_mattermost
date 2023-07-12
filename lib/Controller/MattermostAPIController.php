@@ -9,7 +9,7 @@
  * @copyright Julien Veyssier 2022
  */
 
-namespace OCA\Mattermost\Controller;
+namespace OCA\Slack\Controller;
 
 use Exception;
 use OC\User\NoUserException;
@@ -22,8 +22,7 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
-use OCA\Mattermost\Service\MattermostAPIService;
-use OCA\Mattermost\AppInfo\Application;
+use OCA\Slack\Service\MattermostAPIService;
 use OCP\IURLGenerator;
 use OCP\Lock\LockedException;
 
@@ -40,15 +39,8 @@ class MattermostAPIController extends Controller {
 		parent::__construct($appName, $request);
 	}
 
-	/**
-	 * @NoAdminRequired
-	 *
-	 * @return DataResponse
-	 */
-	public function getMattermostUrl(): DataResponse {
-		return new DataResponse($this->mattermostAPIService->getMattermostUrl($this->userId));
-	}
-
+	// TODO: check if this is still needed
+	// --> user_avatar
 	/**
 	 * get mattermost user avatar
 	 * @NoAdminRequired
@@ -83,7 +75,7 @@ class MattermostAPIController extends Controller {
 	 * @return DataDisplayResponse|RedirectResponse
 	 * @throws \Exception
 	 */
-	public function getTeamAvatar(string $teamId, int $useFallback = 1)	{
+	public function getTeamAvatar(string $teamId, int $useFallback = 1): DataDisplayResponse | RedirectResponse	{
 		$result = $this->mattermostAPIService->getTeamAvatar($this->userId, $teamId);
 		if (isset($result['avatarContent'])) {
 			$response = new DataDisplayResponse($result['avatarContent']);
@@ -95,22 +87,6 @@ class MattermostAPIController extends Controller {
 			return new RedirectResponse($fallbackAvatarUrl);
 		}
 		return new DataDisplayResponse('', Http::STATUS_NOT_FOUND);
-	}
-
-	/**
-	 * @NoAdminRequired
-	 *
-	 * @return DataResponse
-	 * @throws Exception
-	 */
-	public function getNotifications(?int $since = null) {
-		$mmUserName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_name');
-		$result = $this->mattermostAPIService->getMentionsMe($this->userId, $mmUserName, $since);
-		if (isset($result['error'])) {
-			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
-		} else {
-			return new DataResponse($result);
-		}
 	}
 
 	/**

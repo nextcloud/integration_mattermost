@@ -8,4 +8,4 @@ Vue.prototype.OC = window.OC
 Vue.prototype.OCA = window.OCA
 
 // eslint-disable-next-line
-__webpack_public_path__ = generateFilePath('integration_mattermost', '', 'js/')
+__webpack_public_path__ = generateFilePath('integration_slack', '', 'js/')
