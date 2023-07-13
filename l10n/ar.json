@@ -49,6 +49,7 @@
     "https://my.mattermost.org/webhook..." : "https: //my.mattermost.org/webhook ...",
     "Calendar event updated webhook URL" : "قام حدث التقويم بتحديث عنوان URL لخطاف الويب",
     "Daily summary webhook URL" : "ملخص يومي لعنوان URL خطاف الويب ",
+    "Upcoming events webhook URL" : "عنوان URL خطاف الويب للأحداث القادمة",
     "Webhook secret" : "سر خطاف الويب",
     "secret" : "السر",
     "Successfully connected to Mattermost!" : "تم الاتصال ببرنامج Mattermost بنجاح!",

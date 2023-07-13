@@ -15,6 +15,7 @@
     "Login" : "登录",
     "Password" : "密码",
     "Connected as {user}" : "以 {user} 身份连接",
+    "Invalid access token" : "无效的访问令牌",
     "Files" : "文件",
     "Channel" : "频道",
     "Type" : "类型",
