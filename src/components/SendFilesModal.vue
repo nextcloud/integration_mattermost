@@ -25,10 +25,9 @@
 					<div v-for="f in files"
 						:key="f.id"
 						class="file">
-						<!-- TODO: solve loading state -->
-						<NcLoadingIcon v-if="fileStates[f.id] === STATES.IN_PROGRESS && loading"
+						<NcLoadingIcon v-if="fileStates[f.id] === STATES.IN_PROGRESS"
 							:size="20" />
-						<CheckCircleIcon v-else-if="fileStates[f.id] === STATES.FINISHED && !loading"
+						<CheckCircleIcon v-else-if="fileStates[f.id] === STATES.FINISHED"
 							class="check-icon"
 							:size="24" />
 						<img v-else

@@ -15,8 +15,5 @@ import Vue from 'vue'
 import './bootstrap.js'
 import PersonalSettings from './components/PersonalSettings.vue'
 
-/* TODO: remove this */
-Vue.config.devtools = true
-
 const VuePersonalSettings = Vue.extend(PersonalSettings)
 new VuePersonalSettings().$mount('#slack_prefs')

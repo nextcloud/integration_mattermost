@@ -24,7 +24,7 @@ const DEBUG = false
 const SEND_MESSAGE_URL = generateUrl('/apps/integration_slack/sendMessage')
 const SEND_FILE_URL = generateUrl('/apps/integration_slack/sendFile')
 const SEND_PUBLIC_LINKS_URL = generateUrl('/apps/integration_slack/sendPublicLinks')
-const IS_CONNECTED_URL = generateUrl('/apps/integration_slack/isConnected')
+const IS_CONNECTED_URL = generateUrl('/apps/integration_slack/is-connected')
 
 function openChannelSelector(files) {
 	OCA.Slack.filesToSend = files
@@ -126,7 +126,7 @@ function openChannelSelector(files) {
 				}
 			}).catch((error) => {
 				console.error(error)
-				// TODO: connectToSlack?
+				gotoSettingsConfirmDialog()
 			})
 		},
 
@@ -143,7 +143,6 @@ function openChannelSelector(files) {
 
 			// this is only true after an OAuth connection initated from a file action
 			if (fileIdsStr) {
-				// TODO: n2 loop?
 				// trick to make sure the file list is loaded (didn't find an event or a good alternative)
 				// force=true to make sure we get a promise
 				fileList.changeDirectory(currentDir, true, true).then(() => {

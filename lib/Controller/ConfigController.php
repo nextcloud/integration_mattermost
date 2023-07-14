@@ -129,7 +129,6 @@ class ConfigController extends Controller {
 		return new DataResponse(1);
 	}
 
-	// TODO: id?
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -138,9 +137,9 @@ class ConfigController extends Controller {
 	 * @param string $user_displayname
 	 * @return TemplateResponse
 	 */
-	public function popupSuccessPage(string $user_name, string $user_displayname): TemplateResponse {
+	public function popupSuccessPage(string $user_id, string $user_displayname): TemplateResponse {
 		$this->initialStateService->provideInitialState('popup-data', [
-			'user_id' => $user_name,
+			'user_id' => $user_id,
 			'user_displayname' => $user_displayname,
 		]);
 		return new TemplateResponse(Application::APP_ID, 'popupSuccess', [], TemplateResponse::RENDER_AS_GUEST);

@@ -165,6 +165,7 @@ export default {
 			if (this.state.use_popup) {
 				oauthConnect(this.state.client_id, null, true)
 					.then((data) => {
+						this.state.token = 'isset'
 						this.state.user_id = data.userId
 						this.state.user_displayname = data.userDisplayName
 					})
