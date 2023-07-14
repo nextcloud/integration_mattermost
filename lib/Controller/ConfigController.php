@@ -1,6 +1,6 @@
 <?php
 /**
- * Nextcloud - Mattermost
+ * Nextcloud - Slack
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -23,7 +23,7 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
-use OCA\Slack\Service\MattermostAPIService;
+use OCA\Slack\Service\SlackAPIService;
 use OCA\Slack\AppInfo\Application;
 use OCP\PreConditionNotMetException;
 
@@ -36,7 +36,7 @@ class ConfigController extends Controller {
 		private IURLGenerator $urlGenerator,
 		private IL10N $l,
 		private IInitialState $initialStateService,
-		private MattermostAPIService $mattermostAPIService,
+		private SlackAPIService $slackAPIService,
 		private ?string $userId
 	) {
 		parent::__construct($appName, $request);
@@ -165,7 +165,7 @@ class ConfigController extends Controller {
 
 		if ($clientID && $clientSecret && $configState !== '' && $configState === $state) {
 			$redirect_uri = $this->config->getUserValue($this->userId, Application::APP_ID, 'redirect_uri', '');
-			$result = $this->mattermostAPIService->requestOAuthAccessToken(Application::SLACK_OAUTH_ACCESS_URL, [
+			$result = $this->slackAPIService->requestOAuthAccessToken(Application::SLACK_OAUTH_ACCESS_URL, [
 				'client_id' => $clientID,
 				'client_secret' => $clientSecret,
 				'code' => $code,
@@ -237,7 +237,7 @@ class ConfigController extends Controller {
 	 * @throws PreConditionNotMetException
 	 */
 	private function storeUserInfo(string $slackUserId = ''): array {
-		$info = $this->mattermostAPIService->request($this->userId, 'users.info', [
+		$info = $this->slackAPIService->request($this->userId, 'users.info', [
 			'user' => $slackUserId,
 		]);
 

@@ -1,7 +1,7 @@
 /* jshint esversion: 6 */
 
 /**
- * Nextcloud - Mattermost
+ * Nextcloud - Slack
  *
  *
  * This file is licensed under the Affero General Public License version 3 or

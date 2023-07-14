@@ -1,6 +1,6 @@
 <?php
 /**
- * Nextcloud - Mattermost
+ * Nextcloud - Slack
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -22,20 +22,19 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 
-use OCA\Slack\Service\MattermostAPIService;
+use OCA\Slack\Service\SlackAPIService;
 use OCP\IURLGenerator;
 use OCP\Lock\LockedException;
 
-class MattermostAPIController extends Controller {
+class SlackAPIController extends Controller {
 
-	private string $mattermostUrl;
-
-	public function __construct(string                       $appName,
-								IRequest                     $request,
-								private IConfig              $config,
-								private IURLGenerator        $urlGenerator,
-								private MattermostAPIService $mattermostAPIService,
-								private ?string              $userId) {
+	public function __construct(
+		string                  $appName,
+		IRequest                $request,
+		private IConfig         $config,
+		private IURLGenerator   $urlGenerator,
+		private SlackAPIService $slackAPIService,
+		private ?string         $userId) {
 		parent::__construct($appName, $request);
 	}
 
@@ -50,7 +49,7 @@ class MattermostAPIController extends Controller {
 	 * @throws \Exception
 	 */
 	public function getUserAvatar(string $slackUserId, int $useFallback = 1): DataDisplayResponse|RedirectResponse {
-		$result = $this->mattermostAPIService->getUserAvatar($this->userId, $slackUserId);
+		$result = $this->slackAPIService->getUserAvatar($this->userId, $slackUserId);
 		if (isset($result['avatarContent'])) {
 			$response = new DataDisplayResponse($result['avatarContent']);
 			$response->cacheFor(60 * 60 * 24);
@@ -70,7 +69,7 @@ class MattermostAPIController extends Controller {
 	 * @throws Exception
 	 */
 	public function getChannels() {
-		$result = $this->mattermostAPIService->getMyChannels($this->userId);
+		$result = $this->slackAPIService->getMyChannels($this->userId);
 		if (isset($result['error'])) {
 			return new DataResponse($result, Http::STATUS_BAD_REQUEST);
 		}
@@ -86,7 +85,7 @@ class MattermostAPIController extends Controller {
 	 * @throws Exception
 	 */
 	public function sendMessage(string $message, string $channelId) {
-		$result = $this->mattermostAPIService->sendMessage($this->userId, $message, $channelId);
+		$result = $this->slackAPIService->sendMessage($this->userId, $message, $channelId);
 		if (isset($result['error'])) {
 			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
 		} else {
@@ -106,7 +105,7 @@ class MattermostAPIController extends Controller {
 	 * @throws NoUserException
 	 */
 	public function sendFile(int $fileId, string $channelId, string $comment = '') {
-		$result = $this->mattermostAPIService->sendFile($this->userId, $fileId, $channelId, $comment);
+		$result = $this->slackAPIService->sendFile($this->userId, $fileId, $channelId, $comment);
 		if (isset($result['error'])) {
 			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
 		} else {
@@ -130,7 +129,7 @@ class MattermostAPIController extends Controller {
 	 */
 	public function sendPublicLinks(array $fileIds, string $channelId, string $channelName, string $comment,
 							  string $permission, ?string $expirationDate = null, ?string $password = null): DataResponse {
-		$result = $this->mattermostAPIService->sendPublicLinks(
+		$result = $this->slackAPIService->sendPublicLinks(
 			$this->userId, $fileIds, $channelId, $channelName,
 			$comment, $permission, $expirationDate, $password
 		);

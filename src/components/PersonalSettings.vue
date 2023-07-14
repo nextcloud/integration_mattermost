@@ -1,7 +1,7 @@
 <template>
 	<div id="slack_prefs" class="section">
 		<h2>
-			<MattermostIcon class="icon" />
+			<SlackIcon class="icon" />
 			{{ t('integration_slack', 'Slack integration') }}
 		</h2>
 		<p v-if="state.client_id === ''" class="settings-hint">
@@ -49,7 +49,7 @@
 import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
 import CloseIcon from 'vue-material-design-icons/Close.vue'
 
-import MattermostIcon from './icons/MattermostIcon.vue'
+import SlackIcon from './icons/SlackIcon.vue'
 
 import NcAvatar from '@nextcloud/vue/dist/Components/NcAvatar.js'
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
@@ -65,7 +65,7 @@ export default {
 	name: 'PersonalSettings',
 
 	components: {
-		MattermostIcon,
+		SlackIcon,
 		NcAvatar,
 		NcCheckboxRadioSwitch,
 		NcButton,

@@ -1,7 +1,6 @@
 <?php
 namespace OCA\Slack\Settings;
 
-use OCA\Slack\Service\MattermostAPIService;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\IConfig;

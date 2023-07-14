@@ -1,6 +1,6 @@
 <?php
 /**
- * Nextcloud - Mattermost
+ * Nextcloud - Slack
  *
  *
  * @author Julien Veyssier <julien-nc@posteo.net>

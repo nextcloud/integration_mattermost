@@ -1,7 +1,7 @@
 <template>
 	<div id="slack_prefs" class="section">
 		<h2>
-			<MattermostIcon class="icon" />
+			<SlackIcon class="icon" />
 			{{ t('integration_slack', 'Slack integration') }}
 		</h2>
 		<p class="settings-hint">
@@ -62,7 +62,7 @@ import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showSuccess, showError } from '@nextcloud/dialogs'
-import MattermostIcon from './icons/MattermostIcon.vue'
+import SlackIcon from './icons/SlackIcon.vue'
 
 import { delay } from '../utils.js'
 
@@ -70,7 +70,7 @@ export default {
 	name: 'AdminSettings',
 
 	components: {
-		MattermostIcon,
+		SlackIcon,
 		NcCheckboxRadioSwitch,
 		InformationOutlineIcon,
 		KeyIcon,

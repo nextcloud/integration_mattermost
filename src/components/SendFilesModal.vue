@@ -5,7 +5,7 @@
 			@close="closeModal">
 			<div class="slack-modal-content">
 				<h2 class="modal-title">
-					<MattermostIcon />
+					<SlackIcon />
 					<span>
 						{{ sendType === SEND_TYPE.file.id
 							? n('integration_slack', 'Send file to Slack', 'Send files to Slack', files.length)
@@ -235,7 +235,7 @@ import RadioElementSet from './RadioElementSet.vue'
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
 import { showError } from '@nextcloud/dialogs'
-import MattermostIcon from './icons/MattermostIcon.vue'
+import SlackIcon from './icons/SlackIcon.vue'
 import { humanFileSize, SEND_TYPE } from '../utils.js'
 
 const STATES = {
@@ -247,7 +247,7 @@ export default {
 	name: 'SendFilesModal',
 
 	components: {
-		MattermostIcon,
+		SlackIcon,
 		NcSelect,
 		NcCheckboxRadioSwitch,
 		NcDatetimePicker,

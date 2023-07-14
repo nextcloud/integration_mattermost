@@ -1,6 +1,6 @@
 <?php
 /**
- * Nextcloud - Mattermost
+ * Nextcloud - Slack
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -18,11 +18,11 @@ return [
 		['name' => 'config#setAdminConfig', 'url' => '/admin-config', 'verb' => 'PUT'],
 		['name' => 'config#popupSuccessPage', 'url' => '/popup-success', 'verb' => 'GET'],
 
-		['name' => 'mattermostAPI#sendMessage', 'url' => '/sendMessage', 'verb' => 'POST'],
-		['name' => 'mattermostAPI#sendPublicLinks', 'url' => '/sendPublicLinks', 'verb' => 'POST'],
-		['name' => 'mattermostAPI#sendFile', 'url' => '/sendFile', 'verb' => 'POST'],
-		['name' => 'mattermostAPI#getChannels', 'url' => '/channels', 'verb' => 'GET'],
-		['name' => 'mattermostAPI#getUserAvatar', 'url' => '/users/{slackUserId}/image', 'verb' => 'GET'],
+		['name' => 'slackAPI#sendMessage', 'url' => '/sendMessage', 'verb' => 'POST'],
+		['name' => 'slackAPI#sendPublicLinks', 'url' => '/sendPublicLinks', 'verb' => 'POST'],
+		['name' => 'slackAPI#sendFile', 'url' => '/sendFile', 'verb' => 'POST'],
+		['name' => 'slackAPI#getChannels', 'url' => '/channels', 'verb' => 'GET'],
+		['name' => 'slackAPI#getUserAvatar', 'url' => '/users/{slackUserId}/image', 'verb' => 'GET'],
 
 		['name' => 'files#getFileImage', 'url' => '/preview', 'verb' => 'GET'],
 	]

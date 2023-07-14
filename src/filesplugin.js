@@ -139,7 +139,7 @@ function openChannelSelector(files) {
 		 * @param {string} currentDir path to the current dir
 		 */
 		sendFileIdsAfterOAuth: (fileList, fileIdsStr, currentDir) => {
-			if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, fileIdsStr, currentDir', fileIdsStr, currentDir)
+			if (DEBUG) console.debug('[Slack] in sendFileIdsAfterOAuth, fileIdsStr, currentDir', fileIdsStr, currentDir)
 
 			// this is only true after an OAuth connection initated from a file action
 			if (fileIdsStr) {

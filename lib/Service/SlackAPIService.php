@@ -1,6 +1,6 @@
 <?php
 /**
- * Nextcloud - Mattermost
+ * Nextcloud - Slack
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -35,9 +35,9 @@ use OCP\Share\IManager as ShareManager;
 use Throwable;
 
 /**
- * Service to make requests to Mattermost API
+ * Service to make requests to Slack API
  */
-class MattermostAPIService {
+class SlackAPIService {
 
 	private IClient $client;
 
