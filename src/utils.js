@@ -45,6 +45,10 @@ export function oauthConnect(clientId, oauthOrigin, usePopup = false) {
 					requestUrl,
 					t('integration_slack', 'Sign in with Slack'),
 					'toolbar=no, menubar=no, width=600, height=700')
+				if (!ssoWindow) {
+					showError(t('integration_slack', 'Failed to open Slack OAuth popup window, please allow popups'))
+					return
+				}
 				ssoWindow.focus()
 
 				window.addEventListener('message', (event) => {
