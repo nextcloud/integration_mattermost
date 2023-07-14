@@ -39,6 +39,8 @@ class ConfigController extends Controller {
 		private IL10N $l,
 		private IInitialState $initialStateService,
 		private SlackAPIService $slackAPIService,
+		private ICrypto $crypto,
+		private LoggerInterface $logger,
 		private ?string $userId
 	) {
 		parent::__construct($appName, $request);
@@ -126,6 +128,17 @@ class ConfigController extends Controller {
 	 */
 	public function setAdminConfig(array $values): DataResponse {
 		foreach ($values as $key => $value) {
+			try {
+				if ($key === 'client_secret' && $value !== '') {
+					$value = $this->crypto->encrypt($value);
+				}
+			} catch (Exception $e) {
+				$this->config->setAppValue(Application::APP_ID, 'client_secret', '');
+			// logger takes care not to leak the secret
+				$this->logger->error('Could not encrypt client secret', ['exception' => $e]);
+				return new DataResponse(['message' => $this->l->t('Could not encrypt client secret')]);
+			}
+
 			$this->config->setAppValue(Application::APP_ID, $key, $value);
 		}
 		return new DataResponse(1);
@@ -161,6 +174,17 @@ class ConfigController extends Controller {
 		$configState = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_state');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+
+		// decrypt client secret
+		try {
+			$clientSecret = $this->crypto->decrypt($clientSecret);
+		} catch (Exception $e) {
+			$this->logger->error('Could not decrypt client secret', ['exception' => $e]);
+			return new RedirectResponse(
+				$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']) .
+				'?result=error&message=' . $this->l->t('Invalid client secret')
+			);
+		}
 
 		// anyway, reset state
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_state');

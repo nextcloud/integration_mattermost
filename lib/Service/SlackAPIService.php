@@ -25,14 +25,15 @@ use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotPermittedException;
 use OCP\Http\Client\IClient;
+use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\Lock\LockedException;
 use OCP\PreConditionNotMetException;
+use OCP\Security\ICrypto;
 use OCP\Share\IShare;
 use Psr\Log\LoggerInterface;
-use OCP\Http\Client\IClientService;
 use OCP\Share\IManager as ShareManager;
 use Throwable;
 
@@ -51,6 +52,7 @@ class SlackAPIService {
 		private IRootFolder $root,
 		private ShareManager $shareManager,
 		private IURLGenerator $urlGenerator,
+		private ICrypto $crypto,
 		IClientService $clientService
 	) {
 		$this->client = $clientService->newClient();
@@ -461,11 +463,17 @@ class SlackAPIService {
 	private function refreshToken(string $userId): bool {
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
-		$redirect_uri = $this->config->getUserValue($userId, Application::APP_ID, 'redirect_uri');
 		$refreshToken = $this->config->getUserValue($userId, Application::APP_ID, 'refresh_token');
 
 		if (!$refreshToken) {
 			$this->logger->error('No Slack refresh token found', ['app' => Application::APP_ID]);
+			return false;
+		}
+
+		try {
+			$clientSecret = $this->crypto->decrypt($clientSecret);
+		} catch (Exception $e) {
+			$this->logger->error('Unable to decrypt Slack secrets', ['app' => Application::APP_ID]);
 			return false;
 		}
 

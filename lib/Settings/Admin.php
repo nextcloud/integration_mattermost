@@ -1,18 +1,22 @@
 <?php
 namespace OCA\Slack\Settings;
 
+use Exception;
+use OCA\Slack\AppInfo\Application;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\IConfig;
+use OCP\Security\ICrypto;
 use OCP\Settings\ISettings;
-
-use OCA\Slack\AppInfo\Application;
+use Psr\Log\LoggerInterface;
 
 class Admin implements ISettings {
 
 	public function __construct(
 		private IConfig $config,
-		private IInitialState $initialStateService
+		private IInitialState $initialStateService,
+		private ICrypto $crypto,
+		private LoggerInterface $logger,
 	) {
 	}
 
@@ -23,6 +27,16 @@ class Admin implements ISettings {
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
 		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
+
+		try {
+			if ($clientSecret !== '') {
+				$clientSecret = $this->crypto->decrypt($clientSecret);
+			}
+		} catch (Exception $e) {
+			// logger takes care not to leak the secret
+			$this->logger->error('Failed to decrypt client secret', ['exception' => $e]);
+			$clientSecret = '';
+		}
 
 		$adminConfig = [
 			'client_id' => $clientID,
