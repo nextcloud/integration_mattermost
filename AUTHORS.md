@@ -1,4 +1,5 @@
 # Authors
 
-* Julien Veyssier <julien-nc@posteo.net> (Developper)
+* Julien Veyssier <julien-nc@posteo.net> (Developer)
+* Anupam Kumar <kyteinsky@gmail.com> (Developer)
 

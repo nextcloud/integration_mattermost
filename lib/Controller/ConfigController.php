@@ -6,7 +6,9 @@
  * later. See the COPYING file.
  *
  * @author Julien Veyssier <julien-nc@posteo.net>
+ * @author Anupam Kumar <kyteinsky@gmail.com>
  * @copyright Julien Veyssier 2022
+ * @copyright Anupam Kumar 2023
  */
 
 namespace OCA\Slack\Controller;
