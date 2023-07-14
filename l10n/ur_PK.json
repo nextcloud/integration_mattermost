@@ -1,9 +1,0 @@
-{ "translations": {
-    "Login" : "Login",
-    "Password" : "پاسورڈ",
-    "Type" : "Type",
-    "Set expiration date" : "تاریخ معیاد سیٹ کریں",
-    "Cancel" : "منسوخ کریں",
-    "Edit" : "تدوین کریں"
-},"pluralForm" :"nplurals=2; plural=(n != 1);"
-}
