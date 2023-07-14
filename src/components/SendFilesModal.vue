@@ -25,9 +25,10 @@
 					<div v-for="f in files"
 						:key="f.id"
 						class="file">
-						<NcLoadingIcon v-if="fileStates[f.id] === STATES.IN_PROGRESS"
+						<!-- TODO: solve loading state -->
+						<NcLoadingIcon v-if="fileStates[f.id] === STATES.IN_PROGRESS && loading"
 							:size="20" />
-						<CheckCircleIcon v-else-if="fileStates[f.id] === STATES.FINISHED"
+						<CheckCircleIcon v-else-if="fileStates[f.id] === STATES.FINISHED && !loading"
 							class="check-icon"
 							:size="24" />
 						<img v-else
@@ -55,6 +56,7 @@
 							{{ t('integration_slack', 'Channel') }}
 						</strong>
 					</span>
+					<NcLoadingIcon v-if="channels === undefined" :size="20" />
 				</span>
 				<NcSelect
 					v-model="selectedChannel"
@@ -279,7 +281,7 @@ export default {
 			query: '',
 			files: [],
 			fileStates: {},
-			channels: [],
+			channels: undefined, // undefined means loading
 			selectedChannel: null,
 			selectedPermission: 'view',
 			expirationEnabled: false,
@@ -309,6 +311,9 @@ export default {
 				&& this.files.length > 0
 		},
 		sortedChannels() {
+			if (this.channels === undefined) {
+				return []
+			}
 			return this.channels.slice().sort((a, b) => b.updated - a.updated)
 		},
 	},
@@ -325,7 +330,7 @@ export default {
 			this.selectedChannel = null
 			this.files = []
 			this.fileStates = {}
-			this.channels = []
+			this.channels = undefined
 			this.comment = ''
 			this.sendType = SEND_TYPE.file.id
 			this.selectedPermission = 'view'
@@ -350,7 +355,7 @@ export default {
 			this.$emit('validate', {
 				filesToSend: [...this.files],
 				channelId: this.selectedChannel.id,
-				channelName: this.selectedChannel.display_name,
+				channelName: this.selectedChannel.name,
 				type: this.sendType,
 				comment: this.comment,
 				permission: this.selectedPermission,
@@ -368,20 +373,21 @@ export default {
 		updateChannels() {
 			const url = generateUrl('apps/integration_slack/channels')
 			axios.get(url).then((response) => {
-				this.channels = response.data
+				this.channels = response.data ?? []
 				if (this.sortedChannels.length > 0) {
 					this.selectedChannel = this.sortedChannels[0]
 				}
 			}).catch((error) => {
 				showError(t('integration_slack', 'Failed to load Slack channels'))
 				console.error(error)
+				this.channels = []
 			})
 		},
 		getFilePreviewUrl(fileId, fileType) {
 			if (fileType === 'dir') {
 				return generateUrl('/apps/theming/img/core/filetypes/folder.svg')
 			}
-			return generateUrl('/apps/integration_slack/preview?id={fileId}&x=100&y=100', { fileId })
+			return generateUrl('/apps/integration_slack/preview?id={fileId}&x=24&y=24', { fileId })
 		},
 		fileStarted(id) {
 			this.$set(this.fileStates, id, STATES.IN_PROGRESS)

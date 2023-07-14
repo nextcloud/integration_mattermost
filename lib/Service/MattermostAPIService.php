@@ -55,10 +55,11 @@ class MattermostAPIService {
 	}
 
 	/**
+	 * @param string $userId
 	 * @param string $url
 	 * @return mixed
 	 */
-	public function downloadAvatar(string $url)  {
+	public function downloadAvatar(string $userId, string $url)  {
 		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
 		$options = [
 			'Authorization'  => 'Bearer ' . $accessToken,
@@ -93,7 +94,7 @@ class MattermostAPIService {
 		$userInfo = $this->request($userId, 'users.info', ['user' => $slackUserId]);
 
 		if (isset($userInfo['user'], $userInfo['user']['profile'], $userInfo['user']['profile']['image_48'])) {
-			$image = $this->downloadAvatar($userInfo['user']['profile']['image_48']);
+			$image = $this->downloadAvatar($userId, $userInfo['user']['profile']['image_48']);
 			if (!is_array($image)) {
 				return ['avatarContent' => $image];
 			}
@@ -143,29 +144,45 @@ class MattermostAPIService {
 		}
 
 		/* Cheat sheet:
-		 * name, is_channel => channel
-		 * name, is_group => group
-		 * user, is_im => direct
+		 * is_channel, name  => channel
+		 * is_group,   topic => group
+		 * is_im,      user  => direct
 		 */
 
 		$channels = [];
 
 		foreach($channelResult['channels'] as $channel) {
-			if (isset($channel['name'], $channel['is_channel']) && $channel['is_channel']) {
+			if (
+				isset(
+					$channel['is_group'],
+					$channel['is_mpim'],
+					$channel['name'],
+					$channel['purpose'],
+					$channel['purpose']['value'],
+					$channel['topic'],
+					$channel['topic']['value']
+				) && ($channel['is_group'] || $channel['is_mpim'])
+			) {
+				$group_name = array_filter(
+					[$channel['topic']['value'], $channel['purpose']['value'], $channel['name'], 'Group'],
+					fn ($val) => $val !== ''
+				)[0];
+
+				$channels[] = [
+					'id' => $channel['id'],
+					'name' => $group_name,
+					'type' => 'group',
+					'updated' => $channel['updated'] ?? 0,
+				];
+			} else if (isset($channel['is_channel'], $channel['name']) && $channel['is_channel']) {
 				$channels[] = [
 					'id' => $channel['id'],
 					'name' => $channel['name'],
 					'type' => 'channel',
 					'updated' => $channel['updated'] ?? 0,
 				];
-			} else if (isset($channel['name'], $channel['is_group']) && $channel['is_group']) {
-				$channels[] = [
-					'id' => $channel['id'],
-					'name' => $channel['name'],
-					'type' => 'group',
-					'updated' => $channel['updated'] ?? 0,
-				];
 			} else if (isset($channel['user'], $channel['is_im']) && $channel['is_im']) {
+				// need to make another request to get the real name
 				$realName = $this->getUserRealName($userId, $channel['user']);
 				if (is_null($realName)) {
 					continue;
@@ -187,19 +204,20 @@ class MattermostAPIService {
 	 * @param string $userId
 	 * @param string $message
 	 * @param string $channelId
-	 * @param array|null $remoteFileIds
 	 * @return array|string[]
 	 * @throws PreConditionNotMetException
 	 */
-	public function sendMessage(string $userId, string $message, string $channelId, ?array $remoteFileIds = null): array {
+	public function sendMessage(string $userId, string $message, string $channelId): array {
 		$params = [
-			'channel_id' => $channelId,
-			'message' => $message,
+			'as_user' => true, // legacy but we'll use it for now
+			'link_names' => false, // we onlu send links (public and internal)
+			'parse' => 'full',
+			'unfurl_links' => true,
+			'unfurl_media' => true,
+			'channel' => $channelId,
+			'text' => $message,
 		];
-		if ($remoteFileIds !== null) {
-			$params['file_ids'] = $remoteFileIds;
-		}
-		return $this->request($userId, 'posts', $params, 'POST');
+		return $this->request($userId, 'chat.postMessage', $params, 'POST');
 	}
 
 	/**
@@ -231,17 +249,21 @@ class MattermostAPIService {
 
 				$share = $this->shareManager->newShare();
 				$share->setNode($node);
+
 				if ($permission === 'edit') {
 					$share->setPermissions(Constants::PERMISSION_READ | Constants::PERMISSION_UPDATE);
 				} else {
 					$share->setPermissions(Constants::PERMISSION_READ);
 				}
+
 				$share->setShareType(IShare::TYPE_LINK);
 				$share->setSharedBy($userId);
-				$share->setLabel('Mattermost (' . $channelName . ')');
+				$share->setLabel('Slack (' . $channelName . ')');
+
 				if ($expirationDate !== null) {
 					$share->setExpirationDate(new Datetime($expirationDate));
 				}
+
 				if ($password !== null) {
 					try {
 						$share->setPassword($password);
@@ -249,6 +271,7 @@ class MattermostAPIService {
 						return ['error' => $e->getMessage()];
 					}
 				}
+
 				try {
 					$share = $this->shareManager->createShare($share);
 					if ($expirationDate === null) {
@@ -258,12 +281,14 @@ class MattermostAPIService {
 				} catch (Exception $e) {
 					return ['error' => $e->getMessage()];
 				}
+
 				$token = $share->getToken();
 				$linkUrl = $this->urlGenerator->getAbsoluteURL(
 					$this->urlGenerator->linkToRoute('files_sharing.Share.showShare', [
 						'token' => $token,
 					])
 				);
+
 				$links[] = [
 					'name' => $node->getName(),
 					'url' => $linkUrl,
@@ -271,88 +296,52 @@ class MattermostAPIService {
 			}
 		}
 
-		if (count($links) > 0) {
-			$message = $comment . "\n";
-			foreach ($links as $link) {
-				$message .= '```' . $link['name'] . '```: ' . $link['url'] . "\n";
-			}
-			$params = [
-				'channel_id' => $channelId,
-				'message' => $message,
-			];
-			return $this->request($userId, 'posts', $params, 'POST');
-		} else {
+		if (count($links) === 0) {
 			return ['error' => 'Files not found'];
 		}
+
+		$message = ($comment !== ''
+			? $comment . "\n\n"
+			: '') .  join("\n", array_map(fn ($link) => $link['name'] . ': ' . $link['url'], $links));
+
+		return $this->sendMessage($userId, $message, $channelId);
 	}
 
 	/**
 	 * @param string $userId
 	 * @param int $fileId
 	 * @param string $channelId
+	 * @param string $comment
 	 * @return array|string[]
 	 * @throws NoUserException
 	 * @throws NotPermittedException
 	 * @throws LockedException
 	 */
-	public function sendFile(string $userId, int $fileId, string $channelId): array {
+	public function sendFile(string $userId, int $fileId, string $channelId, string $comment = ''): array {
 		$userFolder = $this->root->getUserFolder($userId);
 		$files = $userFolder->getById($fileId);
+
 		if (count($files) > 0 && $files[0] instanceof File) {
 			$file = $files[0];
-			$endpoint = 'files?channel_id=' . urlencode($channelId) . '&filename=' . urlencode($file->getName());
-			$sendResult = $this->requestSendFile($userId, $endpoint, $file->fopen('r'));
+
+			// TODO:
+			$sendResult = $this->request($userId, 'files.upload', [
+				'channels' => $channelId,
+				'filename' => $file->getName(),
+				'filetype' => 'auto',
+				// 'file' => $file->fopen('r'),
+				'content' => $file->getContent(),
+				...($comment !== '' ? ['initial_comment' => $comment] : []),
+			// ], 'POST', true, 'multipart/form-data');
+			], 'POST');
+
 			if (isset($sendResult['error'])) {
 				return $sendResult;
 			}
 
-			if (isset($sendResult['file_infos']) && is_array($sendResult['file_infos']) && count($sendResult['file_infos']) > 0) {
-				$remoteFileId = $sendResult['file_infos'][0]['id'] ?? 0;
-				return [
-					'remote_file_id' => $remoteFileId,
-				];
-			} else {
-				return ['error' => 'File upload error'];
-			}
+			return ['success' => true];
 		} else {
 			return ['error' => 'File not found'];
-		}
-	}
-
-	/**
-	 * @param string $userId
-	 * @param string $endPoint
-	 * @param $fileResource
-	 * @return array|mixed|resource|string|string[]
-	 * @throws PreConditionNotMetException
-	 */
-	public function requestSendFile(string $userId, string $endPoint, $fileResource) {
-		/* TODO: check token expiration */
-		$this->checkTokenExpiration($userId);
-		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
-
-		try {
-			$url = Application::SLACK_API_URL . $endPoint;
-			$options = [
-				'headers' => [
-					'Authorization'  => 'Bearer ' . $accessToken,
-					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
-				],
-				'body' => $fileResource,
-			];
-
-			$response = $this->client->post($url, $options);
-			$body = $response->getBody();
-			$respCode = $response->getStatusCode();
-
-			if ($respCode >= 400) {
-				return ['error' => $this->l10n->t('Bad credentials')];
-			} else {
-				return json_decode($body, true);
-			}
-		} catch (ServerException | ClientException $e) {
-			$this->logger->warning('Slack API send file error : '.$e->getMessage(), ['app' => Application::APP_ID]);
-			return ['error' => $e->getMessage()];
 		}
 	}
 
@@ -362,11 +351,12 @@ class MattermostAPIService {
 	 * @param array $params
 	 * @param string $method
 	 * @param bool $jsonResponse
+	 * @param string $contentType
 	 * @return array|mixed|resource|string|string[]
 	 * @throws PreConditionNotMetException
 	 */
 	public function request(string $userId, string $endPoint, array $params = [], string $method = 'GET',
-							bool $jsonResponse = true) {
+							bool $jsonResponse = true, string $contentType = 'application/x-www-form-urlencoded') {
 		$this->checkTokenExpiration($userId);
 		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
 
@@ -375,7 +365,7 @@ class MattermostAPIService {
 			$options = [
 				'headers' => [
 					'Authorization'  => 'Bearer ' . $accessToken,
-					'Content-Type' => 'application/x-www-form-urlencoded',
+					'Content-Type' => $contentType,
 					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
 				],
 			];
@@ -395,10 +385,22 @@ class MattermostAPIService {
 					$paramsContent .= http_build_query($params);
 
 					$url .= '?' . $paramsContent;
+				} else if ($contentType === 'multipart/form-data') {
+					// TODO:
+					$options['multipart'] = [];
+					foreach ($params as $key => $value) {
+						$options['multipart'][] = [
+							'name' => $key,
+							'contents' => $value,
+						];
+					}
 				} else {
-					$options['json'] = $params;
+					$options['body'] = $params;
 				}
 			}
+
+			// TODO:
+			// $this->logger->warning('options', $options);
 
 			if ($method === 'GET') {
 				$response = $this->client->get($url, $options);
@@ -472,17 +474,17 @@ class MattermostAPIService {
 			'refresh_token' => $refreshToken,
 		], 'POST');
 
-		if (isset($result['authed_user'], $result['authed_user']['access_token'])) {
+		if (isset($result['access_token'])) {
 			$this->logger->info('Slack access token successfully refreshed', ['app' => Application::APP_ID]);
 
-			$accessToken = $result['authed_user']['access_token'];
-			$refreshToken = $result['authed_user']['refresh_token'];
+			$accessToken = $result['access_token'];
+			$refreshToken = $result['refresh_token'];
 			$this->config->setUserValue($userId, Application::APP_ID, 'token', $accessToken);
 			$this->config->setUserValue($userId, Application::APP_ID, 'refresh_token', $refreshToken);
 
-			if (isset($result['authed_user']['expires_in'])) {
+			if (isset($result['expires_in'])) {
 				$nowTs = (new Datetime())->getTimestamp();
-				$expiresAt = $nowTs + (int) $result['authed_user']['expires_in'];
+				$expiresAt = $nowTs + (int) $result['expires_in'];
 				$this->config->setUserValue($userId, Application::APP_ID, 'token_expires_at', $expiresAt);
 			}
 
@@ -490,8 +492,8 @@ class MattermostAPIService {
 		} else {
 			// impossible to refresh the token
 			$this->logger->error(
-				'Token is not valid anymore. Impossible to refresh it. '
-					. $result['error'] . ' '
+				'Token is not valid anymore. Impossible to refresh it: '
+					. $result['error'] ?? '' . ' '
 					. $result['error_description'] ?? '[no error description]',
 				['app' => Application::APP_ID]
 			);

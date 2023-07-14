@@ -49,7 +49,7 @@ class MattermostAPIController extends Controller {
 	 * @return DataDisplayResponse|RedirectResponse
 	 * @throws \Exception
 	 */
-	public function getUserAvatar(string $slackUserId, int $useFallback = 1) {
+	public function getUserAvatar(string $slackUserId, int $useFallback = 1): DataDisplayResponse|RedirectResponse {
 		$result = $this->mattermostAPIService->getUserAvatar($this->userId, $slackUserId);
 		if (isset($result['avatarContent'])) {
 			$response = new DataDisplayResponse($result['avatarContent']);
@@ -82,12 +82,11 @@ class MattermostAPIController extends Controller {
 	 *
 	 * @param string $message
 	 * @param string $channelId
-	 * @param array|null $remoteFileIds
 	 * @return DataResponse
 	 * @throws Exception
 	 */
-	public function sendMessage(string $message, string $channelId, ?array $remoteFileIds = null) {
-		$result = $this->mattermostAPIService->sendMessage($this->userId, $message, $channelId, $remoteFileIds);
+	public function sendMessage(string $message, string $channelId) {
+		$result = $this->mattermostAPIService->sendMessage($this->userId, $message, $channelId);
 		if (isset($result['error'])) {
 			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
 		} else {
@@ -100,13 +99,14 @@ class MattermostAPIController extends Controller {
 	 *
 	 * @param int $fileId
 	 * @param string $channelId
+	 * @param string $comment
 	 * @return DataResponse
 	 * @throws NotPermittedException
 	 * @throws LockedException
 	 * @throws NoUserException
 	 */
-	public function sendFile(int $fileId, string $channelId) {
-		$result = $this->mattermostAPIService->sendFile($this->userId, $fileId, $channelId);
+	public function sendFile(int $fileId, string $channelId, string $comment = '') {
+		$result = $this->mattermostAPIService->sendFile($this->userId, $fileId, $channelId, $comment);
 		if (isset($result['error'])) {
 			return new DataResponse($result['error'], Http::STATUS_BAD_REQUEST);
 		} else {

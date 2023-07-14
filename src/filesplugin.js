@@ -21,6 +21,11 @@ import './bootstrap.js'
 
 const DEBUG = false
 
+const SEND_MESSAGE_URL = generateUrl('/apps/integration_slack/sendMessage')
+const SEND_FILE_URL = generateUrl('/apps/integration_slack/sendFile')
+const SEND_PUBLIC_LINKS_URL = generateUrl('/apps/integration_slack/sendPublicLinks')
+const IS_CONNECTED_URL = generateUrl('/apps/integration_slack/isConnected')
+
 function openChannelSelector(files) {
 	OCA.Slack.filesToSend = files
 	const modalVue = OCA.Slack.SlackSendModalVue
@@ -189,7 +194,7 @@ function openChannelSelector(files) {
 
 })()
 
-function sendPublicLinks(channelId, channelName, comment, permission, expirationDate, password) {
+async function sendPublicLinks(channelId, channelName, comment, permission, expirationDate, password) {
 	const req = {
 		fileIds: OCA.Slack.filesToSend.map((f) => f.id),
 		channelId,
@@ -199,158 +204,51 @@ function sendPublicLinks(channelId, channelName, comment, permission, expiration
 		expirationDate: expirationDate ? moment(expirationDate).format('YYYY-MM-DD') : undefined,
 		password,
 	}
-	const url = generateUrl('apps/integration_slack/sendPublicLinks')
-	axios.post(url, req).then((response) => {
-		const number = OCA.Slack.filesToSend.length
-		showSuccess(
-			n(
-				'integration_slack',
-				'A link to {fileName} was sent to {channelName}',
-				'{number} links were sent to {channelName}',
-				number,
-				{
-					fileName: OCA.Slack.filesToSend[0].name,
-					channelName,
-					number,
-				}
-			)
-		)
-		OCA.Slack.SlackSendModalVue.success()
-	}).catch((error) => {
-		console.error(error)
-		OCA.Slack.SlackSendModalVue.failure()
-		OCA.Slack.filesToSend = []
-		showError(
-			t('integration_slack', 'Failed to send links to Slack')
-			+ ' ' + error.response?.request?.responseText
-		)
-	})
+
+	return axios.post(SEND_PUBLIC_LINKS_URL, req)
 }
 
-function sendInternalLinks(channelId, channelName, comment) {
-	sendMessage(channelId, comment).then((response) => {
-		OCA.Slack.filesToSend.forEach(f => {
-			const link = window.location.protocol + '//' + window.location.host + generateUrl('/f/' + f.id)
-			const message = f.name + ': ' + link
-			sendMessage(channelId, message)
+const sendInternalLinks = async (channelId, comment) => {
+	const getLink = (file) => window.location.protocol + '//' + window.location.host + generateUrl('/f/' + file.id)
+	const message = (comment !== ''
+		? `${comment}\n\n`
+		: '') + `${OCA.Slack.filesToSend.map((file) => `${file.name}: ${getLink(file)}`).join('\n')}`
+	return sendMessage(channelId, message)
+}
+
+const sendFile
+	= (channelId, channelName, comment) => (file, i) => new Promise((resolve, reject) => {
+		OCA.Slack.SlackSendModalVue.fileStarted(file.id)
+
+		// send the comment only with the first file
+		const req = {
+			fileId: file.id,
+			channelId,
+			...(i === 0 && { comment }),
+		}
+
+		axios.post(SEND_FILE_URL, req).then((response) => {
+			OCA.Slack.remoteFileIds.push(response.data.remote_file_id)
+			OCA.Slack.sentFileNames.push(file.name)
+			OCA.Slack.SlackSendModalVue.fileFinished(file.id)
+
+			resolve()
+		}).catch((error) => {
+			showError(
+				t('integration_slack', 'Failed to send {name} to {channelName} on Slack',
+					{ name: file.name, channelName })
+				+ ': ' + error.response?.request?.responseText
+			)
+			reject(error)
 		})
-		const number = OCA.Slack.filesToSend.length
-		showSuccess(
-			n(
-				'integration_slack',
-				'A link to {fileName} was sent to {channelName}',
-				'{number} links were sent to {channelName}',
-				number,
-				{
-					fileName: OCA.Slack.filesToSend[0].name,
-					channelName,
-					number,
-				}
-			)
-		)
-		OCA.Slack.SlackSendModalVue.success()
-	}).catch((error) => {
-		console.error(error)
-		OCA.Slack.SlackSendModalVue.failure()
-		OCA.Slack.filesToSend = []
-		showError(
-			t('integration_slack', 'Failed to send internal links to Slack')
-			+ ': ' + error.response?.request?.responseText
-		)
 	})
-}
 
-function sendFileLoop(channelId, channelName, comment) {
-	const file = OCA.Slack.filesToSend.shift()
-	// skip directories
-	if (file.type === 'dir') {
-		if (OCA.Slack.filesToSend.length === 0) {
-			// we are done, no next file
-			sendMessageAfterFilesUpload(channelId, channelName, comment)
-		} else {
-			// skip, go to next
-			sendFileLoop(channelId, channelName, comment)
-		}
-		return
-	}
-
-	OCA.Slack.SlackSendModalVue.fileStarted(file.id)
-
-	const req = {
-		fileId: file.id,
-		channelId,
-	}
-	const url = generateUrl('apps/integration_slack/sendFile')
-
-	axios.post(url, req).then((response) => {
-		OCA.Slack.remoteFileIds.push(response.data.remote_file_id)
-		OCA.Slack.sentFileNames.push(file.name)
-		OCA.Slack.SlackSendModalVue.fileFinished(file.id)
-
-		if (OCA.Slack.filesToSend.length === 0) {
-			// finished
-			sendMessageAfterFilesUpload(channelId, channelName, comment)
-		} else {
-			// not finished
-			sendFileLoop(channelId, channelName, comment)
-		}
-	}).catch((error) => {
-		console.error(error)
-
-		OCA.Slack.SlackSendModalVue.failure()
-		OCA.Slack.filesToSend = []
-		OCA.Slack.sentFileNames = []
-
-		showError(
-			t('integration_slack', 'Failed to send {name} to Slack', { name: file.name })
-			+ ' ' + error.response?.request?.responseText
-		)
-	})
-}
-
-function sendMessageAfterFilesUpload(channelId, channelName, comment) {
-	const count = OCA.Slack.sentFileNames.length
-	const lastFileName = count === 0 ? t('integration_slack', 'Nothing') : OCA.Slack.sentFileNames[count - 1]
-
-	sendMessage(channelId, comment, OCA.Slack.remoteFileIds).then((response) => {
-		showSuccess(
-			n(
-				'integration_slack',
-				'{fileName} was sent to {channelName}',
-				'{count} files were sent to {channelName}',
-				count,
-				{
-					fileName: lastFileName,
-					channelName,
-					count,
-				}
-			)
-		)
-
-		OCA.Slack.SlackSendModalVue.success()
-	}).catch((error) => {
-		console.error(error)
-
-		OCA.Slack.SlackSendModalVue.failure()
-		showError(
-			t('integration_slack', 'Failed to send files to Slack')
-			+ ': ' + error.response?.request?.responseText
-		)
-	}).then(() => {
-		OCA.Slack.filesToSend = []
-		OCA.Slack.remoteFileIds = []
-		OCA.Slack.sentFileNames = []
-	})
-}
-
-function sendMessage(channelId, message, remoteFileIds = undefined) {
+async function sendMessage(channelId, message) {
 	const req = {
 		message,
 		channelId,
-		remoteFileIds,
 	}
-	const url = generateUrl('apps/integration_slack/sendMessage')
-	return axios.post(url, req)
+	return axios.post(SEND_MESSAGE_URL, req)
 }
 
 // send file modal
@@ -366,21 +264,100 @@ OCA.Slack.SlackSendModalVue.$on('closed', () => {
 	if (DEBUG) console.debug('[Slack] modal closed')
 })
 OCA.Slack.SlackSendModalVue.$on('validate', ({ filesToSend, channelId, channelName, type, comment, permission, expirationDate, password }) => {
+	if (filesToSend.length === 0) {
+		return
+	}
+
 	OCA.Slack.filesToSend = filesToSend
+
 	if (type === SEND_TYPE.public_link.id) {
-		sendPublicLinks(channelId, channelName, comment, permission, expirationDate, password)
+		sendPublicLinks(channelId, channelName, comment, permission, expirationDate, password).then(() => {
+			showSuccess(
+				n(
+					'integration_slack',
+					'A link to {fileName} was sent to {channelName}',
+					'All of the {number} links were sent to {channelName}',
+					OCA.Slack.filesToSend.length,
+					{
+						fileName: OCA.Slack.filesToSend[0].name,
+						channelName,
+						number: OCA.Slack.filesToSend.length,
+					}
+				)
+			)
+			OCA.Slack.SlackSendModalVue.success()
+		}).catch((error) => {
+			errorCallback(error)
+			showError(
+				t('integration_slack', 'Failed to send links to Slack')
+				+ ' ' + error.response?.request?.responseText
+			)
+		})
 	} else if (type === SEND_TYPE.internal_link.id) {
-		sendInternalLinks(channelId, channelName, comment)
+		sendInternalLinks(channelId, comment).then(() => {
+			showSuccess(
+				n(
+					'integration_slack',
+					'A link to {fileName} was sent to {channelName}',
+					'All of the {number} links were sent to {channelName}',
+					OCA.Slack.filesToSend.length,
+					{
+						fileName: OCA.Slack.filesToSend[0].name,
+						number: OCA.Slack.filesToSend.length,
+						channelName,
+					}
+				)
+			)
+			OCA.Slack.SlackSendModalVue.success()
+		}).catch((error) => {
+			errorCallback(error)
+			showError(
+				n(
+					'integration_slack',
+					'Failed to send the internal link to {channelName}',
+					'Failed to send internal links to {channelName}',
+					OCA.Slack.filesToSend.length,
+					{
+						fileName: OCA.Slack.filesToSend[0].name,
+						channelName,
+					}
+				)
+				+ ': ' + error.response?.request?.responseText
+			)
+		})
 	} else {
 		OCA.Slack.remoteFileIds = []
 		OCA.Slack.sentFileNames = []
-		sendFileLoop(channelId, channelName, comment)
+		OCA.Slack.filesToSend = filesToSend.filter((f) => f.type !== 'dir')
+
+		Promise.all(OCA.Slack.filesToSend.map(sendFile(channelId, channelName, comment))).then(() => {
+			showSuccess(
+				n(
+					'integration_slack',
+					'{fileName} was successfully sent to {channelName}',
+					'All of the {number} files were sent to {channelName}',
+					OCA.Slack.filesToSend.length,
+					{
+						fileName: OCA.Slack.filesToSend[0].name,
+						number: OCA.Slack.filesToSend.length,
+						channelName,
+					}
+				)
+			)
+			OCA.Slack.SlackSendModalVue.success()
+		}).catch(errorCallback)
 	}
 })
 
+function errorCallback(error) {
+	console.error(error)
+	OCA.Slack.SlackSendModalVue.failure()
+	OCA.Slack.filesToSend = []
+	OCA.Slack.sentFileNames = []
+}
+
 // get Slack state
-const urlCheckConnection = generateUrl('/apps/integration_slack/is-connected')
-axios.get(urlCheckConnection).then((response) => {
+axios.get(IS_CONNECTED_URL).then((response) => {
 	OCA.Slack.slackConnected = response.data.connected
 	OCA.Slack.oauthPossible = response.data.oauth_possible
 	OCA.Slack.usePopup = response.data.use_popup
