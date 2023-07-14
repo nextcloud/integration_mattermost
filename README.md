@@ -1,19 +1,28 @@
-# Mattermost integration into Nextcloud
+# Slack integration into Nextcloud
 
-This integration provides a search provider for Mattermost messages, a dashboard widget
-showing your latest @mentions and lets you send files to a Mattermost channel directly in Nextcloud Files.
+This integration is hepful in sending files to your Slack workspace as original
+files, public links to the files or as internal Nextcloud links.
 
 ## 🔧 Configuration
 
 ### User settings
 
 The account configuration happens in the "Connected accounts" user settings section.
-It requires to create a personal access token in your Mattermost settings.
+It requires you to authenticate your Slack account and allow the required permissions
+for the app to work nicely.
 
-A link to the "Connected accounts" user settings section will be displayed in the widget
-for users who didn't configure a Mattermost account.
+A link to the "Connected accounts" user settings section will be displayed in the
+files widget for users who didn't configure a Slack account.
 
 ### Admin settings
 
-There also is a "Connected accounts" **admin** settings section if you want to allow
-your Nextcloud users to use OAuth to authenticate to a specific Mattermost instance.
+There also is a "Connected accounts" **admin** settings section for you to set the OAuth
+authentication keys of your Slack app for all the users to use.
+
+Access token can be optionally set to expire after a given time in the Slack app settings.
+Refreshing of the token takes place automatically.
+
+## 🖼️ Screenshots
+
+![Files plugin](img/screenshot1.png)
+![Sending internal links](img/screenshot2.png)

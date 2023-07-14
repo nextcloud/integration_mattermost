@@ -14,8 +14,8 @@
 	<category>integration</category>
 	<website>https://github.com/nextcloud/integration_slack</website>
 	<bugs>https://github.com/nextcloud/integration_slack/issues</bugs>
-	<!-- TODO: 3 -->
-	<!-- <screenshot>https://raw.githubusercontent.com/nextcloud/integration_mattermost/main/img/screenshot1.jpg</screenshot> -->
+	<screenshot>https://raw.githubusercontent.com/nextcloud/integration_slack/main/img/screenshot1.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/nextcloud/integration_slack/main/img/screenshot2.png</screenshot>
 	<dependencies>
 		<nextcloud min-version="26" max-version="28"/>
 	</dependencies>
