@@ -14,19 +14,20 @@
 namespace OCA\Slack\Controller;
 
 use Exception;
+
 use OC\User\NoUserException;
+use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDisplayResponse;
+use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\Files\NotPermittedException;
 use OCP\IConfig;
 use OCP\IRequest;
-use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Controller;
-
-use OCA\Slack\Service\SlackAPIService;
 use OCP\IURLGenerator;
 use OCP\Lock\LockedException;
+
+use OCA\Slack\Service\SlackAPIService;
 
 class SlackAPIController extends Controller {
 

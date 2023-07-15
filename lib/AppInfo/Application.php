@@ -12,16 +12,15 @@
 namespace OCA\Slack\AppInfo;
 
 use Closure;
+
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
+use OCP\AppFramework\App;
+use OCP\AppFramework\Bootstrap\IBootContext;
+use OCP\AppFramework\Bootstrap\IBootstrap;
+use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IUserSession;
-
-use OCP\AppFramework\App;
-use OCP\AppFramework\Bootstrap\IRegistrationContext;
-use OCP\AppFramework\Bootstrap\IBootContext;
-use OCP\AppFramework\Bootstrap\IBootstrap;
-
 use OCP\Util;
 
 class Application extends App implements IBootstrap {

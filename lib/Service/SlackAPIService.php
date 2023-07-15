@@ -15,12 +15,13 @@ namespace OCA\Slack\Service;
 
 use Datetime;
 use Exception;
+use Throwable;
+
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use OC\Files\Node\File;
 use OC\Files\Node\Folder;
 use OC\User\NoUserException;
-use OCA\Slack\AppInfo\Application;
 use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotPermittedException;
@@ -31,11 +32,12 @@ use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\Lock\LockedException;
 use OCP\PreConditionNotMetException;
+use OCP\Share\IManager as ShareManager;
 use OCP\Security\ICrypto;
 use OCP\Share\IShare;
 use Psr\Log\LoggerInterface;
-use OCP\Share\IManager as ShareManager;
-use Throwable;
+
+use OCA\Slack\AppInfo\Application;
 
 /**
  * Service to make requests to Slack API

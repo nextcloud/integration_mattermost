@@ -14,20 +14,23 @@
 namespace OCA\Slack\Controller;
 
 use DateTime;
-use OCP\AppFramework\Http;
+use Exception;
+
+use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
-use OCP\IURLGenerator;
 use OCP\IConfig;
 use OCP\IL10N;
-use OCP\AppFramework\Http\RedirectResponse;
 use OCP\IRequest;
-use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Controller;
-
-use OCA\Slack\Service\SlackAPIService;
-use OCA\Slack\AppInfo\Application;
+use OCP\IURLGenerator;
 use OCP\PreConditionNotMetException;
+use OCP\Security\ICrypto;
+use Psr\Log\LoggerInterface;
+
+use OCA\Slack\AppInfo\Application;
+use OCA\Slack\Service\SlackAPIService;
 
 class ConfigController extends Controller {
 
