@@ -8,6 +8,7 @@ OC.L10N.register(
     "Set expiration date" : "Establecer fecha de expiración",
     "Comment" : "Comentario",
     "Cancel" : "Cancelar",
+    "View only" : "Solo vista",
     "Edit" : "Editar",
     "Upload files" : "Cargar archivos"
 },
