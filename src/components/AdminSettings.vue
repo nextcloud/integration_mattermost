@@ -5,18 +5,26 @@
 			{{ t('integration_slack', 'Slack integration') }}
 		</h2>
 		<p class="settings-hint">
-			{{ t('integration_slack', 'If you want to allow your Nextcloud users to use OAuth to authenticate to the Slack app, create a Slack application and set the ID and secret here.') }}
+			<span>
+				{{ t('integration_slack', 'To allow your Nextcloud users to use OAuth to authenticate to the Slack app, and set the ID and secret here.') }}
+				{{ " " }}
+				<a href="https://api.slack.com/apps">{{ t('integration_slack', 'Link to create a Slack application') }}</a>
+			</span>
 		</p>
 		<br>
 		<p class="settings-hint">
 			<InformationOutlineIcon :size="24" class="icon" />
-			{{ t('integration_slack', 'Make sure you set the "Redirect URI" to') }}
+			{{ t('integration_slack', 'Make sure you set the "Redirect URI" in the "OAuth & Permissions" section of your Slack app settings to') }}
 		</p>
 		<strong>{{ redirect_uri }}</strong>
 		<br><br>
 		<p class="settings-hint">
-			{{ t('integration_slack', 'Put the "Client ID" and "Client secret" below. Your Nextcloud users will then see a "Connect to Slack" button in their personal settings if they select the Slack instance defined here.') }}
+			{{ t('integration_slack', 'Put the "Client ID" and "Client secret" below. Your Nextcloud users will then see a "Connect to Slack" button in their personal settings.') }}
 		</p>
+		<p class="settings-hint">
+			{{ t('integration_slack', 'In the same "OAuth & Permissions" section, token rotation can be enabled. If enabled, your access token would be regularly refreshed with a refresh token. This is handled automatically.') }}
+		</p>
+		<br>
 		<div id="slack-content">
 			<div class="line">
 				<label for="slack-client-id">
@@ -153,6 +161,10 @@ export default {
 		> input {
 			width: 300px;
 		}
+	}
+
+	a {
+		color: #006196;
 	}
 }
 </style>
