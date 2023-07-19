@@ -1,6 +1,10 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Error during OAuth exchanges" : "Error durante los intercambios de OAuth",
+    "Bad credentials" : "Credenciales incorrectas",
+    "Bad HTTP method" : "Método HTTP incorrecto",
+    "OAuth access token refused" : "Se rechazó el token de acceso de OAuth",
     "Login" : "Iniciar sesión",
     "Password" : "Contraseña",
     "Files" : "Archivos",
