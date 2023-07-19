@@ -79,7 +79,6 @@ export default {
 		return {
 			state: loadState('integration_slack', 'user-config'),
 			loading: false,
-			redirect_uri: window.location.protocol + '//' + window.location.host + generateUrl('/apps/integration_slack/oauth-redirect'),
 		}
 	},
 

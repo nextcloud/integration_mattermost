@@ -20,18 +20,15 @@ export function delay(callback, ms) {
 }
 
 export function oauthConnect(clientId, oauthOrigin, usePopup = false) {
-	const redirectUri = window.location.protocol + '//' + window.location.host + generateUrl('/apps/integration_slack/oauth-redirect')
 	const oauthState = Math.random().toString(36).substring(3)
 	const requestUrl = SLACK_OAUTH_URL
 		+ '?client_id=' + encodeURIComponent(clientId)
-		+ '&redirect_uri=' + encodeURIComponent(redirectUri)
 		+ '&state=' + encodeURIComponent(oauthState)
 		+ '&user_scope=' + encodeURIComponent('channels:read,groups:read,im:read,mpim:read,users:read,chat:write,files:write')
 
 	const req = {
 		values: {
 			oauth_state: oauthState,
-			redirect_uri: redirectUri,
 			oauth_origin: usePopup ? undefined : oauthOrigin,
 		},
 	}

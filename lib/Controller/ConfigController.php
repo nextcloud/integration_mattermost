@@ -193,12 +193,10 @@ class ConfigController extends Controller {
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_state');
 
 		if ($clientID && $clientSecret && $configState !== '' && $configState === $state) {
-			$redirect_uri = $this->config->getUserValue($this->userId, Application::APP_ID, 'redirect_uri', '');
 			$result = $this->slackAPIService->requestOAuthAccessToken(Application::SLACK_OAUTH_ACCESS_URL, [
 				'client_id' => $clientID,
 				'client_secret' => $clientSecret,
 				'code' => $code,
-				'redirect_uri' => $redirect_uri,
 				'grant_type' => 'authorization_code'
 			], 'POST');
 
