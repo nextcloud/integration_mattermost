@@ -4,7 +4,7 @@
 			<SlackIcon class="icon" />
 			{{ t('integration_slack', 'Slack integration') }}
 		</h2>
-		<p v-if="state.client_id === ''" class="settings-hint">
+		<p v-if="state.client_id === '' || state.client_secret === ''" class="settings-hint">
 			{{ t('integration_slack', 'The admin must fill in client ID and client secret for you to continue from here') }}
 		</p>
 		<br>
@@ -12,7 +12,7 @@
 			<div id="slack-connect-block">
 				<NcButton v-if="!connected"
 					id="slack-connect"
-					:disabled="loading === true || state.client_id === ''"
+					:disabled="loading === true || state.client_id === '' || state.client_secret === ''"
 					:class="{ loading }"
 					@click="connectWithOauth">
 					<template #icon>
