@@ -331,15 +331,19 @@ class SlackAPIService {
 			$file = $files[0];
 
 			// TODO:
-			$sendResult = $this->request($userId, 'files.upload', [
+			$params = [
 				'channels' => $channelId,
 				'filename' => $file->getName(),
 				'filetype' => 'auto',
 				// 'file' => $file->fopen('r'),
 				'content' => $file->getContent(),
-				...($comment !== '' ? ['initial_comment' => $comment] : []),
 			// ], 'POST', true, 'multipart/form-data');
-			], 'POST');
+			];
+			if ($comment !== '') {
+				$params['initial_comment'] = $comment;
+			}
+
+			$sendResult = $this->request($userId, 'files.upload', $params, 'POST');
 
 			if (isset($sendResult['error'])) {
 				return $sendResult;
