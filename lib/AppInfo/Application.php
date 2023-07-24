@@ -16,7 +16,6 @@ use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\Collaboration\Resources\LoadAdditionalScriptsEvent;
-use OCP\IRequest;
 
 use OCA\Slack\Listener\FilesMenuListener;
 
@@ -31,10 +30,6 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function register(IRegistrationContext $context): void {
-		if (strpos(\OC::$server->get(IRequest::class)->getRequestUri(), '/apps/files') === false) {
-			return;
-		}
-
 		$context->registerEventListener(LoadAdditionalScriptsEvent::class, FilesMenuListener::class);
 	}
 
