@@ -28,7 +28,7 @@ OC.L10N.register(
     "Use a popup to authenticate" : "Use unha xanela emerxente para autenticarse",
     "Mattermost admin options saved" : "Gardáronse as opcións de administración de Mattermost",
     "Failed to save Mattermost admin options" : "Produciuse un fallo ao gardar as opcións de administración de Mattermost",
-    "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Se te permiso, pode crear un testemuño de acceso persoal no seu perfil de Mattermost → Seguridade → Fichas de acceso persoal.",
+    "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Se ten permiso, pode crear un testemuño de acceso persoal no seu perfil de Mattermost → Seguridade → Fichas de acceso persoal.",
     "You can connect with a personal token OR just with your login/password." : "Pode conectarse cun testemuño persoal OU só co seu nome de usuario/contrasinal.",
     "Mattermost instance address" : "Enderezo da instancia de Mattermost",
     "Personal access token" : "Testemuño de acceso persoal",
