@@ -328,14 +328,11 @@ class SlackAPIService {
 		if (count($files) > 0 && $files[0] instanceof File) {
 			$file = $files[0];
 
-			// TODO:
 			$params = [
 				'channels' => $channelId,
 				'filename' => $file->getName(),
 				'filetype' => 'auto',
-				// 'file' => $file->fopen('r'),
 				'content' => $file->getContent(),
-			// ], 'POST', true, 'multipart/form-data');
 			];
 			if ($comment !== '') {
 				$params['initial_comment'] = $comment;

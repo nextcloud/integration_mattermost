@@ -53,7 +53,7 @@ class NetworkService {
     * @throws PreConditionNotMetException
     */
   public function request(string $userId, string $endPoint, array $params = [], string $method = 'GET',
-              bool $jsonResponse = true, string $contentType = 'application/x-www-form-urlencoded') {
+              bool $jsonResponse = true) {
     $accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
 
     try {
@@ -61,7 +61,7 @@ class NetworkService {
       $options = [
         'headers' => [
           'Authorization'  => 'Bearer ' . $accessToken,
-          'Content-Type' => $contentType,
+          'Content-Type' => 'application/x-www-form-urlencoded; charset=utf-8',
           'User-Agent'  => Application::INTEGRATION_USER_AGENT,
         ],
       ];
@@ -81,22 +81,10 @@ class NetworkService {
           $paramsContent .= http_build_query($params);
 
           $url .= '?' . $paramsContent;
-        } else if ($contentType === 'multipart/form-data') {
-          // TODO:
-          $options['multipart'] = [];
-          foreach ($params as $key => $value) {
-            $options['multipart'][] = [
-              'name' => $key,
-              'contents' => $value,
-            ];
-          }
         } else {
           $options['body'] = $params;
         }
       }
-
-      // TODO:
-      // $this->logger->warning('options', $options);
 
       if ($method === 'GET') {
         $response = $this->client->get($url, $options);
