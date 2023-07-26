@@ -62,7 +62,7 @@ OC.L10N.register(
     "Failed to save Mattermost options" : "Produciuse un fallo ao gardar as opcións de Mattermost.",
     "Files" : "Ficheiros",
     "Channel" : "Canle",
-    "Choose a channel" : "Escolla unha canle",
+    "Choose a channel" : "Escoller unha canle",
     "Type" : "Tipo",
     "Set expiration date" : "Estabelecer a data de caducidade",
     "Expires on" : "Caduca o",
