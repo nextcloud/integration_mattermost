@@ -60,36 +60,6 @@ class SlackAPIService {
 
 	/**
 	 * @param string $userId
-	 * @param string $url
-	 * @return mixed
-	 */
-	private function downloadAvatar(string $userId, string $url)  {
-		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
-		$options = [
-			'Authorization'  => 'Bearer ' . $accessToken,
-			'Content-Type' => 'application/x-www-form-urlencoded',
-			'User-Agent'  => Application::INTEGRATION_USER_AGENT,
-		];
-
-		try {
-			$response = $this->client->get($url, $options);
-			$body = $response->getBody();
-			$respCode = $response->getStatusCode();
-
-			if ($respCode >= 400) {
-				$this->logger->error('Error while downloading avatar: ' . $respCode . ' ' . $body);
-				return null;
-			}
-
-			return $body;
-		} catch (Exception $e) {
-			$this->logger->error('Error while downloading avatar: ' . $e->getMessage());
-			return null;
-		}
-	}
-
-	/**
-	 * @param string $userId
 	 * @param string $slackUserId
 	 * @return array
 	 * @throws PreConditionNotMetException
@@ -98,7 +68,8 @@ class SlackAPIService {
 		$userInfo = $this->request($userId, 'users.info', ['user' => $slackUserId]);
 
 		if (isset($userInfo['user'], $userInfo['user']['profile'], $userInfo['user']['profile']['image_48'])) {
-			$image = $this->downloadAvatar($userId, $userInfo['user']['profile']['image_48']);
+			$image = $this->request($userId, $userInfo['user']['profile']['image_48'], [], 'GET', false);
+			$this->logger->error('Image', ['image' => $image]);
 			if (!is_array($image)) {
 				return ['avatarContent' => $image];
 			}
@@ -133,7 +104,6 @@ class SlackAPIService {
 	 * @throws PreConditionNotMetException
 	 */
 	public function getMyChannels(string $userId): array {
-		$slackUserId = $this->config->getUserValue($userId, Application::APP_ID, 'user_id');
 		$channelResult = $this->request($userId, 'conversations.list', [
 			'exclude_archived' => true,
 			'types' => 'public_channel,private_channel,im,mpim'
@@ -188,13 +158,10 @@ class SlackAPIService {
 			} else if (isset($channel['user'], $channel['is_im']) && $channel['is_im']) {
 				// need to make another request to get the real name
 				$realName = $this->getUserRealName($userId, $channel['user']);
-				if (is_null($realName)) {
-					continue;
-				}
 
 				$channels[] = [
 					'id' => $channel['user'],
-					'name' => $realName,
+					'name' => $realName ?? $channel['user'],
 					'type' => 'direct',
 					'updated' => $channel['updated'] ?? 0,
 				];
@@ -361,9 +328,9 @@ class SlackAPIService {
     * @throws PreConditionNotMetException
     */
   public function request(string $userId, string $endPoint, array $params = [], string $method = 'GET',
-              bool $jsonResponse = true, string $contentType = 'application/x-www-form-urlencoded') {
+              bool $jsonResponse = true) {
     $this->checkTokenExpiration($userId);
-		return $this->networkService->request($userId, $endPoint, $params, $method, $jsonResponse, $contentType);
+		return $this->networkService->request($userId, $endPoint, $params, $method, $jsonResponse);
 	}
 
 	/**
