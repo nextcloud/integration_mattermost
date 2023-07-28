@@ -17,9 +17,6 @@ use Test\TestCase;
 use OCA\Slack\AppInfo\Application;
 use OCA\Slack\Service\NetworkService;
 use OCA\Slack\Service\SlackAPIService;
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
-
-use function PHPUnit\Framework\equalTo;
 
 class SlackAPIServiceTest extends TestCase {
 	private LoggerInterface $logger;
