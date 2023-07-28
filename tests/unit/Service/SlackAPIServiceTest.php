@@ -41,8 +41,6 @@ class SlackAPIServiceTest extends TestCase {
 	}
 
 	private function setupDummies(): void {
-		/* TODO: do we need the original functionality of these dummies? */
-
 		$this->logger = $this->createMock(LoggerInterface::class);
 		$this->l10n = $this->createMock(L10N::class);
 		$this->config = $this->createMock(IConfig::class);
