@@ -1,4 +1,32 @@
 { "translations": {
-    "_Send file_::_Send files_" : ["Dosya gönder","Dosyaları gönder"]
+    "Error getting OAuth access token. " : "OAuth erişim kodu alınırken sorun çıktı.",
+    "Error during OAuth exchanges" : "OAuth alış verişinde sorun çıktı",
+    "Bad HTTP method" : "HTTP yöntemi hatalı",
+    "Bad credentials" : "Kimlik doğrulama bilgileri hatalı",
+    "OAuth access token refused" : "OAuth erişim kodu reddedildi",
+    "Connected accounts" : "Bağlı hesaplar",
+    "Client ID" : "İstemci kimliği",
+    "Application secret" : "Uygulama parolası",
+    "Use a popup to authenticate" : "Kimlik doğrulaması için açılan pencere kullanılsın",
+    "Invalid access token" : "Erişim kodu geçersiz",
+    "Files" : "Dosyalar",
+    "Channel" : "Kanal",
+    "Choose a channel" : "Bir kanal seçin",
+    "Type" : "Tür",
+    "Expires on" : "Geçerlilik sonu",
+    "Set link password" : "Bağlantı parolasını ayarla",
+    "Comment" : "Yorum",
+    "Directories will be skipped, they can only be sent as links." : "Klasörler atlanacak. Klasörler yalnızca bağlantılar olarak gönderilebilir.",
+    "Cancel" : "İptal",
+    "password" : "parola",
+    "Message to send with the files" : "Dosyalar ile gönderilecek ileti",
+    "Edit" : "Düzenle",
+    "_Send file_::_Send files_" : ["Dosya gönder","Dosyaları gönder"],
+    "_Send link_::_Send links_" : ["Bağlantı gönder","Bağlantıları gönder"],
+    "Do you want to go to your \"Connect accounts\" personal settings?" : "Kişisel ayarlarınızdaki \"Hesapları ilişkilendir\" bölümüne gitmek ister misiniz?",
+    "Go to settings" : "Ayarlara git",
+    "Upload files" : "Dosyaları yükle",
+    "Public links" : "Herkese açık bağlantılar",
+    "Internal links (Only works for users with access to the files)" : "İç bağlantılar (yalnızca bu dosyalara erişebilen kullanıcılar için geçerlidir)"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

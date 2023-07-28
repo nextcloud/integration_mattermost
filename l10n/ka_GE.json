@@ -1,0 +1,8 @@
+{ "translations": {
+    "Client ID" : "კლიენტის ID",
+    "Set expiration date" : "მიუთითეთ ვადის გასვლის დრო",
+    "Comment" : "კომენტარი",
+    "Cancel" : "გაუქმება",
+    "Edit" : "შეცვლა"
+},"pluralForm" :"nplurals=2; plural=(n!=1);"
+}
