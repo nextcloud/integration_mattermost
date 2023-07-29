@@ -10,6 +10,7 @@ OC.L10N.register(
     "Client ID" : "ID Client",
     "Application secret" : "Secret Application",
     "Use a popup to authenticate" : "Utiliser un pop-up pour s'authentifier",
+    "Connected as" : "Connecté en tant que",
     "Invalid access token" : "Jeton d'accès invalide",
     "Files" : "Fichiers",
     "Channel" : "Canal",

@@ -1,8 +1,26 @@
 { "translations": {
+    "Client ID" : "Хэрэглэгчийн ID",
     "Files" : "Файлууд",
+    "Channel" : "Суваг",
+    "Choose a channel" : "Суваг сонгох",
+    "Type" : "Төрөл",
     "Set expiration date" : "Дуусах хугацааг тохируулах",
-    "Comment" : "undefined",
-    "Cancel" : "Болиулах",
-    "Edit" : "засварлах"
+    "Expires on" : "Дуусах хугацаа",
+    "Set link password" : "Холбоосын нууц үг тохируулах",
+    "Comment" : "Сэтгэгдэл",
+    "Cancel" : "Цуцлах",
+    "password" : "нууц үг",
+    "View only" : "Зөвхөн үзэх",
+    "Edit" : "Өөрчлөх",
+    "_Send file to Slack_::_Send files to Slack_" : ["Слакд файл илгээх","Слакд файл илгээх"],
+    "_Send link to Slack_::_Send links to Slack_" : ["Слакд холбоос илгээх","Слакд холбоос илгээх"],
+    "_Send file_::_Send files_" : ["Файл илгээх","Файл илгээх"],
+    "_Send link_::_Send links_" : ["Холбоос илгээх","Холбоос илгээх"],
+    "Send files to Slack" : "Слакд файл илгээх",
+    "Send to Slack" : "Слакд илгээх",
+    "Sign in with Slack" : "Слакаар нэвтрэх",
+    "Go to settings" : "Тохиргоонд очих",
+    "Upload files" : "Файл оруулах",
+    "Public links" : "Нээлттэй холбоос"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
