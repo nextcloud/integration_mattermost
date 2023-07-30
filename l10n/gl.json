@@ -59,7 +59,7 @@
     "Failed to send links to Slack" : "Produciuse un fallo ao enviar as ligazóns a Slack",
     "_Failed to send the internal link to {channelName}_::_Failed to send internal links to {channelName}_" : ["Produciuse un fallo ao enviar a ligazón interna a {channelName}","Produciuse un fallo ao enviar as ligazóns internas a {channelName}"],
     "_{fileName} was successfully sent to {channelName}_::_All of the {number} files were sent to {channelName}_" : ["{fileName} foi enviado correctamente a {channelName}","Enviáronse todos os ficheiros ({number}) a {channelName}"],
-    "Sign in with Slack" : "Acceda con Slack",
+    "Sign in with Slack" : "Acceder con Slack",
     "Failed to open Slack OAuth popup window, please allow popups" : "Produciuse un fallo ao abrir a xanela emerxente de Slack OAuth. Permita as xanelas emerxentes",
     "Failed to save Slack OAuth state" : "Produciuse un fallo ao gardar o estado do OAuth de Slack",
     "You need to connect a Slack app before using the Slack integration." : "Debe conectarse a un servidor de Slack antes de utilizar a integración de Slack.",
