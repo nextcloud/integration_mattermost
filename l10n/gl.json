@@ -93,7 +93,7 @@
     "Nothing" : "Nada",
     "_{fileName} was sent to {channelName}_::_{count} files were sent to {channelName}_" : ["{fileName} foi enviado a {channelName}","Enviáronse {count} ficheiros a {channelName}"],
     "Failed to send files to Mattermost" : "Produciuse un fallo ao enviar os ficheiros a Mattermost",
-    "Sign in with Mattermost" : "Autenticarse con Mattermost",
+    "Sign in with Mattermost" : "Acceder con Mattermost",
     "Failed to save Mattermost OAuth state" : "Produciuse un fallo ao gardar o estado do OAuth de Mattermost",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "Debe conectarse a un servidor de Mattermost antes de utilizar a integración de Mattermost.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Quere ir ao seu axuste persoal de «Conectar contas»?",
