@@ -25,10 +25,13 @@ OC.L10N.register(
     "Message to send with the files" : "Fitxategiekin batera bidaltzeko mezua",
     "View only" : "Ikustea soilik",
     "Edit" : "Aldatu",
+    "_Send file to Slack_::_Send files to Slack_" : ["Bidali fitxategia Slack-era","Bidali fitxategiak Slack-era"],
     "_Send file_::_Send files_" : ["Bidali fitxategia","Bidali fitxategiak"],
     "_Send link_::_Send links_" : ["Bidali esteka","Bidali estekak"],
+    "Send files to Slack" : "Bidali fitxategiak Slack-era",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Ezarpen pertsolaletako \"Konektatutako kontuak\" atalera joan nahi duzu?",
     "Go to settings" : "Joan ezarpenetara",
+    "Upload files" : "Kargatu fitxategiak",
     "Public links" : "Esteka publikoak",
     "Internal links (Only works for users with access to the files)" : "Barruko estekak (fitxategiak atzitzeko baimena daukaten erabiltzaileei bakarrik balio diete)"
 },
