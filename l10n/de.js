@@ -14,7 +14,7 @@ OC.L10N.register(
     "Files" : "Dateien",
     "Channel" : "Kanal",
     "Choose a channel" : "Kanal wählen",
-    "Type" : "Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).",
+    "Type" : "Typ",
     "Set expiration date" : "Ablaufdatum setzen",
     "Expires on" : "Läuft ab am",
     "Set link password" : "Link-Passwort festlegen",
