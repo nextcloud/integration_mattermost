@@ -64,7 +64,7 @@ OC.L10N.register(
     "Channel" : "Canle",
     "Choose a channel" : "Escoller unha canle",
     "Type" : "Tipo",
-    "Set expiration date" : "Estabelecer a data de caducidade",
+    "Set expiration date" : "Definir a data de caducidade",
     "Expires on" : "Caduca o",
     "Set link password" : "Estabeleza o contrasinal da ligazón",
     "Comment" : "Comentario",
