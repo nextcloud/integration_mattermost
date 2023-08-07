@@ -91,7 +91,7 @@ export default {
 			state: loadState('integration_slack', 'admin-config'),
 			// to prevent some browsers to fill fields with remembered passwords
 			readonly: true,
-			redirect_uri: window.location.protocol + '//' + window.location.host + generateUrl('/apps/integration_slack/oauth-redirect'),
+			redirect_uri: window.location.protocol + '//' + window.location.host + generateURL('/apps/integration_slack/oauth-redirect'),
 		}
 	},
 
