@@ -137,7 +137,7 @@ class ConfigController extends Controller {
 				}
 			} catch (Exception $e) {
 				$this->config->setAppValue(Application::APP_ID, 'client_secret', '');
-			// logger takes care not to leak the secret
+				// logger takes care not to leak the secret
 				$this->logger->error('Could not encrypt client secret', ['exception' => $e]);
 				return new DataResponse(['message' => $this->l->t('Could not encrypt client secret')]);
 			}
