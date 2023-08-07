@@ -14,9 +14,9 @@ module.exports = {
 		'vue/first-attribute-linebreak': 'off',
 		'import/extensions': 'off',
 		'n/no-unpublished-import': ['error', {
-			convertPath: {
-				'src/**/*.vue': ['^src/(.+?)\\.vue$', 'js/$1.js'],
-			},
+			allowModules: [],
+			convertPath: null,
+			tryExtensions: ['js'],
 		}],
 	},
 }
