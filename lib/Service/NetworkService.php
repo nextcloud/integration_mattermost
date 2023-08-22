@@ -48,16 +48,16 @@ class NetworkService {
     * @param array $params
     * @param string $method
     * @param bool $jsonResponse
-    * @param string $contentType
+    * @param bool $slackApiRequest
     * @return array|mixed|resource|string|string[]
     * @throws PreConditionNotMetException
     */
   public function request(string $userId, string $endPoint, array $params = [], string $method = 'GET',
-              bool $jsonResponse = true) {
+              bool $jsonResponse = true, bool $slackApiRequest = true) {
     $accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
 
     try {
-      $url = Application::SLACK_API_URL . $endPoint;
+      $url = ($slackApiRequest ? Application::SLACK_API_URL : '') . $endPoint;
       $options = [
         'headers' => [
           'Authorization'  => 'Bearer ' . $accessToken,

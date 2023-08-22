@@ -68,13 +68,27 @@ class SlackAPIService {
 		$userInfo = $this->request($userId, 'users.info', ['user' => $slackUserId]);
 
 		if (isset($userInfo['user'], $userInfo['user']['profile'], $userInfo['user']['profile']['image_48'])) {
-			$image = $this->request($userId, $userInfo['user']['profile']['image_48'], [], 'GET', false);
-			$this->logger->error('Image', ['image' => $image]);
+			// due to some Slack API changes, we now have to sanitize the image url
+			//   for some of them
+			$parsedUrlObj = parse_url($userInfo['user']['profile']['image_48']);
+
+			if (isset($parsedUrlObj['query'])) {
+				parse_str($parsedUrlObj['query'], $params);
+				if (!isset($params['d'])) {
+					goto fallback;
+				}
+
+				$image = $this->request($userId, $params['d'], [], 'GET', false, false);
+			} else {
+				$image = $this->request($userId, $userInfo['user']['profile']['image_48'], [], 'GET', false, false);
+			}
+
 			if (!is_array($image)) {
 				return ['avatarContent' => $image];
 			}
 		}
 
+fallback:
 		if (isset($userInfo['user'], $userInfo['user']['real_name'])) {
 			return ['displayName' => $userInfo['user']['real_name']];
 		}
@@ -323,14 +337,14 @@ class SlackAPIService {
     * @param array $params
     * @param string $method
     * @param bool $jsonResponse
-    * @param string $contentType
+    * @param bool $slackApiRequest
     * @return array|mixed|resource|string|string[]
     * @throws PreConditionNotMetException
     */
   public function request(string $userId, string $endPoint, array $params = [], string $method = 'GET',
-              bool $jsonResponse = true) {
+              bool $jsonResponse = true, bool $slackApiRequest = true) {
     $this->checkTokenExpiration($userId);
-		return $this->networkService->request($userId, $endPoint, $params, $method, $jsonResponse);
+		return $this->networkService->request($userId, $endPoint, $params, $method, $jsonResponse, $slackApiRequest);
 	}
 
 	/**
