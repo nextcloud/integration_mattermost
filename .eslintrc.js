@@ -13,10 +13,5 @@ module.exports = {
 		'jsdoc/tag-lines': 'off',
 		'vue/first-attribute-linebreak': 'off',
 		'import/extensions': 'off',
-		'n/no-unpublished-import': ['error', {
-			allowModules: [],
-			convertPath: null,
-			tryExtensions: ['js'],
-		}],
 	},
 }
