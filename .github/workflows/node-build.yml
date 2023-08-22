@@ -4,11 +4,17 @@ on:
   pull_request:
     paths:
       - src/**
+      - .eslintrc.js
+      - stylelint.config.js
+      - webpack.js
   push:
     branches:
       - main
     paths:
       - src/**
+      - .eslintrc.js
+      - stylelint.config.js
+      - webpack.js
 
 env:
   APP_NAME: integration_slack
