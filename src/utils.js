@@ -21,15 +21,22 @@ export function delay(callback, ms) {
 
 export function oauthConnect(clientId, oauthOrigin, usePopup = false) {
 	const oauthState = Math.random().toString(36).substring(3)
+	const redirectUri
+		= window.location.protocol + '//' + window.location.host
+		+ generateUrl('/apps/integration_slack/oauth-redirect')
+	const userScopes = 'channels:read,groups:read,im:read,mpim:read,users:read,chat:write,files:write'
+
 	const requestUrl = SLACK_OAUTH_URL
 		+ '?client_id=' + encodeURIComponent(clientId)
 		+ '&state=' + encodeURIComponent(oauthState)
-		+ '&user_scope=' + encodeURIComponent('channels:read,groups:read,im:read,mpim:read,users:read,chat:write,files:write')
+		+ '&redirect_uri=' + encodeURIComponent(redirectUri)
+		+ '&user_scope=' + encodeURIComponent(userScopes)
 
 	const req = {
 		values: {
 			oauth_state: oauthState,
 			oauth_origin: usePopup ? undefined : oauthOrigin,
+			redirect_uri: redirectUri,
 		},
 	}
 
@@ -73,7 +80,8 @@ export function oauthConnectConfirmDialog() {
 		OC.dialogs.message(
 			t('integration_slack', 'You need to connect before using the Slack integration.')
 			+ '<br><br>'
-			+ t('integration_slack', 'You can set Slack API keys in the {settingsHtmlLink} section of your personal settings.',
+			+ t('integration_slack',
+				'You can set Slack API keys in the {settingsHtmlLink} section of your personal settings.',
 				{ settingsHtmlLink },
 				null,
 				{ escape: false }),
