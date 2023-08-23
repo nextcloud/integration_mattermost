@@ -67,6 +67,10 @@ class SlackAPIService {
 	public function getUserAvatar(string $userId, string $slackUserId): array {
 		$userInfo = $this->request($userId, 'users.info', ['user' => $slackUserId]);
 
+		if (isset($userInfo['error'])) {
+			return ['displayName' => 'User'];
+		}
+
 		if (isset($userInfo['user'], $userInfo['user']['profile'], $userInfo['user']['profile']['image_48'])) {
 			// due to some Slack API changes, we now have to sanitize the image url
 			//   for some of them
@@ -75,7 +79,11 @@ class SlackAPIService {
 			if (isset($parsedUrlObj['query'])) {
 				parse_str($parsedUrlObj['query'], $params);
 				if (!isset($params['d'])) {
-					goto fallback;
+					if (isset($userInfo['user'], $userInfo['user']['real_name'])) {
+						return ['displayName' => $userInfo['user']['real_name']];
+					}
+
+					return ['displayName' => 'User'];
 				}
 
 				$image = $this->request($userId, $params['d'], [], 'GET', false, false);
@@ -88,7 +96,6 @@ class SlackAPIService {
 			}
 		}
 
-fallback:
 		if (isset($userInfo['user'], $userInfo['user']['real_name'])) {
 			return ['displayName' => $userInfo['user']['real_name']];
 		}
