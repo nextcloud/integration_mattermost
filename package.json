@@ -1,6 +1,6 @@
 {
 	"name": "integration_slack",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Slack integration",
 	"scripts": {
 		"build": "NODE_ENV=production webpack --progress --config webpack.js",

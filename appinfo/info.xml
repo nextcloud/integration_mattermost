@@ -4,7 +4,7 @@
 	<name>Slack Integration</name>
 	<summary>Integration of Slack</summary>
 	<description><![CDATA[Slack integration lets you send files to Slack from Nextcloud Files.]]></description>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<licence>agpl</licence>
 	<author>Anupam Kumar</author>
 	<namespace>Slack</namespace>
