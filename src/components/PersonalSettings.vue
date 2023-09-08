@@ -117,9 +117,12 @@
 					<InformationOutlineIcon :size="24" class="icon" />
 					{{ t('integration_mattermost', 'If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks.') }}
 					{{ t('integration_mattermost', 'This section does not require to be connected to Mattermost from Nextcloud.') }}
+					<br>
+					{{ t('integration_mattermost', 'NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end.') }}
 				</p>
 				<NcCheckboxRadioSwitch
 					:checked.sync="state.webhooks_enabled"
+					disabled
 					@update:checked="onCheckboxChanged($event, 'webhooks_enabled')">
 					{{ t('integration_mattermost', 'Enable webhooks') }}
 				</NcCheckboxRadioSwitch>
@@ -280,7 +283,8 @@ export default {
 			this.saveOptions({ token: '' })
 		},
 		onCheckboxChanged(newValue, key) {
-			this.saveOptions({ [key]: newValue ? '1' : '0' })
+			// disabled webhooks option indefinitely until Mattermost implements it
+			// this.saveOptions({ [key]: newValue ? '1' : '0' })
 		},
 		onSearchChange(newValue) {
 			this.saveOptions({ search_messages_enabled: newValue ? '1' : '0' })
