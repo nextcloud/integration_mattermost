@@ -6,6 +6,7 @@ OC.L10N.register(
     "Type" : "Escribir",
     "Set expiration date" : "Establecer fecha de caducidad",
     "Comment" : "Comentario",
+    "View only" : "Solo ver",
     "Edit" : "Editar",
     "Upload files" : "Subiendo archivos"
 },
