@@ -9,6 +9,7 @@ OC.L10N.register(
     "Connected accounts" : "Подключённые учётные записи",
     "Client ID" : "ID клиента",
     "Application secret" : "Секрет приложения",
+    "Use a popup to authenticate" : "Используйте всплывающее окно для аутентификации",
     "Invalid access token" : "Неверный маркер доступа",
     "Files" : "Файлы",
     "Channel" : "Канал",
