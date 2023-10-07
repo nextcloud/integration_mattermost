@@ -31,7 +31,7 @@ OC.L10N.register(
     "Send files to Slack" : "Bidali fitxategiak Slack-era",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Ezarpen pertsolaletako \"Konektatutako kontuak\" atalera joan nahi duzu?",
     "Go to settings" : "Joan ezarpenetara",
-    "Upload files" : "Kargatu fitxategiak",
+    "Upload files" : "Igo fitxategiak",
     "Public links" : "Esteka publikoak",
     "Internal links (Only works for users with access to the files)" : "Barruko estekak (fitxategiak atzitzeko baimena daukaten erabiltzaileei bakarrik balio diete)"
 },
