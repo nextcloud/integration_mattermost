@@ -6,6 +6,7 @@ OC.L10N.register(
     "Files" : "Ffeiliau",
     "Type" : "Math",
     "Set expiration date" : "Gosod dyddiad dod i ben",
+    "Comment" : "Sylw",
     "Cancel" : "Diddymu",
     "Edit" : "Golygu"
 },
