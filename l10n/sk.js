@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Invalid client secret" : "Neplatný tajný kľúč klienta",
     "Error getting OAuth access token. " : "Chyba pri získavaní prístupového tokenu OAuth.",
     "Error during OAuth exchanges" : "Chyba počas výmeny OAuth",
     "Bad HTTP method" : "Zlá metóda HTTP",
