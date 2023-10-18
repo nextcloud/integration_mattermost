@@ -1,12 +1,16 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Invalid client secret" : "Hibás kliens titok",
     "Error getting OAuth access token. " : "Hiba történt az OAuth hozzáférési token lekérése során. ",
     "Error during OAuth exchanges" : "Hiba történt az OAuth üzenetváltás során",
     "Bad HTTP method" : "Hibás HTTP metódus",
     "Bad credentials" : "Hibás hitelesítő adatok",
     "OAuth access token refused" : "Az OAuth hozzáférési token elutasítva",
     "Connected accounts" : "Kapcsolt fiókok",
+    "Slack Integration" : "Slack Integráció",
+    "Integration of Slack" : "Slack integráció",
+    "Slack integration" : "Slack integráció",
     "Client ID" : "Kliensazonosító",
     "ID of your Slack application" : "Slack alkalmazás ID-je",
     "Application secret" : "Alkalmazás titka",
