@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Could not encrypt client secret" : "Nem sikerült lekódolni a titkot",
     "Invalid client secret" : "Hibás kliens titok",
     "Error getting OAuth access token. " : "Hiba történt az OAuth hozzáférési token lekérése során. ",
     "Error during OAuth exchanges" : "Hiba történt az OAuth üzenetváltás során",
@@ -11,9 +12,11 @@ OC.L10N.register(
     "Slack Integration" : "Slack Integráció",
     "Integration of Slack" : "Slack integráció",
     "Slack integration" : "Slack integráció",
+    "Link to create a Slack application" : "Hivatkozás a Slack alkalmazás létrehozásához",
     "Client ID" : "Kliensazonosító",
     "ID of your Slack application" : "Slack alkalmazás ID-je",
     "Application secret" : "Alkalmazás titka",
+    "Client secret of your Slack application" : "A Slack alkalmazás klienstitka",
     "Use a popup to authenticate" : "Felugró ablak használata a hitelesítéshez",
     "Slack admin options saved" : "Slack rendszergazdai beállítások elmentve",
     "Failed to save Slack admin options" : "Slack rendszergazdai beállítások mentése sikertelen",
@@ -46,6 +49,8 @@ OC.L10N.register(
     "_Send link_::_Send links_" : ["Hivatkozás küldése","Hivatkozások küldése"],
     "Send files to Slack" : "Fájlok küldése Slack-re",
     "Send to Slack" : "Küldés Slack-re",
+    "Failed to send links to Slack" : "A hivatkozások küldése a Slacknek sikertelen",
+    "_Failed to send the internal link to {channelName}_::_Failed to send internal links to {channelName}_" : ["Nem sikerült a belső hivatkozás küldése ide: {channelName}","Nem sikerült a belső hivatkozások küldése ide: {channelName}"],
     "Sign in with Slack" : "Bejelentkezés Slack-el",
     "Failed to open Slack OAuth popup window, please allow popups" : "Nem sikerült a Slack OAuth felugró ablak megnyitása. Engedélyezze a felugró ablakokat.",
     "Failed to save Slack OAuth state" : "Nem sikerült menteni a Slack OAuth állapotot",
