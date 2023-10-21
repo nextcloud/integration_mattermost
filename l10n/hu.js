@@ -11,6 +11,7 @@ OC.L10N.register(
     "Connected accounts" : "Kapcsolt fiókok",
     "Slack Integration" : "Slack Integráció",
     "Integration of Slack" : "Slack integráció",
+    "Slack integration lets you send files to Slack from Nextcloud Files." : "A Slak integráció lehetővé teszi, hogy a Slackre küldjön fájlokat a Nextcloudból.",
     "Slack integration" : "Slack integráció",
     "Link to create a Slack application" : "Hivatkozás a Slack alkalmazás létrehozásához",
     "Client ID" : "Kliensazonosító",
