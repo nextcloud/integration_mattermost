@@ -54,7 +54,7 @@ export function oauthConnect(mattermostUrl, clientId, oauthOrigin, usePopup = fa
 		}).catch((error) => {
 			showError(
 				t('integration_mattermost', 'Failed to save Mattermost OAuth state')
-				+ ': ' + (error.response?.request?.responseText ?? '')
+				+ ': ' + (error.response?.request?.responseText ?? ''),
 			)
 			console.error(error)
 		})
@@ -76,7 +76,7 @@ export function oauthConnectConfirmDialog(mattermostUrl) {
 				'You can choose another Mattermost server in the {settingsHtmlLink} section of your personal settings.',
 				{ settingsHtmlLink },
 				null,
-				{ escape: false }
+				{ escape: false },
 			),
 			t('integration_mattermost', 'Connect to Mattermost'),
 			'none',

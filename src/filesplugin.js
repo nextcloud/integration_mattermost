@@ -174,7 +174,7 @@ function openChannelSelector(files) {
 						oauthConnect(
 							OCA.Mattermost.mattermostUrl,
 							OCA.Mattermost.clientId,
-							'files--' + OCA.Files.App.fileList._currentDirectory + '--' + selectedFilesIds.join(',')
+							'files--' + OCA.Files.App.fileList._currentDirectory + '--' + selectedFilesIds.join(','),
 						)
 					}
 				}
@@ -207,8 +207,8 @@ function sendPublicLinks(channelId, channelName, comment, permission, expiration
 					fileName: OCA.Mattermost.filesToSend[0].name,
 					channelName,
 					number,
-				}
-			)
+				},
+			),
 		)
 		OCA.Mattermost.MattermostSendModalVue.success()
 	}).catch((error) => {
@@ -217,7 +217,7 @@ function sendPublicLinks(channelId, channelName, comment, permission, expiration
 		OCA.Mattermost.filesToSend = []
 		showError(
 			t('integration_mattermost', 'Failed to send links to Mattermost')
-			+ ' ' + error.response?.request?.responseText
+			+ ' ' + error.response?.request?.responseText,
 		)
 	})
 }
@@ -240,8 +240,8 @@ function sendInternalLinks(channelId, channelName, comment) {
 					fileName: OCA.Mattermost.filesToSend[0].name,
 					channelName,
 					number,
-				}
-			)
+				},
+			),
 		)
 		OCA.Mattermost.MattermostSendModalVue.success()
 	}).catch((error) => {
@@ -250,7 +250,7 @@ function sendInternalLinks(channelId, channelName, comment) {
 		OCA.Mattermost.filesToSend = []
 		showError(
 			t('integration_mattermost', 'Failed to send internal links to Mattermost')
-			+ ': ' + error.response?.request?.responseText
+			+ ': ' + error.response?.request?.responseText,
 		)
 	})
 }
@@ -292,7 +292,7 @@ function sendFileLoop(channelId, channelName, comment) {
 		OCA.Mattermost.sentFileNames = []
 		showError(
 			t('integration_mattermost', 'Failed to send {name} to Mattermost', { name: file.name })
-			+ ' ' + error.response?.request?.responseText
+			+ ' ' + error.response?.request?.responseText,
 		)
 	})
 }
@@ -311,8 +311,8 @@ function sendMessageAfterFilesUpload(channelId, channelName, comment) {
 					fileName: lastFileName,
 					channelName,
 					count,
-				}
-			)
+				},
+			),
 		)
 		OCA.Mattermost.MattermostSendModalVue.success()
 	}).catch((error) => {
@@ -320,7 +320,7 @@ function sendMessageAfterFilesUpload(channelId, channelName, comment) {
 		OCA.Mattermost.MattermostSendModalVue.failure()
 		showError(
 			t('integration_mattermost', 'Failed to send files to Mattermost')
-			+ ': ' + error.response?.request?.responseText
+			+ ': ' + error.response?.request?.responseText,
 		)
 	}).then(() => {
 		OCA.Mattermost.filesToSend = []

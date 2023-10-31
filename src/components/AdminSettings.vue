@@ -129,7 +129,7 @@ export default {
 			}).catch((error) => {
 				showError(
 					t('integration_mattermost', 'Failed to save Mattermost admin options')
-					+ ': ' + (error.response?.request?.responseText ?? '')
+					+ ': ' + (error.response?.request?.responseText ?? ''),
 				)
 				console.debug(error)
 			})
