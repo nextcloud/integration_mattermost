@@ -15,6 +15,8 @@ import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { oauthConnect, oauthConnectConfirmDialog, gotoSettingsConfirmDialog, SEND_TYPE } from './utils.js'
+import { registerFileAction, Permission, FileType, FileAction, DefaultType } from '@nextcloud/files'
+import MattermostIcon from '../img/app-dark.svg?raw'
 
 import Vue from 'vue'
 import './bootstrap.js'
@@ -29,19 +31,95 @@ function openChannelSelector(files) {
 	modalVue.showModal()
 }
 
+if (!OCA.Mattermost) {
+	/**
+	 * @namespace
+	 */
+	OCA.Mattermost = {
+		actionIgnoreLists: [
+			'trashbin',
+			// 'files.public',
+		],
+		filesToSend: [],
+	}
+}
+
+const sendMultiAction = new FileAction({
+	id: 'mattermostSendMulti',
+	displayName: () => t('integration_mattermost', 'Send files to Mattermost'),
+	order: -2,
+	enabled(nodes, view) {
+		// we don't want 'files.public' or any other view
+		return view.id === 'files'
+			&& nodes.length > 0
+			&& nodes.every(({ permissions }) => (permissions & Permission.READ) !== 0)
+			// && nodes.every(({ type }) => type === FileType.File)
+			// && nodes.every(({ mime }) => mime === 'application/gpx+xml')
+	},
+	iconSvgInline: () => MattermostIcon,
+	async exec() { return null },
+	async execBatch(files, view, dir) {
+		const filesToSend = files.map((f) => {
+			return {
+				id: f.fileid,
+				name: f.basename,
+				type: f.type,
+				size: f.size,
+			}
+		})
+		if (OCA.Mattermost.mattermostConnected) {
+			openChannelSelector(filesToSend)
+		} else if (OCA.Mattermost.oauthPossible) {
+			this.connectToMattermost(filesToSend)
+		} else {
+			gotoSettingsConfirmDialog()
+		}
+		return true
+	},
+})
+registerFileAction(sendMultiAction)
+
+const sendSingleAction = new FileAction({
+	id: 'mattermostSendSingle',
+	displayName: () => t('integration_mattermost', 'Send to Mattermost'),
+	enabled(nodes, view) {
+		return !OCA.Mattermost.actionIgnoreLists.includes(view.id)
+			&& nodes.length > 0
+			&& nodes.every(({ permissions }) => (permissions & Permission.READ) !== 0)
+			// && nodes.every(({ type }) => type === FileType.File)
+			// && nodes.every(({ mime }) => mime === 'application/gpx+xml')
+	},
+	iconSvgInline: () => MattermostIcon,
+	async exec(node, view, dir) {
+		const filesToSend = [
+			{
+				id: node.fileid,
+				name: node.basename,
+				type: node.type,
+				size: node.size,
+			},
+		]
+		if (OCA.Mattermost.mattermostConnected) {
+			openChannelSelector(filesToSend)
+		} else if (OCA.Mattermost.oauthPossible) {
+			this.connectToMattermost(filesToSend)
+		} else {
+			gotoSettingsConfirmDialog()
+		}
+		return true
+	},
+	default: null,
+})
+registerFileAction(sendSingleAction)
+
+/*
 (function() {
 	if (!OCA.Mattermost) {
-		/**
-		 * @namespace
-		 */
 		OCA.Mattermost = {
 			filesToSend: [],
 		}
 	}
 
-	/**
-	 * @namespace
-	 */
 	OCA.Mattermost.FilesPlugin = {
 		ignoreLists: [
 			'trashbin',
@@ -56,56 +134,6 @@ function openChannelSelector(files) {
 
 			if (DEBUG) console.debug('[Mattermost] before checkIfFilesToSend')
 			this.checkIfFilesToSend(fileList)
-
-			fileList.registerMultiSelectFileAction({
-				name: 'mattermostSendMulti',
-				displayName: t('integration_mattermost', 'Send files to Mattermost'),
-				iconClass: 'icon-mattermost',
-				order: -2,
-				action: (selectedFiles) => {
-					const filesToSend = selectedFiles.map((f) => {
-						return {
-							id: f.id,
-							name: f.name,
-							type: f.type,
-							size: f.size,
-						}
-					})
-					if (OCA.Mattermost.mattermostConnected) {
-						openChannelSelector(filesToSend)
-					} else if (OCA.Mattermost.oauthPossible) {
-						this.connectToMattermost(filesToSend)
-					} else {
-						gotoSettingsConfirmDialog()
-					}
-				},
-			})
-
-			fileList.fileActions.registerAction({
-				name: 'mattermostSendSingle',
-				displayName: t('integration_mattermost', 'Send to Mattermost'),
-				iconClass: 'icon-mattermost',
-				mime: 'all',
-				order: -139,
-				permissions: OC.PERMISSION_READ,
-				actionHandler: (fileName, context) => {
-					const filesToSend = [
-						{
-							id: context.fileInfoModel.attributes.id,
-							name: context.fileInfoModel.attributes.name,
-							type: context.fileInfoModel.attributes.type,
-							size: context.fileInfoModel.attributes.size,
-						},
-					]
-					if (OCA.Mattermost.mattermostConnected) {
-						openChannelSelector(filesToSend)
-					} else if (OCA.Mattermost.oauthPossible) {
-						this.connectToMattermost(filesToSend)
-					} else {
-						gotoSettingsConfirmDialog()
-					}
-				},
-			})
 		},
 
 		checkIfFilesToSend(fileList) {
@@ -123,14 +151,12 @@ function openChannelSelector(files) {
 			})
 		},
 
-		/**
-		 * In case we successfully connected with oauth and got redirected back to files
-		 * actually go on with the files that were previously selected
-		 *
-		 * @param {object} fileList the one from attach()
-		 * @param {string} fileIdsStr list of files to send
-		 * @param {string} currentDir path to the current dir
-		 */
+		// In case we successfully connected with oauth and got redirected back to files
+		// actually go on with the files that were previously selected
+		//
+		// @param {object} fileList the one from attach()
+		// @param {string} fileIdsStr list of files to send
+		// @param {string} currentDir path to the current dir
 		sendFileIdsAfterOAuth: (fileList, fileIdsStr, currentDir) => {
 			if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, fileIdsStr, currentDir', fileIdsStr, currentDir)
 			// this is only true after an OAuth connection initated from a file action
@@ -183,6 +209,7 @@ function openChannelSelector(files) {
 	}
 
 })()
+*/
 
 function sendPublicLinks(channelId, channelName, comment, permission, expirationDate, password) {
 	const req = {

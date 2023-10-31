@@ -386,7 +386,7 @@ export default {
 			})
 		},
 		getFilePreviewUrl(fileId, fileType) {
-			if (fileType === 'dir') {
+			if (fileType === 'folder') {
 				return generateUrl('/apps/theming/img/core/filetypes/folder.svg')
 			}
 			return generateUrl('/apps/integration_mattermost/preview?id={fileId}&x=100&y=100', { fileId })

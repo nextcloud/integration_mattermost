@@ -35,4 +35,9 @@ webpackConfig.plugins.push(
 	}),
 )
 
+webpackConfig.module.rules.push({
+	resourceQuery: /raw/,
+	type: 'asset/source',
+})
+
 module.exports = webpackConfig
