@@ -36,7 +36,7 @@ webpackConfig.plugins.push(
 )
 
 webpackConfig.module.rules.push({
-	resourceQuery: /raw/,
+	test: /\.svg$/i,
 	type: 'asset/source',
 })
 

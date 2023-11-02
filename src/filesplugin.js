@@ -20,7 +20,7 @@ import {
 	davGetClient, davGetDefaultPropfind, davResultToNode, davRootPath,
 } from '@nextcloud/files'
 import { subscribe } from '@nextcloud/event-bus'
-import MattermostIcon from '../img/app-dark.svg?raw'
+import MattermostIcon from '../img/app-dark.svg'
 
 import Vue from 'vue'
 import './bootstrap.js'
