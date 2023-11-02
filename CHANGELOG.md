@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.5 – 2023-11-02
+
+### Changed
+
+- replace NcMultiselect by NcSelect in files modal
+- disable webhooks until Mattermost implements it
+- Drop support for NC < 28
+
+### Fixed
+
+- Migrate to file actions for Nextcloud 28
+- fix modal content width
+
 ## 1.0.4 – 2023-05-10
 
 ### Added
