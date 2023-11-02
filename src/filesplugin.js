@@ -25,7 +25,7 @@ import MattermostIcon from '../img/app-dark.svg?raw'
 import Vue from 'vue'
 import './bootstrap.js'
 
-const DEBUG = true
+const DEBUG = false
 
 if (!OCA.Mattermost) {
 	OCA.Mattermost = {
@@ -34,6 +34,7 @@ if (!OCA.Mattermost) {
 			// 'files.public',
 		],
 		filesToSend: [],
+		currentFileList: null,
 	}
 }
 
@@ -122,8 +123,8 @@ function checkIfFilesToSend() {
 	const urlCheckConnection = generateUrl('/apps/integration_mattermost/files-to-send')
 	axios.get(urlCheckConnection)
 		.then((response) => {
-			const fileIdsStr = response.data.file_ids_to_send_after_oauth
-			const currentDir = response.data.current_dir_after_oauth
+			const fileIdsStr = response?.data?.file_ids_to_send_after_oauth
+			const currentDir = response?.data?.current_dir_after_oauth
 			if (fileIdsStr && currentDir) {
 				sendFileIdsAfterOAuth(fileIdsStr, currentDir)
 			} else {
@@ -187,7 +188,7 @@ function connectToMattermost(selectedFiles = []) {
 					})
 			} else {
 				const selectedFilesIds = selectedFiles.map(f => f.id)
-				const currentDirectory = OCA.Mattermost.currentFileList.folder.attributes.filename
+				const currentDirectory = OCA.Mattermost.currentFileList?.folder?.attributes?.filename
 				oauthConnect(
 					OCA.Mattermost.mattermostUrl,
 					OCA.Mattermost.clientId,
