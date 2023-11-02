@@ -15,11 +15,33 @@ import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { oauthConnect, oauthConnectConfirmDialog, gotoSettingsConfirmDialog, SEND_TYPE } from './utils.js'
+import {
+	registerFileAction, Permission, FileAction,
+	davGetClient, davGetDefaultPropfind, davResultToNode, davRootPath,
+} from '@nextcloud/files'
+import { subscribe } from '@nextcloud/event-bus'
+import MattermostIcon from '../img/app-dark.svg'
 
 import Vue from 'vue'
 import './bootstrap.js'
 
 const DEBUG = false
+
+if (!OCA.Mattermost) {
+	OCA.Mattermost = {
+		actionIgnoreLists: [
+			'trashbin',
+			'files.public',
+		],
+		filesToSend: [],
+		currentFileList: null,
+	}
+}
+
+subscribe('files:list:updated', onFilesListUpdated)
+function onFilesListUpdated({ view, folder, contents }) {
+	OCA.Mattermost.currentFileList = { view, folder, contents }
+}
 
 function openChannelSelector(files) {
 	OCA.Mattermost.filesToSend = files
@@ -29,160 +51,129 @@ function openChannelSelector(files) {
 	modalVue.showModal()
 }
 
-(function() {
-	if (!OCA.Mattermost) {
-		/**
-		 * @namespace
-		 */
-		OCA.Mattermost = {
-			filesToSend: [],
+const sendAction = new FileAction({
+	id: 'mattermostSend',
+	displayName: () => t('integration_mattermost', 'Send to Mattermost'),
+	order: -2,
+	enabled(nodes, view) {
+		return !OCA.Mattermost.actionIgnoreLists.includes(view.id)
+			&& nodes.length > 0
+			&& nodes.every(({ permissions }) => (permissions & Permission.READ) !== 0)
+			// && nodes.every(({ type }) => type === FileType.File)
+			// && nodes.every(({ mime }) => mime === 'application/some+type')
+	},
+	iconSvgInline: () => MattermostIcon,
+	async exec(node, view, dir) {
+		sendSelectedNodes([node])
+		return true
+	},
+	async execBatch(nodes, view, dir) {
+		sendSelectedNodes(nodes)
+		return true
+	},
+	default: null,
+})
+registerFileAction(sendAction)
+
+function sendSelectedNodes(nodes) {
+	const formattedNodes = nodes.map((node) => {
+		return {
+			id: node.fileid,
+			name: node.basename,
+			type: node.type,
+			size: node.size,
+		}
+	})
+	if (OCA.Mattermost.mattermostConnected) {
+		openChannelSelector(formattedNodes)
+	} else if (OCA.Mattermost.oauthPossible) {
+		connectToMattermost(formattedNodes)
+	} else {
+		gotoSettingsConfirmDialog()
+	}
+}
+
+function checkIfFilesToSend() {
+	const urlCheckConnection = generateUrl('/apps/integration_mattermost/files-to-send')
+	axios.get(urlCheckConnection)
+		.then((response) => {
+			const fileIdsStr = response?.data?.file_ids_to_send_after_oauth
+			const currentDir = response?.data?.current_dir_after_oauth
+			if (fileIdsStr && currentDir) {
+				sendFileIdsAfterOAuth(fileIdsStr, currentDir)
+			} else {
+				if (DEBUG) console.debug('[Mattermost] nothing to send')
+			}
+		})
+		.catch((error) => {
+			console.error(error)
+		})
+}
+
+/**
+ * In case we successfully connected with oauth and got redirected back to files
+ * actually go on with the files that were previously selected
+ *
+ * @param {string} fileIdsStr list of files to send
+ * @param {string} currentDir path to the current dir
+ */
+async function sendFileIdsAfterOAuth(fileIdsStr, currentDir) {
+	if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, fileIdsStr, currentDir', fileIdsStr, currentDir)
+	// this is only true after an OAuth connection initated from a file action
+	if (fileIdsStr) {
+		// get files info
+		const client = davGetClient()
+		const results = await client.getDirectoryContents(`${davRootPath}${currentDir}`, {
+			details: true,
+			// Query all required properties for a Node
+			data: davGetDefaultPropfind(),
+		})
+		const nodes = results.data.map((r) => davResultToNode(r))
+
+		const fileIds = fileIdsStr.split(',')
+		const files = fileIds.map((fid) => {
+			const f = nodes.find((n) => n.fileid === parseInt(fid))
+			if (f) {
+				return {
+					id: f.fileid,
+					name: f.basename,
+					type: f.type,
+					size: f.size,
+				}
+			}
+			return null
+		}).filter((e) => e !== null)
+		if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, after changeDirectory, files:', files)
+		if (files.length) {
+			if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, after changeDirectory, call openChannelSelector')
+			openChannelSelector(files)
 		}
 	}
+}
 
-	/**
-	 * @namespace
-	 */
-	OCA.Mattermost.FilesPlugin = {
-		ignoreLists: [
-			'trashbin',
-			'files.public',
-		],
-
-		attach(fileList) {
-			if (DEBUG) console.debug('[Mattermost] begin of attach')
-			if (this.ignoreLists.indexOf(fileList.id) >= 0) {
-				return
-			}
-
-			if (DEBUG) console.debug('[Mattermost] before checkIfFilesToSend')
-			this.checkIfFilesToSend(fileList)
-
-			fileList.registerMultiSelectFileAction({
-				name: 'mattermostSendMulti',
-				displayName: t('integration_mattermost', 'Send files to Mattermost'),
-				iconClass: 'icon-mattermost',
-				order: -2,
-				action: (selectedFiles) => {
-					const filesToSend = selectedFiles.map((f) => {
-						return {
-							id: f.id,
-							name: f.name,
-							type: f.type,
-							size: f.size,
-						}
+function connectToMattermost(selectedFiles = []) {
+	oauthConnectConfirmDialog(OCA.Mattermost.mattermostUrl).then((result) => {
+		if (result) {
+			if (OCA.Mattermost.usePopup) {
+				oauthConnect(OCA.Mattermost.mattermostUrl, OCA.Mattermost.clientId, null, true)
+					.then((data) => {
+						OCA.Mattermost.mattermostConnected = true
+						openChannelSelector(selectedFiles)
 					})
-					if (OCA.Mattermost.mattermostConnected) {
-						openChannelSelector(filesToSend)
-					} else if (OCA.Mattermost.oauthPossible) {
-						this.connectToMattermost(filesToSend)
-					} else {
-						gotoSettingsConfirmDialog()
-					}
-				},
-			})
-
-			fileList.fileActions.registerAction({
-				name: 'mattermostSendSingle',
-				displayName: t('integration_mattermost', 'Send to Mattermost'),
-				iconClass: 'icon-mattermost',
-				mime: 'all',
-				order: -139,
-				permissions: OC.PERMISSION_READ,
-				actionHandler: (fileName, context) => {
-					const filesToSend = [
-						{
-							id: context.fileInfoModel.attributes.id,
-							name: context.fileInfoModel.attributes.name,
-							type: context.fileInfoModel.attributes.type,
-							size: context.fileInfoModel.attributes.size,
-						},
-					]
-					if (OCA.Mattermost.mattermostConnected) {
-						openChannelSelector(filesToSend)
-					} else if (OCA.Mattermost.oauthPossible) {
-						this.connectToMattermost(filesToSend)
-					} else {
-						gotoSettingsConfirmDialog()
-					}
-				},
-			})
-		},
-
-		checkIfFilesToSend(fileList) {
-			const urlCheckConnection = generateUrl('/apps/integration_mattermost/files-to-send')
-			axios.get(urlCheckConnection).then((response) => {
-				const fileIdsStr = response.data.file_ids_to_send_after_oauth
-				const currentDir = response.data.current_dir_after_oauth
-				if (fileIdsStr && currentDir) {
-					this.sendFileIdsAfterOAuth(fileList, fileIdsStr, currentDir)
-				} else {
-					if (DEBUG) console.debug('[Mattermost] nothing to send')
-				}
-			}).catch((error) => {
-				console.error(error)
-			})
-		},
-
-		/**
-		 * In case we successfully connected with oauth and got redirected back to files
-		 * actually go on with the files that were previously selected
-		 *
-		 * @param {object} fileList the one from attach()
-		 * @param {string} fileIdsStr list of files to send
-		 * @param {string} currentDir path to the current dir
-		 */
-		sendFileIdsAfterOAuth: (fileList, fileIdsStr, currentDir) => {
-			if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, fileIdsStr, currentDir', fileIdsStr, currentDir)
-			// this is only true after an OAuth connection initated from a file action
-			if (fileIdsStr) {
-				// trick to make sure the file list is loaded (didn't find an event or a good alternative)
-				// force=true to make sure we get a promise
-				fileList.changeDirectory(currentDir, true, true).then(() => {
-					const fileIds = fileIdsStr.split(',')
-					const files = fileIds.map((fid) => {
-						const f = fileList.files.find((e) => e.id === parseInt(fid))
-						if (f) {
-							return {
-								id: f.id,
-								name: f.name,
-								type: f.type,
-								size: f.size,
-							}
-						}
-						return null
-					}).filter((e) => e !== null)
-					if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, after changeDirectory, files:', files)
-					if (files.length) {
-						if (DEBUG) console.debug('[Mattermost] in sendFileIdsAfterOAuth, after changeDirectory, call openChannelSelector')
-						openChannelSelector(files)
-					}
-				})
+			} else {
+				const selectedFilesIds = selectedFiles.map(f => f.id)
+				const currentDirectory = OCA.Mattermost.currentFileList?.folder?.attributes?.filename
+				oauthConnect(
+					OCA.Mattermost.mattermostUrl,
+					OCA.Mattermost.clientId,
+					'files--' + currentDirectory + '--' + selectedFilesIds.join(','),
+				)
 			}
-		},
+		}
+	})
+}
 
-		connectToMattermost: (selectedFiles = []) => {
-			oauthConnectConfirmDialog(OCA.Mattermost.mattermostUrl).then((result) => {
-				if (result) {
-					if (OCA.Mattermost.usePopup) {
-						oauthConnect(OCA.Mattermost.mattermostUrl, OCA.Mattermost.clientId, null, true)
-							.then((data) => {
-								OCA.Mattermost.mattermostConnected = true
-								openChannelSelector(selectedFiles)
-							})
-					} else {
-						const selectedFilesIds = selectedFiles.map(f => f.id)
-						oauthConnect(
-							OCA.Mattermost.mattermostUrl,
-							OCA.Mattermost.clientId,
-							'files--' + OCA.Files.App.fileList._currentDirectory + '--' + selectedFilesIds.join(','),
-						)
-					}
-				}
-			})
-		},
-	}
-
-})()
+// ///////////////// Network
 
 function sendPublicLinks(channelId, channelName, comment, permission, expirationDate, password) {
 	const req = {
@@ -339,6 +330,8 @@ function sendMessage(channelId, message, remoteFileIds = undefined) {
 	return axios.post(url, req)
 }
 
+// ////////////// Main
+
 // send file modal
 const modalId = 'mattermostSendModal'
 const modalElement = document.createElement('div')
@@ -378,6 +371,6 @@ axios.get(urlCheckConnection).then((response) => {
 })
 
 document.addEventListener('DOMContentLoaded', () => {
-	if (DEBUG) console.debug('[Mattermost] before register files plugin')
-	OC.Plugins.register('OCA.Files.FileList', OCA.Mattermost.FilesPlugin)
+	if (DEBUG) console.debug('[Mattermost] before checkIfFilesToSend')
+	checkIfFilesToSend()
 })
