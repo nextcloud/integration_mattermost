@@ -46,6 +46,7 @@ OC.L10N.register(
     "Warning, everything you type in the search bar will be sent to Mattermost." : "警告，您在搜尋列中輸入的所有東西都會傳送到 Mattermost。",
     "If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks." : "若您已在 Mattermost 中設定了 Nextcloud 整合。其將會自動遠端設定那些 webhook。",
     "This section does not require to be connected to Mattermost from Nextcloud." : "此部份不需要從 Nextcloud 連線至 Mattermost。",
+    "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "注意：Webhook 功能已無限期停用，直到 Mattermost 端實作該功能為止。",
     "Enable webhooks" : "啟用 webhook",
     "Calendar event created webhook URL" : "行事曆事件建立了 webhook URL",
     "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",

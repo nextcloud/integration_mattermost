@@ -46,6 +46,7 @@ OC.L10N.register(
     "Warning, everything you type in the search bar will be sent to Mattermost." : "Varování – cokoli zadáte do kolonky vyhledávání bude odesláno do Mattermost.",
     "If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks." : "Pokud jste nastavili napojení Nextcloud na Mattermost, pak tyto webové háčky automaticky nastaví.",
     "This section does not require to be connected to Mattermost from Nextcloud." : "Tato sekce nevyžaduje být připojení z Nextcloud do Mattermost.",
+    "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "POZN.: funkce webových háčků byla trvale vypnuto dokud ji Mattermost neimplementuje ze své strany.",
     "Enable webhooks" : "Zapnout webové háčky",
     "Calendar event created webhook URL" : "Událost v kalendáři vytvořila URL webového háčku",
     "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook",

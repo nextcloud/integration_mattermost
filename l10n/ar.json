@@ -44,6 +44,7 @@
     "Warning, everything you type in the search bar will be sent to Mattermost." : "تحذير، سيتم إرسال كل ما تكتبه في شريط البحث إلى Mattermost.",
     "If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks." : "إذا قمت بتكوين تكامل نكست كلود في Mattermost، فسوف يقوم تلقائيًا بتهيئة خطافات الويب هذه عن بُعد.",
     "This section does not require to be connected to Mattermost from Nextcloud." : "لا يتطلب هذا القسم الاتصال بـ Mattermost لنكست كلود.",
+    "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "ملاحظة: تم تعطيل ميزة Webhooks إلى أجل غير مسمى حتى تقوم Mattermost بتنفيذها من جهتها.",
     "Enable webhooks" : "تمكين خطافات الويب",
     "Calendar event created webhook URL" : "أنشئ حدث التقويم عنوان URL للويب هوك",
     "https://my.mattermost.org/webhook..." : "https: //my.mattermost.org/webhook ...",
