@@ -31,7 +31,7 @@ if (!OCA.Mattermost) {
 	OCA.Mattermost = {
 		actionIgnoreLists: [
 			'trashbin',
-			// 'files.public',
+			'files.public',
 		],
 		filesToSend: [],
 		currentFileList: null,
@@ -51,73 +51,47 @@ function openChannelSelector(files) {
 	modalVue.showModal()
 }
 
-const sendMultiAction = new FileAction({
-	id: 'mattermostSendMulti',
-	displayName: () => t('integration_mattermost', 'Send files to Mattermost'),
-	order: -2,
-	enabled(nodes, view) {
-		// we don't want 'files.public' or any other view
-		return view.id === 'files'
-			&& nodes.length > 0
-			&& nodes.every(({ permissions }) => (permissions & Permission.READ) !== 0)
-			// && nodes.every(({ type }) => type === FileType.File)
-			// && nodes.every(({ mime }) => mime === 'application/gpx+xml')
-	},
-	iconSvgInline: () => MattermostIcon,
-	async exec() { return null },
-	async execBatch(files, view, dir) {
-		const filesToSend = files.map((f) => {
-			return {
-				id: f.fileid,
-				name: f.basename,
-				type: f.type,
-				size: f.size,
-			}
-		})
-		if (OCA.Mattermost.mattermostConnected) {
-			openChannelSelector(filesToSend)
-		} else if (OCA.Mattermost.oauthPossible) {
-			connectToMattermost(filesToSend)
-		} else {
-			gotoSettingsConfirmDialog()
-		}
-		return true
-	},
-})
-registerFileAction(sendMultiAction)
-
-const sendSingleAction = new FileAction({
-	id: 'mattermostSendSingle',
+const sendAction = new FileAction({
+	id: 'mattermostSend',
 	displayName: () => t('integration_mattermost', 'Send to Mattermost'),
+	order: -2,
 	enabled(nodes, view) {
 		return !OCA.Mattermost.actionIgnoreLists.includes(view.id)
 			&& nodes.length > 0
 			&& nodes.every(({ permissions }) => (permissions & Permission.READ) !== 0)
 			// && nodes.every(({ type }) => type === FileType.File)
-			// && nodes.every(({ mime }) => mime === 'application/gpx+xml')
+			// && nodes.every(({ mime }) => mime === 'application/some+type')
 	},
 	iconSvgInline: () => MattermostIcon,
 	async exec(node, view, dir) {
-		const filesToSend = [
-			{
-				id: node.fileid,
-				name: node.basename,
-				type: node.type,
-				size: node.size,
-			},
-		]
-		if (OCA.Mattermost.mattermostConnected) {
-			openChannelSelector(filesToSend)
-		} else if (OCA.Mattermost.oauthPossible) {
-			connectToMattermost(filesToSend)
-		} else {
-			gotoSettingsConfirmDialog()
-		}
+		sendSelectedNodes([node])
+		return true
+	},
+	async execBatch(nodes, view, dir) {
+		sendSelectedNodes(nodes)
 		return true
 	},
 	default: null,
 })
-registerFileAction(sendSingleAction)
+registerFileAction(sendAction)
+
+function sendSelectedNodes(nodes) {
+	const formattedNodes = nodes.map((node) => {
+		return {
+			id: node.fileid,
+			name: node.basename,
+			type: node.type,
+			size: node.size,
+		}
+	})
+	if (OCA.Mattermost.mattermostConnected) {
+		openChannelSelector(formattedNodes)
+	} else if (OCA.Mattermost.oauthPossible) {
+		connectToMattermost(formattedNodes)
+	} else {
+		gotoSettingsConfirmDialog()
+	}
+}
 
 function checkIfFilesToSend() {
 	const urlCheckConnection = generateUrl('/apps/integration_mattermost/files-to-send')
