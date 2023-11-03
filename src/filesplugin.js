@@ -66,13 +66,13 @@ const sendAction = new FileAction({
 			// && nodes.every(({ mime }) => mime === 'application/some+type')
 	},
 	iconSvgInline: () => MattermostIcon,
-	async exec(node, view, dir) {
+	async exec(node) {
 		sendSelectedNodes([node])
 		return null
 	},
-	async execBatch(nodes, view, dir) {
+	async execBatch(nodes) {
 		sendSelectedNodes(nodes)
-		return nodes.map(n => null)
+		return nodes.map(_ => null)
 	},
 })
 registerFileAction(sendAction)
