@@ -80,8 +80,7 @@ class Application extends App implements IBootstrap {
 			$userId = $user->getUID();
 			if ($this->config->getUserValue($userId, self::APP_ID, 'file_action_enabled', '1') === '1') {
 				$eventDispatcher->addListener(LoadAdditionalScriptsEvent::class, function () {
-					Util::addscript(self::APP_ID, self::APP_ID . '-filesplugin', 'files');
-					Util::addStyle(self::APP_ID, self::APP_ID . '-files');
+					Util::addInitScript(self::APP_ID, self::APP_ID . '-filesplugin');
 				});
 			}
 		}

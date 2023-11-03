@@ -53,25 +53,27 @@ function openChannelSelector(files) {
 
 const sendAction = new FileAction({
 	id: 'mattermostSend',
-	displayName: () => t('integration_mattermost', 'Send to Mattermost'),
-	order: -2,
+	displayName: (nodes) => {
+		return nodes.length > 1
+			? t('integration_mattermost', 'Send files to Mattermost')
+			: t('integration_mattermost', 'Send file to Mattermost')
+	},
 	enabled(nodes, view) {
 		return !OCA.Mattermost.actionIgnoreLists.includes(view.id)
 			&& nodes.length > 0
-			&& nodes.every(({ permissions }) => (permissions & Permission.READ) !== 0)
+			&& !nodes.some(({ permissions }) => (permissions & Permission.READ) === 0)
 			// && nodes.every(({ type }) => type === FileType.File)
 			// && nodes.every(({ mime }) => mime === 'application/some+type')
 	},
 	iconSvgInline: () => MattermostIcon,
 	async exec(node, view, dir) {
 		sendSelectedNodes([node])
-		return true
+		return null
 	},
 	async execBatch(nodes, view, dir) {
 		sendSelectedNodes(nodes)
-		return true
+		return nodes.map(n => null)
 	},
-	default: null,
 })
 registerFileAction(sendAction)
 
