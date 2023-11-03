@@ -87,7 +87,6 @@ OC.L10N.register(
     "{name} in @{direct_username} at {date}" : "{name} in @{direct_username} am {date}",
     "{name} in #{channel} at {date}" : "{name} in #{channel} am {date}",
     "Failed to edit Mattermost todo" : "Fehler beim Bearbeiten einer Mattermost-Aufgabe",
-    "Send files to Mattermost" : "Dateien an Mattermost senden",
     "Send to Mattermost" : "An Mattermost senden",
     "_A link to {fileName} was sent to {channelName}_::_{number} links were sent to {channelName}_" : ["{number} Link wurden an {channelName} gesendet","{number} Links wurden an {channelName} gesendet"],
     "Failed to send links to Mattermost" : "Fehler beim Senden von Links an Mattermost",

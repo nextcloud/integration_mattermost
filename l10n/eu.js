@@ -82,7 +82,6 @@ OC.L10N.register(
     "No Mattermost notifications!" : "Ez dago Mattermost jakinarazpenik!",
     "Failed to get Mattermost notifications" : "Ezin izan dira Mattermost jakinarazpenak eskuratu",
     "Failed to edit Mattermost todo" : "Ezin izan dira Mattermosteko egitekoak editatu",
-    "Send files to Mattermost" : "Bidali fitxategiak Mattermost-era",
     "Send to Mattermost" : "Bidali Mattermost-era",
     "_A link to {fileName} was sent to {channelName}_::_{number} links were sent to {channelName}_" : ["{fileName}(e)rako esteka bat bidali da {channelName} kanalera","{number} esteka bidali dira {channelName} kanalera"],
     "Failed to send links to Mattermost" : "Ezin izan dira estekak bidali Mattermostera",

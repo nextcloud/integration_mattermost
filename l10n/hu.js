@@ -86,7 +86,6 @@ OC.L10N.register(
     "{name} in @{direct_username} at {date}" : "{name} itt: @{direct_username}, ekkor: {date}",
     "{name} in #{channel} at {date}" : "{name} itt: #{channel}, ekkor: {date}",
     "Failed to edit Mattermost todo" : "A Mattermost teendő szerkesztése sikertelen",
-    "Send files to Mattermost" : "Fájlok küldése a Mattermostnak",
     "Send to Mattermost" : "Küldés a Mattermostnak",
     "_A link to {fileName} was sent to {channelName}_::_{number} links were sent to {channelName}_" : ["A(z) {fileName} hivatkozása elküldve ide: {channelName}","{number} hivatkozás elküldve ide: {channelName}"],
     "Failed to send links to Mattermost" : "A hivatkozások küldése a Mattermostnak sikertelen",
