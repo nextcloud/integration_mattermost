@@ -87,7 +87,7 @@ OC.L10N.register(
     "{name} in @{direct_username} at {date}" : "{name} у @{direct_username} дана {date}",
     "{name} in #{channel} at {date}" : "{name} у #{channel} дана {date}",
     "Failed to edit Mattermost todo" : "Није успело уређивање Mattermost обавезе",
-    "Send to Mattermost" : "Пошаљи на Mattermost",
+    "Send files to Mattermost" : "Пошаљи фајлове на Mattermost",
     "_A link to {fileName} was sent to {channelName}_::_{number} links were sent to {channelName}_" : ["Линк на {fileName} је послат на {channelName}","{number} линка су послата на {channelName}","{number} линкова је послато на {channelName}"],
     "Failed to send links to Mattermost" : "Није успело слање линкова на Mattermost",
     "Failed to send internal links to Mattermost" : "Није успело слање интерних линкова на Mattermost",

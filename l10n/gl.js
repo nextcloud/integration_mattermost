@@ -87,7 +87,7 @@ OC.L10N.register(
     "{name} in @{direct_username} at {date}" : "{name} en @{direct_username} o {date}",
     "{name} in #{channel} at {date}" : "{name} en #{channel} o {date}",
     "Failed to edit Mattermost todo" : "Produciuse un fallo ao editar as tarefas pendentes de Mattermost",
-    "Send to Mattermost" : "Enviar a Mattermost",
+    "Send files to Mattermost" : "Enviar ficheiros a Mattermost",
     "_A link to {fileName} was sent to {channelName}_::_{number} links were sent to {channelName}_" : ["Enviouse unha ligazón para {fileName} a {channelName}","Enviáronse {number} ligazóns a {channelName}"],
     "Failed to send links to Mattermost" : "Produciuse un fallo ao enviar as ligazóns a Mattermost",
     "Failed to send internal links to Mattermost" : "Produciuse un fallo ao enviar as ligazóns internas a Mattermost",

@@ -86,7 +86,7 @@ OC.L10N.register(
     "{name} in @{direct_username} at {date}" : "{name} 在 @{direct_username} 於 {date}",
     "{name} in #{channel} at {date}" : "{name} 在 #{channel} 於 {date}",
     "Failed to edit Mattermost todo" : "編輯 Mattermost 待辦事項失敗",
-    "Send to Mattermost" : "傳送至 Mattermost",
+    "Send files to Mattermost" : "傳送檔案至 Mattermost",
     "_A link to {fileName} was sent to {channelName}_::_{number} links were sent to {channelName}_" : ["{number} 個連結已傳送至 {channelName}"],
     "Failed to send links to Mattermost" : "傳送連結至 Mattermost 失敗",
     "Failed to send internal links to Mattermost" : "傳送內部連結至 Mattermost 失敗",

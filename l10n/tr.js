@@ -86,7 +86,7 @@ OC.L10N.register(
     "{name} in @{direct_username} at {date}" : "{name} tarafından @{direct_username} ile {date} tarihinde",
     "{name} in #{channel} at {date}" : "{name} tarafından #{channel} kanalında {date} tarihinde",
     "Failed to edit Mattermost todo" : "Mattermost yapılacak işler listesi düzenlenemedi",
-    "Send to Mattermost" : "Mattermost üzerine gönder",
+    "Send files to Mattermost" : "Dosyaları Mattermost üzerine gönder",
     "_A link to {fileName} was sent to {channelName}_::_{number} links were sent to {channelName}_" : ["Bir bağlantı {channelName} kanalına gönderildi","{number} bağlantı {channelName} kanalına gönderildi"],
     "Failed to send links to Mattermost" : "Bağlantılar Mattermost üzerine gönderilemedi",
     "Failed to send internal links to Mattermost" : "İç bağlantılar Mattermost üzerine gönderilemedi",
