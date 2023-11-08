@@ -15,6 +15,12 @@ import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { oauthConnect, oauthConnectConfirmDialog, gotoSettingsConfirmDialog, SEND_TYPE } from './utils.js'
+import {
+	registerFileAction, Permission, FileAction,
+	davGetClient, davGetDefaultPropfind, davResultToNode, davRootPath, FileType,
+} from '@nextcloud/files'
+import { subscribe } from '@nextcloud/event-bus'
+import SlackIcon from '../img/app-dark.svg'
 
 import Vue from 'vue'
 import './bootstrap.js'
@@ -26,6 +32,22 @@ const SEND_FILE_URL = generateUrl('/apps/integration_slack/sendFile')
 const SEND_PUBLIC_LINKS_URL = generateUrl('/apps/integration_slack/sendPublicLinks')
 const IS_CONNECTED_URL = generateUrl('/apps/integration_slack/is-connected')
 
+if (!OCA.Slack) {
+	OCA.Slack = {
+		actionIgnoreLists: [
+			'trashbin',
+			'files.public',
+		],
+		filesToSend: [],
+		currentFileList: null,
+	}
+}
+
+subscribe('files:list:updated', onFilesListUpdated)
+function onFilesListUpdated({ view, folder, contents }) {
+	OCA.Slack.currentFileList = { view, folder, contents }
+}
+
 function openChannelSelector(files) {
 	OCA.Slack.filesToSend = files
 	const modalVue = OCA.Slack.SlackSendModalVue
@@ -34,164 +56,128 @@ function openChannelSelector(files) {
 	modalVue.showModal()
 }
 
-(function() {
-	if (!OCA.Slack) {
-		/**
-		 * @namespace
-		 */
-		OCA.Slack = {
-			filesToSend: [],
+const sendAction = new FileAction({
+	id: 'slackSend',
+	displayName: (nodes) => {
+		return nodes.length > 1
+			? t('integration_slack', 'Send files to Slack')
+			: t('integration_slack', 'Send file to Slack')
+	},
+	enabled(nodes, view) {
+		return !OCA.Slack.actionIgnoreLists.includes(view.id)
+			&& nodes.length > 0
+			&& !nodes.some(({ permissions }) => (permissions & Permission.READ) === 0)
+		// && nodes.every(({ type }) => type === FileType.File)
+		// && nodes.every(({ mime }) => mime === 'application/some+type')
+	},
+	iconSvgInline: () => SlackIcon,
+	async exec(node) {
+		sendSelectedNodes([node])
+		return null
+	},
+	async execBatch(nodes) {
+		sendSelectedNodes(nodes)
+		return nodes.map(_ => null)
+	},
+})
+registerFileAction(sendAction)
+
+function sendSelectedNodes(nodes) {
+	const formattedNodes = nodes.map((node) => {
+		return {
+			id: node.fileid,
+			name: node.basename,
+			type: node.type,
+			size: node.size,
+		}
+	})
+	if (OCA.Slack.slackConnected) {
+		openChannelSelector(formattedNodes)
+	} else if (OCA.Slack.oauthPossible) {
+		connectToSlack(formattedNodes)
+	} else {
+		gotoSettingsConfirmDialog()
+	}
+}
+
+function checkIfFilesToSend() {
+	const urlCheckConnection = generateUrl('/apps/integration_slack/files-to-send')
+	axios.get(urlCheckConnection)
+		.then((response) => {
+			const fileIdsStr = response?.data?.file_ids_to_send_after_oauth
+			const currentDir = response?.data?.current_dir_after_oauth
+			if (fileIdsStr && currentDir) {
+				sendFileIdsAfterOAuth(fileIdsStr, currentDir)
+			} else {
+				if (DEBUG) console.debug('[Slack] nothing to send')
+			}
+		})
+		.catch((error) => {
+			console.error(error)
+		})
+}
+
+/**
+ * In case we successfully connected with oauth and got redirected back to files
+ * actually go on with the files that were previously selected
+ *
+ * @param {string} fileIdsStr list of files to send
+ * @param {string} currentDir path to the current dir
+ */
+async function sendFileIdsAfterOAuth(fileIdsStr, currentDir) {
+	if (DEBUG) console.debug('[Slack] in sendFileIdsAfterOAuth, fileIdsStr, currentDir', fileIdsStr, currentDir)
+	// this is only true after an OAuth connection initated from a file action
+	if (fileIdsStr) {
+		// get files info
+		const client = davGetClient()
+		const results = await client.getDirectoryContents(`${davRootPath}${currentDir}`, {
+			details: true,
+			// Query all required properties for a Node
+			data: davGetDefaultPropfind(),
+		})
+		const nodes = results.data.map((r) => davResultToNode(r))
+
+		const fileIds = fileIdsStr.split(',')
+		const files = fileIds.map((fid) => {
+			const f = nodes.find((n) => n.fileid === parseInt(fid))
+			if (f) {
+				return {
+					id: f.fileid,
+					name: f.basename,
+					type: f.type,
+					size: f.size,
+				}
+			}
+			return null
+		}).filter((e) => e !== null)
+		if (DEBUG) console.debug('[Slack] in sendFileIdsAfterOAuth, after changeDirectory, files:', files)
+		if (files.length) {
+			if (DEBUG) console.debug('[Slack] in sendFileIdsAfterOAuth, after changeDirectory, call openChannelSelector')
+			openChannelSelector(files)
 		}
 	}
+}
 
-	/**
-	 * @namespace
-	 */
-	OCA.Slack.FilesPlugin = {
-		ignoreLists: [
-			'trashbin',
-			'files.public',
-		],
-
-		attach(fileList) {
-			if (DEBUG) console.debug('[Slack] begin of attach')
-			if (this.ignoreLists.indexOf(fileList.id) >= 0) {
-				return
-			}
-
-			if (DEBUG) console.debug('[Slack] before checkIfFilesToSend')
-			this.checkIfFilesToSend(fileList)
-
-			fileList.registerMultiSelectFileAction({
-				name: 'slackSendMulti',
-				displayName: t('integration_slack', 'Send files to Slack'),
-				iconClass: 'icon-slack',
-				order: -2,
-				action: (selectedFiles) => {
-					const filesToSend = selectedFiles.map((f) => {
-						return {
-							id: f.id,
-							name: f.name,
-							type: f.type,
-							size: f.size,
-						}
+function connectToSlack(selectedFiles = []) {
+	oauthConnectConfirmDialog(OCA.Slack.clientId).then((result) => {
+		if (result) {
+			if (OCA.Slack.usePopup) {
+				oauthConnect(OCA.Slack.clientId, null, true)
+					.then(() => {
+						OCA.Slack.slackConnected = true
+						openChannelSelector(selectedFiles)
 					})
-					if (OCA.Slack.slackConnected) {
-						openChannelSelector(filesToSend)
-					} else if (OCA.Slack.oauthPossible) {
-						this.connectToSlack(filesToSend)
-					} else {
-						gotoSettingsConfirmDialog()
-					}
-				},
-			})
-
-			fileList.fileActions.registerAction({
-				name: 'slackSendSingle',
-				displayName: t('integration_slack', 'Send to Slack'),
-				iconClass: 'icon-slack',
-				mime: 'all',
-				order: -139,
-				permissions: OC.PERMISSION_READ,
-				actionHandler: (_, context) => {
-					const filesToSend = [
-						{
-							id: context.fileInfoModel.attributes.id,
-							name: context.fileInfoModel.attributes.name,
-							type: context.fileInfoModel.attributes.type,
-							size: context.fileInfoModel.attributes.size,
-						},
-					]
-					if (OCA.Slack.slackConnected) {
-						openChannelSelector(filesToSend)
-					} else if (OCA.Slack.oauthPossible) {
-						this.connectToSlack(filesToSend)
-					} else {
-						gotoSettingsConfirmDialog()
-					}
-				},
-			})
-		},
-
-		checkIfFilesToSend(fileList) {
-			const urlCheckConnection = generateUrl('/apps/integration_slack/files-to-send')
-			axios.get(urlCheckConnection).then((response) => {
-				const fileIdsStr = response.data.file_ids_to_send_after_oauth
-				const currentDir = response.data.current_dir_after_oauth
-
-				if (fileIdsStr && currentDir) {
-					this.sendFileIdsAfterOAuth(fileList, fileIdsStr, currentDir)
-				} else {
-					if (DEBUG) console.debug('[Slack] nothing to send')
-				}
-			}).catch((error) => {
-				console.error(error)
-				gotoSettingsConfirmDialog()
-			})
-		},
-
-		/**
-		 * In case we successfully connected with oauth and got redirected back to files
-		 * actually go on with the files that were previously selected
-		 *
-		 * @param {object} fileList the one from attach()
-		 * @param {string} fileIdsStr list of files to send
-		 * @param {string} currentDir path to the current dir
-		 */
-		sendFileIdsAfterOAuth: (fileList, fileIdsStr, currentDir) => {
-			if (DEBUG) console.debug('[Slack] in sendFileIdsAfterOAuth, fileIdsStr, currentDir', fileIdsStr, currentDir)
-
-			// this is only true after an OAuth connection initated from a file action
-			if (fileIdsStr) {
-				// trick to make sure the file list is loaded (didn't find an event or a good alternative)
-				// force=true to make sure we get a promise
-				fileList.changeDirectory(currentDir, true, true).then(() => {
-					const fileIds = fileIdsStr.split(',')
-					const files = fileIds.map((fid) => {
-						const f = fileList.files.find((e) => e.id === parseInt(fid))
-						if (f) {
-							return {
-								id: f.id,
-								name: f.name,
-								type: f.type,
-								size: f.size,
-							}
-						}
-						return null
-					}).filter((e) => e !== null)
-
-					if (DEBUG) console.debug('[Slack] in sendFileIdsAfterOAuth, after changeDirectory, files:', files)
-
-					if (files.length) {
-						if (DEBUG) console.debug('[Slack] in sendFileIdsAfterOAuth, after changeDirectory, call openChannelSelector')
-						openChannelSelector(files)
-					}
-				})
+			} else {
+				const selectedFilesIds = selectedFiles.map(f => f.id)
+				const currentDirectory = OCA.Slack.currentFileList?.folder?.attributes?.filename
+				oauthConnect(
+					OCA.Slack.clientId,
+					'files--' + currentDirectory + '--' + selectedFilesIds.join(','),
+				)
 			}
-		},
-
-		connectToSlack: (selectedFiles = []) => {
-			oauthConnectConfirmDialog().then((result) => {
-				if (result) {
-					if (OCA.Slack.usePopup) {
-						oauthConnect(OCA.Slack.clientId, null, true)
-							.then(() => {
-								OCA.Slack.slackConnected = true
-								openChannelSelector(selectedFiles)
-							})
-					} else {
-						const selectedFilesIds = selectedFiles.map(f => f.id)
-						oauthConnect(
-							OCA.Slack.clientId,
-							'files--' + OCA.Files.App.fileList._currentDirectory + '--' + selectedFilesIds.join(',')
-						)
-					}
-				}
-			})
-		},
-	}
-
-})()
+		}
+	})
+}
 
 async function sendPublicLinks(channelId, channelName, comment, permission, expirationDate, password) {
 	const req = {
@@ -327,7 +313,7 @@ OCA.Slack.SlackSendModalVue.$on('validate', ({ filesToSend, channelId, channelNa
 	} else {
 		OCA.Slack.remoteFileIds = []
 		OCA.Slack.sentFileNames = []
-		OCA.Slack.filesToSend = filesToSend.filter((f) => f.type !== 'dir')
+		OCA.Slack.filesToSend = filesToSend.filter((f) => f.type !== FileType.Folder)
 
 		Promise.all(OCA.Slack.filesToSend.map(sendFile(channelId, channelName, comment))).then(() => {
 			showSuccess(
@@ -367,6 +353,6 @@ axios.get(IS_CONNECTED_URL).then((response) => {
 })
 
 document.addEventListener('DOMContentLoaded', () => {
-	if (DEBUG) console.debug('[Slack] before register files plugin')
-	OC.Plugins.register('OCA.Files.FileList', OCA.Slack.FilesPlugin)
+	if (DEBUG) console.debug('[Slack] before checkIfFilesToSend')
+	checkIfFilesToSend()
 })

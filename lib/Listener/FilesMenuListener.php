@@ -37,7 +37,6 @@ class FilesMenuListener implements IEventListener {
       return;
     }
 
-    Util::addScript(Application::APP_ID, Application::APP_ID . '-filesplugin', 'files');
-    Util::addStyle(Application::APP_ID, Application::APP_ID . '-files');
+    Util::addInitScript(Application::APP_ID, Application::APP_ID . '-filesplugin');
   }
 }

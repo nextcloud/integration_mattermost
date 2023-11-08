@@ -17,7 +17,7 @@
 	<screenshot>https://raw.githubusercontent.com/nextcloud/integration_slack/main/img/screenshot1.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/nextcloud/integration_slack/main/img/screenshot2.png</screenshot>
 	<dependencies>
-		<nextcloud min-version="26" max-version="28"/>
+		<nextcloud min-version="28" max-version="28"/>
 	</dependencies>
 	<settings>
 		<admin>OCA\Slack\Settings\Admin</admin>
