@@ -17,14 +17,18 @@ OC.L10N.register(
     "Login" : "Accedi",
     "Password" : "Password",
     "Connected as {user}" : "Connesso come {user}",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "segreto",
     "Files" : "File",
     "Channel" : "Canale",
     "Type" : "Tipo",
     "Set expiration date" : "Imposta data di scadenza",
     "Comment" : "Commento",
     "Cancel" : "Annulla",
+    "password" : "parola d'ordine",
     "View only" : "Sola lettura",
     "Edit" : "Modifica",
+    "Nothing" : "Niente",
     "Upload files" : "Carica file"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
