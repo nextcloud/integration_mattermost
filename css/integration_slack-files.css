@@ -1,8 +1,0 @@
-/* for file actions */
-.icon-slack {
-	background-image: url('../img/app-dark.svg');
-	filter: var(--background-invert-if-dark);
-}
-body.theme--dark .icon-slack {
-	background-image: url('../img/app.svg');
-}

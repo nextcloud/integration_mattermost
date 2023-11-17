@@ -237,6 +237,7 @@ import { generateUrl } from '@nextcloud/router'
 import { showError } from '@nextcloud/dialogs'
 import SlackIcon from './icons/SlackIcon.vue'
 import { humanFileSize, SEND_TYPE } from '../utils.js'
+import { FileType } from '@nextcloud/files'
 
 const STATES = {
 	IN_PROGRESS: 1,
@@ -383,7 +384,7 @@ export default {
 			})
 		},
 		getFilePreviewUrl(fileId, fileType) {
-			if (fileType === 'dir') {
+			if (fileType === FileType.Folder) {
 				return generateUrl('/apps/theming/img/core/filetypes/folder.svg')
 			}
 			return generateUrl('/apps/integration_slack/preview?id={fileId}&x=24&y=24', { fileId })

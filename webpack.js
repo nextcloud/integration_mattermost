@@ -33,5 +33,9 @@ webpackConfig.plugins.push(
 		failOnError: !isDev,
 	}),
 )
+webpackConfig.module.rules.push({
+	test: /\.svg$/i,
+	type: 'asset/source',
+})
 
 module.exports = webpackConfig
