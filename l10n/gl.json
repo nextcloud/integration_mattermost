@@ -53,7 +53,6 @@
     "_Send file_::_Send files_" : ["Enviar ficheiro","Enviar ficheiros"],
     "_Send link_::_Send links_" : ["Enviar ligazón","Enviar ligazóns"],
     "Send files to Slack" : "Enviar ficheiros a Slack",
-    "Send to Slack" : "Enviar a Slack",
     "Failed to send {name} to {channelName} on Slack" : "Produciuse un fallo ao enviar {name} a {channelName} en Slack",
     "_A link to {fileName} was sent to {channelName}_::_All of the {number} links were sent to {channelName}_" : ["Enviouse unha ligazón para {fileName} a {channelName}","Enviáronse todas as ligazóns ({number}) a {channelName}"],
     "Failed to send links to Slack" : "Produciuse un fallo ao enviar as ligazóns a Slack",

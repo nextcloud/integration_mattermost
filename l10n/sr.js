@@ -55,7 +55,6 @@ OC.L10N.register(
     "_Send file_::_Send files_" : ["Пошаљи фајл","Пошаљи фајлове","Пошаљи фајлове"],
     "_Send link_::_Send links_" : ["Пошаљи линк","Пошаљи линкове","Пошаљи линкове"],
     "Send files to Slack" : "Пошаљи фајлове на Slack",
-    "Send to Slack" : "Пошаљи на Slack",
     "Failed to send {name} to {channelName} on Slack" : "Није успело слање {name} у {channelName} на Slack",
     "_A link to {fileName} was sent to {channelName}_::_All of the {number} links were sent to {channelName}_" : ["Линк на {fileName} је послат на {channelName}","Послато је укупно {number} линка на {channelName}","Послато је укупно {number} линкова на {channelName}"],
     "Failed to send links to Slack" : "Није успело слање линкова на Slack",

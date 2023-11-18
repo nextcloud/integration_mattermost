@@ -55,7 +55,6 @@ OC.L10N.register(
     "_Send file_::_Send files_" : ["Enviar archivo","Enviar archivos","Enviar archivos"],
     "_Send link_::_Send links_" : ["Enviar enlace","Enviar enlaces","Enviar enlaces"],
     "Send files to Slack" : "Enviar archivos a Slack",
-    "Send to Slack" : "Enviar a Slack",
     "Failed to send {name} to {channelName} on Slack" : "Fallo al enviar {name} a {channelName} en Slack",
     "_A link to {fileName} was sent to {channelName}_::_All of the {number} links were sent to {channelName}_" : ["El enlace a {fileName} fue enviado a {channelName}","Todos los {number} enlaces fueron enviados a {channelName}","Todos los {number} enlaces fueron enviados a {channelName}"],
     "Failed to send links to Slack" : "Fallo al enviar enlaces a Slack",

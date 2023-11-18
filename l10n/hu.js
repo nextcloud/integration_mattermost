@@ -49,7 +49,6 @@ OC.L10N.register(
     "_Send file_::_Send files_" : ["Fájl küldése","Fájlok küldése"],
     "_Send link_::_Send links_" : ["Hivatkozás küldése","Hivatkozások küldése"],
     "Send files to Slack" : "Fájlok küldése Slack-re",
-    "Send to Slack" : "Küldés Slack-re",
     "Failed to send links to Slack" : "A hivatkozások küldése a Slacknek sikertelen",
     "_Failed to send the internal link to {channelName}_::_Failed to send internal links to {channelName}_" : ["Nem sikerült a belső hivatkozás küldése ide: {channelName}","Nem sikerült a belső hivatkozások küldése ide: {channelName}"],
     "Sign in with Slack" : "Bejelentkezés Slack-el",

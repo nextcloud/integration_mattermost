@@ -53,7 +53,6 @@
     "_Send file_::_Send files_" : ["Send file","Send files"],
     "_Send link_::_Send links_" : ["Send link","Send links"],
     "Send files to Slack" : "Send files to Slack",
-    "Send to Slack" : "Send to Slack",
     "Failed to send {name} to {channelName} on Slack" : "Failed to send {name} to {channelName} on Slack",
     "_A link to {fileName} was sent to {channelName}_::_All of the {number} links were sent to {channelName}_" : ["A link to {fileName} was sent to {channelName}","All of the {number} links were sent to {channelName}"],
     "Failed to send links to Slack" : "Failed to send links to Slack",

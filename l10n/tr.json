@@ -53,7 +53,6 @@
     "_Send file_::_Send files_" : ["Dosya gönder","Dosyaları gönder"],
     "_Send link_::_Send links_" : ["Bağlantı gönder","Bağlantıları gönder"],
     "Send files to Slack" : "Dosyaları Slack üzerine gönder",
-    "Send to Slack" : "Slack üzerine gönder",
     "Failed to send {name} to {channelName} on Slack" : "{name} Slack üzerindeki {channelName} kanalına gönderilemedi",
     "_A link to {fileName} was sent to {channelName}_::_All of the {number} links were sent to {channelName}_" : ["Bir bağlantı {channelName} kanalına gönderildi","{number} bağlantının tümü {channelName} kanalına gönderildi"],
     "Failed to send links to Slack" : "Bağlantılar Slack üzerine gönderilemedi",

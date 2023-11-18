@@ -17,7 +17,6 @@
     "_Send file_::_Send files_" : ["Файл илгээх","Файл илгээх"],
     "_Send link_::_Send links_" : ["Холбоос илгээх","Холбоос илгээх"],
     "Send files to Slack" : "Слакд файл илгээх",
-    "Send to Slack" : "Слакд илгээх",
     "Sign in with Slack" : "Слакаар нэвтрэх",
     "Go to settings" : "Тохиргоонд очих",
     "Upload files" : "Файл оруулах",

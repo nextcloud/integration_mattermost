@@ -55,7 +55,6 @@ OC.L10N.register(
     "_Send file_::_Send files_" : ["发送文件"],
     "_Send link_::_Send links_" : ["发送连结"],
     "Send files to Slack" : "发送文件到 Slack",
-    "Send to Slack" : "发送到 Slack",
     "Failed to send {name} to {channelName} on Slack" : "在 Slack 上将 {name} 发送到 {channelName} 失败",
     "_A link to {fileName} was sent to {channelName}_::_All of the {number} links were sent to {channelName}_" : ["所有 {number} 个连结已发送到 {channelName}"],
     "Failed to send links to Slack" : "发送连结到 Slack 失败",
