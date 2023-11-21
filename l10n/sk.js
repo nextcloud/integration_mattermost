@@ -24,6 +24,7 @@ OC.L10N.register(
     "Set expiration date" : "Nastaviť dátum expirácie",
     "Comment" : "Komentár",
     "Cancel" : "Zrušiť",
+    "password" : "heslo",
     "View only" : "Iba pre čítanie",
     "Edit" : "Upraviť",
     "_Send link_::_Send links_" : ["Odoslať odkaz","Odoslať odkazy","Odoslať odkazy","Odoslané odkazy"],
