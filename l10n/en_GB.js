@@ -46,6 +46,7 @@ OC.L10N.register(
     "Warning, everything you type in the search bar will be sent to Mattermost." : "Warning, everything you type in the search bar will be sent to Mattermost.",
     "If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks." : "If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks.",
     "This section does not require to be connected to Mattermost from Nextcloud." : "This section does not require to be connected to Mattermost from Nextcloud.",
+    "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end.",
     "Enable webhooks" : "Enable webhooks",
     "Calendar event created webhook URL" : "Calendar event created webhook URL",
     "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",

@@ -65,7 +65,7 @@ OC.L10N.register(
     "Channel" : "Kanal",
     "Choose a channel" : "Bir kanal seçin",
     "Type" : "Tür",
-    "Set expiration date" : "Son kullanma tarihini ayarla",
+    "Set expiration date" : "Geçerlilik sonu tarihini ayarla",
     "Expires on" : "Geçerlilik sonu",
     "Set link password" : "Bağlantı parolasını ayarla",
     "Comment" : "Yorum",
