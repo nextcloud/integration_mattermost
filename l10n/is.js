@@ -6,9 +6,11 @@ OC.L10N.register(
     "OAuth access token refused" : "OAuth-aðgangsteikni hafnað",
     "Connected accounts" : "Tengdir aðgangar",
     "Client ID" : "Biðlaraauðkenni",
+    "Files" : "Skráaforrit",
     "Type" : "Tegund",
     "Set expiration date" : "Setja gildistíma",
     "Comment" : "Athugasemd",
+    "View only" : "Einungis skoða",
     "Edit" : "Breyta",
     "Upload files" : "Hlaða inn skrám"
 },
