@@ -10,6 +10,7 @@ OC.L10N.register(
     "Type" : "Tegund",
     "Set expiration date" : "Setja gildistíma",
     "Comment" : "Athugasemd",
+    "Cancel" : "Hætta við",
     "View only" : "Einungis skoða",
     "Edit" : "Breyta",
     "Upload files" : "Hlaða inn skrám"
