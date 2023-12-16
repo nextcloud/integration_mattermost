@@ -44,6 +44,7 @@
     "Warning, everything you type in the search bar will be sent to Mattermost." : "Atenção, tudo que você digitar na barra de pesquisa será enviado para o Mais Importante.",
     "If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks." : "Se você configurou a integração do Nextcloud no Mais Importante, ele configurará remotamente esses webhooks automaticamente.",
     "This section does not require to be connected to Mattermost from Nextcloud." : "Esta seção não requer conexão com o Mais Importante do Nextcloud.",
+    "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "NOTA: O recurso Webhooks foi desativado indefinidamente até que o Mattermost o implemente.",
     "Enable webhooks" : "Habilitar webhooks",
     "Calendar event created webhook URL" : "URL do webhook criado pelo evento do calendário",
     "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
