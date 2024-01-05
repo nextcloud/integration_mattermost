@@ -11,7 +11,7 @@ OC.L10N.register(
     "Type" : "Тип",
     "Set expiration date" : "Встановити термін дії",
     "Comment" : "Коментар",
-    "Cancel" : "Відміна",
+    "Cancel" : "Скасувати",
     "View only" : "Лише перегляд",
     "Edit" : "Редагувати",
     "Upload files" : "Завантажити файл"
