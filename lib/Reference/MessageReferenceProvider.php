@@ -22,14 +22,13 @@
 
 namespace OCA\Mattermost\Reference;
 
+use OCA\Mattermost\AppInfo\Application;
 use OCA\Mattermost\Service\MattermostAPIService;
 use OCP\Collaboration\Reference\ADiscoverableReferenceProvider;
-use OCP\Collaboration\Reference\ISearchableReferenceProvider;
-use OC\Collaboration\Reference\ReferenceManager;
-use OCA\Mattermost\AppInfo\Application;
 use OCP\Collaboration\Reference\IReference;
+use OCP\Collaboration\Reference\IReferenceManager;
+use OCP\Collaboration\Reference\ISearchableReferenceProvider;
 use OCP\Collaboration\Reference\Reference;
-use OCP\IConfig;
 use OCP\IDateTimeFormatter;
 use OCP\IDateTimeZone;
 use OCP\IL10N;
@@ -37,12 +36,10 @@ use OCP\IURLGenerator;
 
 class MessageReferenceProvider extends ADiscoverableReferenceProvider implements ISearchableReferenceProvider {
 
-	private const RICH_OBJECT_TYPE = Application::APP_ID . '_message';
-
 	public function __construct(
 		private IL10N $l10n,
 		private IURLGenerator $urlGenerator,
-		private ReferenceManager $referenceManager,
+		private IReferenceManager $referenceManager,
 		private IDateTimeFormatter $dateTimeFormatter,
 		private IDateTimeZone $dateTimeZone,
 		private MattermostAPIService $mattermostAPIService,
