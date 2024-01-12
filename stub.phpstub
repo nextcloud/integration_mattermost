@@ -1,0 +1,59 @@
+<?php
+
+declare(strict_types=1);
+namespace OC\Hooks {
+	class Emitter {
+		public function emit(string $class, string $value, array $option) {}
+		/** Closure $closure */
+		public function listen(string $class, string $value, $closure) {}
+	}
+}
+
+namespace OC\User {
+	class NoUserException extends \Exception { }
+}
+
+namespace OCA\DAV\Events {
+	class CalendarObjectCreatedEvent extends \OCP\EventDispatcher\Event {
+
+		/** @var int */
+		private $calendarId;
+
+		/** @var array */
+		private $calendarData;
+
+		/** @var array */
+		private $shares;
+
+		/** @var array */
+		private $objectData;
+
+		public function getCalendarId(): int {}
+		public function getCalendarData(): array {}
+		public function getShares(): array {}
+		public function getObjectData(): array {}
+	}
+
+	class CalendarObjectUpdatedEvent extends \OCP\EventDispatcher\Event {
+		/** @var int */
+		private $calendarId;
+
+		/** @var array */
+		private $calendarData;
+
+		/** @var array */
+		private $shares;
+
+		/** @var array */
+		private $objectData;
+
+		public function getCalendarId(): int {}
+		public function getCalendarData(): array {}
+		public function getShares(): array {}
+		public function getObjectData(): array {}
+	}
+}
+
+namespace OCA\Files\Event {
+	class LoadAdditionalScriptsEvent extends \OCP\EventDispatcher\Event {}
+}

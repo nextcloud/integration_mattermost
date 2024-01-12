@@ -12,16 +12,16 @@
 namespace OCA\Mattermost\Controller;
 
 use Exception;
-use OCP\AppFramework\Http;
-use OCP\AppFramework\Http\Response;
-use Psr\Log\LoggerInterface;
-use Throwable;
 use OCA\Mattermost\Service\ImageService;
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
+use OCP\AppFramework\Http\Response;
 use OCP\IRequest;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
 class FilesController extends Controller {
 

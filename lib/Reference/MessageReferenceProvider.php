@@ -49,7 +49,7 @@ class MessageReferenceProvider extends ADiscoverableReferenceProvider implements
 	/**
 	 * @inheritDoc
 	 */
-	public function getId(): string	{
+	public function getId(): string {
 		return 'mattermost-message';
 	}
 
@@ -63,7 +63,7 @@ class MessageReferenceProvider extends ADiscoverableReferenceProvider implements
 	/**
 	 * @inheritDoc
 	 */
-	public function getOrder(): int	{
+	public function getOrder(): int {
 		return 10;
 	}
 

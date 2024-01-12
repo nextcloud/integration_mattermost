@@ -24,13 +24,13 @@ declare(strict_types=1);
  */
 namespace OCA\Mattermost\Search;
 
-use OCA\Mattermost\Service\MattermostAPIService;
 use OCA\Mattermost\AppInfo\Application;
+use OCA\Mattermost\Service\MattermostAPIService;
 use OCP\App\IAppManager;
+use OCP\IConfig;
 use OCP\IDateTimeFormatter;
 use OCP\IDateTimeZone;
 use OCP\IL10N;
-use OCP\IConfig;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\Search\IProvider;
@@ -97,7 +97,7 @@ class MattermostSearchMessagesProvider implements IProvider {
 		}
 		$mattermostUrl = $this->service->getMattermostUrl($user->getUID());
 
-		$issues = $this->service->searchMessages($user->getUID(), $term, $offset, $limit);
+		$searchResult = $this->service->searchMessages($user->getUID(), $term, $offset, $limit);
 		if (isset($searchResult['error'])) {
 			return SearchResult::paginated($this->getName(), [], 0);
 		}
@@ -112,7 +112,7 @@ class MattermostSearchMessagesProvider implements IProvider {
 				$finalThumbnailUrl === '' ? 'icon-mattermost-search-fallback' : '',
 				true
 			);
-		}, $issues);
+		}, $searchResult);
 
 		return SearchResult::paginated(
 			$this->getName(),

@@ -24,8 +24,8 @@ declare(strict_types=1);
 namespace OCA\Mattermost\BackgroundJob;
 
 use OCA\Mattermost\Service\WebhookService;
-use OCP\BackgroundJob\TimedJob;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\BackgroundJob\TimedJob;
 use Psr\Log\LoggerInterface;
 
 class ImminentEventsWebhook extends TimedJob {

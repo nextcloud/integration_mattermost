@@ -12,19 +12,18 @@
 namespace OCA\Mattermost\Controller;
 
 use DateTime;
+use OCA\Mattermost\AppInfo\Application;
+use OCA\Mattermost\Service\MattermostAPIService;
+use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
-use OCP\IURLGenerator;
 use OCP\IConfig;
 use OCP\IL10N;
-use OCP\AppFramework\Http\RedirectResponse;
 use OCP\IRequest;
-use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Controller;
-
-use OCA\Mattermost\Service\MattermostAPIService;
-use OCA\Mattermost\AppInfo\Application;
+use OCP\IURLGenerator;
 use OCP\PreConditionNotMetException;
 
 class ConfigController extends Controller {
@@ -141,9 +140,14 @@ class ConfigController extends Controller {
 	 * @return DataResponse
 	 * @throws PreConditionNotMetException
 	 */
-	public function setWebhooksConfig(?string $calendar_event_updated_url = null, ?string $calendar_event_created_url = null,
-									?string $daily_summary_url = null, ?string $imminent_events_url = null,
-									?bool $enabled = null, ?string $webhook_secret = null): DataResponse {
+	public function setWebhooksConfig(
+		?string $calendar_event_updated_url = null,
+		?string $calendar_event_created_url = null,
+		?string $daily_summary_url = null,
+		?string $imminent_events_url = null,
+		?bool $enabled = null,
+		?string $webhook_secret = null,
+	): DataResponse {
 		$result = [];
 		if ($calendar_event_created_url !== null) {
 			$result['calendar_event_created_url'] = $calendar_event_created_url;
@@ -278,7 +282,7 @@ class ConfigController extends Controller {
 				if (isset($result['expires_in'])) {
 					$nowTs = (new Datetime())->getTimestamp();
 					$expiresAt = $nowTs + (int) $result['expires_in'];
-					$this->config->setUserValue($this->userId, Application::APP_ID, 'token_expires_at', $expiresAt);
+					$this->config->setUserValue($this->userId, Application::APP_ID, 'token_expires_at', strval($expiresAt));
 				}
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $accessToken);
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $refreshToken);
@@ -331,7 +335,7 @@ class ConfigController extends Controller {
 
 	/**
 	 * @param string $mattermostUrl
-	 * @return string
+	 * @return array
 	 * @throws PreConditionNotMetException
 	 */
 	private function storeUserInfo(): array {

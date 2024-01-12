@@ -18,4 +18,3 @@ $content = $requestBody
 	. "\n\nSignature check:    " . $bodyHash;
 
 file_put_contents('/tmp/a', $content);
-?>

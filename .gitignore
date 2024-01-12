@@ -1,4 +1,4 @@
-/js/
+js/
 .code-workspace
 .DS_Store
 .idea/
@@ -6,3 +6,7 @@
 .vscode-upload.json
 .*.sw*
 node_modules
+.phpunit*.cache
+vendor/
+tests/clover.xml
+.php-cs-fixer.cache

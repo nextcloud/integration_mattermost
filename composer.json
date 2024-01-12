@@ -1,0 +1,62 @@
+{
+	"name": "nextcloud/integration_mattermost",
+	"description": "Integration of Mattermost",
+	"type": "project",
+	"license": "AGPL-3.0-or-later",
+	"authors": [
+		{
+			"name": "Julien Veyssier",
+			"email": "julien-nc@posteo.net"
+		}
+	],
+	"require": {
+		"php": "^8.0 || ^8.1 || ^8.2 || ^8.3",
+		"bamarni/composer-bin-plugin": "^1.8"
+	},
+	"require-dev": {
+		"guzzlehttp/guzzle": "^7.8",
+		"nextcloud/ocp": "dev-master"
+	},
+	"scripts": {
+		"lint": "find . -name \\*.php -not -path './vendor*' -print0 | xargs -0 -n1 php -l",
+		"cs:check": "php-cs-fixer fix --dry-run --diff",
+		"cs:fix": "php-cs-fixer fix",
+		"psalm": "psalm",
+		"psalm:ci": "psalm --threads=1",
+		"psalm:update-baseline": "psalm --threads=1 --update-baseline",
+		"psalm:update-baseline:force": "psalm --threads=1 --update-baseline --set-baseline=tests/psalm-baseline.xml",
+		"psalm:clear": "psalm --clear-cache && psalm --clear-global-cache",
+		"psalm:fix": "psalm --alter --issues=InvalidReturnType,InvalidNullableReturnType,MissingParamType,InvalidFalsableReturnType",
+		"post-install-cmd": [
+			"@composer bin all install --ansi",
+			"composer dump-autoload"
+		],
+		"post-update-cmd": [
+			"@composer bin all update --ansi",
+			"composer dump-autoload"
+		],
+		"test": "phpunit --configuration tests/phpunit.xml"
+	},
+	"config": {
+		"optimize-autoloader": true,
+		"platform": {
+			"php": "8.0"
+		},
+		"allow-plugins": {
+			"bamarni/composer-bin-plugin": true,
+			"composer/package-versions-deprecated": true
+		},
+		"autoloader-suffix": "Mattermost",
+		"sort-packages": true
+	},
+	"autoload": {
+		"psr-4": {
+			"OCA\\Mattermost\\": "lib/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"OCP\\": "vendor/nextcloud/ocp/OCP"
+		}
+	}
+}

@@ -13,30 +13,28 @@ namespace OCA\Mattermost\Controller;
 
 use Exception;
 use OC\User\NoUserException;
+use OCA\Mattermost\AppInfo\Application;
+use OCA\Mattermost\Service\MattermostAPIService;
+use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDisplayResponse;
+use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\Files\NotPermittedException;
 use OCP\IConfig;
 use OCP\IRequest;
-use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Controller;
-
-use OCA\Mattermost\Service\MattermostAPIService;
-use OCA\Mattermost\AppInfo\Application;
 use OCP\IURLGenerator;
 use OCP\Lock\LockedException;
 
 class MattermostAPIController extends Controller {
 
-	private string $mattermostUrl;
-
-	public function __construct(string                       $appName,
-								IRequest                     $request,
-								private IConfig              $config,
-								private IURLGenerator        $urlGenerator,
-								private MattermostAPIService $mattermostAPIService,
-								private ?string              $userId) {
+	public function __construct(
+		string                       $appName,
+		IRequest                     $request,
+		private IConfig              $config,
+		private IURLGenerator        $urlGenerator,
+		private MattermostAPIService $mattermostAPIService,
+		private ?string              $userId) {
 		parent::__construct($appName, $request);
 	}
 
@@ -83,7 +81,7 @@ class MattermostAPIController extends Controller {
 	 * @return DataDisplayResponse|RedirectResponse
 	 * @throws \Exception
 	 */
-	public function getTeamAvatar(string $teamId, int $useFallback = 1)	{
+	public function getTeamAvatar(string $teamId, int $useFallback = 1) {
 		$result = $this->mattermostAPIService->getTeamAvatar($this->userId, $teamId);
 		if (isset($result['avatarContent'])) {
 			$response = new DataDisplayResponse($result['avatarContent']);
@@ -179,8 +177,15 @@ class MattermostAPIController extends Controller {
 	 * @throws NoUserException
 	 * @throws NotPermittedException
 	 */
-	public function sendPublicLinks(array $fileIds, string $channelId, string $channelName, string $comment,
-							  string $permission, ?string $expirationDate = null, ?string $password = null): DataResponse {
+	public function sendPublicLinks(
+		array $fileIds,
+		string $channelId,
+		string $channelName,
+		string $comment,
+		string $permission,
+		?string $expirationDate = null,
+		?string $password = null
+	): DataResponse {
 		$result = $this->mattermostAPIService->sendPublicLinks(
 			$this->userId, $fileIds, $channelId, $channelName,
 			$comment, $permission, $expirationDate, $password
