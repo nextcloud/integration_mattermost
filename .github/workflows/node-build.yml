@@ -17,7 +17,7 @@ on:
       - webpack.js
 
 env:
-  APP_NAME: stt_helper
+  APP_NAME: integration_mattermost
 
 jobs:
   build:
