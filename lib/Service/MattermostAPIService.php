@@ -17,7 +17,6 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use OC\User\NoUserException;
 use OCA\Mattermost\AppInfo\Application;
-use OCA\Mattermost\Service\NetworkService;
 use OCP\Constants;
 use OCP\Files\File;
 use OCP\Files\Folder;

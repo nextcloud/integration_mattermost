@@ -28,7 +28,7 @@ use Throwable;
  */
 class NetworkService {
 
-		private IClient $client;
+	private IClient $client;
 
 	public function __construct(
 		private IConfig $config,

@@ -86,12 +86,12 @@ class MattermostAPIServiceTest extends TestCase {
 				'total_msg_count' => 2,
 				'extra_update_at' => 0,
 				'creator_id' => '',
-				'scheme_id' => NULL,
-				'props' => NULL,
-				'group_constrained' => NULL,
-				'shared' => NULL,
+				'scheme_id' => null,
+				'props' => null,
+				'group_constrained' => null,
+				'shared' => null,
 				'total_msg_count_root' => 2,
-				'policy_id' => NULL,
+				'policy_id' => null,
 				'last_root_post_at' => 1705306107804,
 				'team_display_name' => 'int'
 			],
@@ -110,14 +110,14 @@ class MattermostAPIServiceTest extends TestCase {
 				'total_msg_count' => 3,
 				'extra_update_at' => 0,
 				'creator_id' => '3xqcyc8rnbbj5pjoxhjc6je7ch',
-				'scheme_id' => NULL,
-				'props' => NULL,
-				'group_constrained' => NULL,
+				'scheme_id' => null,
+				'props' => null,
+				'group_constrained' => null,
 				'shared' => false,
 				'total_msg_count_root' => 3,
-				'policy_id' => NULL,
+				'policy_id' => null,
 				'last_root_post_at' => 1705306156738,
-				'team_display_name' => NULL,
+				'team_display_name' => null,
 				'direct_message_display_name' => 'else',
 				'direct_message_user_name' => 'else',
 				'direct_message_user_id' => '3xqcyc8rnbbj5pjoxhjc6je7ch'
@@ -137,12 +137,12 @@ class MattermostAPIServiceTest extends TestCase {
 				'total_msg_count' => 3,
 				'extra_update_at' => 0,
 				'creator_id' => '',
-				'scheme_id' => NULL,
-				'props' => NULL,
-				'group_constrained' => NULL,
-				'shared' => NULL,
+				'scheme_id' => null,
+				'props' => null,
+				'group_constrained' => null,
+				'shared' => null,
 				'total_msg_count_root' => 3,
-				'policy_id' => NULL,
+				'policy_id' => null,
 				'last_root_post_at' => 1705306107785,
 				'team_display_name' => 'int'
 			],
@@ -162,9 +162,9 @@ class MattermostAPIServiceTest extends TestCase {
 				'allowed_domains' => '',
 				'invite_id' => 'cxmzfoe7o3yn8pzdfajkgps1or',
 				'allow_open_invite' => false,
-				'scheme_id' => NULL,
-				'group_constrained' => NULL,
-				'policy_id' => NULL,
+				'scheme_id' => null,
+				'group_constrained' => null,
+				'policy_id' => null,
 				'cloud_limits_archived' => false
 			],
 			[
@@ -181,9 +181,9 @@ class MattermostAPIServiceTest extends TestCase {
 				'allowed_domains' => '',
 				'invite_id' => 'cxmzfoe7uyeh1pzdfajkgps1or',
 				'allow_open_invite' => false,
-				'scheme_id' => NULL,
-				'group_constrained' => NULL,
-				'policy_id' => NULL,
+				'scheme_id' => null,
+				'group_constrained' => null,
+				'policy_id' => null,
 				'cloud_limits_archived' => false
 			],
 		],
@@ -208,7 +208,7 @@ class MattermostAPIServiceTest extends TestCase {
 				'pending_post_id' => '',
 				'reply_count' => 0,
 				'last_reply_at' => 0,
-				'participants' => NULL,
+				'participants' => null,
 				'metadata' => [],
 			],
 			[
@@ -231,7 +231,7 @@ class MattermostAPIServiceTest extends TestCase {
 				'pending_post_id' => '',
 				'reply_count' => 0,
 				'last_reply_at' => 0,
-				'participants' => NULL,
+				'participants' => null,
 				'metadata' => [],
 			],
 			[
@@ -254,7 +254,7 @@ class MattermostAPIServiceTest extends TestCase {
 				'pending_post_id' => '',
 				'reply_count' => 0,
 				'last_reply_at' => 0,
-				'participants' => NULL,
+				'participants' => null,
 				'metadata' => [],
 			],
 			[
@@ -277,7 +277,7 @@ class MattermostAPIServiceTest extends TestCase {
 				'pending_post_id' => '',
 				'reply_count' => 0,
 				'last_reply_at' => 0,
-				'participants' => NULL,
+				'participants' => null,
 				'metadata' => [],
 			],
 		],
@@ -507,8 +507,7 @@ class MattermostAPIServiceTest extends TestCase {
 	 * @param string $id ID of the resource
 	 * @return void
 	 */
-	private function getAPIData(string $name, string $id = NULL)
-	{
+	private function getAPIData(string $name, string $id = null) {
 		$data = static::$apiData[$name];
 
 		if (is_null($id)) {
@@ -541,7 +540,7 @@ class MattermostAPIServiceTest extends TestCase {
 						'prev_post_id' => '',
 						'has_next' => false,
 						'first_inaccessible_post_time' => 0,
-						'matches' => NULL,
+						'matches' => null,
 					];
 				}
 
@@ -556,7 +555,7 @@ class MattermostAPIServiceTest extends TestCase {
 					'prev_post_id' => '',
 					'has_next' => false,
 					'first_inaccessible_post_time' => 0,
-					'matches' => NULL,
+					'matches' => null,
 				];
 			} elseif (str_starts_with($endPoint, 'posts/')) {
 				return $this->getAPIData('posts', substr($endPoint, strlen('posts/')));
