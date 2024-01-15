@@ -16,14 +16,27 @@
     "Login" : "Σύνδεση",
     "Password" : "Συνθηματικό",
     "Connected as {user}" : "Συνδεδεμένος ως {user}",
+    "Invalid access token" : "Μη έγκυρο διακριτικό πρόσβασης",
     "Files" : "Αρχεία",
     "Channel" : "Κανάλι",
+    "Choose a channel" : "Επιλέξτε ένα κανάλι",
     "Type" : "Τύπος",
     "Set expiration date" : "Ορισμός ημερομηνίας λήξης",
+    "Expires on" : "Λήξη στις",
+    "Set link password" : "Ορισμός συνθηματικού για τον σύνδεσμο",
     "Comment" : "Σχόλιο",
+    "Directories will be skipped, they can only be sent as links." : "Οι κατάλογοι θα παραληφθούν, μπορούν να σταλούν μόνο ως σύνδεσμοι.",
     "Cancel" : "Ακύρωση",
+    "password" : "συνθηματικό",
+    "Message to send with the files" : "Μήνυμα προς αποστολή με τα αρχεία",
     "View only" : "Μόνο προβολή",
     "Edit" : "Επεξεργασία",
-    "Upload files" : "Μεταφόρτωση αρχείων"
+    "_Send file_::_Send files_" : ["Αποστολή αρχείου","Αποστολή αρχείων"],
+    "_Send link_::_Send links_" : ["Αποστολή συνδέσμου","Αποστολή συνδέσμων"],
+    "Do you want to go to your \"Connect accounts\" personal settings?" : "Θέλετε να πάτε στις προσωπικές σας ρυθμίσεις \"Σύνδεση λογαριασμών\";",
+    "Go to settings" : "Μετάβαση στις ρυθμίσεις",
+    "Upload files" : "Μεταφόρτωση αρχείων",
+    "Public links" : "Δημόσιοι σύνδεσμοι",
+    "Internal links (Only works for users with access to the files)" : "Εσωτερικοί σύνδεσμοι (Λειτουργεί μόνο για χρήστες με πρόσβαση στα αρχεία)"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
