@@ -34,7 +34,7 @@ jobs:
       fail-fast: false
       matrix:
         php-versions: [ '8.0', '8.1', '8.2', '8.3' ]
-        server-versions: ['master', 'stable28', 'stable27']
+        server-versions: ['master', 'stable28']
 
     name: php${{ matrix.php-versions }}-sqlite-${{ matrix.server-versions }}
 
