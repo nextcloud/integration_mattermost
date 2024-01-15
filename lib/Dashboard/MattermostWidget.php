@@ -23,14 +23,13 @@
 
 namespace OCA\Mattermost\Dashboard;
 
+use OCA\Mattermost\AppInfo\Application;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\Dashboard\IWidget;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\Util;
-
-use OCA\Mattermost\AppInfo\Application;
 
 class MattermostWidget implements IWidget {
 
@@ -55,7 +54,7 @@ class MattermostWidget implements IWidget {
 	 */
 	public function getTitle(): string {
 		return $this->l10n->t('Mattermost');
-		}
+	}
 
 	/**
 	 * @inheritDoc

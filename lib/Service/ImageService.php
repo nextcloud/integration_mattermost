@@ -12,7 +12,7 @@
 
 namespace OCA\Mattermost\Service;
 
-use OC\Files\Node\File;
+use OCP\Files\File;
 use OCP\Files\IMimeTypeDetector;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;

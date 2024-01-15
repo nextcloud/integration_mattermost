@@ -23,15 +23,18 @@
  */
 namespace OCA\Mattermost\Listener;
 
+use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 use OCA\Mattermost\AppInfo\Application;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
-use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 
+/**
+ * @template-implements IEventListener<Event>
+ */
 class CalendarObjectUpdatedListener extends AbstractListener implements IEventListener {
 
 	public function handleIncomingEvent(Event $event): ?array {
-		if (!($event instanceOf CalendarObjectUpdatedEvent)) {
+		if (!($event instanceof CalendarObjectUpdatedEvent)) {
 			return null;
 		}
 

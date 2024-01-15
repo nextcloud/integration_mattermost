@@ -11,28 +11,27 @@
 
 namespace OCA\Mattermost\Service;
 
-use Datetime;
+use DateTime;
 use Exception;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
-use OC\Files\Node\File;
-use OC\Files\Node\Folder;
 use OC\User\NoUserException;
 use OCA\Mattermost\AppInfo\Application;
 use OCP\Constants;
+use OCP\Files\File;
+use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotPermittedException;
 use OCP\Http\Client\IClient;
+use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\Lock\LockedException;
 use OCP\PreConditionNotMetException;
+use OCP\Share\IManager as ShareManager;
 use OCP\Share\IShare;
 use Psr\Log\LoggerInterface;
-use OCP\Http\Client\IClientService;
-use OCP\Share\IManager as ShareManager;
-use Throwable;
 
 /**
  * Service to make requests to Mattermost API
@@ -42,13 +41,13 @@ class MattermostAPIService {
 	private IClient $client;
 
 	public function __construct(
-		string $appName,
 		private LoggerInterface $logger,
 		private IL10N $l10n,
 		private IConfig $config,
 		private IRootFolder $root,
 		private ShareManager $shareManager,
 		private IURLGenerator $urlGenerator,
+		private NetworkService $networkService,
 		IClientService $clientService
 	) {
 		$this->client = $clientService->newClient();
@@ -102,7 +101,7 @@ class MattermostAPIService {
 		$posts = $result['posts'] ?? [];
 
 		// sort post by creation date, DESC
-		usort($posts, function($a, $b) {
+		usort($posts, function ($a, $b) {
 			$ta = (int) $a['create_at'];
 			$tb = (int) $b['create_at'];
 			return ($ta > $tb) ? -1 : 1;
@@ -153,7 +152,7 @@ class MattermostAPIService {
 	 * @param string $userId
 	 * @param string $mattermostUserName
 	 * @param int|null $since
-	 * @return array|string[]
+	 * @return array
 	 * @throws PreConditionNotMetException
 	 */
 	public function getMentionsMe(string $userId, string $mattermostUserName, ?int $since = null): array {
@@ -167,12 +166,12 @@ class MattermostAPIService {
 		];
 		$result = $this->request($userId, 'posts/search', $params, 'POST');
 		if (isset($result['error'])) {
-			return $result;
+			return (array)$result;
 		}
 		$posts = $result['posts'] ?? [];
 
 		// since filter
-		$posts = array_filter($posts, function(array $post) use ($since) {
+		$posts = array_filter($posts, function (array $post) use ($since) {
 			$postTs = (int) $post['create_at'];
 			return $postTs > $since;
 		});
@@ -180,7 +179,7 @@ class MattermostAPIService {
 		$posts = $this->addPostInfos($posts, $userId);
 
 		// sort post by creation date, DESC
-		usort($posts, function($a, $b) {
+		usort($posts, function ($a, $b) {
 			$ta = (int) $a['create_at'];
 			$tb = (int) $b['create_at'];
 			return ($ta > $tb) ? -1 : 1;
@@ -294,7 +293,7 @@ class MattermostAPIService {
 		$mattermostUserId = $this->config->getUserValue($userId, Application::APP_ID, 'user_id');
 		$channelResult = $this->request($userId, 'users/' . $mattermostUserId . '/channels');
 		if (isset($channelResult['error'])) {
-			return $channelResult;
+			return (array)$channelResult;
 		}
 
 		// get team names
@@ -343,7 +342,7 @@ class MattermostAPIService {
 			}
 		}
 
-		return $channelResult;
+		return (array)$channelResult;
 	}
 
 	/**
@@ -379,9 +378,16 @@ class MattermostAPIService {
 	 * @throws NotPermittedException
 	 * @throws PreConditionNotMetException
 	 */
-	public function sendPublicLinks(string $userId, array $fileIds,
-							  string $channelId, string $channelName, string $comment,
-							  string $permission, ?string $expirationDate = null, ?string $password = null): array {
+	public function sendPublicLinks(
+		string $userId,
+		array $fileIds,
+		string $channelId,
+		string $channelName,
+		string $comment,
+		string $permission,
+		?string $expirationDate = null,
+		?string $password = null
+	): array {
 		$links = [];
 		$userFolder = $this->root->getUserFolder($userId);
 
@@ -466,7 +472,7 @@ class MattermostAPIService {
 			$endpoint = 'files?channel_id=' . urlencode($channelId) . '&filename=' . urlencode($file->getName());
 			$sendResult = $this->requestSendFile($userId, $endpoint, $file->fopen('r'));
 			if (isset($sendResult['error'])) {
-				return $sendResult;
+				return (array)$sendResult;
 			}
 
 			if (isset($sendResult['file_infos']) && is_array($sendResult['file_infos']) && count($sendResult['file_infos']) > 0) {
@@ -485,7 +491,7 @@ class MattermostAPIService {
 	/**
 	 * @param string $userId
 	 * @param string $endPoint
-	 * @param $fileResource
+	 * @param resource $fileResource
 	 * @return array|mixed|resource|string|string[]
 	 * @throws PreConditionNotMetException
 	 */
@@ -497,8 +503,8 @@ class MattermostAPIService {
 			$url = $mattermostUrl . '/api/v4/' . $endPoint;
 			$options = [
 				'headers' => [
-					'Authorization'  => 'Bearer ' . $accessToken,
-					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
+					'Authorization' => 'Bearer ' . $accessToken,
+					'User-Agent' => Application::INTEGRATION_USER_AGENT,
 				],
 				'body' => $fileResource,
 			];
@@ -513,7 +519,7 @@ class MattermostAPIService {
 				return json_decode($body, true);
 			}
 		} catch (ServerException | ClientException $e) {
-			$this->logger->warning('Mattermost API send file error : '.$e->getMessage(), ['app' => Application::APP_ID]);
+			$this->logger->error('Mattermost API send file error : '.$e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}
@@ -527,72 +533,16 @@ class MattermostAPIService {
 	 * @return array|mixed|resource|string|string[]
 	 * @throws PreConditionNotMetException
 	 */
-	public function request(string $userId, string $endPoint, array $params = [], string $method = 'GET',
-							bool $jsonResponse = true) {
+	public function request(
+		string $userId,
+		string $endPoint,
+		array $params = [],
+		string $method = 'GET',
+		bool $jsonResponse = true,
+	) {
 		$mattermostUrl = $this->getMattermostUrl($userId);
 		$this->checkTokenExpiration($userId, $mattermostUrl);
-		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
-		try {
-			$url = $mattermostUrl . '/api/v4/' . $endPoint;
-			$options = [
-				'headers' => [
-					'Authorization'  => 'Bearer ' . $accessToken,
-					'Content-Type' => 'application/x-www-form-urlencoded',
-					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
-				],
-			];
-
-			if (count($params) > 0) {
-				if ($method === 'GET') {
-					// manage array parameters
-					$paramsContent = '';
-					foreach ($params as $key => $value) {
-						if (is_array($value)) {
-							foreach ($value as $oneArrayValue) {
-								$paramsContent .= $key . '[]=' . urlencode($oneArrayValue) . '&';
-							}
-							unset($params[$key]);
-						}
-					}
-					$paramsContent .= http_build_query($params);
-
-					$url .= '?' . $paramsContent;
-				} else {
-					$options['json'] = $params;
-				}
-			}
-
-			if ($method === 'GET') {
-				$response = $this->client->get($url, $options);
-			} else if ($method === 'POST') {
-				$response = $this->client->post($url, $options);
-			} else if ($method === 'PUT') {
-				$response = $this->client->put($url, $options);
-			} else if ($method === 'DELETE') {
-				$response = $this->client->delete($url, $options);
-			} else {
-				return ['error' => $this->l10n->t('Bad HTTP method')];
-			}
-			$body = $response->getBody();
-			$respCode = $response->getStatusCode();
-
-			if ($respCode >= 400) {
-				return ['error' => $this->l10n->t('Bad credentials')];
-			} else {
-				if ($jsonResponse) {
-					return json_decode($body, true);
-				} else {
-					return $body;
-				}
-			}
-		} catch (ServerException | ClientException $e) {
-			$body = $e->getResponse()->getBody();
-			$this->logger->warning('Mattermost API error : ' . $body, ['app' => Application::APP_ID]);
-			return ['error' => $e->getMessage()];
-		} catch (Exception | Throwable $e) {
-			$this->logger->warning('Mattermost API error', ['exception' => $e, 'app' => Application::APP_ID]);
-			return ['error' => $e->getMessage()];
-		}
+		return $this->networkService->request($userId, $mattermostUrl, $endPoint, $params, $method, $jsonResponse);
 	}
 
 	/**
@@ -643,9 +593,9 @@ class MattermostAPIService {
 			$this->config->setUserValue($userId, Application::APP_ID, 'token', $accessToken);
 			$this->config->setUserValue($userId, Application::APP_ID, 'refresh_token', $refreshToken);
 			if (isset($result['expires_in'])) {
-				$nowTs = (new Datetime())->getTimestamp();
+				$nowTs = (new DateTime())->getTimestamp();
 				$expiresAt = $nowTs + (int) $result['expires_in'];
-				$this->config->setUserValue($userId, Application::APP_ID, 'token_expires_at', $expiresAt);
+				$this->config->setUserValue($userId, Application::APP_ID, 'token_expires_at', strval($expiresAt));
 			}
 			return true;
 		} else {
@@ -653,7 +603,7 @@ class MattermostAPIService {
 			$this->logger->error(
 				'Token is not valid anymore. Impossible to refresh it. '
 					. $result['error'] . ' '
-					. $result['error_description'] ?? '[no error description]',
+					. ($result['error_description'] ?? '[no error description]'),
 				['app' => Application::APP_ID]
 			);
 			return false;
@@ -671,7 +621,7 @@ class MattermostAPIService {
 			$url = $url . '/oauth/access_token';
 			$options = [
 				'headers' => [
-					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
+					'User-Agent' => Application::INTEGRATION_USER_AGENT,
 				]
 			];
 
@@ -686,11 +636,11 @@ class MattermostAPIService {
 
 			if ($method === 'GET') {
 				$response = $this->client->get($url, $options);
-			} else if ($method === 'POST') {
+			} elseif ($method === 'POST') {
 				$response = $this->client->post($url, $options);
-			} else if ($method === 'PUT') {
+			} elseif ($method === 'PUT') {
 				$response = $this->client->put($url, $options);
-			} else if ($method === 'DELETE') {
+			} elseif ($method === 'DELETE') {
 				$response = $this->client->delete($url, $options);
 			} else {
 				return ['error' => $this->l10n->t('Bad HTTP method')];
@@ -704,7 +654,7 @@ class MattermostAPIService {
 				return json_decode($body, true);
 			}
 		} catch (Exception $e) {
-			$this->logger->warning('Mattermost OAuth error : '.$e->getMessage(), ['app' => Application::APP_ID]);
+			$this->logger->error('Mattermost OAuth error : '.$e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}
@@ -720,7 +670,7 @@ class MattermostAPIService {
 			$url = $baseUrl . '/api/v4/users/login';
 			$options = [
 				'headers' => [
-					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
+					'User-Agent' => Application::INTEGRATION_USER_AGENT,
 					'Content-Type' => 'application/x-www-form-urlencoded',
 				],
 				'json' => [
@@ -745,7 +695,7 @@ class MattermostAPIService {
 				return ['error' => $this->l10n->t('Invalid response')];
 			}
 		} catch (Exception $e) {
-			$this->logger->warning('Mattermost login error : '.$e->getMessage(), ['app' => Application::APP_ID]);
+			$this->logger->error('Mattermost login error : '.$e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}

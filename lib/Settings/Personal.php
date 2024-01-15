@@ -1,13 +1,12 @@
 <?php
+
 namespace OCA\Mattermost\Settings;
 
-use OCA\Mattermost\Service\MattermostAPIService;
+use OCA\Mattermost\AppInfo\Application;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\IConfig;
 use OCP\Settings\ISettings;
-
-use OCA\Mattermost\AppInfo\Application;
 
 class Personal implements ISettings {
 
@@ -24,9 +23,9 @@ class Personal implements ISettings {
 	public function getForm(): TemplateResponse {
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
 
-//		if ($token) {
-//			$this->mattermostAPIService->checkToken();
-//		}
+		// if ($token) {
+		// 	$this->mattermostAPIService->checkToken();
+		// }
 
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
 		$searchMessagesEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'search_messages_enabled', '0') === '1';

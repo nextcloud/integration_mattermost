@@ -1,8 +1,9 @@
 <?php
+
 namespace OCA\Mattermost\Settings;
 
-use OCP\IURLGenerator;
 use OCP\IL10N;
+use OCP\IURLGenerator;
 use OCP\Settings\IIconSection;
 
 class AdminSection implements IIconSection {
@@ -42,9 +43,9 @@ class AdminSection implements IIconSection {
 	}
 
 	/**
-	 * @return ?string The relative path to a an icon describing the section
+	 * @return string The relative path to a an icon describing the section
 	 */
-	public function getIcon(): ?string {
+	public function getIcon(): string {
 		return $this->urlGenerator->imagePath('core', 'categories/integration.svg');
 	}
 

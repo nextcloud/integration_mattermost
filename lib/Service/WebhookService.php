@@ -12,7 +12,6 @@
 
 namespace OCA\Mattermost\Service;
 
-
 use DateInterval;
 use DateTime;
 use DateTimeImmutable;
@@ -20,7 +19,6 @@ use DateTimeZone;
 use Exception;
 use Generator;
 use OCA\Mattermost\AppInfo\Application;
-use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Calendar\IManager;
 use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
@@ -283,7 +281,7 @@ class WebhookService {
 			$stringContent = json_encode($content);
 			$options = [
 				'headers' => [
-					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
+					'User-Agent' => Application::INTEGRATION_USER_AGENT,
 					'Content-Type' => 'application/json',
 				],
 				'body' => $stringContent,

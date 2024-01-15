@@ -13,23 +13,21 @@ use Closure;
 use OCA\DAV\Events\CalendarObjectCreatedEvent;
 use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
+use OCA\Mattermost\Dashboard\MattermostWidget;
 use OCA\Mattermost\Listener\CalendarObjectCreatedListener;
 use OCA\Mattermost\Listener\CalendarObjectUpdatedListener;
 use OCA\Mattermost\Reference\MessageReferenceProvider;
+use OCA\Mattermost\Search\MattermostSearchMessagesProvider;
+use OCP\AppFramework\App;
+use OCP\AppFramework\Bootstrap\IBootContext;
+use OCP\AppFramework\Bootstrap\IBootstrap;
+use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\INavigationManager;
 use OCP\IURLGenerator;
 use OCP\IUserSession;
-
-use OCP\AppFramework\App;
-use OCP\AppFramework\Bootstrap\IRegistrationContext;
-use OCP\AppFramework\Bootstrap\IBootContext;
-use OCP\AppFramework\Bootstrap\IBootstrap;
-
-use OCA\Mattermost\Dashboard\MattermostWidget;
-use OCA\Mattermost\Search\MattermostSearchMessagesProvider;
 use OCP\Util;
 
 class Application extends App implements IBootstrap {
@@ -114,4 +112,3 @@ class Application extends App implements IBootstrap {
 		}
 	}
 }
-

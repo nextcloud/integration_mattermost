@@ -29,6 +29,9 @@ use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IConfig;
 
+/**
+ * @template-implements IEventListener<Event>
+ */
 abstract class AbstractListener implements IEventListener {
 
 	public function __construct(
