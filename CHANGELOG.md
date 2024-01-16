@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.6 – 2024-01-17
+
+### Fixed
+
+- better usage of file actions options
+- minor fixes
+
 ## 1.0.5 – 2023-11-02
 
 ### Changed
