@@ -25,7 +25,7 @@ OC.L10N.register(
     "Set expiration date" : "Imposta data di scadenza",
     "Comment" : "Commento",
     "Cancel" : "Annulla",
-    "password" : "parola d'ordine",
+    "password" : "password",
     "View only" : "Sola lettura",
     "Edit" : "Modifica",
     "Nothing" : "Niente",
