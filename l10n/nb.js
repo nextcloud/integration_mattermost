@@ -12,6 +12,7 @@ OC.L10N.register(
     "Use a popup to authenticate" : "Bruk en popup for å autentisere",
     "Invalid access token" : "Ugyldig tilgangstoken",
     "Files" : "Filer",
+    "Channel" : "Kanal",
     "Set expiration date" : "Sett utløpsdato",
     "Comment" : "Kommentar",
     "Cancel" : "Avbryt",
