@@ -13,6 +13,7 @@ OC.L10N.register(
     "Invalid access token" : "Ugyldig tilgangstoken",
     "Files" : "Filer",
     "Channel" : "Kanal",
+    "Type" : "Type",
     "Set expiration date" : "Sett utløpsdato",
     "Comment" : "Kommentar",
     "Cancel" : "Avbryt",
