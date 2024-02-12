@@ -14,6 +14,7 @@ OC.L10N.register(
     "Type" : "Genia",
     "Comment" : "Cummentu",
     "Cancel" : "Annulla",
+    "View only" : "Isceti in visualizatzione",
     "Edit" : "Modìfica",
     "Upload files" : "Càrriga archìvios"
 },
