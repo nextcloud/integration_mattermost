@@ -1,12 +1,16 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Could not encrypt client secret" : "Kunne ikke kryptere klienthemmelighet",
+    "Invalid client secret" : "Ugyldig klienthemmelighet",
     "Error getting OAuth access token. " : "Feil ved henting av OAuth-tilgangstoken. ",
     "Error during OAuth exchanges" : "En feil oppsto under OAuth-utvekslingen",
     "Bad HTTP method" : "HTTP-metode er feil",
     "Bad credentials" : "Påloggingsdetaljene er feil",
     "OAuth access token refused" : "OAuth access token ble avslått",
     "Connected accounts" : "Tilknyttede kontoer",
+    "Slack Integration" : "Slack-integrasjon",
+    "Integration of Slack" : "Integrasjon av Slack",
     "Client ID" : "Klient-ID",
     "Application secret" : "Søknadshemmelighet",
     "Use a popup to authenticate" : "Bruk en popup for å autentisere",
