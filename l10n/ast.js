@@ -5,6 +5,7 @@ OC.L10N.register(
     "Type" : "Triba",
     "Comment" : "Comentariu",
     "Cancel" : "Encaboxar",
+    "View only" : "Ver namás",
     "Edit" : "Editar"
 },
 "nplurals=2; plural=(n != 1);");
