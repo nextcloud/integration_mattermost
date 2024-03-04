@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Password" : "Contraseña",
     "Files" : "Ficheros",
+    "Type" : "Tipu",
     "Comment" : "Comentariu",
     "Cancel" : "Encaboxar",
     "View only" : "Ver namás",
