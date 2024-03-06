@@ -399,10 +399,10 @@ export default {
 			this.$set(this.fileStates, id, STATES.FINISHED)
 		},
 		getTeamIconUrl(teamId) {
-			return generateUrl('/apps/integration_mattermost/teams/{teamId}/image', { teamId }) + '?useFallback=0'
+			return generateUrl('/apps/integration_mattermost/teams/{teamId}/image', { teamId })
 		},
 		getUserIconUrl(userId) {
-			return generateUrl('/apps/integration_mattermost/users/{userId}/image', { userId }) + '?useFallback=0'
+			return generateUrl('/apps/integration_mattermost/users/{userId}/image', { userId })
 		},
 		isDateDisabled(d) {
 			const now = new Date()
