@@ -145,7 +145,7 @@
 							{{ t('integration_mattermost', 'Set expiration date') }}
 						</NcCheckboxRadioSwitch>
 						<div class="spacer" />
-						<NcDatetimePicker v-show="expirationEnabled"
+						<NcDateTimePicker v-show="expirationEnabled"
 							id="expiration-datepicker"
 							v-model="expirationDate"
 							:disabled-date="isDateDisabled"
@@ -210,33 +210,33 @@
 </template>
 
 <script>
-import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
-import NcHighlight from '@nextcloud/vue/dist/Components/NcHighlight.js'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
-import NcDatetimePicker from '@nextcloud/vue/dist/Components/NcDatetimePicker.js'
-import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
-import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import NcAvatar from '@nextcloud/vue/dist/Components/NcAvatar.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import NcDateTimePicker from '@nextcloud/vue/dist/Components/NcDateTimePicker.js'
+import NcHighlight from '@nextcloud/vue/dist/Components/NcHighlight.js'
+import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
+import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
+import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
 
-import SendIcon from 'vue-material-design-icons/Send.vue'
-import FileIcon from 'vue-material-design-icons/File.vue'
-import CloseIcon from 'vue-material-design-icons/Close.vue'
-import PoundBoxIcon from 'vue-material-design-icons/PoundBox.vue'
-import PackageUpIcon from 'vue-material-design-icons/PackageUp.vue'
-import CommentIcon from 'vue-material-design-icons/Comment.vue'
-import CheckCircleIcon from 'vue-material-design-icons/CheckCircle.vue'
 import AlertBoxIcon from 'vue-material-design-icons/AlertBox.vue'
-import PencilIcon from 'vue-material-design-icons/Pencil.vue'
+import CheckCircleIcon from 'vue-material-design-icons/CheckCircle.vue'
+import CloseIcon from 'vue-material-design-icons/Close.vue'
+import CommentIcon from 'vue-material-design-icons/Comment.vue'
 import EyeIcon from 'vue-material-design-icons/Eye.vue'
+import FileIcon from 'vue-material-design-icons/File.vue'
+import PackageUpIcon from 'vue-material-design-icons/PackageUp.vue'
+import PencilIcon from 'vue-material-design-icons/Pencil.vue'
+import PoundBoxIcon from 'vue-material-design-icons/PoundBox.vue'
+import SendIcon from 'vue-material-design-icons/Send.vue'
 
-import RadioElementSet from './RadioElementSet.vue'
 import axios from '@nextcloud/axios'
-import { generateUrl } from '@nextcloud/router'
 import { showError } from '@nextcloud/dialogs'
-import MattermostIcon from './icons/MattermostIcon.vue'
-import { humanFileSize, SEND_TYPE } from '../utils.js'
 import { FileType } from '@nextcloud/files'
+import { generateUrl } from '@nextcloud/router'
+import { humanFileSize, SEND_TYPE } from '../utils.js'
+import MattermostIcon from './icons/MattermostIcon.vue'
+import RadioElementSet from './RadioElementSet.vue'
 
 const STATES = {
 	IN_PROGRESS: 1,
@@ -250,7 +250,7 @@ export default {
 		MattermostIcon,
 		NcSelect,
 		NcCheckboxRadioSwitch,
-		NcDatetimePicker,
+		NcDateTimePicker,
 		NcHighlight,
 		NcModal,
 		RadioElementSet,
