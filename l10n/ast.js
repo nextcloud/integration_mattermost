@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Client ID" : "ID de veceru",
     "Files" : "Ficheros",
     "Type" : "Triba",
     "Comment" : "Comentariu",
