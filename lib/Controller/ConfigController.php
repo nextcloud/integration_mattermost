@@ -15,7 +15,8 @@ namespace OCA\Slack\Controller;
 
 use DateTime;
 use Exception;
-
+use OCA\Slack\AppInfo\Application;
+use OCA\Slack\Service\SlackAPIService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
@@ -28,9 +29,6 @@ use OCP\IURLGenerator;
 use OCP\PreConditionNotMetException;
 use OCP\Security\ICrypto;
 use Psr\Log\LoggerInterface;
-
-use OCA\Slack\AppInfo\Application;
-use OCA\Slack\Service\SlackAPIService;
 
 class ConfigController extends Controller {
 
@@ -210,7 +208,7 @@ class ConfigController extends Controller {
 				if (isset($result['authed_user']['expires_in'])) {
 					$nowTs = (new Datetime())->getTimestamp();
 					$expiresAt = $nowTs + (int) $result['authed_user']['expires_in'];
-					$this->config->setUserValue($this->userId, Application::APP_ID, 'token_expires_at', $expiresAt);
+					$this->config->setUserValue($this->userId, Application::APP_ID, 'token_expires_at', strval($expiresAt));
 				}
 
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $accessToken);
@@ -252,7 +250,7 @@ class ConfigController extends Controller {
 				}
 			}
 
-			$result = $this->l->t('Error getting OAuth access token. ' . $result['error'] ?? '');
+			$result = $this->l->t('Error getting OAuth access token. ' . ($result['error'] ?? ''));
 		} else {
 			$result = $this->l->t('Error during OAuth exchanges');
 		}
@@ -263,7 +261,7 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * @return string
+	 * @return array{user_id: string, user_displayname: string}
 	 * @throws PreConditionNotMetException
 	 */
 	private function storeUserInfo(string $slackUserId = ''): array {

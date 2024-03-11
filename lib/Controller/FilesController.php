@@ -12,7 +12,7 @@
 namespace OCA\Slack\Controller;
 
 use Exception;
-
+use OCA\Slack\Service\ImageService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDownloadResponse;
@@ -22,8 +22,6 @@ use OCP\AppFramework\Http\Response;
 use OCP\IRequest;
 use Psr\Log\LoggerInterface;
 use Throwable;
-
-use OCA\Slack\Service\ImageService;
 
 class FilesController extends Controller {
 

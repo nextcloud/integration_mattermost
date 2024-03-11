@@ -4,6 +4,9 @@ namespace OCA\Slack\Tests;
 
 use OC\Http\Client\ClientService;
 use OC\L10N\L10N;
+use OCA\Slack\AppInfo\Application;
+use OCA\Slack\Service\NetworkService;
+use OCA\Slack\Service\SlackAPIService;
 use OCP\Files\IRootFolder;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
@@ -13,10 +16,6 @@ use OCP\Security\ICrypto;
 use OCP\Share\IManager as ShareManager;
 use Psr\Log\LoggerInterface;
 use Test\TestCase;
-
-use OCA\Slack\AppInfo\Application;
-use OCA\Slack\Service\NetworkService;
-use OCA\Slack\Service\SlackAPIService;
 
 class SlackAPIServiceTest extends TestCase {
 	private LoggerInterface $logger;
@@ -72,12 +71,15 @@ class SlackAPIServiceTest extends TestCase {
 			string $endPoint,
 			array $params,
 		) {
-			if (isset($params['user']) && $params['user'] === 'slackid2')
+			if (isset($params['user']) && $params['user'] === 'slackid2') {
 				return [ 'user' => [ 'real_name' => 'realname' ] ];
-			if (isset($params['user']) && $params['user'] === 'slackid3')
+			}
+			if (isset($params['user']) && $params['user'] === 'slackid3') {
 				return [ 'user' => [ 'profile' => [ 'image_48' => 'image_location_url' ] ] ];
-			if ($endPoint === 'image_location_url')
+			}
+			if ($endPoint === 'image_location_url') {
 				return 'image_content';
+			}
 
 			return 'dummy';
 		});
@@ -99,18 +101,21 @@ class SlackAPIServiceTest extends TestCase {
 			array $params,
 		) {
 			if ($endPoint === 'users.info') {
-				if (!isset($params['user']))
+				if (!isset($params['user'])) {
 					return [ 'error' => 'invalid request' ];
-				if ($params['user'] === 'U061F7PAK')
+				}
+				if ($params['user'] === 'U061F7PAK') {
 					return [ 'error' => 'invalid user' ];
+				}
 
 				return [ 'user' => [ 'real_name' => 'realname' ] ];
 			}
 
-			if ($endPoint !== 'conversations.list')
+			if ($endPoint !== 'conversations.list') {
 				return [ 'error' => 'invalid endpoint: ' . $endPoint ];
+			}
 
-			if (isset($params) && $userId === 'user')
+			if (isset($params) && $userId === 'user') {
 				return [ 'channels' => [
 					[
 						'id' => 'channelid1',
@@ -132,8 +137,9 @@ class SlackAPIServiceTest extends TestCase {
 						],
 					]
 				] ];
+			}
 
-			if (isset($params) && $userId === 'user2')
+			if (isset($params) && $userId === 'user2') {
 				return [ 'channels' => [
 					[
 						'id' => 'groupid1',
@@ -165,6 +171,7 @@ class SlackAPIServiceTest extends TestCase {
 						'user' => 'U061F7PAK',
 					],
 				] ];
+			}
 
 			return [ 'error' => 'invalid request' ];
 		});
