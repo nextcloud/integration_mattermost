@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.0.7 – 2024-03-13
+
+### Fixed
+
+- Use fallback image for icon urls
+- Update node deps and fixes
+- Update workflows from templates
+
 ## 1.0.6 – 2024-01-17
 
 ### Fixed
