@@ -63,7 +63,7 @@
 					class="channel-select"
 					label="name"
 					:clearable="false"
-					:options="sortedChannels"
+					:options="channels"
 					:append-to-body="false"
 					:placeholder="t('integration_slack', 'Choose a conversation')"
 					input-id="slack-channel-select"
@@ -306,12 +306,6 @@ export default {
 				&& (this.sendType !== SEND_TYPE.file.id || !this.onlyDirectories)
 				&& this.files.length > 0
 		},
-		sortedChannels() {
-			if (this.channels === undefined) {
-				return []
-			}
-			return this.channels.slice().sort((a, b) => b.updated - a.updated)
-		},
 	},
 
 	mounted() {
@@ -367,8 +361,9 @@ export default {
 			const url = generateUrl('apps/integration_slack/channels')
 			axios.get(url).then((response) => {
 				this.channels = response.data ?? []
-				if (this.sortedChannels.length > 0) {
-					this.selectedChannel = this.sortedChannels[0]
+				this.channels.sort((a, b) => a.name.localeCompare(b.name))
+				if (this.channels.length > 0) {
+					this.selectedChannel = this.channels[0]
 				}
 			}).catch((error) => {
 				showError(t('integration_slack', 'Failed to load Slack channels'))
