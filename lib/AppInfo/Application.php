@@ -11,13 +11,12 @@
 
 namespace OCA\Slack\AppInfo;
 
+use OCA\Slack\Listener\FilesMenuListener;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\Collaboration\Resources\LoadAdditionalScriptsEvent;
-
-use OCA\Slack\Listener\FilesMenuListener;
 
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'integration_slack';

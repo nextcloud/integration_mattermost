@@ -222,7 +222,7 @@ const sendFile
 			showError(
 				t('integration_slack', 'Failed to send {name} to {channelName} on Slack',
 					{ name: file.name, channelName })
-				+ ': ' + error.response?.request?.responseText
+				+ ': ' + error.response?.request?.responseText,
 			)
 			reject(error)
 		})
@@ -267,15 +267,15 @@ OCA.Slack.SlackSendModalVue.$on('validate', ({ filesToSend, channelId, channelNa
 						fileName: OCA.Slack.filesToSend[0].name,
 						channelName,
 						number: OCA.Slack.filesToSend.length,
-					}
-				)
+					},
+				),
 			)
 			OCA.Slack.SlackSendModalVue.success()
 		}).catch((error) => {
 			errorCallback(error)
 			showError(
 				t('integration_slack', 'Failed to send links to Slack')
-				+ ' ' + error.response?.request?.responseText
+				+ ' ' + error.response?.request?.responseText,
 			)
 		})
 	} else if (type === SEND_TYPE.internal_link.id) {
@@ -290,8 +290,8 @@ OCA.Slack.SlackSendModalVue.$on('validate', ({ filesToSend, channelId, channelNa
 						fileName: OCA.Slack.filesToSend[0].name,
 						number: OCA.Slack.filesToSend.length,
 						channelName,
-					}
-				)
+					},
+				),
 			)
 			OCA.Slack.SlackSendModalVue.success()
 		}).catch((error) => {
@@ -305,9 +305,9 @@ OCA.Slack.SlackSendModalVue.$on('validate', ({ filesToSend, channelId, channelNa
 					{
 						fileName: OCA.Slack.filesToSend[0].name,
 						channelName,
-					}
+					},
 				)
-				+ ': ' + error.response?.request?.responseText
+				+ ': ' + error.response?.request?.responseText,
 			)
 		})
 	} else {
@@ -326,8 +326,8 @@ OCA.Slack.SlackSendModalVue.$on('validate', ({ filesToSend, channelId, channelNa
 						fileName: OCA.Slack.filesToSend[0].name,
 						number: OCA.Slack.filesToSend.length,
 						channelName,
-					}
-				)
+					},
+				),
 			)
 			OCA.Slack.SlackSendModalVue.success()
 		}).catch(errorCallback)

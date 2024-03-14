@@ -109,7 +109,7 @@ export default {
 		getUserIconUrl() {
 			return generateUrl(
 				'/apps/integration_slack/users/{slackUserId}/image',
-				{ slackUserId: this.state.user_id }
+				{ slackUserId: this.state.user_id },
 			) + '?useFallback=1'
 		},
 		onLogoutClick() {
@@ -152,7 +152,7 @@ export default {
 				.catch((error) => {
 					showError(
 						t('integration_slack', 'Failed to save Slack options')
-						+ ': ' + (error.response?.request?.responseText ?? '')
+						+ ': ' + (error.response?.request?.responseText ?? ''),
 					)
 					console.error(error)
 				})

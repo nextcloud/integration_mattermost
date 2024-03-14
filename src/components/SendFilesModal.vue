@@ -41,6 +41,7 @@
 							{{ myHumanFileSize(f.size, true) }}
 						</span>
 						<NcButton class="remove-file-button"
+							:aria-label="t('integration_slack', 'Remove file from list')"
 							@click="onRemoveFile(f.id)">
 							<template #icon>
 								<CloseIcon :size="20" />
@@ -52,7 +53,7 @@
 					<PoundBoxIcon />
 					<span>
 						<strong>
-							{{ t('integration_slack', 'Channel') }}
+							{{ t('integration_slack', 'Conversation') }}
 						</strong>
 					</span>
 					<NcLoadingIcon v-if="channels === undefined" :size="20" />
@@ -60,17 +61,18 @@
 				<NcSelect
 					v-model="selectedChannel"
 					class="channel-select"
+					label="name"
+					:clearable="false"
 					:options="sortedChannels"
-					label="display_name"
 					:append-to-body="false"
-					:placeholder="t('integration_slack', 'Choose a channel')"
+					:placeholder="t('integration_slack', 'Choose a conversation')"
 					input-id="slack-channel-select"
 					@search="query = $event">
 					<template #option="option">
 						<div class="select-option">
 							<NcAvatar v-if="option.type === 'channel'"
 								:size="34"
-								display-name="#" />
+								display-name="C" />
 							<NcAvatar v-else-if="option.type === 'group'">
 								<template #icon>
 									<AccountMultiple :size="34" />
@@ -79,7 +81,7 @@
 							<NcAvatar v-else-if="option.type === 'direct'"
 								:size="34"
 								:url="getUserIconUrl(option.id)"
-								display-name="U" />
+								:display-name="option.name" />
 							<NcHighlight
 								:text="option.name"
 								:search="query"
@@ -89,7 +91,7 @@
 					<template #selected-option="option">
 						<NcAvatar v-if="option.type === 'channel'"
 							:size="34"
-							display-name="#" />
+							display-name="C" />
 						<NcAvatar v-else-if="option.type === 'group'">
 							<template #icon>
 								<AccountMultiple :size="34" />
@@ -98,7 +100,7 @@
 						<NcAvatar v-else-if="option.type === 'direct'"
 							:size="34"
 							:url="getUserIconUrl(option.id)"
-							display-name="U" />
+							:display-name="option.name" />
 						<span class="multiselect-name">
 							{{ option.name }}
 						</span>
@@ -131,21 +133,14 @@
 						:options="permissionOptions"
 						:value="selectedPermission"
 						class="radios"
-						@update:value="selectedPermission = $event">
-						<!--template #icon="{option}">
-							{{ option.label }}
-						</template-->
-						<!--template-- #label="{option}">
-							{{ option.label + 'lala' }}
-						</template-->
-					</RadioElementSet>
+						@update:value="selectedPermission = $event" />
 					<div v-show="sendType === SEND_TYPE.public_link.id"
 						class="expiration-field">
 						<NcCheckboxRadioSwitch :checked.sync="expirationEnabled">
 							{{ t('integration_slack', 'Set expiration date') }}
 						</NcCheckboxRadioSwitch>
 						<div class="spacer" />
-						<NcDatetimePicker v-show="expirationEnabled"
+						<NcDateTimePicker v-show="expirationEnabled"
 							id="expiration-datepicker"
 							v-model="expirationDate"
 							:disabled-date="isDateDisabled"
@@ -188,20 +183,23 @@
 				<div class="slack-footer">
 					<div class="spacer" />
 					<NcButton
+						:aria-label="t('integration_slack', 'Cancel')"
 						@click="closeModal">
 						{{ t('integration_slack', 'Cancel') }}
 					</NcButton>
 					<NcButton type="primary"
 						:class="{ loading, okButton: true }"
 						:disabled="!canValidate"
+						:aria-label="sendType === SEND_TYPE.file.id
+							? n('integration_slack', 'Send file', 'Send files', files.length)
+							: n('integration_slack', 'Send link', 'Send links', files.length)"
 						@click="onSendClick">
 						<template #icon>
 							<SendIcon />
 						</template>
 						{{ sendType === SEND_TYPE.file.id
 							? n('integration_slack', 'Send file', 'Send files', files.length)
-							: n('integration_slack', 'Send link', 'Send links', files.length)
-						}}
+							: n('integration_slack', 'Send link', 'Send links', files.length) }}
 					</NcButton>
 				</div>
 			</div>
@@ -210,34 +208,34 @@
 </template>
 
 <script>
-import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
-import NcHighlight from '@nextcloud/vue/dist/Components/NcHighlight.js'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
-import NcDatetimePicker from '@nextcloud/vue/dist/Components/NcDatetimePicker.js'
-import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
-import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import NcAvatar from '@nextcloud/vue/dist/Components/NcAvatar.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import NcDateTimePicker from '@nextcloud/vue/dist/Components/NcDateTimePicker.js'
+import NcHighlight from '@nextcloud/vue/dist/Components/NcHighlight.js'
+import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
+import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
+import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
 
-import SendIcon from 'vue-material-design-icons/Send.vue'
-import FileIcon from 'vue-material-design-icons/File.vue'
-import CloseIcon from 'vue-material-design-icons/Close.vue'
-import PoundBoxIcon from 'vue-material-design-icons/PoundBox.vue'
-import PackageUpIcon from 'vue-material-design-icons/PackageUp.vue'
-import CommentIcon from 'vue-material-design-icons/Comment.vue'
-import CheckCircleIcon from 'vue-material-design-icons/CheckCircle.vue'
-import AlertBoxIcon from 'vue-material-design-icons/AlertBox.vue'
-import PencilIcon from 'vue-material-design-icons/Pencil.vue'
-import EyeIcon from 'vue-material-design-icons/Eye.vue'
 import AccountMultiple from 'vue-material-design-icons/AccountMultiple.vue'
+import AlertBoxIcon from 'vue-material-design-icons/AlertBox.vue'
+import CheckCircleIcon from 'vue-material-design-icons/CheckCircle.vue'
+import CloseIcon from 'vue-material-design-icons/Close.vue'
+import CommentIcon from 'vue-material-design-icons/Comment.vue'
+import EyeIcon from 'vue-material-design-icons/Eye.vue'
+import FileIcon from 'vue-material-design-icons/File.vue'
+import PackageUpIcon from 'vue-material-design-icons/PackageUp.vue'
+import PencilIcon from 'vue-material-design-icons/Pencil.vue'
+import PoundBoxIcon from 'vue-material-design-icons/PoundBox.vue'
+import SendIcon from 'vue-material-design-icons/Send.vue'
 
-import RadioElementSet from './RadioElementSet.vue'
 import axios from '@nextcloud/axios'
-import { generateUrl } from '@nextcloud/router'
 import { showError } from '@nextcloud/dialogs'
-import SlackIcon from './icons/SlackIcon.vue'
-import { humanFileSize, SEND_TYPE } from '../utils.js'
 import { FileType } from '@nextcloud/files'
+import { generateUrl } from '@nextcloud/router'
+import { humanFileSize, SEND_TYPE } from '../utils.js'
+import SlackIcon from './icons/SlackIcon.vue'
+import RadioElementSet from './RadioElementSet.vue'
 
 const STATES = {
 	IN_PROGRESS: 1,
@@ -251,7 +249,7 @@ export default {
 		SlackIcon,
 		NcSelect,
 		NcCheckboxRadioSwitch,
-		NcDatetimePicker,
+		NcDateTimePicker,
 		NcHighlight,
 		NcModal,
 		RadioElementSet,
@@ -268,8 +266,6 @@ export default {
 		CloseIcon,
 		AccountMultiple,
 	},
-
-	props: [],
 
 	data() {
 		return {
@@ -316,9 +312,6 @@ export default {
 			}
 			return this.channels.slice().sort((a, b) => b.updated - a.updated)
 		},
-	},
-
-	watch: {
 	},
 
 	mounted() {
@@ -396,7 +389,7 @@ export default {
 			this.$set(this.fileStates, id, STATES.FINISHED)
 		},
 		getUserIconUrl(slackUserId) {
-			return generateUrl('/apps/integration_slack/users/{slackUserId}/image', { slackUserId }) + '?useFallback=0'
+			return generateUrl('/apps/integration_slack/users/{slackUserId}/image', { slackUserId })
 		},
 		isDateDisabled(d) {
 			const now = new Date()

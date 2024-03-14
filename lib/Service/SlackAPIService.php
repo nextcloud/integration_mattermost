@@ -13,13 +13,13 @@
 
 namespace OCA\Slack\Service;
 
-use Datetime;
+use DateTime;
 use Exception;
-
-use OC\Files\Node\File;
-use OC\Files\Node\Folder;
 use OC\User\NoUserException;
+use OCA\Slack\AppInfo\Application;
 use OCP\Constants;
+use OCP\Files\File;
+use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotPermittedException;
 use OCP\Http\Client\IClient;
@@ -33,9 +33,6 @@ use OCP\Security\ICrypto;
 use OCP\Share\IManager as ShareManager;
 use OCP\Share\IShare;
 use Psr\Log\LoggerInterface;
-
-use OCA\Slack\AppInfo\Application;
-use OCA\Slack\Service\NetworkService;
 
 /**
  * Service to make requests to Slack API
@@ -131,7 +128,7 @@ class SlackAPIService {
 		]);
 
 		if (isset($channelResult['error'])) {
-			return $channelResult;
+			return (array) $channelResult;
 		}
 
 		if (!isset($channelResult['channels']) || !is_array($channelResult['channels'])) {
@@ -169,14 +166,14 @@ class SlackAPIService {
 					'type' => 'group',
 					'updated' => $channel['updated'] ?? 0,
 				];
-			} else if (isset($channel['is_channel'], $channel['name']) && $channel['is_channel']) {
+			} elseif (isset($channel['is_channel'], $channel['name']) && $channel['is_channel']) {
 				$channels[] = [
 					'id' => $channel['id'],
 					'name' => $channel['name'],
 					'type' => 'channel',
 					'updated' => $channel['updated'] ?? 0,
 				];
-			} else if (isset($channel['user'], $channel['is_im']) && $channel['is_im']) {
+			} elseif (isset($channel['user'], $channel['is_im']) && $channel['is_im']) {
 				// need to make another request to get the real name
 				$realName = $this->getUserRealName($userId, $channel['user']);
 
@@ -227,8 +224,8 @@ class SlackAPIService {
 	 * @throws PreConditionNotMetException
 	 */
 	public function sendPublicLinks(string $userId, array $fileIds,
-							  string $channelId, string $channelName, string $comment,
-							  string $permission, ?string $expirationDate = null, ?string $password = null): array {
+		string $channelId, string $channelName, string $comment,
+		string $permission, ?string $expirationDate = null, ?string $password = null): array {
 		$links = [];
 		$userFolder = $this->root->getUserFolder($userId);
 
@@ -253,7 +250,7 @@ class SlackAPIService {
 				$share->setLabel('Slack (' . $channelName . ')');
 
 				if ($expirationDate !== null) {
-					$share->setExpirationDate(new Datetime($expirationDate));
+					$share->setExpirationDate(new DateTime($expirationDate));
 				}
 
 				if ($password !== null) {
@@ -329,7 +326,7 @@ class SlackAPIService {
 			$sendResult = $this->request($userId, 'files.upload', $params, 'POST');
 
 			if (isset($sendResult['error'])) {
-				return $sendResult;
+				return (array) $sendResult;
 			}
 
 			return ['success' => true];
@@ -338,19 +335,19 @@ class SlackAPIService {
 		}
 	}
 
-  /**
-    * @param string $userId
-    * @param string $endPoint
-    * @param array $params
-    * @param string $method
-    * @param bool $jsonResponse
-    * @param bool $slackApiRequest
-    * @return array|mixed|resource|string|string[]
-    * @throws PreConditionNotMetException
-    */
-  public function request(string $userId, string $endPoint, array $params = [], string $method = 'GET',
-              bool $jsonResponse = true, bool $slackApiRequest = true) {
-    $this->checkTokenExpiration($userId);
+	/**
+	 * @param string $userId
+	 * @param string $endPoint
+	 * @param array $params
+	 * @param string $method
+	 * @param bool $jsonResponse
+	 * @param bool $slackApiRequest
+	 * @return array|mixed|resource|string|string[]
+	 * @throws PreConditionNotMetException
+	 */
+	public function request(string $userId, string $endPoint, array $params = [], string $method = 'GET',
+		bool $jsonResponse = true, bool $slackApiRequest = true) {
+		$this->checkTokenExpiration($userId);
 		return $this->networkService->request($userId, $endPoint, $params, $method, $jsonResponse, $slackApiRequest);
 	}
 
@@ -363,7 +360,7 @@ class SlackAPIService {
 		$refreshToken = $this->config->getUserValue($userId, Application::APP_ID, 'refresh_token');
 		$expireAt = $this->config->getUserValue($userId, Application::APP_ID, 'token_expires_at');
 		if ($refreshToken !== '' && $expireAt !== '') {
-			$nowTs = (new Datetime())->getTimestamp();
+			$nowTs = (new DateTime())->getTimestamp();
 			$expireAt = (int) $expireAt;
 			// if token expires in less than a minute or is already expired
 			if ($nowTs > $expireAt - 60) {
@@ -410,9 +407,9 @@ class SlackAPIService {
 			$this->config->setUserValue($userId, Application::APP_ID, 'refresh_token', $refreshToken);
 
 			if (isset($result['expires_in'])) {
-				$nowTs = (new Datetime())->getTimestamp();
+				$nowTs = (new DateTime())->getTimestamp();
 				$expiresAt = $nowTs + (int) $result['expires_in'];
-				$this->config->setUserValue($userId, Application::APP_ID, 'token_expires_at', $expiresAt);
+				$this->config->setUserValue($userId, Application::APP_ID, 'token_expires_at', strval($expiresAt));
 			}
 
 			return true;
@@ -420,8 +417,8 @@ class SlackAPIService {
 			// impossible to refresh the token
 			$this->logger->error(
 				'Token is not valid anymore. Impossible to refresh it: '
-					. $result['error'] ?? '' . ' '
-					. $result['error_description'] ?? '[no error description]',
+					. ($result['error'] ?? '') . ' '
+					. ($result['error_description'] ?? '[no error description]'),
 				['app' => Application::APP_ID]
 			);
 
@@ -439,7 +436,7 @@ class SlackAPIService {
 		try {
 			$options = [
 				'headers' => [
-					'User-Agent'  => Application::INTEGRATION_USER_AGENT,
+					'User-Agent' => Application::INTEGRATION_USER_AGENT,
 				]
 			];
 
@@ -454,11 +451,11 @@ class SlackAPIService {
 
 			if ($method === 'GET') {
 				$response = $this->client->get($url, $options);
-			} else if ($method === 'POST') {
+			} elseif ($method === 'POST') {
 				$response = $this->client->post($url, $options);
-			} else if ($method === 'PUT') {
+			} elseif ($method === 'PUT') {
 				$response = $this->client->put($url, $options);
-			} else if ($method === 'DELETE') {
+			} elseif ($method === 'DELETE') {
 				$response = $this->client->delete($url, $options);
 			} else {
 				return ['error' => $this->l10n->t('Bad HTTP method')];

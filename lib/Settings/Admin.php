@@ -1,16 +1,15 @@
 <?php
+
 namespace OCA\Slack\Settings;
 
 use Exception;
-
+use OCA\Slack\AppInfo\Application;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\IConfig;
 use OCP\Security\ICrypto;
 use OCP\Settings\ISettings;
 use Psr\Log\LoggerInterface;
-
-use OCA\Slack\AppInfo\Application;
 
 class Admin implements ISettings {
 

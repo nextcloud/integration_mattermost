@@ -11,32 +11,34 @@
 
 namespace OCA\Slack\Listener;
 
+use OCA\Slack\AppInfo\Application;
 use OCP\Collaboration\Resources\LoadAdditionalScriptsEvent;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IConfig;
 use OCP\Util;
 
-use OCA\Slack\AppInfo\Application;
-
+/**
+ * @template-implements IEventListener<Event>
+ */
 class FilesMenuListener implements IEventListener {
 
-  public function __construct(private IConfig $config, private ?string $userId) {
-  }
+	public function __construct(private IConfig $config, private ?string $userId) {
+	}
 
-  public function handle(Event $event): void {
-    if (!$event instanceof LoadAdditionalScriptsEvent) {
-      return;
-    }
+	public function handle(Event $event): void {
+		if (!$event instanceof LoadAdditionalScriptsEvent) {
+			return;
+		}
 
-    if (is_null($this->userId)) {
-      return;
-    }
+		if (is_null($this->userId)) {
+			return;
+		}
 
-    if ($this->config->getUserValue($this->userId, Application::APP_ID, 'file_action_enabled', '1') !== '1') {
-      return;
-    }
+		if ($this->config->getUserValue($this->userId, Application::APP_ID, 'file_action_enabled', '1') !== '1') {
+			return;
+		}
 
-    Util::addInitScript(Application::APP_ID, Application::APP_ID . '-filesplugin');
-  }
+		Util::addInitScript(Application::APP_ID, Application::APP_ID . '-filesplugin');
+	}
 }

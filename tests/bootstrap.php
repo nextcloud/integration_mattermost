@@ -2,8 +2,7 @@
 
 require_once __DIR__ . '/../../../tests/bootstrap.php';
 
-use OCA\Slack\AppInfo\Application;
+use OCP\App\IAppManager;
 
-// remain compatible with stable26
-\OC_App::loadApp(Application::APP_ID);
+\OC::$server->get(IAppManager::class)->loadApps();
 OC_Hook::clear();

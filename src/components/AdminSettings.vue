@@ -123,7 +123,7 @@ export default {
 			}).catch((error) => {
 				showError(
 					t('integration_slack', 'Failed to save Slack admin options')
-					+ ': ' + (error.response?.request?.responseText ?? '')
+					+ ': ' + (error.response?.request?.responseText ?? ''),
 				)
 				console.error(error)
 			})

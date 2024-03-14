@@ -1,12 +1,12 @@
 <?php
+
 namespace OCA\Slack\Settings;
 
+use OCA\Slack\AppInfo\Application;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\IConfig;
 use OCP\Settings\ISettings;
-
-use OCA\Slack\AppInfo\Application;
 
 class Personal implements ISettings {
 

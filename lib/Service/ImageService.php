@@ -12,7 +12,7 @@
 
 namespace OCA\Slack\Service;
 
-use OC\Files\Node\File;
+use OCP\Files\File;
 use OCP\Files\IMimeTypeDetector;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
@@ -25,7 +25,7 @@ class ImageService {
 		private IRootFolder $root,
 		private LoggerInterface $logger,
 		private IPreview $previewManager,
-		private IMimeTypeDetector $mimeTypeDetector
+		private IMimeTypeDetector $mimeTypeDetector,
 	) {
 	}
 

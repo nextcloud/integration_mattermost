@@ -14,8 +14,8 @@
 namespace OCA\Slack\Controller;
 
 use Exception;
-
 use OC\User\NoUserException;
+use OCA\Slack\Service\SlackAPIService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDisplayResponse;
@@ -26,8 +26,6 @@ use OCP\IConfig;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\Lock\LockedException;
-
-use OCA\Slack\Service\SlackAPIService;
 
 class SlackAPIController extends Controller {
 
@@ -131,7 +129,7 @@ class SlackAPIController extends Controller {
 	 * @throws NotPermittedException
 	 */
 	public function sendPublicLinks(array $fileIds, string $channelId, string $channelName, string $comment,
-							  string $permission, ?string $expirationDate = null, ?string $password = null): DataResponse {
+		string $permission, ?string $expirationDate = null, ?string $password = null): DataResponse {
 		$result = $this->slackAPIService->sendPublicLinks(
 			$this->userId, $fileIds, $channelId, $channelName,
 			$comment, $permission, $expirationDate, $password
