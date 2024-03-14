@@ -65,7 +65,7 @@ export function oauthConnect(clientId, oauthOrigin, usePopup = false) {
 		}).catch((error) => {
 			showError(
 				t('integration_slack', 'Failed to save Slack OAuth state')
-				+ ': ' + (error.response?.request?.responseText ?? '')
+				+ ': ' + (error.response?.request?.responseText ?? ''),
 			)
 			console.error(error)
 		})
