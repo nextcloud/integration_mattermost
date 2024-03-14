@@ -1,10 +1,8 @@
 <?php
 
 require_once __DIR__ . '/../../../tests/bootstrap.php';
-require_once __DIR__ . '/../vendor/autoload.php';
 
-use OCA\Slack\AppInfo\Application;
 use OCP\App\IAppManager;
 
-\OC::$server->get(IAppManager::class)->loadApp(Application::APP_ID);
+\OC::$server->get(IAppManager::class)->loadApps();
 OC_Hook::clear();
