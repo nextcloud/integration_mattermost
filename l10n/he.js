@@ -9,7 +9,6 @@ OC.L10N.register(
     "Connected accounts" : "חשבונות מקושרים",
     "Client ID" : "מזהה לקו",
     "Files" : "קבצים",
-    "Channel" : "ערוץ",
     "Type" : "סוג",
     "Set expiration date" : "הגדרת תאריך תפוגה",
     "Comment" : "הערה",

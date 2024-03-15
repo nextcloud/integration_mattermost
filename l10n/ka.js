@@ -2,7 +2,6 @@ OC.L10N.register(
     "integration_slack",
     {
     "Client ID" : "Client ID",
-    "Channel" : "Channel",
     "Type" : "Type",
     "Set expiration date" : "Set expiration date",
     "Comment" : "Comment",

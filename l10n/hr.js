@@ -10,7 +10,6 @@ OC.L10N.register(
     "Client ID" : "ID klijenta",
     "Application secret" : "Tajni ključ aplikacije",
     "Files" : "Datoteke",
-    "Channel" : "Kanal",
     "Type" : "Vrsta",
     "Set expiration date" : "Postavi datum isteka",
     "Comment" : "Komentar",

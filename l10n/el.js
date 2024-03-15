@@ -36,8 +36,6 @@ OC.L10N.register(
     "Invalid access token" : "Μη έγκυρο διακριτικό πρόσβασης",
     "Failed to save Slack options" : "Αποτυχία αποθήκευσης των επιλογών του Slack",
     "Files" : "Αρχεία",
-    "Channel" : "Κανάλι",
-    "Choose a channel" : "Επιλέξτε ένα κανάλι",
     "Type" : "Τύπος",
     "Set expiration date" : "Ορισμός ημερομηνίας λήξης",
     "Expires on" : "Λήξη στις",

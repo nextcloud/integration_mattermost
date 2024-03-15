@@ -10,7 +10,6 @@ OC.L10N.register(
     "Client ID" : "Kliento ID",
     "Application secret" : "Programos paslaptis",
     "Files" : "Failai",
-    "Channel" : "Kanalas",
     "Type" : "Tipas",
     "Set expiration date" : "Nustatyti galiojimo pabaigos datą",
     "Comment" : "Komentaras",

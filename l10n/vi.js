@@ -4,7 +4,6 @@ OC.L10N.register(
     "Bad HTTP method" : "Phương thức HTTP không hợp lệ",
     "Client ID" : "ID khách hàng",
     "Files" : "Tệp",
-    "Channel" : "Kênh",
     "Type" : "Loại",
     "Set expiration date" : "Đặt ngày hết hạn",
     "Comment" : "Bình luận",

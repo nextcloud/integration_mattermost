@@ -30,8 +30,6 @@ OC.L10N.register(
     "Invalid access token" : "Érvénytelen hozzáférési token",
     "Failed to save Slack options" : "Slack beállítások mentése sikertelen",
     "Files" : "Fájlok",
-    "Channel" : "Csatorna",
-    "Choose a channel" : "Csatorna kiválasztása",
     "Type" : "Típus",
     "Set expiration date" : "Lejárati idő beállítása",
     "Expires on" : "Lejárat:",

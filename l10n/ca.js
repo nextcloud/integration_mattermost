@@ -10,7 +10,6 @@ OC.L10N.register(
     "Client ID" : "ID del client",
     "Application secret" : "Secret de l'aplicació",
     "Files" : "Fitxers",
-    "Channel" : "Canal",
     "Type" : "Tipus",
     "Set expiration date" : "Estableix la data de caducitat",
     "Comment" : "Comentari",

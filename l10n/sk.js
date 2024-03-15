@@ -13,7 +13,6 @@ OC.L10N.register(
     "Use a popup to authenticate" : "Pre overenie použite kontextové okno",
     "Invalid access token" : "Nesprávny prístupový token",
     "Files" : "Súbory",
-    "Channel" : "Kanál",
     "Type" : "Typ",
     "Set expiration date" : "Nastaviť dátum expirácie",
     "Comment" : "Komentár",

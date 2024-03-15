@@ -10,7 +10,7 @@ OC.L10N.register(
     "Client ID" : "ID client",
     "Application secret" : "Segreto applicazione",
     "Files" : "File",
-    "Channel" : "Canale",
+    "Conversation" : "Conversazione",
     "Type" : "Tipo",
     "Set expiration date" : "Imposta data di scadenza",
     "Comment" : "Commento",

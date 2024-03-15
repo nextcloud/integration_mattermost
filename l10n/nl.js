@@ -10,7 +10,6 @@ OC.L10N.register(
     "Client ID" : "Client ID",
     "Application secret" : "Application secret",
     "Files" : "Bestanden",
-    "Channel" : "Kanaal",
     "Type" : "Type",
     "Set expiration date" : "Instellen vervaldatum",
     "Comment" : "Notitie",

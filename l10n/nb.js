@@ -36,8 +36,6 @@ OC.L10N.register(
     "Invalid access token" : "Ugyldig tilgangstoken",
     "Failed to save Slack options" : "Lagring av alternativer for Slack feilet",
     "Files" : "Filer",
-    "Channel" : "Kanal",
-    "Choose a channel" : "Velg en kanal",
     "Type" : "Type",
     "Set expiration date" : "Sett utløpsdato",
     "Expires on" : "Utløper den",

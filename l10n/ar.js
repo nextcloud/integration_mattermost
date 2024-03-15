@@ -36,8 +36,6 @@ OC.L10N.register(
     "Invalid access token" : "أَمَارَة وصول token غير صحيحة",
     "Failed to save Slack options" : "تعذّر حفظ خيارات Slack",
     "Files" : "الملفّات",
-    "Channel" : "قناة",
-    "Choose a channel" : "فشل في حفظ خيارات برنامج Mattermost",
     "Type" : "حسب النوع",
     "Set expiration date" : "تعيين تاريخ إنتهاء الصلاحية",
     "Expires on" : "روابط عامة",

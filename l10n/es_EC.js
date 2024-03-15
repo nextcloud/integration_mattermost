@@ -12,8 +12,6 @@ OC.L10N.register(
     "Use a popup to authenticate" : "Usar un popup para la autenticación",
     "Invalid access token" : "Token de acceso no válido",
     "Files" : "Archivo",
-    "Channel" : "Canal",
-    "Choose a channel" : "Elegir un canal",
     "Type" : "Tipo",
     "Set expiration date" : "Establecer fecha de expiración",
     "Expires on" : "Expira el",

@@ -36,8 +36,6 @@ OC.L10N.register(
     "Invalid access token" : "無效的存取權杖",
     "Failed to save Slack options" : "儲存 Slack 選項失敗",
     "Files" : "檔案",
-    "Channel" : "頻道",
-    "Choose a channel" : "選擇頻道",
     "Type" : "類型",
     "Set expiration date" : "設定到期日",
     "Expires on" : "過期於",

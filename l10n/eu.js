@@ -12,8 +12,6 @@ OC.L10N.register(
     "Use a popup to authenticate" : "Erabili popup bat autentifikatzeko",
     "Invalid access token" : "Sarbide token baliogabea",
     "Files" : "Fitxategiak",
-    "Channel" : "Kanala",
-    "Choose a channel" : "Aukeratu kanal bat",
     "Type" : "Mota",
     "Set expiration date" : "Ezarri iraungitze-data",
     "Expires on" : "Iraungitze-data",

@@ -4,7 +4,6 @@ OC.L10N.register(
     "Bad credentials" : "Marrits identificants",
     "Connected accounts" : "Comptes connectats",
     "Client ID" : "ID client",
-    "Channel" : "Cadena",
     "Type" : "Tipe",
     "Set expiration date" : "Especificar una data d'expiracion",
     "Comment" : "Comentaris",

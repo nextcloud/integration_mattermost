@@ -11,8 +11,6 @@ OC.L10N.register(
     "Application secret" : "Sovelluksen salaisuus",
     "Use a popup to authenticate" : "Käytä ponnahdusikkunaa tunnistautumista varten",
     "Files" : "Tiedostot",
-    "Channel" : "Kanava",
-    "Choose a channel" : "Valitse kanava",
     "Type" : "Tyyppi",
     "Set expiration date" : "Aseta vanhenemispäivä",
     "Expires on" : "Vanhenee",

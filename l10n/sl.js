@@ -11,7 +11,6 @@ OC.L10N.register(
     "Application secret" : "Koda programa",
     "Use a popup to authenticate" : "Uporabi pojavno okno za overitev",
     "Files" : "Datoteke",
-    "Channel" : "Kanal",
     "Type" : "Vrsta",
     "Set expiration date" : "Nastavi datum preteka",
     "Comment" : "Opomba",

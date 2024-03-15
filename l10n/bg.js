@@ -12,8 +12,6 @@ OC.L10N.register(
     "Use a popup to authenticate" : "Използване на изскачащ прозорец за удостоверяване",
     "Invalid access token" : "Невалиден токен за достъп",
     "Files" : "Файлове",
-    "Channel" : "Канал",
-    "Choose a channel" : "Избор на канал",
     "Type" : "Тип",
     "Set expiration date" : "Срок на валидност",
     "Expires on" : "Изтича на",

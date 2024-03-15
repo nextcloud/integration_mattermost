@@ -3,8 +3,6 @@ OC.L10N.register(
     {
     "Client ID" : "Хэрэглэгчийн ID",
     "Files" : "Файлууд",
-    "Channel" : "Суваг",
-    "Choose a channel" : "Суваг сонгох",
     "Type" : "Төрөл",
     "Set expiration date" : "Дуусах хугацааг тохируулах",
     "Expires on" : "Дуусах хугацаа",

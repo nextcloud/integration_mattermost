@@ -10,7 +10,6 @@ OC.L10N.register(
     "Client ID" : "ID cliente",
     "Application secret" : "Segretu de s'aplicatzione",
     "Files" : "Archìvios",
-    "Channel" : "Canale",
     "Type" : "Genia",
     "Comment" : "Cummentu",
     "Cancel" : "Annulla",

@@ -12,7 +12,7 @@ OC.L10N.register(
     "Use a popup to authenticate" : "Użyj wyskakującego okienka do uwierzytelnienia",
     "Invalid access token" : "Nieprawidłowy token dostępu",
     "Files" : "Pliki",
-    "Channel" : "Kanał",
+    "Conversation" : "Rozmowa",
     "Type" : "Rodzaj",
     "Set expiration date" : "Ustaw datę wygaśnięcia",
     "Comment" : "Komentarz",

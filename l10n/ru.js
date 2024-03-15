@@ -12,7 +12,6 @@ OC.L10N.register(
     "Use a popup to authenticate" : "Используйте всплывающее окно для аутентификации",
     "Invalid access token" : "Неверный маркер доступа",
     "Files" : "Файлы",
-    "Channel" : "Канал",
     "Type" : "Тип",
     "Set expiration date" : "Установить крайний срок для ответов",
     "Comment" : "Комментарий",

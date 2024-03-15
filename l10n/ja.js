@@ -8,7 +8,6 @@ OC.L10N.register(
     "Client ID" : "クライアント ID",
     "Application secret" : "アプリケーションシークレット",
     "Files" : "ファイル",
-    "Channel" : "チャンネル",
     "Type" : "タイプ",
     "Set expiration date" : "有効期限を設定",
     "Comment" : "コメント",
