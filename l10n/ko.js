@@ -13,6 +13,7 @@ OC.L10N.register(
     "Comment" : "설명",
     "Cancel" : "취소",
     "View only" : "읽기 전용",
-    "Edit" : "편집"
+    "Edit" : "편집",
+    "Upload files" : "파일 업로드"
 },
 "nplurals=1; plural=0;");
