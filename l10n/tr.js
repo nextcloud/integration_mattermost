@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Mattermost" : "Mattermost",
     "Error getting OAuth access token. " : "OAuth erişim kodu alınırken sorun çıktı.",
-    "Error during OAuth exchanges" : "OAuth alış verişinde sorun çıktı",
+    "Error during OAuth exchanges" : "OAuth alışverişinde sorun çıktı",
     "Mattermost messages" : "Mattermost iletileri",
     "%s in @%s at %s" : "%s, @%s içinde %s zamanında",
     "%s in #%s at %s" : "%s, #%s içinde %s zamanında",
