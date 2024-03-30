@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Client ID" : "ID de veceru",
     "Files" : "Ficheros",
-    "Type" : "Triba",
+    "Type" : "Tipu",
     "Comment" : "Comentariu",
     "Cancel" : "Encaboxar",
     "View only" : "Ver namás",
