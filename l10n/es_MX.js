@@ -5,6 +5,7 @@ OC.L10N.register(
     "Files" : "Archivo",
     "Set expiration date" : "Establece la fecha de expiración",
     "Comment" : "Comentario",
+    "Cancel" : "Cancelar",
     "View only" : "Sólo lectura",
     "Edit" : "Editar"
 },
