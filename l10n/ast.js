@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Login" : "Aniciar la sesión",
     "Password" : "Contraseña",
     "Failed to save Mattermost options" : "Nun se puen guardar les opciones de Mattermost",
     "Files" : "Ficheros",
