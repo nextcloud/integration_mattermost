@@ -7,6 +7,7 @@ OC.L10N.register(
     "Files" : "Ficheros",
     "Channel" : "Canal",
     "Type" : "Tipu",
+    "Set expiration date" : "Afitar la data de caducidá",
     "Comment" : "Comentariu",
     "Cancel" : "Encaboxar",
     "View only" : "Ver namás",
