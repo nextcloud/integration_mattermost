@@ -4,6 +4,7 @@ OC.L10N.register(
     "Client ID" : "ID de veceru",
     "Files" : "Ficheros",
     "Type" : "Tipu",
+    "Set expiration date" : "Afitar la data de caducidá",
     "Comment" : "Comentariu",
     "Cancel" : "Encaboxar",
     "View only" : "Ver namás",
