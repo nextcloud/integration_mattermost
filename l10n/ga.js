@@ -2,6 +2,7 @@ OC.L10N.register(
     "integration_mattermost",
     {
     "Login" : "Logáil isteach",
+    "Password" : "Pasfhocal",
     "Type" : "Cineál",
     "Comment" : "Trácht",
     "Cancel" : "Cealaigh",
