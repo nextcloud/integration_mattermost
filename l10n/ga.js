@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Login" : "Logáil isteach",
     "Password" : "Pasfhocal",
+    "Files" : "Comhaid",
     "Type" : "Cineál",
     "Comment" : "Trácht",
     "Cancel" : "Cealaigh",

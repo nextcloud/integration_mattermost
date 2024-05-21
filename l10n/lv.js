@@ -8,6 +8,7 @@ OC.L10N.register(
     "Set expiration date" : "Uzstādīt beigu termiņu",
     "Comment" : "Komentārs",
     "Cancel" : "Atcelt",
+    "password" : "parole",
     "Edit" : "Rediģēt",
     "Upload files" : "Augšupielādē datnes"
 },
