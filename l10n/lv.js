@@ -6,6 +6,7 @@ OC.L10N.register(
     "Type" : "Tips",
     "Set expiration date" : "Uzstādīt beigu termiņu",
     "Comment" : "Komentārs",
+    "password" : "parole",
     "Edit" : "Rediģēt"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Files" : "Comhaid",
     "Type" : "Cineál",
     "Comment" : "Trácht",
     "Cancel" : "Cealaigh",
