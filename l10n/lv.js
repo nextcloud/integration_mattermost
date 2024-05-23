@@ -5,8 +5,8 @@ OC.L10N.register(
     "Files" : "Faili",
     "Type" : "Tips",
     "Set expiration date" : "Uzstādīt beigu termiņu",
-    "Comment" : "Komentārs",
+    "Comment" : "Piebilde",
     "password" : "parole",
-    "Edit" : "Rediģēt"
+    "Edit" : "Labot"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");
