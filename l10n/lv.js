@@ -2,7 +2,7 @@ OC.L10N.register(
     "integration_slack",
     {
     "Client ID" : "Klienta ID",
-    "Files" : "Faili",
+    "Files" : "Datnes",
     "Type" : "Tips",
     "Set expiration date" : "Uzstādīt beigu termiņu",
     "Comment" : "Piebilde",
