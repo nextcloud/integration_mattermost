@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Client ID" : "Klienta ID",
     "Files" : "Datnes",
-    "Type" : "Tips",
+    "Type" : "Veids",
     "Set expiration date" : "Uzstādīt beigu termiņu",
     "Comment" : "Piebilde",
     "password" : "parole",
