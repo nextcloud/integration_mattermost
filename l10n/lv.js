@@ -4,7 +4,7 @@ OC.L10N.register(
     "Login" : "Autorizēties",
     "Password" : "Parole",
     "Files" : "Datnes",
-    "Type" : "Tips",
+    "Type" : "Veids",
     "Set expiration date" : "Uzstādīt beigu termiņu",
     "Comment" : "Piebilde",
     "Cancel" : "Atcelt",
