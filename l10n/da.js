@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Connected accounts" : "Forbundne konti",
     "Client ID" : "Klient-ID",
+    "Files" : "Filer",
     "Set expiration date" : "Angiv udløbsdato",
     "Comment" : "Kommentér",
     "Cancel" : "Annullér",
