@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Client ID" : "Aitheantas Cliant",
     "Files" : "Comhaid",
     "Type" : "Cineál",
     "Set expiration date" : "Socraigh dáta éaga",
