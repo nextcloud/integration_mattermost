@@ -4,6 +4,7 @@ OC.L10N.register(
     "Login" : "Logáil isteach",
     "Password" : "Pasfhocal",
     "Files" : "Comhaid",
+    "Channel" : "Cainéal",
     "Type" : "Cineál",
     "Set expiration date" : "Socraigh dáta éaga",
     "Comment" : "Trácht",
