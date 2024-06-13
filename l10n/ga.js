@@ -1,6 +1,10 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Error during OAuth exchanges" : "Earráid le linn malartuithe OAuth",
+    "Bad HTTP method" : "Droch-mhodh HTTP",
+    "Bad credentials" : "Dintiúir dona",
+    "OAuth access token refused" : "Diúltaíodh comhartha rochtana OAuth",
     "Client ID" : "Aitheantas Cliant",
     "Files" : "Comhaid",
     "Type" : "Cineál",
