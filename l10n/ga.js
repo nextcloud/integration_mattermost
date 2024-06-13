@@ -1,6 +1,10 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Error during OAuth exchanges" : "Earráid le linn malartuithe OAuth",
+    "Bad credentials" : "Dintiúir dona",
+    "Bad HTTP method" : "Droch-mhodh HTTP",
+    "OAuth access token refused" : "Diúltaíodh comhartha rochtana OAuth",
     "Login" : "Logáil isteach",
     "Password" : "Pasfhocal",
     "Files" : "Comhaid",
