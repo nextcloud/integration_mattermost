@@ -20,6 +20,7 @@ OC.L10N.register(
     "View only" : "Vain katselu",
     "Edit" : "Muokkaa",
     "Go to settings" : "Mene asetuksiin",
+    "Upload files" : "Lataa tiedostoja",
     "Public links" : "Julkiset linkit"
 },
 "nplurals=2; plural=(n != 1);");
