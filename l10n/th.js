@@ -10,6 +10,7 @@ OC.L10N.register(
     "View only" : "ดูเท่านั้น",
     "Edit" : "แก้ไข",
     "_Send file_::_Send files_" : ["ส่งไฟล์"],
-    "_Send link_::_Send links_" : ["ส่งลิงค์"]
+    "_Send link_::_Send links_" : ["ส่งลิงค์"],
+    "Upload files" : "อัพโหลดไฟล์จากเครื่อง"
 },
 "nplurals=1; plural=0;");

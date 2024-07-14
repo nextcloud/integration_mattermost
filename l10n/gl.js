@@ -40,7 +40,7 @@ OC.L10N.register(
     "Conversation" : "Conversa",
     "Choose a conversation" : "Escoller unha conversa",
     "Type" : "Escribir",
-    "Set expiration date" : "Estabelecer a data de caducidade",
+    "Set expiration date" : "Definir a data de caducidade",
     "Expires on" : "Caduca o",
     "Set link password" : "Estabeleza o contrasinal da ligazón",
     "Comment" : "Comentario",
