@@ -5,6 +5,7 @@ OC.L10N.register(
     "Type" : "Stumm",
     "Set expiration date" : "Lakaat un deizat termen",
     "Comment" : "Displegadenn",
+    "Cancel" : "Nullañ",
     "Edit" : "Cheñch",
     "Upload files" : "Pellkas restr"
 },
