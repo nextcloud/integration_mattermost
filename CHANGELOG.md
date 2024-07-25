@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.1.0 – 2024-07-25
+
+### Changed
+
+- Bump max supported NC version to 30
+- Update gh workflows
+
 ## 1.0.7 – 2024-03-13
 
 ### Fixed

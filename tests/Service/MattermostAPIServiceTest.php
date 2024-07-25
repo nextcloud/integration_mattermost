@@ -507,7 +507,7 @@ class MattermostAPIServiceTest extends TestCase {
 	 * @param string $id ID of the resource
 	 * @return void
 	 */
-	private function getAPIData(string $name, string $id = null) {
+	private function getAPIData(string $name, ?string $id = null) {
 		$data = static::$apiData[$name];
 
 		if (is_null($id)) {
