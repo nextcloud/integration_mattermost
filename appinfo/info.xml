@@ -5,7 +5,7 @@
 	<summary>Integration of Mattermost</summary>
 	<description><![CDATA[Mattermost integration provides a dashboard widget displaying your most important notifications
 and a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files.]]></description>
-	<version>1.0.7</version>
+	<version>1.1.0</version>
 	<licence>agpl</licence>
 	<author>Julien Veyssier</author>
 	<namespace>Mattermost</namespace>
@@ -20,7 +20,7 @@ and a unified search provider for messages. It also lets you send files to Matte
 	<screenshot>https://raw.githubusercontent.com/nextcloud/integration_mattermost/main/img/screenshot2.jpg</screenshot>
 	<screenshot>https://raw.githubusercontent.com/nextcloud/integration_mattermost/main/img/screenshot3.jpg</screenshot>
 	<dependencies>
-		<nextcloud min-version="28" max-version="29"/>
+		<nextcloud min-version="28" max-version="30"/>
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Mattermost\BackgroundJob\DailySummaryWebhook</job>
