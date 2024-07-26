@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.1.1 – 2024-07-26
+
+### Fixed
+
+- update gh workflows and fix appstore build publish
+
 ## 1.1.0 – 2024-07-25
 
 ### Changed
