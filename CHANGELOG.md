@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.2.0 – 2024-07-26
+
+### Changed
+* update composer deps @kyteinsky
+* update gh workflows @kyteinsky
+* bump max NC version to 30 @kyteinsky
+
+
 ## 1.1.0 - 2024-03-14
 
 ### Added
