@@ -28,6 +28,7 @@ OC.L10N.register(
     "View only" : "Iba pre čítanie",
     "Edit" : "Upraviť",
     "_Send link_::_Send links_" : ["Odoslať odkaz","Odoslať odkazy","Odoslať odkazy","Odoslané odkazy"],
+    "No Mattermost notifications!" : "Žiadne upozornenia od Mattermost!",
     "Go to settings" : "Prejsť do nastavení",
     "Upload files" : "Nahrať súbory",
     "Public links" : "Verejné odkazy:"
