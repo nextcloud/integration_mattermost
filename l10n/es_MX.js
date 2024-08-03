@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Client ID" : "ID del cliente",
     "Files" : "Archivo",
+    "Type" : "Tipo",
     "Set expiration date" : "Establece la fecha de expiración",
     "Comment" : "Comentario",
     "Cancel" : "Cancelar",
