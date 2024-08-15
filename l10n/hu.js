@@ -46,6 +46,7 @@ OC.L10N.register(
     "Warning, everything you type in the search bar will be sent to Mattermost." : "Figyelem, minden el lesz küldve a Mattermostnak, amit a keresősávba ír.",
     "If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks." : "Ha beállította a Nextcloud integrációt a Mattermostban, akkor automatikusan, távolról beállítja ezeket a webhookokat.",
     "This section does not require to be connected to Mattermost from Nextcloud." : "A szakaszhoz nem szükséges, hogy kapcsolódjon a Mattermosthoz a Nextcloudból.",
+    "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "MEGJEGYZÉS: A Webhooks funkció határozatlan időre le van tiltva, amíg a Mattermost nem valósítja meg a saját részéről.",
     "Enable webhooks" : "Webhookok engedélyezése",
     "Calendar event created webhook URL" : "Naptáresemény-létrehozási webhook webcíme",
     "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
