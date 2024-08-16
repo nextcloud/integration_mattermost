@@ -265,11 +265,14 @@ class ConfigController extends Controller {
 		// anyway, reset state
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_state');
 
-		if ($clientID && $clientSecret && $configState !== '' && $configState === $state) {
+		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
+
+		if ($mattermostUrl !== $adminOauthUrl) {
+			$result = $this->l->t('The instance URL does not match the one currently configured for OAuth authentication');
+		} elseif ($clientID && $clientSecret && $configState !== '' && $configState === $state) {
 			$redirect_uri = $this->config->getUserValue($this->userId, Application::APP_ID, 'redirect_uri');
-			$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
-			$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
-			$result = $this->mattermostAPIService->requestOAuthAccessToken($mattermostUrl, [
+			$result = $this->mattermostAPIService->requestOAuthAccessToken($adminOauthUrl, [
 				'client_id' => $clientID,
 				'client_secret' => $clientSecret,
 				'code' => $code,
@@ -334,7 +337,6 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * @param string $mattermostUrl
 	 * @return array
 	 * @throws PreConditionNotMetException
 	 */

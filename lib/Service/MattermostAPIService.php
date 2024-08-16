@@ -497,7 +497,7 @@ class MattermostAPIService {
 	 */
 	public function requestSendFile(string $userId, string $endPoint, $fileResource) {
 		$mattermostUrl = $this->getMattermostUrl($userId);
-		$this->checkTokenExpiration($userId, $mattermostUrl);
+		$this->checkTokenExpiration($userId);
 		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
 		try {
 			$url = $mattermostUrl . '/api/v4/' . $endPoint;
@@ -541,17 +541,16 @@ class MattermostAPIService {
 		bool $jsonResponse = true,
 	) {
 		$mattermostUrl = $this->getMattermostUrl($userId);
-		$this->checkTokenExpiration($userId, $mattermostUrl);
+		$this->checkTokenExpiration($userId);
 		return $this->networkService->request($userId, $mattermostUrl, $endPoint, $params, $method, $jsonResponse);
 	}
 
 	/**
 	 * @param string $userId
-	 * @param string $url
 	 * @return void
 	 * @throws \OCP\PreConditionNotMetException
 	 */
-	private function checkTokenExpiration(string $userId, string $url): void {
+	private function checkTokenExpiration(string $userId): void {
 		$refreshToken = $this->config->getUserValue($userId, Application::APP_ID, 'refresh_token');
 		$expireAt = $this->config->getUserValue($userId, Application::APP_ID, 'token_expires_at');
 		if ($refreshToken !== '' && $expireAt !== '') {
@@ -559,18 +558,18 @@ class MattermostAPIService {
 			$expireAt = (int) $expireAt;
 			// if token expires in less than a minute or is already expired
 			if ($nowTs > $expireAt - 60) {
-				$this->refreshToken($userId, $url);
+				$this->refreshToken($userId);
 			}
 		}
 	}
 
 	/**
 	 * @param string $userId
-	 * @param string $url
 	 * @return bool
 	 * @throws \OCP\PreConditionNotMetException
 	 */
-	private function refreshToken(string $userId, string $url): bool {
+	private function refreshToken(string $userId): bool {
+		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
 		$redirect_uri = $this->config->getUserValue($userId, Application::APP_ID, 'redirect_uri');
@@ -579,7 +578,7 @@ class MattermostAPIService {
 			$this->logger->error('No Mattermost refresh token found', ['app' => Application::APP_ID]);
 			return false;
 		}
-		$result = $this->requestOAuthAccessToken($url, [
+		$result = $this->requestOAuthAccessToken($adminOauthUrl, [
 			'client_id' => $clientID,
 			'client_secret' => $clientSecret,
 			'grant_type' => 'refresh_token',
