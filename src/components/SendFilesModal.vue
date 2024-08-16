@@ -2,6 +2,7 @@
 	<div class="mattermost-modal-container">
 		<NcModal v-if="show"
 			size="normal"
+			:name="t('integration_mattermost', 'Send files or links to Mattermost')"
 			@close="closeModal">
 			<div class="mattermost-modal-content">
 				<h2 class="modal-title">
@@ -64,6 +65,7 @@
 					:append-to-body="false"
 					:placeholder="t('integration_mattermost', 'Choose a channel')"
 					input-id="mattermost-channel-select"
+					:aria-label-combobox="t('integration_mattermost', 'Channel')"
 					@search="query = $event">
 					<template #option="option">
 						<div class="select-option">
@@ -87,11 +89,11 @@
 					</template>
 					<template #selected-option="option">
 						<NcAvatar v-if="option.team_display_name"
-							:size="34"
+							:size="24"
 							:url="getTeamIconUrl(option.team_id)"
 							display-name="#" />
 						<NcAvatar v-else-if="option.direct_message_display_name"
-							:size="34"
+							:size="24"
 							:url="getUserIconUrl(option.direct_message_user_id)"
 							display-name="U" />
 						<span v-if="option.team_display_name"
@@ -120,10 +122,12 @@
 							:value="type.id"
 							name="send_type_radio"
 							type="radio">
-							<component :is="type.icon" :size="20" />
-							<span class="option-title">
-								{{ type.label }}
-							</span>
+							<div class="checkbox-label">
+								<component :is="type.icon" :size="20" />
+								<span class="option-title">
+									{{ type.label }}
+								</span>
+							</div>
 						</NcCheckboxRadioSwitch>
 					</div>
 					<RadioElementSet v-if="sendType === SEND_TYPE.public_link.id"
@@ -537,10 +541,6 @@ export default {
 		width: 250px;
 	}
 
-	.channel-select {
-		height: 44px;
-	}
-
 	.settings-hint {
 		color: var(--color-text-maxcontrast);
 		margin: 16px 0 16px 0;
@@ -550,8 +550,10 @@ export default {
 		margin-left: 8px;
 	}
 
-	.option-title {
-		margin-left: 8px;
+	.checkbox-label {
+		display: flex;
+		align-items: center;
+		gap: 4px;
 	}
 }
 

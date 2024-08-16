@@ -24,7 +24,7 @@
 						type="text"
 						:disabled="connected === true"
 						:placeholder="t('integration_mattermost', 'Mattermost instance address')"
-						@input="onInput">
+						@input="onSensitiveInput">
 				</div>
 				<div v-show="showToken"
 					class="line">
@@ -207,8 +207,10 @@ import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadi
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
-import { delay, oauthConnect } from '../utils.js'
 import { showSuccess, showError } from '@nextcloud/dialogs'
+import { confirmPassword } from '@nextcloud/password-confirmation'
+
+import { delay, oauthConnect } from '../utils.js'
 
 export default {
 	name: 'PersonalSettings',
@@ -284,32 +286,44 @@ export default {
 		},
 		onCheckboxChanged(newValue, key) {
 			// disabled webhooks option indefinitely until Mattermost implements it
-			// this.saveOptions({ [key]: newValue ? '1' : '0' })
+			// this.saveOptions({ [key]: newValue ? '1' : '0' }, false)
 		},
 		onSearchChange(newValue) {
-			this.saveOptions({ search_messages_enabled: newValue ? '1' : '0' })
+			this.saveOptions({ search_messages_enabled: newValue ? '1' : '0' }, false)
 		},
 		onNavigationChange(newValue) {
-			this.saveOptions({ navigation_enabled: newValue ? '1' : '0' })
+			this.saveOptions({ navigation_enabled: newValue ? '1' : '0' }, false)
 		},
 		onInput() {
 			this.loading = true
 			delay(() => {
 				this.saveOptions({
-					url: this.state.url,
 					webhook_secret: this.state.webhook_secret,
 					calendar_event_created_webhook: this.state.calendar_event_created_webhook,
 					calendar_event_updated_webhook: this.state.calendar_event_updated_webhook,
 					daily_summary_webhook: this.state.daily_summary_webhook,
 					imminent_events_webhook: this.state.imminent_events_webhook,
+				}, false)
+			}, 2000)()
+		},
+		onSensitiveInput() {
+			this.loading = true
+			delay(() => {
+				this.saveOptions({
+					url: this.state.url,
 				})
 			}, 2000)()
 		},
-		saveOptions(values) {
+		async saveOptions(values, sensitive = true) {
+			if (sensitive) {
+				await confirmPassword()
+			}
 			const req = {
 				values,
 			}
-			const url = generateUrl('/apps/integration_mattermost/config')
+			const url = sensitive
+				? generateUrl('/apps/integration_mattermost/sensitive-config')
+				: generateUrl('/apps/integration_mattermost/config')
 			axios.put(url, req)
 				.then((response) => {
 					if (response.data.user_name !== undefined) {
@@ -331,10 +345,7 @@ export default {
 					}
 				})
 				.catch((error) => {
-					showError(
-						t('integration_mattermost', 'Failed to save Mattermost options')
-						+ ': ' + (error.response?.request?.responseText ?? ''),
-					)
+					showError(t('integration_mattermost', 'Failed to save Mattermost options'))
 					console.error(error)
 				})
 				.then(() => {
@@ -351,10 +362,13 @@ export default {
 			}
 		},
 		connectWithToken() {
-			this.loading = true
-			this.saveOptions({
-				token: this.state.token,
-			})
+			// Do not overwrite the saved token if it is just the dummy token
+			if (this.state.token !== 'dummyTokenContent') {
+				this.loading = true
+				this.saveOptions({
+					token: this.state.token,
+				})
+			}
 		},
 		connectWithCredentials() {
 			this.loading = true

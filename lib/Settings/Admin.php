@@ -21,7 +21,8 @@ class Admin implements ISettings {
 	 */
 	public function getForm(): TemplateResponse {
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+		// Do not expose the saved client secret to the user
+		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret') !== '' ? 'dummySecret' : '';
 		$oauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
 

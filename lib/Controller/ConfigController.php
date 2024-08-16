@@ -16,6 +16,9 @@ use OCA\Mattermost\AppInfo\Application;
 use OCA\Mattermost\Service\MattermostAPIService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
+use OCP\AppFramework\Http\Attribute\PasswordConfirmationRequired;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -42,10 +45,9 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @return DataResponse
 	 */
+	#[NoAdminRequired]
 	public function isUserConnected(): DataResponse {
 		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 		$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
@@ -66,10 +68,9 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @return DataResponse
 	 */
+	#[NoAdminRequired]
 	public function getFilesToSend(): DataResponse {
 		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 		$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
@@ -91,14 +92,37 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * set config values
-	 * @NoAdminRequired
+	 * Set config values
 	 *
 	 * @param array $values
 	 * @return DataResponse
 	 * @throws PreConditionNotMetException
 	 */
+	#[NoAdminRequired]
 	public function setConfig(array $values): DataResponse {
+		if (isset($values['url'], $values['login'], $values['password'])) {
+			return $this->loginWithCredentials($values['url'], $values['login'], $values['password']);
+		}
+
+		foreach ($values as $key => $value) {
+			if (in_array($key, ['url', 'login', 'password', 'token'], true)) {
+				return new DataResponse([], Http::STATUS_BAD_REQUEST);
+			}
+			$this->config->setUserValue($this->userId, Application::APP_ID, $key, $value);
+		}
+		return new DataResponse([]);
+	}
+
+	/**
+	 * Set sensitive config values
+	 *
+	 * @param array $values
+	 * @return DataResponse
+	 * @throws PreConditionNotMetException
+	 */
+	#[NoAdminRequired]
+	#[PasswordConfirmationRequired]
+	public function setSensitiveConfig(array $values): DataResponse {
 		if (isset($values['url'], $values['login'], $values['password'])) {
 			return $this->loginWithCredentials($values['url'], $values['login'], $values['password']);
 		}
@@ -128,9 +152,6 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * @NoCSRFRequired
-	 * @NoAdminRequired
-	 *
 	 * @param string|null $calendar_event_updated_url
 	 * @param string|null $calendar_event_created_url
 	 * @param string|null $daily_summary_url
@@ -140,6 +161,8 @@ class ConfigController extends Controller {
 	 * @return DataResponse
 	 * @throws PreConditionNotMetException
 	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function setWebhooksConfig(
 		?string $calendar_event_updated_url = null,
 		?string $calendar_event_created_url = null,
@@ -222,26 +245,42 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * set admin config values
+	 * Set admin config values
 	 *
 	 * @param array $values
 	 * @return DataResponse
 	 */
 	public function setAdminConfig(array $values): DataResponse {
 		foreach ($values as $key => $value) {
+			if (in_array($key, ['client_id', 'client_secret', 'oauth_instance_url'], true)) {
+				return new DataResponse([], Http::STATUS_BAD_REQUEST);
+			}
 			$this->config->setAppValue(Application::APP_ID, $key, $value);
 		}
-		return new DataResponse(1);
+		return new DataResponse([]);
 	}
 
 	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
+	 * Set sensitive admin config values
 	 *
+	 * @param array $values
+	 * @return DataResponse
+	 */
+	#[PasswordConfirmationRequired]
+	public function setSensitiveAdminConfig(array $values): DataResponse {
+		foreach ($values as $key => $value) {
+			$this->config->setAppValue(Application::APP_ID, $key, $value);
+		}
+		return new DataResponse([]);
+	}
+
+	/**
 	 * @param string $user_name
 	 * @param string $user_displayname
 	 * @return TemplateResponse
 	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function popupSuccessPage(string $user_name, string $user_displayname): TemplateResponse {
 		$this->initialStateService->provideInitialState('popup-data', ['user_name' => $user_name, 'user_displayname' => $user_displayname]);
 		return new TemplateResponse(Application::APP_ID, 'popupSuccess', [], TemplateResponse::RENDER_AS_GUEST);
@@ -249,14 +288,14 @@ class ConfigController extends Controller {
 
 	/**
 	 * receive oauth code and get oauth access token
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 *
 	 * @param string $code
 	 * @param string $state
 	 * @return RedirectResponse
 	 * @throws PreConditionNotMetException
 	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function oauthRedirect(string $code = '', string $state = ''): RedirectResponse {
 		$configState = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_state');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
@@ -265,11 +304,14 @@ class ConfigController extends Controller {
 		// anyway, reset state
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_state');
 
-		if ($clientID && $clientSecret && $configState !== '' && $configState === $state) {
+		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
+
+		if ($mattermostUrl !== $adminOauthUrl) {
+			$result = $this->l->t('The instance URL does not match the one currently configured for OAuth authentication');
+		} elseif ($clientID && $clientSecret && $configState !== '' && $configState === $state) {
 			$redirect_uri = $this->config->getUserValue($this->userId, Application::APP_ID, 'redirect_uri');
-			$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
-			$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
-			$result = $this->mattermostAPIService->requestOAuthAccessToken($mattermostUrl, [
+			$result = $this->mattermostAPIService->requestOAuthAccessToken($adminOauthUrl, [
 				'client_id' => $clientID,
 				'client_secret' => $clientSecret,
 				'code' => $code,
@@ -334,7 +376,6 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * @param string $mattermostUrl
 	 * @return array
 	 * @throws PreConditionNotMetException
 	 */

@@ -17,6 +17,8 @@ use OCA\Mattermost\AppInfo\Application;
 use OCA\Mattermost\Service\MattermostAPIService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\AppFramework\Http\DataDisplayResponse;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
@@ -39,24 +41,24 @@ class MattermostAPIController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
 	 *
 	 * @return DataResponse
 	 */
+	#[NoAdminRequired]
 	public function getMattermostUrl(): DataResponse {
 		return new DataResponse($this->mattermostAPIService->getMattermostUrl($this->userId));
 	}
 
 	/**
 	 * get mattermost user avatar
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 *
 	 * @param string $userId
 	 * @param int $useFallback
 	 * @return DataDisplayResponse|RedirectResponse
 	 * @throws \Exception
 	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function getUserAvatar(string $userId, int $useFallback = 1) {
 		$result = $this->mattermostAPIService->getUserAvatar($this->userId, $userId);
 		if (isset($result['avatarContent'])) {
@@ -73,14 +75,14 @@ class MattermostAPIController extends Controller {
 
 	/**
 	 * get Mattermost team icon/avatar
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 *
 	 * @param string $teamId
 	 * @param int $useFallback
 	 * @return DataDisplayResponse|RedirectResponse
 	 * @throws \Exception
 	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function getTeamAvatar(string $teamId, int $useFallback = 1) {
 		$result = $this->mattermostAPIService->getTeamAvatar($this->userId, $teamId);
 		if (isset($result['avatarContent'])) {
@@ -96,11 +98,10 @@ class MattermostAPIController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @return DataResponse
 	 * @throws Exception
 	 */
+	#[NoAdminRequired]
 	public function getNotifications(?int $since = null) {
 		$mmUserName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_name');
 		$result = $this->mattermostAPIService->getMentionsMe($this->userId, $mmUserName, $since);
@@ -112,11 +113,10 @@ class MattermostAPIController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @return DataResponse
 	 * @throws Exception
 	 */
+	#[NoAdminRequired]
 	public function getChannels() {
 		$result = $this->mattermostAPIService->getMyChannels($this->userId);
 		if (isset($result['error'])) {
@@ -127,14 +127,13 @@ class MattermostAPIController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @param string $message
 	 * @param string $channelId
 	 * @param array|null $remoteFileIds
 	 * @return DataResponse
 	 * @throws Exception
 	 */
+	#[NoAdminRequired]
 	public function sendMessage(string $message, string $channelId, ?array $remoteFileIds = null) {
 		$result = $this->mattermostAPIService->sendMessage($this->userId, $message, $channelId, $remoteFileIds);
 		if (isset($result['error'])) {
@@ -145,8 +144,6 @@ class MattermostAPIController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @param int $fileId
 	 * @param string $channelId
 	 * @return DataResponse
@@ -154,6 +151,7 @@ class MattermostAPIController extends Controller {
 	 * @throws LockedException
 	 * @throws NoUserException
 	 */
+	#[NoAdminRequired]
 	public function sendFile(int $fileId, string $channelId) {
 		$result = $this->mattermostAPIService->sendFile($this->userId, $fileId, $channelId);
 		if (isset($result['error'])) {
@@ -164,8 +162,6 @@ class MattermostAPIController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @param array $fileIds
 	 * @param string $channelId
 	 * @param string $channelName
@@ -177,6 +173,7 @@ class MattermostAPIController extends Controller {
 	 * @throws NoUserException
 	 * @throws NotPermittedException
 	 */
+	#[NoAdminRequired]
 	public function sendPublicLinks(
 		array $fileIds,
 		string $channelId,
