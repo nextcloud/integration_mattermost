@@ -18,6 +18,7 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
+use OCP\AppFramework\Http\Attribute\PasswordConfirmationRequired;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -91,7 +92,7 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * set config values
+	 * Set config values
 	 *
 	 * @param array $values
 	 * @return DataResponse
@@ -99,6 +100,29 @@ class ConfigController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function setConfig(array $values): DataResponse {
+		if (isset($values['url'], $values['login'], $values['password'])) {
+			return $this->loginWithCredentials($values['url'], $values['login'], $values['password']);
+		}
+
+		foreach ($values as $key => $value) {
+			if (in_array($key, ['url', 'login', 'password', 'token'], true)) {
+				return new DataResponse([], Http::STATUS_BAD_REQUEST);
+			}
+			$this->config->setUserValue($this->userId, Application::APP_ID, $key, $value);
+		}
+		return new DataResponse([]);
+	}
+
+	/**
+	 * Set sensitive config values
+	 *
+	 * @param array $values
+	 * @return DataResponse
+	 * @throws PreConditionNotMetException
+	 */
+	#[NoAdminRequired]
+	#[PasswordConfirmationRequired]
+	public function setSensitiveConfig(array $values): DataResponse {
 		if (isset($values['url'], $values['login'], $values['password'])) {
 			return $this->loginWithCredentials($values['url'], $values['login'], $values['password']);
 		}
@@ -221,16 +245,33 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * set admin config values
+	 * Set admin config values
 	 *
 	 * @param array $values
 	 * @return DataResponse
 	 */
 	public function setAdminConfig(array $values): DataResponse {
 		foreach ($values as $key => $value) {
+			if (in_array($key, ['client_id', 'client_secret', 'oauth_instance_url'], true)) {
+				return new DataResponse([], Http::STATUS_BAD_REQUEST);
+			}
 			$this->config->setAppValue(Application::APP_ID, $key, $value);
 		}
-		return new DataResponse(1);
+		return new DataResponse([]);
+	}
+
+	/**
+	 * Set sensitive admin config values
+	 *
+	 * @param array $values
+	 * @return DataResponse
+	 */
+	#[PasswordConfirmationRequired]
+	public function setSensitiveAdminConfig(array $values): DataResponse {
+		foreach ($values as $key => $value) {
+			$this->config->setAppValue(Application::APP_ID, $key, $value);
+		}
+		return new DataResponse([]);
 	}
 
 	/**

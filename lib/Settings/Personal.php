@@ -21,13 +21,8 @@ class Personal implements ISettings {
 	 * @return TemplateResponse
 	 */
 	public function getForm(): TemplateResponse {
-		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
-
-		// if ($token) {
-		// 	$this->mattermostAPIService->checkToken();
-		// }
-
-		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
+		// Do not expose the saved token to the user
+		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token') !== '' ? 'dummyTokenContent' : '';
 		$searchMessagesEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'search_messages_enabled', '0') === '1';
 		$navigationEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'navigation_enabled', '0') === '1';
 		$fileActionEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'file_action_enabled', '1') === '1';
@@ -53,7 +48,7 @@ class Personal implements ISettings {
 		$imminentEventsWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, Application::IMMINENT_EVENTS_WEBHOOK_CONFIG_KEY);
 
 		$userConfig = [
-			'token' => $token ? 'dummyTokenContent' : '',
+			'token' => $token,
 			'url' => $url,
 			'client_id' => $clientID,
 			'client_secret' => $clientSecret,

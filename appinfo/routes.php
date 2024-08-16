@@ -15,8 +15,10 @@ return [
 		['name' => 'config#getFilesToSend', 'url' => '/files-to-send', 'verb' => 'GET'],
 		['name' => 'config#oauthRedirect', 'url' => '/oauth-redirect', 'verb' => 'GET'],
 		['name' => 'config#setConfig', 'url' => '/config', 'verb' => 'PUT'],
+		['name' => 'config#setSensitiveConfig', 'url' => '/sensitive-config', 'verb' => 'PUT'],
 		['name' => 'config#setWebhooksConfig', 'url' => '/webhooks', 'verb' => 'POST'],
 		['name' => 'config#setAdminConfig', 'url' => '/admin-config', 'verb' => 'PUT'],
+		['name' => 'config#setSensitiveAdminConfig', 'url' => '/sensitive-admin-config', 'verb' => 'PUT'],
 		['name' => 'config#popupSuccessPage', 'url' => '/popup-success', 'verb' => 'GET'],
 
 		['name' => 'mattermostAPI#sendMessage', 'url' => '/sendMessage', 'verb' => 'POST'],

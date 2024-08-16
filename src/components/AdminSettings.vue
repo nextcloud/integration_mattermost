@@ -69,12 +69,15 @@ import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline
 import EarthIcon from 'vue-material-design-icons/Earth.vue'
 import KeyIcon from 'vue-material-design-icons/Key.vue'
 
+import MattermostIcon from './icons/MattermostIcon.vue'
+
 import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showSuccess, showError } from '@nextcloud/dialogs'
-import MattermostIcon from './icons/MattermostIcon.vue'
+import { confirmPassword } from '@nextcloud/password-confirmation'
 
 import { delay } from '../utils.js'
 
@@ -108,30 +111,35 @@ export default {
 
 	methods: {
 		onUsePopupChanged(newValue) {
-			this.saveOptions({ use_popup: newValue ? '1' : '0' })
+			this.saveOptions({ use_popup: newValue ? '1' : '0' }, false)
 		},
 		onInput() {
 			delay(() => {
-				this.saveOptions({
+				const values = {
 					client_id: this.state.client_id,
-					client_secret: this.state.client_secret,
 					oauth_instance_url: this.state.oauth_instance_url,
-				})
+				}
+				if (this.state.client_secret !== 'dummySecret') {
+					values.client_secret = this.state.client_secret
+				}
+				this.saveOptions(values)
 			}, 2000)()
 		},
-		saveOptions(values) {
+		async saveOptions(values, sensitive = true) {
+			if (sensitive) {
+				await confirmPassword()
+			}
 			const req = {
 				values,
 			}
-			const url = generateUrl('/apps/integration_mattermost/admin-config')
+			const url = sensitive
+				? generateUrl('/apps/integration_mattermost/sensitive-admin-config')
+				: generateUrl('/apps/integration_mattermost/admin-config')
 			axios.put(url, req).then((response) => {
 				showSuccess(t('integration_mattermost', 'Mattermost admin options saved'))
 			}).catch((error) => {
-				showError(
-					t('integration_mattermost', 'Failed to save Mattermost admin options')
-					+ ': ' + (error.response?.request?.responseText ?? ''),
-				)
-				console.debug(error)
+				showError(t('integration_mattermost', 'Failed to save Mattermost admin options'))
+				console.error(error)
 			})
 		},
 	},
