@@ -3,6 +3,7 @@
     "Bad credentials" : "Неточни акредитиви",
     "OAuth access token refused" : "Одбиен OAuth пристапен токен ",
     "Connected accounts" : "Поврзани сметки",
+    "Make sure you set the \"Redirect URI\" to" : "И бидете сигурни дека сте ја поставиле \"Redirect URI\" во",
     "Use a popup to authenticate" : "користи скокачки прозор за автентификација",
     "Login" : "Најава",
     "Password" : "Лозинка",
