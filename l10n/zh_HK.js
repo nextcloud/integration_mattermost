@@ -2,6 +2,7 @@ OC.L10N.register(
     "integration_mattermost",
     {
     "Mattermost" : "Mattermost",
+    "The instance URL does not match the one currently configured for OAuth authentication" : "實例 URL 與目前為 OAuth 驗證配置的 URL 不符",
     "Error getting OAuth access token. " : "取得 OAuth 存取權杖時發生錯誤。",
     "Error during OAuth exchanges" : "OAuth 交換時發生錯誤",
     "Mattermost messages" : "Mattermost 訊息",
@@ -61,6 +62,7 @@ OC.L10N.register(
     "Invalid login/password" : "無效的登入帳戶/密碼",
     "Mattermost options saved" : "已保存 Mattermost 選項",
     "Failed to save Mattermost options" : "儲存 Mattermost 選項失敗",
+    "Send files or links to Mattermost" : "傳送檔案或連結至 Mattermost",
     "Files" : "檔案",
     "Channel" : "頻道",
     "Choose a channel" : "選擇頻道",

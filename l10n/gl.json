@@ -1,5 +1,6 @@
 { "translations": {
     "Mattermost" : "Mattermost",
+    "The instance URL does not match the one currently configured for OAuth authentication" : "O URL da instancia non coincide co configurado actualmente para a autenticación OAuth",
     "Error getting OAuth access token. " : "Produciuse un erro ao obter o testemuño de acceso OAuth.",
     "Error during OAuth exchanges" : "Produciuse un erro durante os intercambios de OAuth",
     "Mattermost messages" : "Mensaxes de Mattermost",
@@ -59,6 +60,7 @@
     "Invalid login/password" : "O acceso/contrasinal non é válido",
     "Mattermost options saved" : "Gardáronse as opcións de Mattermost",
     "Failed to save Mattermost options" : "Produciuse un fallo ao gardar as opcións de Mattermost.",
+    "Send files or links to Mattermost" : "Enviar ficheiros ou ligazóns a Mattermost",
     "Files" : "Ficheiros",
     "Channel" : "Canle",
     "Choose a channel" : "Escoller unha canle",

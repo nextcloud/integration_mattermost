@@ -2,6 +2,7 @@ OC.L10N.register(
     "integration_mattermost",
     {
     "Mattermost" : "تطبيق Mattermost",
+    "The instance URL does not match the one currently configured for OAuth authentication" : "لا يتطابق عنوان URL للخادوم مع العنوان الذي تم تكوينه الآن للمصادقة المفتوحة OAuth",
     "Error getting OAuth access token. " : "خطأ في الحصول على أمارة token الوصول إلى OAuth.",
     "Error during OAuth exchanges" : "خطأ أثناء تبادل OAuth.",
     "Mattermost messages" : "رسائل Mattermost ",
@@ -61,6 +62,7 @@ OC.L10N.register(
     "Invalid login/password" : "خطأ في مُعرّف الدخول أو كلمة المرور",
     "Mattermost options saved" : "تم حفظ خيارات Mattermost",
     "Failed to save Mattermost options" : "تم حفظ خيارات برنامج Mattermost",
+    "Send files or links to Mattermost" : "أرسِل الملفات أو الروابط إلى \"ماتِر موست\" Mattermost",
     "Files" : "الملفات",
     "Channel" : "قناة",
     "Choose a channel" : "فشل في حفظ خيارات برنامج Mattermost",

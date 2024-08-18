@@ -2,6 +2,7 @@ OC.L10N.register(
     "integration_mattermost",
     {
     "Mattermost" : "Is tábhachtaí",
+    "The instance URL does not match the one currently configured for OAuth authentication" : "Ní mheaitseálann URL an shampla leis an gceann atá cumraithe faoi láthair le haghaidh fíordheimhnithe OAuth",
     "Error getting OAuth access token. " : "Earráid agus comhartha rochtana OAuth á fháil.",
     "Error during OAuth exchanges" : "Earráid le linn malartuithe OAuth",
     "Mattermost messages" : "Teachtaireachtaí is tábhachtaí",
@@ -61,6 +62,7 @@ OC.L10N.register(
     "Invalid login/password" : "Logáil isteach/focal faire neamhbhailí",
     "Mattermost options saved" : "Sábháladh na roghanna is tábhachtaí",
     "Failed to save Mattermost options" : "Theip ar shábháil roghanna Mattermost",
+    "Send files or links to Mattermost" : "Seol comhaid nó naisc chuig Mattermost",
     "Files" : "Comhaid",
     "Channel" : "Cainéal",
     "Choose a channel" : "Roghnaigh cainéal",

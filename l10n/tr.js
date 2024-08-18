@@ -2,6 +2,7 @@ OC.L10N.register(
     "integration_mattermost",
     {
     "Mattermost" : "Mattermost",
+    "The instance URL does not match the one currently configured for OAuth authentication" : "Kopya adresi, OAuth kimlik doğrulaması için yapılandırılmış adresle aynı değil",
     "Error getting OAuth access token. " : "OAuth erişim kodu alınırken sorun çıktı.",
     "Error during OAuth exchanges" : "OAuth alışverişinde sorun çıktı",
     "Mattermost messages" : "Mattermost iletileri",
@@ -61,6 +62,7 @@ OC.L10N.register(
     "Invalid login/password" : "Kullanıcı adı ya da parola geçersiz",
     "Mattermost options saved" : "Mattermost ayarları kaydedildi",
     "Failed to save Mattermost options" : "Mattermost ayarları kaydedilemedi",
+    "Send files or links to Mattermost" : "Dosyaları ve bağlantıları Mattermost üzerine gönderin",
     "Files" : "Dosyalar",
     "Channel" : "Kanal",
     "Choose a channel" : "Bir kanal seçin",
