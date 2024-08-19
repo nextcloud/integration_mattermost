@@ -100,10 +100,6 @@ class ConfigController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function setConfig(array $values): DataResponse {
-		if (isset($values['url'], $values['login'], $values['password'])) {
-			return $this->loginWithCredentials($values['url'], $values['login'], $values['password']);
-		}
-
 		foreach ($values as $key => $value) {
 			if (in_array($key, ['url', 'login', 'password', 'token'], true)) {
 				return new DataResponse([], Http::STATUS_BAD_REQUEST);
