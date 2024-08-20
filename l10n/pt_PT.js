@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bad HTTP method" : "Método HTTP incorreto",
     "Bad credentials" : "Credenciais inválidas",
     "Client ID" : "Id. do Cliente",
+    "Files" : "Ficheiros",
     "Type" : "Tipo",
     "Set expiration date" : "Definir a data de expiração",
     "Comment" : "Comentário",
