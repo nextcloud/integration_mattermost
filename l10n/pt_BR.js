@@ -2,6 +2,7 @@ OC.L10N.register(
     "integration_mattermost",
     {
     "Mattermost" : "Mattermost",
+    "The instance URL does not match the one currently configured for OAuth authentication" : "O URL da instância não corresponde ao configurado atualmente para autenticação OAuth",
     "Error getting OAuth access token. " : "Erro ao obter o token de acesso OAuth.",
     "Error during OAuth exchanges" : "Erro durante as trocas OAuth",
     "Mattermost messages" : "Mensagens mais importantes",
@@ -61,6 +62,7 @@ OC.L10N.register(
     "Invalid login/password" : "Login/senha inválido",
     "Mattermost options saved" : "Opções mais importantes salvas",
     "Failed to save Mattermost options" : "Falha ao salvar as opções do Mais Importante",
+    "Send files or links to Mattermost" : "Enviar arquivos ou links para o Mattermost",
     "Files" : "Arquivos",
     "Channel" : "Canal",
     "Choose a channel" : "Escolha um canal",
