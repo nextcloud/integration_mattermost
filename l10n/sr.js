@@ -2,6 +2,7 @@ OC.L10N.register(
     "integration_mattermost",
     {
     "Mattermost" : "Mattermost",
+    "The instance URL does not match the one currently configured for OAuth authentication" : "URL ове инстанце се не подудара са оним који је тренутно подешен за  OAuth потврђивање идентитета",
     "Error getting OAuth access token. " : "Грешка при добијању OAuth приступног жетона.",
     "Error during OAuth exchanges" : "Грешко приликом OAuth размена",
     "Mattermost messages" : "Mattermost поруке",
@@ -61,6 +62,7 @@ OC.L10N.register(
     "Invalid login/password" : "Неисправно корисничко име/лозинка",
     "Mattermost options saved" : "Сачуване су Mattermost опције",
     "Failed to save Mattermost options" : "Није успело чување Mattermost опција",
+    "Send files or links to Mattermost" : "Пошаљи фајлове или линкове на Mattermost",
     "Files" : "Фајлови",
     "Channel" : "Канал",
     "Choose a channel" : "Изберите канал",
