@@ -15,7 +15,7 @@ OC.L10N.register(
     "Slack integration" : "Slack-Integration",
     "To allow your Nextcloud users to use OAuth to authenticate to the Slack app, and set the ID and secret here." : "Um deinen Nextcloud-Benutzern die Verwendung von OAuth zur Anmeldung an der der Slack-App zu ermöglichen, lege hier die ID und das Geheimnis fest.",
     "Link to create a Slack application" : "Link um eine Slack-Anwendung zu erstellen",
-    "Make sure you set the \"Redirect URI\" in the \"OAuth & Permissions\" section of your Slack app settings to" : "Stelle sicher, dass du den „Redirect URI“ im Abschnitt „OAuth & Permissions“ Ihrer Slack-App-Einstellungen einstellst auf",
+    "Make sure you set the \"Redirect URI\" in the \"OAuth & Permissions\" section of your Slack app settings to" : "Stelle sicher, dass du den „Redirect URI“ im Abschnitt „OAuth & Permissions“ deiner Slack-App-Einstellungen einstellst auf",
     "Put the \"Client ID\" and \"Client secret\" below. Your Nextcloud users will then see a \"Connect to Slack\" button in their personal settings." : "Gib unten die „Client-ID“ und das „Client-Geheimnis“ ein. Deine Nextcloud-Benutzer sehen dann in ihren persönlichen Einstellungen die Schaltfläche „Mit Slack verbinden“.",
     "In the same \"OAuth & Permissions\" section, token rotation can be enabled. If enabled, your access token would be regularly refreshed with a refresh token. This is handled automatically." : "Im selben Abschnitt „OAuth & Permissions“ kann die Token-Rotation aktiviert werden. Wenn diese Option aktiviert ist, wird dein Zugriffstoken regelmäßig mit einem Aktualisierungstoken aktualisiert. Dies wird automatisch durchgeführt.",
     "Client ID" : "Client-ID",
