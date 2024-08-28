@@ -94,7 +94,7 @@ OC.L10N.register(
     "Failed to send links to Mattermost" : "Produciuse un fallo ao enviar as ligazóns a Mattermost",
     "Failed to send internal links to Mattermost" : "Produciuse un fallo ao enviar as ligazóns internas a Mattermost",
     "Failed to send {name} to Mattermost" : "Produciuse un fallo ao enviar {name} a Mattermost",
-    "Nothing" : "Nada",
+    "Nothing" : "Ren",
     "_{fileName} was sent to {channelName}_::_{count} files were sent to {channelName}_" : ["{fileName} foi enviado a {channelName}","Enviáronse {count} ficheiros a {channelName}"],
     "Failed to send files to Mattermost" : "Produciuse un fallo ao enviar os ficheiros a Mattermost",
     "Sign in with Mattermost" : "Acceder con Mattermost",
