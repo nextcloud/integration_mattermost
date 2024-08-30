@@ -62,7 +62,6 @@ OC.L10N.register(
     "Failed to open Slack OAuth popup window, please allow popups" : "Failed to open Slack OAuth popup window, please allow popups",
     "Failed to save Slack OAuth state" : "Failed to save Slack OAuth state",
     "You need to connect a Slack app before using the Slack integration." : "You need to connect a Slack app before using the Slack integration.",
-    "Do you want to go to your \"Connect accounts\" personal settings?" : "Do you want to go to your \"Connect accounts\" personal settings?",
     "Go to settings" : "Go to settings",
     "Upload files" : "بارگذاری فایل ها",
     "Public links" : "Public links",
