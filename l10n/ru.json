@@ -8,6 +8,7 @@
     "Invalid credentials" : "Недопустимые учетные данные",
     "Invalid response" : "Недопустимый ответ",
     "Connected accounts" : "Подключённые учётные записи",
+    "Mattermost integration provides a dashboard widget displaying your most important notifications\nand a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files." : "Интеграция Mattermost обеспечивает виджет панели, отображающий ваши самые важные уведомления\nи единый поставщик поиска для сообщений. Он также позволяет отправлять файлы в Mattermost из Nextcloud Files.",
     "If you want to allow your Nextcloud users to use OAuth to authenticate to a Mattermost instance of your choice, create an application in your Mattermost settings and set the ID and secret here." : "Если вы хотите разрешить пользователям Nextcloud использовать OAuth для аутентификации в экземпляре Mattermost по вашему выбору, создайте приложение в настройках Mattermost и установите здесь идентификатор и секрет.",
     "Make sure you set the \"Redirect URI\" to" : "Убедитесь, что вы установили \"URI перенаправления\" на",
     "OAuth app instance address" : "Адрес сервера приложения OAuth",
