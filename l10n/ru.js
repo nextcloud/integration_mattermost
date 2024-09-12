@@ -13,6 +13,7 @@ OC.L10N.register(
     "Mattermost integration provides a dashboard widget displaying your most important notifications\nand a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files." : "Интеграция Mattermost обеспечивает виджет панели, отображающий ваши самые важные уведомления\nи единый поставщик поиска для сообщений. Он также позволяет отправлять файлы в Mattermost из Nextcloud Files.",
     "If you want to allow your Nextcloud users to use OAuth to authenticate to a Mattermost instance of your choice, create an application in your Mattermost settings and set the ID and secret here." : "Если вы хотите разрешить пользователям Nextcloud использовать OAuth для аутентификации в экземпляре Mattermost по вашему выбору, создайте приложение в настройках Mattermost и установите здесь идентификатор и секрет.",
     "Make sure you set the \"Redirect URI\" to" : "Убедитесь, что вы установили \"URI перенаправления\" на",
+    "Put the \"Application ID\" and \"Application secret\" below. Your Nextcloud users will then see a \"Connect to Mattermost\" button in their personal settings if they select the Mattermost instance defined here." : "Введите ниже «Application ID» и «Application secret». Ваши пользователи Nextcloud затем увидят кнопку «Connect to Mattermost» в своих личных настройках, если они выберут экземпляр Mattermost, определенный здесь.",
     "OAuth app instance address" : "Адрес сервера приложения OAuth",
     "Instance address" : "Адрес сервера",
     "Application ID" : "Идентификатор приложения",
@@ -26,6 +27,10 @@ OC.L10N.register(
     "Password" : "Пароль",
     "Connected as {user}" : "Подключено под именем {user}",
     "Enable searching for messages" : "Включить поиск сообщений",
+    "If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks." : "Если вы настроили интеграцию Nextcloud в Mattermost, он автоматически удаленно настроит эти веб-хуки.",
+    "This section does not require to be connected to Mattermost from Nextcloud." : "Этот раздел не требует подключения к Mattermost из Nextcloud.",
+    "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "ПРИМЕЧАНИЕ: Функция WebHooks отключена на неопределенный срок, пока Mattermost не реализует ее со своей стороны.",
+    "Enable webhooks" : "Включить вебхуки",
     "Invalid access token" : "Неверный маркер доступа",
     "Invalid login/password" : "Неверное имя пользователя/пароль",
     "Files" : "Файлы",
@@ -36,6 +41,8 @@ OC.L10N.register(
     "Cancel" : "Отменить",
     "View only" : "Для просмотра",
     "Edit" : "Редактировать",
+    "Do you want to go to your \"Connect accounts\" personal settings?" : "Хотите перейти в личные настройки «Подключения учетных записей»?",
+    "Go to settings" : "Перейти к настройкам",
     "Upload files" : "Отправить файлы"
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");
