@@ -11,6 +11,7 @@ OC.L10N.register(
     "Application secret" : "Segretu de s'aplicatzione",
     "Files" : "Archìvios",
     "Type" : "Genia",
+    "Set expiration date" : "Cunfigura sa data de iscadèntzia",
     "Comment" : "Cummentu",
     "Cancel" : "Annulla",
     "View only" : "Isceti in visualizatzione",
