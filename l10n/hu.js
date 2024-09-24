@@ -2,6 +2,7 @@ OC.L10N.register(
     "integration_mattermost",
     {
     "Mattermost" : "Mattermost",
+    "The instance URL does not match the one currently configured for OAuth authentication" : "A példány URL-címe nem egyezik az OAuth-hitelesítéshez jelenleg konfigurálttal.",
     "Error getting OAuth access token. " : "Hiba történt az OAuth hozzáférési token lekérése során. ",
     "Error during OAuth exchanges" : "Hiba történt az OAuth üzenetváltás során",
     "Mattermost messages" : "Mattermost üzenetek",
@@ -61,6 +62,7 @@ OC.L10N.register(
     "Invalid login/password" : "Érvénytelen bejelentkezés/jelszó",
     "Mattermost options saved" : "Mattermost beállítások mentve",
     "Failed to save Mattermost options" : "Mattermost beállítások mentése sikertelen",
+    "Send files or links to Mattermost" : "Fájlok vagy hivatkozások küldése a Mattermostnak",
     "Files" : "Fájlok",
     "Channel" : "Csatorna",
     "Choose a channel" : "Csatorna kiválasztása",
