@@ -7,6 +7,7 @@ OC.L10N.register(
     "Bad HTTP method" : "Felaktig HTTP-metod",
     "OAuth access token refused" : "OAuth-token avvisades",
     "Connected accounts" : "Anslutna konton",
+    "Application ID" : "Applikations-ID",
     "Application secret" : "Applikationshemlighet",
     "Use a popup to authenticate" : "Använd en popup för att autentisera",
     "Personal access token" : "Personlig åtkomst-token",
