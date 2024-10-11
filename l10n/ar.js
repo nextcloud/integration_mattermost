@@ -36,7 +36,7 @@ OC.L10N.register(
     "Mattermost personal access token" : "رمز التحقق الشخصي للوصول لبرنامج Mattermost ",
     "Login" : "الدخول",
     "Mattermost login" : "تسجيل الدخول إلي برنامج Mattermost ",
-    "Password" : "كلمة السر",
+    "Password" : "كلمة المرور",
     "Mattermost password" : "كلمة مرور برنامج Mattermost ",
     "Connect to Mattermost" : "الاتصال ببرنامج Mattermost",
     "Connected as {user}" : "متصل بصفته {user}",
