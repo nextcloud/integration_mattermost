@@ -37,6 +37,7 @@ OC.L10N.register(
     "Failed to save Slack options" : "Nepodařilo se uložit předvolby pro Slack",
     "Files" : "Soubory",
     "Conversation" : "Konverzace",
+    "Choose a conversation" : "Zvolit konverzaci",
     "Type" : "Typ",
     "Set expiration date" : "Nastavit datum skončení platnosti",
     "Expires on" : "Platnost skončí",
