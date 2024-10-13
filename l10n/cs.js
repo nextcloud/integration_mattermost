@@ -36,6 +36,7 @@ OC.L10N.register(
     "Invalid access token" : "Neplatný přístupový token",
     "Failed to save Slack options" : "Nepodařilo se uložit předvolby pro Slack",
     "Files" : "Soubory",
+    "Remove file from list" : "Odebrat soubor ze seznamu",
     "Conversation" : "Konverzace",
     "Choose a conversation" : "Zvolit konverzaci",
     "Type" : "Typ",
