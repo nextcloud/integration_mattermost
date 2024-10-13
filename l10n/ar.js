@@ -103,7 +103,7 @@ OC.L10N.register(
     "Do you want to go to your \"Connect accounts\" personal settings?" : "هل تريد الانتقال إلى الإعدادات الشخصية \"ربط الحسابات\"؟",
     "Go to settings" : "اذهب للاعدادات",
     "Upload files" : "حمل الملفات",
-    "Public links" : "اختر قناة",
+    "Public links" : "روابط عامة",
     "Internal links (Only works for users with access to the files)" : "الروابط الداخلية (يعمل فقط للمستخدمين الذين لديهم حق الوصول إلى الملفات)"
 },
 "nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;");

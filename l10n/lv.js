@@ -9,6 +9,7 @@ OC.L10N.register(
     "Comment" : "Piebilde",
     "Cancel" : "Atcelt",
     "password" : "parole",
+    "View only" : "Tikai skatīt",
     "Edit" : "Labot",
     "Upload files" : "Augšupielādē datnes"
 },
