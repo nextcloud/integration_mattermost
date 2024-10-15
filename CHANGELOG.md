@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 2.0.0 – 2024-10-15
+
+### Changed
+
+- Use password confirmation for sensitive admin/pseronal setting values
+
+### Fixed
+
+- Only send Oauth credentials to the right URLs
+
 ## 1.1.1 – 2024-07-26
 
 ### Fixed
