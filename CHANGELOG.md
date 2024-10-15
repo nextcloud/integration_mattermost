@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 1.2.0 – 2024-10-15
+
+### Fixed
+
+- Only send Oauth credentials to the right URLs
+
 ## 1.0.4 – 2023-05-10
 
 ### Added
