@@ -2,6 +2,7 @@ OC.L10N.register(
     "integration_mattermost",
     {
     "Mattermost" : "Mattermost",
+    "The instance URL does not match the one currently configured for OAuth authentication" : "URL adresa instance se neshoduje s tou která je nyní nastavená pro OAuth ověřování",
     "Error getting OAuth access token. " : "Chyba při získávání přístupového OAuth přístupového tokenu.",
     "Error during OAuth exchanges" : "Chyba při výměnách informací v rámci OAuth",
     "Mattermost messages" : "Zprávy z Mattermost",
@@ -61,6 +62,7 @@ OC.L10N.register(
     "Invalid login/password" : "Neplatné přihlašovací jméno / heslo",
     "Mattermost options saved" : "Předvolby pro Mattermost uloženy",
     "Failed to save Mattermost options" : "Nepodařilo se uložit předvolby pro Mattermost",
+    "Send files or links to Mattermost" : "Odeslat soubory nebo odkazy do Mattermost",
     "Files" : "Soubory",
     "Channel" : "Kanál",
     "Choose a channel" : "Zvolte kanál",

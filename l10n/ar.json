@@ -57,7 +57,7 @@
     "Successfully connected to Mattermost!" : "تم الاتصال ببرنامج Mattermost بنجاح!",
     "Error connecting to Mattermost:" : "خطأ في الاتصال ببرنامج Mattermost:",
     "Invalid access token" : "أَمَارَة وصول token غير صحيحة",
-    "Invalid login/password" : "خطأ في مُعرّف الدخول أو كلمة المرور",
+    "Invalid login/password" : "خطأ في معرف الدخول أو كلمة المرور",
     "Mattermost options saved" : "تم حفظ خيارات Mattermost",
     "Failed to save Mattermost options" : "تم حفظ خيارات برنامج Mattermost",
     "Send files or links to Mattermost" : "أرسِل الملفات أو الروابط إلى \"ماتِر موست\" Mattermost",
