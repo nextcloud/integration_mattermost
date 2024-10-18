@@ -6,7 +6,7 @@ OC.L10N.register(
     "Error getting OAuth access token. " : "خطأ في الحصول على أمارة token للوصول إلى OAuth.",
     "Error during OAuth exchanges" : "خطأ أثناء تبادلات OAuth.",
     "Bad HTTP method" : "وظيفة HTTP  غير صحيحة",
-    "Bad credentials" : "حيثيّات الدخول credentials غير صحيحة",
+    "Bad credentials" : "بيانات تسجيل الدخول غير صحيحة",
     "OAuth access token refused" : "أمَاَرَة token مرفوضة",
     "Connected accounts" : "حسابات مترابطة",
     "Slack Integration" : "مُكاملة Slack",
