@@ -14,6 +14,7 @@ use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
+use OCP\Security\ICrypto;
 use OCP\Share\IManager as ShareManager;
 use OCP\Share\IShare;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -56,6 +57,7 @@ class MattermostAPIServiceTest extends TestCase {
 		$this->urlGenerator = $this->createMock(IURLGenerator::class);
 		$this->clientService = $this->createMock(IClientService::class);
 		$this->networkService = $this->createMock(NetworkService::class);
+		$this->crypto = $this->createMock(ICrypto::class);
 
 		$this->service = new MattermostAPIService(
 			$this->logger,
@@ -64,6 +66,7 @@ class MattermostAPIServiceTest extends TestCase {
 			$this->rootFolder,
 			$this->shareManager,
 			$this->urlGenerator,
+			$this->crypto,
 			$this->networkService,
 			$this->clientService,
 		);

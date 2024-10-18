@@ -29,6 +29,7 @@ use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\Lock\LockedException;
 use OCP\PreConditionNotMetException;
+use OCP\Security\ICrypto;
 use OCP\Share\IManager as ShareManager;
 use OCP\Share\IShare;
 use Psr\Log\LoggerInterface;
@@ -47,6 +48,7 @@ class MattermostAPIService {
 		private IRootFolder $root,
 		private ShareManager $shareManager,
 		private IURLGenerator $urlGenerator,
+		private ICrypto $crypto,
 		private NetworkService $networkService,
 		IClientService $clientService
 	) {
@@ -499,6 +501,7 @@ class MattermostAPIService {
 		$mattermostUrl = $this->getMattermostUrl($userId);
 		$this->checkTokenExpiration($userId);
 		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
+		$accessToken = $accessToken === '' ? '' : $this->crypto->decrypt($accessToken);
 		try {
 			$url = $mattermostUrl . '/api/v4/' . $endPoint;
 			$options = [
@@ -571,9 +574,12 @@ class MattermostAPIService {
 	private function refreshToken(string $userId): bool {
 		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
+		$clientID = $clientID === '' ? '' : $this->crypto->decrypt($clientID);
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+		$clientSecret = $clientSecret === '' ? '' : $this->crypto->decrypt($clientSecret);
 		$redirect_uri = $this->config->getUserValue($userId, Application::APP_ID, 'redirect_uri');
 		$refreshToken = $this->config->getUserValue($userId, Application::APP_ID, 'refresh_token');
+		$refreshToken = $refreshToken === '' ? '' : $this->crypto->decrypt($refreshToken);
 		if (!$refreshToken) {
 			$this->logger->error('No Mattermost refresh token found', ['app' => Application::APP_ID]);
 			return false;
@@ -588,9 +594,11 @@ class MattermostAPIService {
 		if (isset($result['access_token'])) {
 			$this->logger->info('Mattermost access token successfully refreshed', ['app' => Application::APP_ID]);
 			$accessToken = $result['access_token'];
+			$encryptedToken = $accessToken === '' ? '' : $this->crypto->encrypt($accessToken);
 			$refreshToken = $result['refresh_token'];
-			$this->config->setUserValue($userId, Application::APP_ID, 'token', $accessToken);
-			$this->config->setUserValue($userId, Application::APP_ID, 'refresh_token', $refreshToken);
+			$encryptedRefreshToken = $refreshToken === '' ? '' : $this->crypto->encrypt($refreshToken);
+			$this->config->setUserValue($userId, Application::APP_ID, 'token', $encryptedToken);
+			$this->config->setUserValue($userId, Application::APP_ID, 'refresh_token', $encryptedRefreshToken);
 			if (isset($result['expires_in'])) {
 				$nowTs = (new DateTime())->getTimestamp();
 				$expiresAt = $nowTs + (int) $result['expires_in'];

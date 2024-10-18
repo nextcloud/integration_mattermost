@@ -6,13 +6,15 @@ use OCA\Mattermost\AppInfo\Application;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\IConfig;
+use OCP\Security\ICrypto;
 use OCP\Settings\ISettings;
 
 class Admin implements ISettings {
 
 	public function __construct(
 		private IConfig $config,
-		private IInitialState $initialStateService
+		private IInitialState $initialStateService,
+		private ICrypto $crypto,
 	) {
 	}
 
@@ -21,14 +23,17 @@ class Admin implements ISettings {
 	 */
 	public function getForm(): TemplateResponse {
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
-		// Do not expose the saved client secret to the user
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret') !== '' ? 'dummySecret' : '';
+		$clientID = $clientID === '' ? '' : $this->crypto->decrypt($clientID);
+		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+		$clientSecret = $clientSecret === '' ? '' : $this->crypto->decrypt($clientSecret);
+
 		$oauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
 
 		$adminConfig = [
 			'client_id' => $clientID,
-			'client_secret' => $clientSecret,
+			// Do not expose the saved client secret to the user
+			'client_secret' => $clientSecret !== '' ? 'dummySecret' : '',
 			'oauth_instance_url' => $oauthUrl,
 			'use_popup' => ($usePopup === '1'),
 		];
