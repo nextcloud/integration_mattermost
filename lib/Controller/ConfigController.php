@@ -28,6 +28,7 @@ use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\PreConditionNotMetException;
+use OCP\Security\ICrypto;
 
 class ConfigController extends Controller {
 
@@ -38,6 +39,7 @@ class ConfigController extends Controller {
 		private IURLGenerator $urlGenerator,
 		private IL10N $l,
 		private IInitialState $initialStateService,
+		private ICrypto $crypto,
 		private MattermostAPIService $mattermostAPIService,
 		private ?string $userId
 	) {
@@ -124,7 +126,12 @@ class ConfigController extends Controller {
 		}
 
 		foreach ($values as $key => $value) {
-			$this->config->setUserValue($this->userId, Application::APP_ID, $key, $value);
+			if ($key === 'token' && $value !== '') {
+				$encryptedValue = $this->crypto->encrypt($value);
+				$this->config->setUserValue($this->userId, Application::APP_ID, $key, $encryptedValue);
+			} else {
+				$this->config->setUserValue($this->userId, Application::APP_ID, $key, $value);
+			}
 		}
 		$result = [];
 
@@ -222,7 +229,8 @@ class ConfigController extends Controller {
 
 		$result = $this->mattermostAPIService->login($url, $login, $password);
 		if (isset($result['token'])) {
-			$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $result['token']);
+			$encryptedToken = $result['token'] === '' ? '' : $this->crypto->encrypt($result['token']);
+			$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $encryptedToken);
 			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_id', $result['info']['id'] ?? '');
 			$this->config->setUserValue($this->userId, Application::APP_ID, 'user_name', $result['info']['username'] ?? '');
 			$userDisplayName = ($result['info']['first_name'] ?? '') . ' ' . ($result['info']['last_name'] ?? '');
@@ -265,7 +273,12 @@ class ConfigController extends Controller {
 	#[PasswordConfirmationRequired]
 	public function setSensitiveAdminConfig(array $values): DataResponse {
 		foreach ($values as $key => $value) {
-			$this->config->setAppValue(Application::APP_ID, $key, $value);
+			if (in_array($key, ['client_id', 'client_secret'], true) && $value !== '') {
+				$encryptedValue = $this->crypto->encrypt($value);
+				$this->config->setAppValue(Application::APP_ID, $key, $encryptedValue);
+			} else {
+				$this->config->setAppValue(Application::APP_ID, $key, $value);
+			}
 		}
 		return new DataResponse([]);
 	}
@@ -295,7 +308,9 @@ class ConfigController extends Controller {
 	public function oauthRedirect(string $code = '', string $state = ''): RedirectResponse {
 		$configState = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_state');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
+		$clientID = $clientID === '' ? '' : $this->crypto->decrypt($clientID);
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+		$clientSecret = $clientSecret === '' ? '' : $this->crypto->decrypt($clientSecret);
 
 		// anyway, reset state
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_state');
@@ -322,8 +337,10 @@ class ConfigController extends Controller {
 					$expiresAt = $nowTs + (int) $result['expires_in'];
 					$this->config->setUserValue($this->userId, Application::APP_ID, 'token_expires_at', strval($expiresAt));
 				}
-				$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $accessToken);
-				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $refreshToken);
+				$encryptedToken = $accessToken === '' ? '' : $this->crypto->encrypt($accessToken);
+				$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $encryptedToken);
+				$encryptedRefreshToken = $refreshToken === '' ? '' : $this->crypto->encrypt($refreshToken);
+				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $encryptedRefreshToken);
 				$userInfo = $this->storeUserInfo();
 				$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0') === '1';
 				if ($usePopup) {
