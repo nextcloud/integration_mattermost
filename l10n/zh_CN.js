@@ -63,7 +63,7 @@ OC.L10N.register(
     "Failed to open Slack OAuth popup window, please allow popups" : "打开 Slack OAuth 弹窗失败，请允许弹窗",
     "Failed to save Slack OAuth state" : "保存 Slack OAuth 状态失败",
     "You need to connect a Slack app before using the Slack integration." : "在使用 Slack 插件前，您必须连接到 Slack 服务器。",
-    "Do you want to go to your \"Connect accounts\" personal settings?" : "您想进入“连接账户”个人设置吗？",
+    "Do you want to go to your \"Connect accounts\" personal settings?" : "你想进入“连接账号”个人设置吗？",
     "Go to settings" : "前往设置",
     "Upload files" : "上传文件",
     "Public links" : "公开链接",
