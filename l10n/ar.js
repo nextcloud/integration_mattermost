@@ -102,7 +102,7 @@ OC.L10N.register(
     "You need to connect to a Mattermost server before using the Mattermost integration." : "تحتاج إلى الاتصال بخادم Mattermost قبل استخدام تكامل Mattermost.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "هل تريد الانتقال إلى الإعدادات الشخصية \"ربط الحسابات\"؟",
     "Go to settings" : "اذهب للاعدادات",
-    "Upload files" : "حمل الملفات",
+    "Upload files" : "رفع الملفات",
     "Public links" : "روابط عامة",
     "Internal links (Only works for users with access to the files)" : "الروابط الداخلية (يعمل فقط للمستخدمين الذين لديهم حق الوصول إلى الملفات)"
 },
