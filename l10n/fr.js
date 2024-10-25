@@ -61,6 +61,7 @@ OC.L10N.register(
     "Invalid login/password" : "Identifiant/mot de passe incorrects",
     "Mattermost options saved" : "Options Mattermost enregistrées",
     "Failed to save Mattermost options" : "Impossible d'enregistrer les options Mattermost",
+    "Send files or links to Mattermost" : "Envoyer des fichiers ou des liens vers Mattermost",
     "Files" : "Fichiers",
     "Channel" : "Canal",
     "Choose a channel" : "Sélectionner un canal",
