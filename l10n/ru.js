@@ -41,6 +41,12 @@ OC.L10N.register(
     "Cancel" : "Отменить",
     "View only" : "Для просмотра",
     "Edit" : "Редактировать",
+    "Failed to edit Mattermost todo" : "Не удалось изменить задачу в Mattermost",
+    "Send files to Mattermost" : "Отправить файлы в Mattermost",
+    "Failed to send links to Mattermost" : "Не удалось отправить ссылки в Mattermost",
+    "Failed to send {name} to Mattermost" : "Не удалось отправить {name} в Mattermost",
+    "Nothing" : "Ничего",
+    "Sign in with Mattermost" : "Войти через Mattermost",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Хотите перейти в личные настройки «Подключения учетных записей»?",
     "Go to settings" : "Перейти к настройкам",
     "Upload files" : "Отправить файлы"

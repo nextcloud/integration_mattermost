@@ -2,6 +2,7 @@ OC.L10N.register(
     "integration_mattermost",
     {
     "Mattermost" : "Mattermost",
+    "The instance URL does not match the one currently configured for OAuth authentication" : "L'URL de l'instance ne correspond pas à celle actuellement configurée pour l'authentification OAuth",
     "Error getting OAuth access token. " : "Erreur lors de l'obtention du jeton d'accès OAuth.",
     "Error during OAuth exchanges" : "Erreur pendant les échanges OAuth",
     "Mattermost messages" : "Messages Mattermost",
