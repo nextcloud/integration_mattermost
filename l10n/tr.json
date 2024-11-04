@@ -15,7 +15,7 @@
     "Link to create a Slack application" : "Bir Slack uygulaması oluşturma bağlantısı",
     "Make sure you set the \"Redirect URI\" in the \"OAuth & Permissions\" section of your Slack app settings to" : "Slack uygulama ayarlarınızın \"OAuth & Permissions\" bölümündeki \"Redirect URI\" ögesini şöyle ayarladığınızdan emin olun:",
     "Put the \"Client ID\" and \"Client secret\" below. Your Nextcloud users will then see a \"Connect to Slack\" button in their personal settings." : "\"İstemci kimliği\" ve \"İstemci parolası\" bilgilerini aşağıya yazın. Bundan sonra Nextcloud kullanıcılarınız kişisel ayarlarında \"Slack bağlantısı kur\" seçeneğini görecek.",
-    "In the same \"OAuth & Permissions\" section, token rotation can be enabled. If enabled, your access token would be regularly refreshed with a refresh token. This is handled automatically." : "Aynı \"OAuth & Permissions\" bölümünde kod dönüşümünü etkinleştirebilirsiniz. Bu seçenek etkinleştirildiğinde, erişim kodunuz düzenli olarak bir yenileme koduyla değiştirilir. Bu işlem otomatik olarak yapılır.",
+    "In the same \"OAuth & Permissions\" section, token rotation can be enabled. If enabled, your access token would be regularly refreshed with a refresh token. This is handled automatically." : "Aynı \"OAuth & Permissions\" bölümünde kod dönüşümünü kullanıma alabilirsiniz. Bu seçenek kullanıma alındığında, erişim kodunuz düzenli olarak bir yenileme koduyla değiştirilir. Bu işlem otomatik olarak yapılır.",
     "Client ID" : "İstemci kimliği",
     "ID of your Slack application" : "Slack uygulamanızın kimliği",
     "Application secret" : "Uygulama parolası",

@@ -28,7 +28,7 @@
     "Connected as" : "Conectado como",
     "Disconnect from Slack" : "Desconectar de Slack",
     "Add file action to send files to Slack" : "Añadir acción de archivo para enviar archivos a Slack",
-    "Successfully connected to Slack!" : "¡Se conectó a Slack exitósamente!",
+    "Successfully connected to Slack!" : "¡Se ha conectado correctamente a Slack!",
     "Error connecting to Slack:" : "Error conectándose a Slack:",
     "Slack options saved" : "Opciones de Slack guardadas",
     "Invalid access token" : "Token de acceso inválido",
