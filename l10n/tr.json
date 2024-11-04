@@ -40,7 +40,7 @@
     "Connected as {user}" : "{user} olarak bağlantı kuruldu",
     "Disconnect from Mattermost" : "Mattermost bağlantısını kes",
     "Add file action to send files to Mattermost" : "Dosyaları Mattermost üzerine yollayan bir dosya işlemi ekleyin",
-    "Enable navigation link (link to Mattermost with a top menu item)" : "Gezinme bağlantısı etkinleştirilsin (bir üst menü ögesiyle Mattermost bağlantısı)",
+    "Enable navigation link (link to Mattermost with a top menu item)" : "Gezinme bağlantısı kullanıma alınsın (bir üst menü ögesiyle Mattermost bağlantısı)",
     "Enable searching for messages" : "İletilerde arama yapılabilsin",
     "Warning, everything you type in the search bar will be sent to Mattermost." : "Uyarı, arama çubuğuna yazdığınız her şey Mattermost üzerine gönderilecek.",
     "If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks." : "Mattermost üzerinde Nextcloud bütünleştirmesini yapılandırdığınızda, bu site bağlantıları uzaktan otomatik olarak yapılandırılır.",

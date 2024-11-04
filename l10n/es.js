@@ -55,7 +55,7 @@ OC.L10N.register(
     "Upcoming events webhook URL" : "URL del webhook para próximos eventos",
     "Webhook secret" : "Secreto del webhook",
     "secret" : "secreto",
-    "Successfully connected to Mattermost!" : "¡Se conectó a Mattermost exitósamente!",
+    "Successfully connected to Mattermost!" : "¡Se ha conectado correctamente a Mattermost!",
     "Error connecting to Mattermost:" : "Error al conectar con Mattermost:",
     "Invalid access token" : "Token de acceso inválido",
     "Invalid login/password" : "Usuario/contraseña inválidos",
