@@ -18,6 +18,8 @@ use Exception;
 use OCA\Slack\AppInfo\Application;
 use OCA\Slack\Service\SlackAPIService;
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\PasswordConfirmationRequired;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -31,6 +33,8 @@ use OCP\Security\ICrypto;
 use Psr\Log\LoggerInterface;
 
 class ConfigController extends Controller {
+
+	public const SENSITIVE_ADMIN_KEYS = ['client_id', 'client_secret'];
 
 	public function __construct(
 		string $appName,
@@ -48,10 +52,9 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @return DataResponse
 	 */
+	#[NoAdminRequired]
 	public function isUserConnected(): DataResponse {
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
@@ -68,10 +71,9 @@ class ConfigController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @return DataResponse
 	 */
+	#[NoAdminRequired]
 	public function getFilesToSend(): DataResponse {
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
 
@@ -92,12 +94,12 @@ class ConfigController extends Controller {
 
 	/**
 	 * set config values
-	 * @NoAdminRequired
 	 *
 	 * @param array $values
 	 * @return DataResponse
 	 * @throws PreConditionNotMetException
 	 */
+	#[NoAdminRequired]
 	public function setConfig(array $values): DataResponse {
 		foreach ($values as $key => $value) {
 			$this->config->setUserValue($this->userId, Application::APP_ID, $key, $value);
@@ -129,6 +131,26 @@ class ConfigController extends Controller {
 	 */
 	public function setAdminConfig(array $values): DataResponse {
 		foreach ($values as $key => $value) {
+			if (in_array($key, self::SENSITIVE_ADMIN_KEYS, true)) {
+				continue;
+			}
+			$this->config->setAppValue(Application::APP_ID, $key, $value);
+		}
+		return new DataResponse([]);
+	}
+
+	/**
+	 * set admin config values
+	 *
+	 * @param array $values
+	 * @return DataResponse
+	 */
+	#[PasswordConfirmationRequired]
+	public function setSensitiveAdminConfig(array $values): DataResponse {
+		foreach ($values as $key => $value) {
+			if (!in_array($key, self::SENSITIVE_ADMIN_KEYS, true)) {
+				continue;
+			}
 			try {
 				if ($key === 'client_secret' && $value !== '') {
 					$value = $this->crypto->encrypt($value);
@@ -142,7 +164,7 @@ class ConfigController extends Controller {
 
 			$this->config->setAppValue(Application::APP_ID, $key, $value);
 		}
-		return new DataResponse(1);
+		return new DataResponse([]);
 	}
 
 	/**

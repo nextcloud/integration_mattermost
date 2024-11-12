@@ -65,12 +65,14 @@
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue'
 import KeyIcon from 'vue-material-design-icons/Key.vue'
 
+import SlackIcon from './icons/SlackIcon.vue'
+
 import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showSuccess, showError } from '@nextcloud/dialogs'
-import SlackIcon from './icons/SlackIcon.vue'
+import { confirmPassword } from '@nextcloud/password-confirmation'
 
 import { delay } from '../utils.js'
 
@@ -107,24 +109,29 @@ export default {
 		},
 		onInput() {
 			delay(() => {
-				this.saveOptions({
+				const values = {
 					client_id: this.state.client_id,
-					client_secret: this.state.client_secret,
-				})
+				}
+				if (this.state.client_secret !== 'dummyClientSecret') {
+					values.client_secret = this.state.client_secret
+				}
+				this.saveOptions(values, true)
 			}, 2000)()
 		},
-		saveOptions(values) {
+		async saveOptions(values, sensitive = false) {
+			if (sensitive) {
+				await confirmPassword()
+			}
 			const req = {
 				values,
 			}
-			const url = generateUrl('/apps/integration_slack/admin-config')
+			const url = sensitive
+				? generateUrl('/apps/integration_slack/sensitive-admin-config')
+				: generateUrl('/apps/integration_slack/admin-config')
 			axios.put(url, req).then(() => {
 				showSuccess(t('integration_slack', 'Slack admin options saved'))
 			}).catch((error) => {
-				showError(
-					t('integration_slack', 'Failed to save Slack admin options')
-					+ ': ' + (error.response?.request?.responseText ?? ''),
-				)
+				showError(t('integration_slack', 'Failed to save Slack admin options'))
 				console.error(error)
 			})
 		},
