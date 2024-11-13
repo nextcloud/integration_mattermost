@@ -6,6 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 2.0.0 – 2024-11-13
+
+### Changed
+* Encrypt user tokens and refresh tokens @julien-nc
+* Migrate the existing stored values @julien-nc
+* Update npm pkgs @julien-nc
+* Bump max nc version to 31 @julien-nc
+* Name groups on id if name absent @kyteinsky
+
+### Added
+* Add password confirmation when setting the client id and secret @julien-nc
+
+### Fixed
+* Fix small style issues in send modal @julien-nc
+* Fix file upload after breaking change in the Slack API @julien-nc
+* Fix group channel name @julien-nc
+
+
 ## 1.2.0 – 2024-07-26
 
 ### Changed
