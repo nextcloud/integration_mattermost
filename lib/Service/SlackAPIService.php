@@ -178,7 +178,7 @@ class SlackAPIService {
 				$realName = $this->getUserRealName($userId, $channel['user']);
 
 				$channels[] = [
-					'id' => $channel['user'],
+					'id' => $channel['id'],
 					'name' => $realName ?? $channel['user'],
 					'type' => 'direct',
 					'updated' => $channel['updated'] ?? 0,
