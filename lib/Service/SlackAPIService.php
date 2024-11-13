@@ -50,7 +50,7 @@ class SlackAPIService {
 		private IURLGenerator $urlGenerator,
 		private ICrypto $crypto,
 		private NetworkService $networkService,
-		IClientService $clientService
+		IClientService $clientService,
 	) {
 		$this->client = $clientService->newClient();
 	}
@@ -105,7 +105,7 @@ class SlackAPIService {
 	 * @param string $slackUserId
 	 * @return string|null
 	 */
-	private function getUserRealName(string $userId, string $slackUserId): string|null {
+	private function getUserRealName(string $userId, string $slackUserId): ?string {
 		$userInfo = $this->request($userId, 'users.info', ['user' => $slackUserId]);
 		if (isset($userInfo['error'])) {
 			return null;
@@ -128,7 +128,7 @@ class SlackAPIService {
 		]);
 
 		if (isset($channelResult['error'])) {
-			return (array) $channelResult;
+			return (array)$channelResult;
 		}
 
 		if (!isset($channelResult['channels']) || !is_array($channelResult['channels'])) {
@@ -143,7 +143,7 @@ class SlackAPIService {
 
 		$channels = [];
 
-		foreach($channelResult['channels'] as $channel) {
+		foreach ($channelResult['channels'] as $channel) {
 			if (
 				isset(
 					$channel['is_group'],
@@ -291,7 +291,7 @@ class SlackAPIService {
 
 		$message = ($comment !== ''
 			? $comment . "\n\n"
-			: '') .  join("\n", array_map(fn ($link) => $link['name'] . ': ' . $link['url'], $links));
+			: '') . join("\n", array_map(fn ($link) => $link['name'] . ': ' . $link['url'], $links));
 
 		return $this->sendMessage($userId, $message, $channelId);
 	}
@@ -326,7 +326,7 @@ class SlackAPIService {
 			$sendResult = $this->request($userId, 'files.upload', $params, 'POST');
 
 			if (isset($sendResult['error'])) {
-				return (array) $sendResult;
+				return (array)$sendResult;
 			}
 
 			return ['success' => true];
@@ -361,7 +361,7 @@ class SlackAPIService {
 		$expireAt = $this->config->getUserValue($userId, Application::APP_ID, 'token_expires_at');
 		if ($refreshToken !== '' && $expireAt !== '') {
 			$nowTs = (new DateTime())->getTimestamp();
-			$expireAt = (int) $expireAt;
+			$expireAt = (int)$expireAt;
 			// if token expires in less than a minute or is already expired
 			if ($nowTs > $expireAt - 60) {
 				$this->refreshToken($userId);
@@ -411,7 +411,7 @@ class SlackAPIService {
 
 			if (isset($result['expires_in'])) {
 				$nowTs = (new DateTime())->getTimestamp();
-				$expiresAt = $nowTs + (int) $result['expires_in'];
+				$expiresAt = $nowTs + (int)$result['expires_in'];
 				$this->config->setUserValue($userId, Application::APP_ID, 'token_expires_at', strval($expiresAt));
 			}
 
@@ -472,7 +472,7 @@ class SlackAPIService {
 				return json_decode($body, true);
 			}
 		} catch (Exception $e) {
-			$this->logger->warning('Slack OAuth error : '.$e->getMessage(), ['app' => Application::APP_ID]);
+			$this->logger->warning('Slack OAuth error : ' . $e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}

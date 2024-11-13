@@ -109,11 +109,11 @@ class NetworkService {
 				return json_decode($body, true);
 			}
 			return $body;
-		} catch (ServerException | ClientException $e) {
+		} catch (ServerException|ClientException $e) {
 			$body = $e->getResponse()->getBody();
 			$this->logger->warning('Slack API error : ' . $body, ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
-		} catch (Exception | Throwable $e) {
+		} catch (Exception|Throwable $e) {
 			$this->logger->warning('Slack API error', ['exception' => $e, 'app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}

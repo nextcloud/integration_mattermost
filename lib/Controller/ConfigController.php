@@ -46,7 +46,7 @@ class ConfigController extends Controller {
 		private SlackAPIService $slackAPIService,
 		private ICrypto $crypto,
 		private LoggerInterface $logger,
-		private ?string $userId
+		private ?string $userId,
 	) {
 		parent::__construct($appName, $request);
 	}
@@ -231,7 +231,7 @@ class ConfigController extends Controller {
 
 				if (isset($result['authed_user']['expires_in'])) {
 					$nowTs = (new Datetime())->getTimestamp();
-					$expiresAt = $nowTs + (int) $result['authed_user']['expires_in'];
+					$expiresAt = $nowTs + (int)$result['authed_user']['expires_in'];
 					$this->config->setUserValue($this->userId, Application::APP_ID, 'token_expires_at', strval($expiresAt));
 				}
 
