@@ -225,7 +225,9 @@ class ConfigController extends Controller {
 
 			if (isset($result['authed_user'], $result['authed_user']['access_token'], $result['authed_user']['id'])) {
 				$accessToken = $result['authed_user']['access_token'];
+				$encryptedAccessToken = $accessToken === '' ? '' : $this->crypto->encrypt($accessToken);
 				$refreshToken = $result['authed_user']['refresh_token'] ?? '';
+				$encryptedRefreshToken = $refreshToken === '' ? '' : $this->crypto->encrypt($refreshToken);
 
 				if (isset($result['authed_user']['expires_in'])) {
 					$nowTs = (new Datetime())->getTimestamp();
@@ -233,8 +235,8 @@ class ConfigController extends Controller {
 					$this->config->setUserValue($this->userId, Application::APP_ID, 'token_expires_at', strval($expiresAt));
 				}
 
-				$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $accessToken);
-				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $refreshToken);
+				$this->config->setUserValue($this->userId, Application::APP_ID, 'token', $encryptedAccessToken);
+				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $encryptedRefreshToken);
 
 				$userInfo = $this->storeUserInfo($result['authed_user']['id']);
 				$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0') === '1';

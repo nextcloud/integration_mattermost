@@ -378,6 +378,7 @@ class SlackAPIService {
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
 		$refreshToken = $this->config->getUserValue($userId, Application::APP_ID, 'refresh_token');
+		$refreshToken = $refreshToken === '' ? '' : $this->crypto->decrypt($refreshToken);
 
 		if (!$refreshToken) {
 			$this->logger->error('No Slack refresh token found', ['app' => Application::APP_ID]);
@@ -403,8 +404,10 @@ class SlackAPIService {
 
 			$accessToken = $result['access_token'];
 			$refreshToken = $result['refresh_token'];
-			$this->config->setUserValue($userId, Application::APP_ID, 'token', $accessToken);
-			$this->config->setUserValue($userId, Application::APP_ID, 'refresh_token', $refreshToken);
+			$encryptedAccessToken = $accessToken === '' ? '' : $this->crypto->encrypt($accessToken);
+			$encryptedRefreshToken = $refreshToken === '' ? '' : $this->crypto->encrypt($refreshToken);
+			$this->config->setUserValue($userId, Application::APP_ID, 'token', $encryptedAccessToken);
+			$this->config->setUserValue($userId, Application::APP_ID, 'refresh_token', $encryptedRefreshToken);
 
 			if (isset($result['expires_in'])) {
 				$nowTs = (new DateTime())->getTimestamp();
