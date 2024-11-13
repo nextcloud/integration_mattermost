@@ -11,18 +11,18 @@ namespace OCA\Slack\Migration;
 use Closure;
 use OCA\Slack\AppInfo\Application;
 use OCP\DB\QueryBuilder\IQueryBuilder;
-use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\SimpleMigrationStep;
 use OCP\Security\ICrypto;
+use Psr\Log\LoggerInterface;
 
 class Version020000Date20241113112051 extends SimpleMigrationStep {
 
 	public function __construct(
 		private IDBConnection $connection,
 		private ICrypto $crypto,
-		private IConfig $config,
+		private LoggerInterface $logger,
 	) {
 	}
 
@@ -66,14 +66,18 @@ class Version020000Date20241113112051 extends SimpleMigrationStep {
 			);
 		$req = $qbSelect->executeQuery();
 		while ($row = $req->fetch()) {
-			$userId = $row['userid'];
-			$configKey = $row['configkey'];
-			$storedClearToken = $row['configvalue'];
-			$encryptedToken = $this->crypto->encrypt($storedClearToken);
-			$qbUpdate->setParameter('updateConfigKey', $configKey, IQueryBuilder::PARAM_STR);
-			$qbUpdate->setParameter('updateValue', $encryptedToken, IQueryBuilder::PARAM_STR);
-			$qbUpdate->setParameter('updateUserId', $userId, IQueryBuilder::PARAM_STR);
-			$qbUpdate->executeStatement();
+			try {
+				$userId = $row['userid'];
+				$configKey = $row['configkey'];
+				$storedClearToken = $row['configvalue'];
+				$encryptedToken = $this->crypto->encrypt($storedClearToken);
+				$qbUpdate->setParameter('updateConfigKey', $configKey, IQueryBuilder::PARAM_STR);
+				$qbUpdate->setParameter('updateValue', $encryptedToken, IQueryBuilder::PARAM_STR);
+				$qbUpdate->setParameter('updateUserId', $userId, IQueryBuilder::PARAM_STR);
+				$qbUpdate->executeStatement();
+			} catch (\Exception|\Throwable $e) {
+				$this->logger->warning('Failed to migrate token/refresh_token for user ' . $userId, ['exception' => $e]);
+			}
 		}
 		$req->closeCursor();
 	}
