@@ -122,10 +122,10 @@
 							:value="type.id"
 							name="send_type_radio"
 							type="radio">
-							<component :is="type.icon" :size="20" />
-							<span class="option-title">
-								{{ type.label }}
-							</span>
+							<div class="checkbox-label">
+								<component :is="type.icon" :size="20" />
+								<span>{{ type.label }}</span>
+							</div>
 						</NcCheckboxRadioSwitch>
 					</div>
 					<RadioElementSet v-if="sendType === SEND_TYPE.public_link.id"
@@ -414,6 +414,10 @@ export default {
 	flex-direction: column;
 	overflow-y: scroll;
 
+	h2 {
+		margin-top: 0;
+	}
+
 	.select-option {
 		display: flex;
 		align-items: center;
@@ -532,8 +536,10 @@ export default {
 		margin-left: 8px;
 	}
 
-	.option-title {
-		margin-left: 8px;
+	.checkbox-label {
+		display: flex;
+		align-items: center;
+		gap: 4px;
 	}
 }
 
