@@ -17,6 +17,7 @@ use Exception;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use OCA\Slack\AppInfo\Application;
+use OCP\Files\File;
 use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
@@ -43,6 +44,28 @@ class NetworkService {
 		$this->client = $clientService->newClient();
 	}
 
+	public function uploadFile(string $url, File $file): array {
+		$options = [
+			'headers' => [
+				'User-Agent' => Application::INTEGRATION_USER_AGENT,
+				'Content-Type' => $file->getMimeType(),
+			],
+			'body' => $file->getContent(),
+		];
+
+		try {
+			$this->client->post($url, $options);
+			return ['success' => true];
+		} catch (ServerException|ClientException $e) {
+			$body = $e->getResponse()->getBody();
+			$this->logger->warning('Slack upload API error : ' . $body);
+			return ['error' => $e->getMessage()];
+		} catch (Exception|Throwable $e) {
+			$this->logger->warning('Slack upload API error', ['exception' => $e]);
+			return ['error' => $e->getMessage()];
+		}
+	}
+
 	/**
 	 * @param string $userId
 	 * @param string $endPoint
@@ -63,7 +86,9 @@ class NetworkService {
 			$options = [
 				'headers' => [
 					'Authorization' => 'Bearer ' . $accessToken,
-					'Content-Type' => 'application/x-www-form-urlencoded; charset=utf-8',
+					'Content-Type' => $endPoint === 'files.completeUploadExternal'
+						? 'application/json'
+						: 'application/x-www-form-urlencoded; charset=utf-8',
 					'User-Agent' => Application::INTEGRATION_USER_AGENT,
 				],
 			];
@@ -84,7 +109,11 @@ class NetworkService {
 
 					$url .= '?' . $paramsContent;
 				} else {
-					$options['body'] = $params;
+					if ($endPoint === 'files.completeUploadExternal') {
+						$options['json'] = $params;
+					} else {
+						$options['body'] = $params;
+					}
 				}
 			}
 

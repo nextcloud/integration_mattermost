@@ -308,22 +308,47 @@ class SlackAPIService {
 	 */
 	public function sendFile(string $userId, int $fileId, string $channelId, string $comment = ''): array {
 		$userFolder = $this->root->getUserFolder($userId);
-		$files = $userFolder->getById($fileId);
+		$file = $userFolder->getFirstNodeById($fileId);
 
-		if (count($files) > 0 && $files[0] instanceof File) {
-			$file = $files[0];
+		if ($file !== null && $file instanceof File) {
+			// files.upload is deprecated and does not work if the oauth app has been created after 2024.05.08
+			// so we follow https://api.slack.com/messaging/files#uploading_files
 
+			// files.getUploadURLExternal
 			$params = [
-				'channels' => $channelId,
 				'filename' => $file->getName(),
-				'filetype' => 'auto',
-				'content' => $file->getContent(),
+				'length' => $file->getSize(),
+			];
+			$uploadUrlResult = $this->request($userId, 'files.getUploadURLExternal', $params);
+
+			if (!isset($uploadUrlResult['upload_url'])
+				|| !is_string($uploadUrlResult['upload_url'])
+				|| !isset($uploadUrlResult['file_id'])
+				|| !is_string($uploadUrlResult['file_id'])
+			) {
+				return ['error' => 'Cannot get the upload URL'];
+			}
+
+			// POST to upload URL
+			$uploadUrl = $uploadUrlResult['upload_url'];
+			$uploadedFileId = $uploadUrlResult['file_id'];
+			$uploadResult = $this->networkService->uploadFile($uploadUrl, $file);
+			if (!isset($uploadResult['success'])) {
+				return $uploadResult;
+			}
+
+			// files.completeUploadExternal
+			$params = [
+				'channel_id' => $channelId,
+				'files' => [
+					['id' => $uploadedFileId, 'title' => $file->getName()],
+				],
 			];
 			if ($comment !== '') {
 				$params['initial_comment'] = $comment;
 			}
 
-			$sendResult = $this->request($userId, 'files.upload', $params, 'POST');
+			$sendResult = $this->request($userId, 'files.completeUploadExternal', $params, 'POST');
 
 			if (isset($sendResult['error'])) {
 				return (array)$sendResult;
