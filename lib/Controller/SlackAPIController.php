@@ -18,11 +18,12 @@ use OC\User\NoUserException;
 use OCA\Slack\Service\SlackAPIService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\AppFramework\Http\DataDisplayResponse;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\Files\NotPermittedException;
-use OCP\IConfig;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\Lock\LockedException;
@@ -30,25 +31,25 @@ use OCP\Lock\LockedException;
 class SlackAPIController extends Controller {
 
 	public function __construct(
-		string                  $appName,
-		IRequest                $request,
-		private IConfig         $config,
-		private IURLGenerator   $urlGenerator,
+		string $appName,
+		IRequest $request,
+		private IURLGenerator $urlGenerator,
 		private SlackAPIService $slackAPIService,
-		private ?string         $userId) {
+		private ?string $userId,
+	) {
 		parent::__construct($appName, $request);
 	}
 
 	/**
 	 * Get Slack user avatar
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
 	 *
 	 * @param string $slackUserId
 	 * @param int $useFallback
 	 * @return DataDisplayResponse|RedirectResponse
 	 * @throws \Exception
 	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
 	public function getUserAvatar(string $slackUserId, int $useFallback = 1): DataDisplayResponse|RedirectResponse {
 		$result = $this->slackAPIService->getUserAvatar($this->userId, $slackUserId);
 		if (isset($result['avatarContent'])) {
@@ -64,11 +65,10 @@ class SlackAPIController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @return DataResponse
 	 * @throws Exception
 	 */
+	#[NoAdminRequired]
 	public function getChannels() {
 		$result = $this->slackAPIService->getMyChannels($this->userId);
 		if (isset($result['error'])) {
@@ -78,13 +78,12 @@ class SlackAPIController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @param string $message
 	 * @param string $channelId
 	 * @return DataResponse
 	 * @throws Exception
 	 */
+	#[NoAdminRequired]
 	public function sendMessage(string $message, string $channelId) {
 		$result = $this->slackAPIService->sendMessage($this->userId, $message, $channelId);
 		if (isset($result['error'])) {
@@ -95,8 +94,6 @@ class SlackAPIController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @param int $fileId
 	 * @param string $channelId
 	 * @param string $comment
@@ -105,6 +102,7 @@ class SlackAPIController extends Controller {
 	 * @throws LockedException
 	 * @throws NoUserException
 	 */
+	#[NoAdminRequired]
 	public function sendFile(int $fileId, string $channelId, string $comment = '') {
 		$result = $this->slackAPIService->sendFile($this->userId, $fileId, $channelId, $comment);
 		if (isset($result['error'])) {
@@ -115,8 +113,6 @@ class SlackAPIController extends Controller {
 	}
 
 	/**
-	 * @NoAdminRequired
-	 *
 	 * @param array $fileIds
 	 * @param string $channelId
 	 * @param string $channelName
@@ -128,6 +124,7 @@ class SlackAPIController extends Controller {
 	 * @throws NoUserException
 	 * @throws NotPermittedException
 	 */
+	#[NoAdminRequired]
 	public function sendPublicLinks(array $fileIds, string $channelId, string $channelName, string $comment,
 		string $permission, ?string $expirationDate = null, ?string $password = null): DataResponse {
 		$result = $this->slackAPIService->sendPublicLinks(

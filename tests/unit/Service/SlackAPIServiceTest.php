@@ -47,6 +47,10 @@ class SlackAPIServiceTest extends TestCase {
 		$this->networkService = $this->createMock(NetworkService::class);
 		$this->clientService = $this->createMock(ClientService::class);
 
+		$this->config->method('getUserValue')->willReturnCallback(function (string $userId, string $appName, string $key) {
+			return '';
+		});
+
 		$this->apiService = new SlackAPIService(
 			$this->logger,
 			$this->l10n,

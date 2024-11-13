@@ -50,7 +50,7 @@ class SlackAPIService {
 		private IURLGenerator $urlGenerator,
 		private ICrypto $crypto,
 		private NetworkService $networkService,
-		IClientService $clientService
+		IClientService $clientService,
 	) {
 		$this->client = $clientService->newClient();
 	}
@@ -105,7 +105,7 @@ class SlackAPIService {
 	 * @param string $slackUserId
 	 * @return string|null
 	 */
-	private function getUserRealName(string $userId, string $slackUserId): string|null {
+	private function getUserRealName(string $userId, string $slackUserId): ?string {
 		$userInfo = $this->request($userId, 'users.info', ['user' => $slackUserId]);
 		if (isset($userInfo['error'])) {
 			return null;
@@ -128,7 +128,7 @@ class SlackAPIService {
 		]);
 
 		if (isset($channelResult['error'])) {
-			return (array) $channelResult;
+			return (array)$channelResult;
 		}
 
 		if (!isset($channelResult['channels']) || !is_array($channelResult['channels'])) {
@@ -143,7 +143,7 @@ class SlackAPIService {
 
 		$channels = [];
 
-		foreach($channelResult['channels'] as $channel) {
+		foreach ($channelResult['channels'] as $channel) {
 			if (
 				isset(
 					$channel['is_group'],
@@ -178,7 +178,7 @@ class SlackAPIService {
 				$realName = $this->getUserRealName($userId, $channel['user']);
 
 				$channels[] = [
-					'id' => $channel['user'],
+					'id' => $channel['id'],
 					'name' => $realName ?? $channel['user'],
 					'type' => 'direct',
 					'updated' => $channel['updated'] ?? 0,
@@ -291,7 +291,7 @@ class SlackAPIService {
 
 		$message = ($comment !== ''
 			? $comment . "\n\n"
-			: '') .  join("\n", array_map(fn ($link) => $link['name'] . ': ' . $link['url'], $links));
+			: '') . join("\n", array_map(fn ($link) => $link['name'] . ': ' . $link['url'], $links));
 
 		return $this->sendMessage($userId, $message, $channelId);
 	}
@@ -308,25 +308,51 @@ class SlackAPIService {
 	 */
 	public function sendFile(string $userId, int $fileId, string $channelId, string $comment = ''): array {
 		$userFolder = $this->root->getUserFolder($userId);
-		$files = $userFolder->getById($fileId);
+		$file = $userFolder->getFirstNodeById($fileId);
 
-		if (count($files) > 0 && $files[0] instanceof File) {
-			$file = $files[0];
+		if ($file !== null && $file instanceof File) {
+			// files.upload is deprecated and does not work if the oauth app has been created after 2024.05.08
+			// so we follow https://api.slack.com/messaging/files#uploading_files
 
+			// files.getUploadURLExternal
 			$params = [
-				'channels' => $channelId,
 				'filename' => $file->getName(),
-				'filetype' => 'auto',
-				'content' => $file->getContent(),
+				'length' => $file->getSize(),
+			];
+			$uploadUrlResult = $this->request($userId, 'files.getUploadURLExternal', $params);
+
+			if (!isset($uploadUrlResult['upload_url'])
+				|| !is_string($uploadUrlResult['upload_url'])
+				|| !isset($uploadUrlResult['file_id'])
+				|| !is_string($uploadUrlResult['file_id'])
+			) {
+				return ['error' => 'Cannot get the upload URL'];
+			}
+
+			// POST to upload URL
+			$uploadUrl = $uploadUrlResult['upload_url'];
+			$uploadedFileId = $uploadUrlResult['file_id'];
+			$uploadResult = $this->networkService->uploadFile($uploadUrl, $file);
+			if (!isset($uploadResult['success'])) {
+				return $uploadResult;
+			}
+
+			// files.completeUploadExternal
+			$params = [
+				'channel_id' => $channelId,
+				'files' => [
+					['id' => $uploadedFileId, 'title' => $file->getName()],
+				],
 			];
 			if ($comment !== '') {
 				$params['initial_comment'] = $comment;
 			}
 
-			$sendResult = $this->request($userId, 'files.upload', $params, 'POST');
+			$sendResult = $this->request($userId, 'files.completeUploadExternal', $params, 'POST');
 
 			if (isset($sendResult['error'])) {
-				return (array) $sendResult;
+				$this->logger->warning('Slack file upload error: ', ['error' => $sendResult]);
+				return (array)$sendResult;
 			}
 
 			return ['success' => true];
@@ -361,7 +387,7 @@ class SlackAPIService {
 		$expireAt = $this->config->getUserValue($userId, Application::APP_ID, 'token_expires_at');
 		if ($refreshToken !== '' && $expireAt !== '') {
 			$nowTs = (new DateTime())->getTimestamp();
-			$expireAt = (int) $expireAt;
+			$expireAt = (int)$expireAt;
 			// if token expires in less than a minute or is already expired
 			if ($nowTs > $expireAt - 60) {
 				$this->refreshToken($userId);
@@ -378,6 +404,7 @@ class SlackAPIService {
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
 		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
 		$refreshToken = $this->config->getUserValue($userId, Application::APP_ID, 'refresh_token');
+		$refreshToken = $refreshToken === '' ? '' : $this->crypto->decrypt($refreshToken);
 
 		if (!$refreshToken) {
 			$this->logger->error('No Slack refresh token found', ['app' => Application::APP_ID]);
@@ -403,12 +430,14 @@ class SlackAPIService {
 
 			$accessToken = $result['access_token'];
 			$refreshToken = $result['refresh_token'];
-			$this->config->setUserValue($userId, Application::APP_ID, 'token', $accessToken);
-			$this->config->setUserValue($userId, Application::APP_ID, 'refresh_token', $refreshToken);
+			$encryptedAccessToken = $accessToken === '' ? '' : $this->crypto->encrypt($accessToken);
+			$encryptedRefreshToken = $refreshToken === '' ? '' : $this->crypto->encrypt($refreshToken);
+			$this->config->setUserValue($userId, Application::APP_ID, 'token', $encryptedAccessToken);
+			$this->config->setUserValue($userId, Application::APP_ID, 'refresh_token', $encryptedRefreshToken);
 
 			if (isset($result['expires_in'])) {
 				$nowTs = (new DateTime())->getTimestamp();
-				$expiresAt = $nowTs + (int) $result['expires_in'];
+				$expiresAt = $nowTs + (int)$result['expires_in'];
 				$this->config->setUserValue($userId, Application::APP_ID, 'token_expires_at', strval($expiresAt));
 			}
 
@@ -469,7 +498,7 @@ class SlackAPIService {
 				return json_decode($body, true);
 			}
 		} catch (Exception $e) {
-			$this->logger->warning('Slack OAuth error : '.$e->getMessage(), ['app' => Application::APP_ID]);
+			$this->logger->warning('Slack OAuth error : ' . $e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}

@@ -17,11 +17,13 @@ use Exception;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use OCA\Slack\AppInfo\Application;
+use OCP\Files\File;
 use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\PreConditionNotMetException;
+use OCP\Security\ICrypto;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -36,9 +38,32 @@ class NetworkService {
 		private IConfig $config,
 		IClientService $clientService,
 		private LoggerInterface $logger,
-		private IL10N $l10n
+		private IL10N $l10n,
+		private ICrypto $crypto,
 	) {
 		$this->client = $clientService->newClient();
+	}
+
+	public function uploadFile(string $url, File $file): array {
+		$options = [
+			'headers' => [
+				'User-Agent' => Application::INTEGRATION_USER_AGENT,
+				'Content-Type' => $file->getMimeType(),
+			],
+			'body' => $file->getContent(),
+		];
+
+		try {
+			$this->client->post($url, $options);
+			return ['success' => true];
+		} catch (ServerException|ClientException $e) {
+			$body = $e->getResponse()->getBody();
+			$this->logger->warning('Slack upload API error : ' . $body);
+			return ['error' => $e->getMessage()];
+		} catch (Exception|Throwable $e) {
+			$this->logger->warning('Slack upload API error', ['exception' => $e]);
+			return ['error' => $e->getMessage()];
+		}
 	}
 
 	/**
@@ -54,13 +79,16 @@ class NetworkService {
 	public function request(string $userId, string $endPoint, array $params = [], string $method = 'GET',
 		bool $jsonResponse = true, bool $slackApiRequest = true) {
 		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
+		$accessToken = $accessToken === '' ? '' : $this->crypto->decrypt($accessToken);
 
 		try {
 			$url = ($slackApiRequest ? Application::SLACK_API_URL : '') . $endPoint;
 			$options = [
 				'headers' => [
 					'Authorization' => 'Bearer ' . $accessToken,
-					'Content-Type' => 'application/x-www-form-urlencoded; charset=utf-8',
+					'Content-Type' => $endPoint === 'files.completeUploadExternal'
+						? 'application/json; charset=utf-8'
+						: 'application/x-www-form-urlencoded; charset=utf-8',
 					'User-Agent' => Application::INTEGRATION_USER_AGENT,
 				],
 			];
@@ -81,7 +109,11 @@ class NetworkService {
 
 					$url .= '?' . $paramsContent;
 				} else {
-					$options['body'] = $params;
+					if ($endPoint === 'files.completeUploadExternal') {
+						$options['json'] = $params;
+					} else {
+						$options['body'] = $params;
+					}
 				}
 			}
 
@@ -106,12 +138,12 @@ class NetworkService {
 				return json_decode($body, true);
 			}
 			return $body;
-		} catch (ServerException | ClientException $e) {
+		} catch (ServerException|ClientException $e) {
 			$body = $e->getResponse()->getBody();
-			$this->logger->warning('Slack API error : ' . $body, ['app' => Application::APP_ID]);
+			$this->logger->warning('Slack API error : ' . $body);
 			return ['error' => $e->getMessage()];
-		} catch (Exception | Throwable $e) {
-			$this->logger->warning('Slack API error', ['exception' => $e, 'app' => Application::APP_ID]);
+		} catch (Exception|Throwable $e) {
+			$this->logger->warning('Slack API error', ['exception' => $e]);
 			return ['error' => $e->getMessage()];
 		}
 	}

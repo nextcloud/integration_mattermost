@@ -13,7 +13,7 @@ class Personal implements ISettings {
 	public function __construct(
 		private IConfig $config,
 		private IInitialState $initialStateService,
-		private ?string $userId
+		private ?string $userId,
 	) {
 	}
 
@@ -28,15 +28,15 @@ class Personal implements ISettings {
 
 		// for OAuth
 		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
-		// don't need to decrypt it, just need to know if it's set
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret') !== ''
-			? 'dummyClientSecret' : '';
+		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
 		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
 
 		$userConfig = [
+			// don't need to decrypt it, just need to know if it's set
 			'token' => $token ? 'dummyTokenContent' : '',
 			'client_id' => $clientID,
-			'client_secret' => $clientSecret,
+			// don't need to decrypt it, just need to know if it's set
+			'client_secret' => $clientSecret !== '' ? 'dummyClientSecret' : '',
 			'use_popup' => ($usePopup === '1'),
 			'user_id' => $userId,
 			'user_displayname' => $userDisplayName,

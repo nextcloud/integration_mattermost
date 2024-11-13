@@ -18,6 +18,7 @@ return [
 		['name' => 'config#oauthRedirect', 'url' => '/oauth-redirect', 'verb' => 'GET'],
 		['name' => 'config#setConfig', 'url' => '/config', 'verb' => 'PUT'],
 		['name' => 'config#setAdminConfig', 'url' => '/admin-config', 'verb' => 'PUT'],
+		['name' => 'config#setSensitiveAdminConfig', 'url' => '/sensitive-admin-config', 'verb' => 'PUT'],
 		['name' => 'config#popupSuccessPage', 'url' => '/popup-success', 'verb' => 'GET'],
 
 		['name' => 'slackAPI#sendMessage', 'url' => '/sendMessage', 'verb' => 'POST'],

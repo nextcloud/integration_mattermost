@@ -41,7 +41,7 @@ class Admin implements ISettings {
 
 		$adminConfig = [
 			'client_id' => $clientID,
-			'client_secret' => $clientSecret,
+			'client_secret' => $clientSecret === '' ? '' : 'dummyClientSecret',
 			'use_popup' => ($usePopup === '1'),
 		];
 		$this->initialStateService->provideInitialState('admin-config', $adminConfig);
