@@ -87,7 +87,7 @@ class NetworkService {
 				'headers' => [
 					'Authorization' => 'Bearer ' . $accessToken,
 					'Content-Type' => $endPoint === 'files.completeUploadExternal'
-						? 'application/json'
+						? 'application/json; charset=utf-8'
 						: 'application/x-www-form-urlencoded; charset=utf-8',
 					'User-Agent' => Application::INTEGRATION_USER_AGENT,
 				],

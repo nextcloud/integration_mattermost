@@ -351,6 +351,7 @@ class SlackAPIService {
 			$sendResult = $this->request($userId, 'files.completeUploadExternal', $params, 'POST');
 
 			if (isset($sendResult['error'])) {
+				$this->logger->warning('Slack file upload error: ', ['error' => $sendResult]);
 				return (array)$sendResult;
 			}
 
