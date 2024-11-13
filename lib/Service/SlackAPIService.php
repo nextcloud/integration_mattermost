@@ -155,14 +155,14 @@ class SlackAPIService {
 					$channel['topic']['value']
 				) && ($channel['is_group'] || $channel['is_mpim'])
 			) {
-				$group_name = array_filter(
+				$groupName = array_filter(
 					[$channel['topic']['value'], $channel['purpose']['value'], $channel['name'], 'Group'],
-					fn ($val) => $val !== ''
+					fn ($val) => $val !== '' && $val !== null
 				)[0];
 
 				$channels[] = [
 					'id' => $channel['id'],
-					'name' => $group_name,
+					'name' => $groupName,
 					'type' => 'group',
 					'updated' => $channel['updated'] ?? 0,
 				];
