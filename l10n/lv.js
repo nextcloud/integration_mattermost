@@ -1,11 +1,15 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Bad HTTP method" : "Nederīgs HTTP pieprasījuma veids",
+    "Bad credentials" : "Nederīgi pieteikšanās dati",
+    "Connected accounts" : "Savienotie konti",
     "Client ID" : "Klienta ID",
     "Files" : "Datnes",
     "Type" : "Veids",
     "Set expiration date" : "Uzstādīt beigu termiņu",
     "Comment" : "Piebilde",
+    "Cancel" : "Atcelt",
     "password" : "parole",
     "View only" : "Tikai skatīt",
     "Edit" : "Labot"
