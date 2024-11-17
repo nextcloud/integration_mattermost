@@ -1,6 +1,9 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Bad credentials" : "Nederīgi pieteikšanās dati",
+    "Bad HTTP method" : "Nederīgs HTTP pieprasījuma veids",
+    "Connected accounts" : "Savienotie konti",
     "Login" : "Autorizēties",
     "Password" : "Parole",
     "Files" : "Datnes",
