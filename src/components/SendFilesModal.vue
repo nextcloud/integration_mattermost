@@ -40,7 +40,7 @@
 						<span class="file-size">
 							{{ myHumanFileSize(f.size, true) }}
 						</span>
-						<NcButton class="remove-file-button"
+						<NcButton class="square-action-button"
 							:aria-label="t('integration_slack', 'Remove file from list')"
 							@click="onRemoveFile(f.id)">
 							<template #icon>
@@ -56,7 +56,16 @@
 							{{ t('integration_slack', 'Conversation') }}
 						</strong>
 					</span>
-					<NcLoadingIcon v-if="channels === undefined" :size="20" />
+					<NcLoadingIcon v-if="channelsLoading" :size="20" />
+					<div class="spacer" />
+					<NcButton class="square-action-button"
+						:aria-label="t('integration_slack', 'Refresh channels')"
+						:disabled="channelsLoading"
+						@click="() => updateChannels(false)">
+						<template #icon>
+							<RefreshIcon :size="20" />
+						</template>
+					</NcButton>
 				</span>
 				<NcSelect
 					v-model="selectedChannel"
@@ -71,16 +80,16 @@
 					<template #option="option">
 						<div class="select-option">
 							<NcAvatar v-if="option.type === 'channel'"
-								:size="34"
+								:size="24"
 								display-name="C" />
 							<NcAvatar v-else-if="option.type === 'group'">
 								<template #icon>
-									<AccountMultiple :size="34" />
+									<AccountMultiple :size="24" />
 								</template>
 							</NcAvatar>
 							<NcAvatar v-else-if="option.type === 'direct'"
-								:size="34"
-								:url="getUserIconUrl(option.id)"
+								:size="24"
+								:url="getUserIconUrl(option.user)"
 								:display-name="option.name" />
 							<NcHighlight
 								:text="option.name"
@@ -90,16 +99,16 @@
 					</template>
 					<template #selected-option="option">
 						<NcAvatar v-if="option.type === 'channel'"
-							:size="34"
+							:size="24"
 							display-name="C" />
 						<NcAvatar v-else-if="option.type === 'group'">
 							<template #icon>
-								<AccountMultiple :size="34" />
+								<AccountMultiple :size="24" />
 							</template>
 						</NcAvatar>
 						<NcAvatar v-else-if="option.type === 'direct'"
-							:size="34"
-							:url="getUserIconUrl(option.id)"
+							:size="24"
+							:url="getUserIconUrl(option.user)"
 							:display-name="option.name" />
 						<span class="multiselect-name">
 							{{ option.name }}
@@ -227,6 +236,7 @@ import FileIcon from 'vue-material-design-icons/File.vue'
 import PackageUpIcon from 'vue-material-design-icons/PackageUp.vue'
 import PencilIcon from 'vue-material-design-icons/Pencil.vue'
 import PoundBoxIcon from 'vue-material-design-icons/PoundBox.vue'
+import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
 import SendIcon from 'vue-material-design-icons/Send.vue'
 
 import axios from '@nextcloud/axios'
@@ -265,6 +275,7 @@ export default {
 		AlertBoxIcon,
 		CloseIcon,
 		AccountMultiple,
+		RefreshIcon,
 	},
 
 	data() {
@@ -272,6 +283,7 @@ export default {
 			SEND_TYPE,
 			show: false,
 			loading: false,
+			channelsLoading: false,
 			sendType: SEND_TYPE.file.id,
 			comment: '',
 			query: '',
@@ -357,8 +369,13 @@ export default {
 		failure() {
 			this.loading = false
 		},
-		updateChannels() {
-			const url = generateUrl('apps/integration_slack/channels')
+		updateChannels(useCache = true) {
+			this.channelsLoading = true
+			if (useCache === false) {
+				this.channels = undefined
+				this.selectedChannel = null
+			}
+			const url = generateUrl('/apps/integration_slack/channels?useCache={useCache}', { useCache: `${useCache}` })
 			axios.get(url).then((response) => {
 				this.channels = response.data ?? []
 				this.channels.sort((a, b) => a.name.localeCompare(b.name))
@@ -369,6 +386,8 @@ export default {
 				showError(t('integration_slack', 'Failed to load Slack channels'))
 				console.error(error)
 				this.channels = []
+			}).finally(() => {
+				this.channelsLoading = false
 			})
 		},
 		getFilePreviewUrl(fileId, fileType) {
@@ -434,6 +453,10 @@ export default {
 		span {
 			margin-left: 8px;
 		}
+
+		.square-action-button span {
+			margin: 0 !important;
+		}
 	}
 
 	> *:not(.field-label):not(.advanced-options):not(.slack-footer):not(.warning-container),
@@ -486,7 +509,7 @@ export default {
 			height: 40px;
 
 			> *:first-child {
-				width: 32px;
+				width: 24px;
 			}
 
 			img {
@@ -507,15 +530,15 @@ export default {
 			.check-icon {
 				color: var(--color-success);
 			}
-
-			.remove-file-button {
-				width: 32px !important;
-				height: 32px;
-				margin-left: 8px;
-				min-width: 32px;
-				min-height: 32px;
-			}
 		}
+	}
+
+	.square-action-button {
+		width: 32px !important;
+		height: 32px;
+		margin-left: 8px;
+		min-width: 32px;
+		min-height: 32px;
 	}
 
 	.radios {

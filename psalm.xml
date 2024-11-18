@@ -32,5 +32,10 @@
 				<referencedClass name="GuzzleHttp\Exception\ServerException" />
 			</errorLevel>
 		</UndefinedClass>
+		<DuplicateArrayKey>
+			<errorLevel type="suppress">
+				<file name="lib/Service/SlackAPIService.php" />
+			</errorLevel>
+		</DuplicateArrayKey>
 	</issueHandlers>
 </psalm>

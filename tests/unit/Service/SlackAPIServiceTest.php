@@ -9,6 +9,7 @@ use OCA\Slack\Service\NetworkService;
 use OCA\Slack\Service\SlackAPIService;
 use OCP\Files\IRootFolder;
 use OCP\Http\Client\IClientService;
+use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
@@ -25,6 +26,7 @@ class SlackAPIServiceTest extends TestCase {
 	private ShareManager $shareManager;
 	private IURLGenerator $urlGenerator;
 	private ICrypto $crypto;
+	private ICacheFactory $cacheFactory;
 	private NetworkService $networkService;
 	private IClientService $clientService;
 
@@ -44,6 +46,7 @@ class SlackAPIServiceTest extends TestCase {
 		$this->shareManager = $this->createMock(ShareManager::class);
 		$this->urlGenerator = $this->createMock(IURLGenerator::class);
 		$this->crypto = $this->createMock(ICrypto::class);
+		$this->cacheFactory = $this->createMock(ICacheFactory::class);
 		$this->networkService = $this->createMock(NetworkService::class);
 		$this->clientService = $this->createMock(ClientService::class);
 
@@ -59,6 +62,7 @@ class SlackAPIServiceTest extends TestCase {
 			$this->shareManager,
 			$this->urlGenerator,
 			$this->crypto,
+			$this->cacheFactory,
 			$this->networkService,
 			$this->clientService
 		);
@@ -89,7 +93,7 @@ class SlackAPIServiceTest extends TestCase {
 		});
 
 		$expected = $this->apiService->getUserAvatar('user', 'slackid1');
-		$this->assertEquals([ 'displayName' => 'User' ], $expected);
+		$this->assertEquals([ 'displayName' => 'User slackid1' ], $expected);
 
 		$expected = $this->apiService->getUserAvatar('user', 'slackid2');
 		$this->assertEquals([ 'displayName' => 'realname' ], $expected);
@@ -115,7 +119,7 @@ class SlackAPIServiceTest extends TestCase {
 				return [ 'user' => [ 'real_name' => 'realname' ] ];
 			}
 
-			if ($endPoint !== 'conversations.list') {
+			if ($endPoint !== 'users.conversations') {
 				return [ 'error' => 'invalid endpoint: ' . $endPoint ];
 			}
 
@@ -181,7 +185,7 @@ class SlackAPIServiceTest extends TestCase {
 		});
 
 		// test channels
-		$expected = $this->apiService->getMyChannels('user');
+		$expected = $this->apiService->getMyChannels('user', false);
 		$this->assertEquals($expected, [
 			[
 				'id' => 'channelid1',
@@ -192,7 +196,7 @@ class SlackAPIServiceTest extends TestCase {
 		]);
 
 		// test groups and users
-		$expected = $this->apiService->getMyChannels('user2');
+		$expected = $this->apiService->getMyChannels('user2', false);
 		$this->assertEquals($expected, [
 			[
 				'id' => 'groupid1',
@@ -202,12 +206,14 @@ class SlackAPIServiceTest extends TestCase {
 			],
 			[
 				'id' => 'U061FFLAT',
+				'user' => 'U061FFLAT',
 				'name' => 'realname',
 				'type' => 'direct',
 				'updated' => 0,
 			],
 			[
 				'id' => 'U061F7PAK',
+				'user' => 'U061F7PAK',
 				'name' => 'U061F7PAK',
 				'type' => 'direct',
 				'updated' => 0,
