@@ -129,9 +129,7 @@ class SlackAPIService {
 		$dCache = $this->cacheFactory->createDistributed(Application::APP_ID);
 		$cacheKey = 'channels-' . $userId;
 
-		if (!$useCache) {
-			$dCache->remove($cacheKey);
-		} elseif ($cachedChannels = $dCache->get($cacheKey)) {
+		if ($cachedChannels = $dCache->get($cacheKey)) {
 			$this->logger->debug('Slack channels cache hit', ['userId' => $userId]);
 			return $cachedChannels;
 		}
@@ -139,7 +137,7 @@ class SlackAPIService {
 		$cursor = 'dummdumm'; // initial value
 		$rawChannels = [];
 
-		while ($cursor !== '') {
+		while ($cursor !== '' || count($rawChannels) >= Application::MAX_CHANNELS_TO_FETCH) {
 			$convFetchResult = $this->request($userId, 'users.conversations', [
 				'exclude_archived' => true,
 				'types' => 'public_channel,private_channel,im,mpim',

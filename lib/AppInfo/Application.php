@@ -21,6 +21,7 @@ use OCP\Collaboration\Resources\LoadAdditionalScriptsEvent;
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'integration_slack';
 	public const CHANNELS_CACHE_TTL = 60 * 60 * 24; // 24 hours
+	public const MAX_CHANNELS_TO_FETCH = 10000;
 	public const INTEGRATION_USER_AGENT = 'Nextcloud Slack Integration';
 	public const SLACK_API_URL = 'https://slack.com/api/';
 	public const SLACK_OAUTH_ACCESS_URL = 'https://slack.com/api/oauth.v2.access';
