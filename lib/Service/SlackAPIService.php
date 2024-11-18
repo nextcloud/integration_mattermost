@@ -24,6 +24,7 @@ use OCP\Files\IRootFolder;
 use OCP\Files\NotPermittedException;
 use OCP\Http\Client\IClient;
 use OCP\Http\Client\IClientService;
+use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
@@ -49,6 +50,7 @@ class SlackAPIService {
 		private ShareManager $shareManager,
 		private IURLGenerator $urlGenerator,
 		private ICrypto $crypto,
+		private ICacheFactory $cacheFactory,
 		private NetworkService $networkService,
 		IClientService $clientService,
 	) {
@@ -118,21 +120,46 @@ class SlackAPIService {
 
 	/**
 	 * @param string $userId
+	 * @param bool $useCache
 	 * @return array
 	 * @throws PreConditionNotMetException
 	 */
-	public function getMyChannels(string $userId): array {
-		$channelResult = $this->request($userId, 'conversations.list', [
-			'exclude_archived' => true,
-			'types' => 'public_channel,private_channel,im,mpim'
-		]);
+	public function getMyChannels(string $userId, bool $useCache): array {
+		$dCache = $this->cacheFactory->createDistributed(Application::APP_ID);
+		$cacheKey = 'channels-' . $userId;
 
-		if (isset($channelResult['error'])) {
-			return (array)$channelResult;
+		if (!$useCache) {
+			$dCache->remove($cacheKey);
+		} elseif ($cachedChannels = $dCache->get($cacheKey)) {
+			$this->logger->debug('Slack channels cache hit', ['userId' => $userId]);
+			return $cachedChannels;
 		}
 
-		if (!isset($channelResult['channels']) || !is_array($channelResult['channels'])) {
-			return ['error' => 'No channels found'];
+		$cursor = 'dummdumm'; // initial value
+		$rawChannels = [];
+
+		while ($cursor !== '') {
+			$convFetchResult = $this->request($userId, 'conversations.list', [
+				'exclude_archived' => true,
+				'types' => 'public_channel,private_channel,im,mpim',
+				'limit' => 1000,
+				...($cursor !== 'dummdumm' ? ['cursor' => $cursor] : []),
+			]);
+
+			if (isset($convFetchResult['error'])) {
+				$this->logger->warning('Slack channels fetch error', ['error' => $convFetchResult]);
+				return (array)$convFetchResult;
+			}
+
+			if (!isset($convFetchResult['channels']) || !is_array($convFetchResult['channels'])) {
+				$this->logger->warning('No channels found in Slack', ['response' => $convFetchResult]);
+				return ['error' => 'No channels found in Slack'];
+			}
+
+			$rawChannels = array_merge($rawChannels, $convFetchResult['channels']);
+			$cursor = $convFetchResult['response_metadata']['next_cursor'] ?? '';
+
+			$this->logger->info('Slack channels fetch', ['count' => count($rawChannels)]);
 		}
 
 		/* Cheat sheet:
@@ -143,7 +170,7 @@ class SlackAPIService {
 
 		$channels = [];
 
-		foreach ($channelResult['channels'] as $channel) {
+		foreach ($rawChannels as $channel) {
 			if (
 				isset(
 					$channel['is_group'],
@@ -183,9 +210,12 @@ class SlackAPIService {
 					'type' => 'direct',
 					'updated' => $channel['updated'] ?? 0,
 				];
+			} else {
+				$this->logger->warning('Unknown channel type from Slack', ['channel' => $channel]);
 			}
 		}
 
+		$dCache->set($cacheKey, $channels, Application::CHANNELS_CACHE_TTL);
 		return $channels;
 	}
 

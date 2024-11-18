@@ -65,12 +65,13 @@ class SlackAPIController extends Controller {
 	}
 
 	/**
+	 * @param bool $useCache
 	 * @return DataResponse
 	 * @throws Exception
 	 */
 	#[NoAdminRequired]
-	public function getChannels() {
-		$result = $this->slackAPIService->getMyChannels($this->userId);
+	public function getChannels(bool $useCache = true) {
+		$result = $this->slackAPIService->getMyChannels($this->userId, $useCache);
 		if (isset($result['error'])) {
 			return new DataResponse($result, Http::STATUS_BAD_REQUEST);
 		}
