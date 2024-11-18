@@ -140,7 +140,7 @@ class SlackAPIService {
 		$rawChannels = [];
 
 		while ($cursor !== '') {
-			$convFetchResult = $this->request($userId, 'conversations.list', [
+			$convFetchResult = $this->request($userId, 'users.conversations', [
 				'exclude_archived' => true,
 				'types' => 'public_channel,private_channel,im,mpim',
 				'limit' => 1000,
