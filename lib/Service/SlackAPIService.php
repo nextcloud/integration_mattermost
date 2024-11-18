@@ -67,7 +67,8 @@ class SlackAPIService {
 		$userInfo = $this->request($userId, 'users.info', ['user' => $slackUserId]);
 
 		if (isset($userInfo['error'])) {
-			return ['displayName' => 'User'];
+			$this->logger->warning('Slack user info fetch error', ['error' => $userInfo]);
+			return ['displayName' => 'User ' . $slackUserId];
 		}
 
 		if (isset($userInfo['user'], $userInfo['user']['profile'], $userInfo['user']['profile']['image_48'])) {
@@ -82,7 +83,7 @@ class SlackAPIService {
 						return ['displayName' => $userInfo['user']['real_name']];
 					}
 
-					return ['displayName' => 'User'];
+					return ['displayName' => 'User ' . $slackUserId];
 				}
 
 				$image = $this->request($userId, $params['d'], [], 'GET', false, false);
@@ -99,7 +100,7 @@ class SlackAPIService {
 			return ['displayName' => $userInfo['user']['real_name']];
 		}
 
-		return ['displayName' => 'User'];
+		return ['displayName' => 'User ' . $slackUserId];
 	}
 
 	/**
@@ -206,6 +207,7 @@ class SlackAPIService {
 
 				$channels[] = [
 					'id' => $channel['id'],
+					'user' => $channel['user'],
 					'name' => $realName ?? $channel['user'],
 					'type' => 'direct',
 					'updated' => $channel['updated'] ?? 0,

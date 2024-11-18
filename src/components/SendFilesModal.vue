@@ -80,16 +80,16 @@
 					<template #option="option">
 						<div class="select-option">
 							<NcAvatar v-if="option.type === 'channel'"
-								:size="34"
+								:size="24"
 								display-name="C" />
 							<NcAvatar v-else-if="option.type === 'group'">
 								<template #icon>
-									<AccountMultiple :size="34" />
+									<AccountMultiple :size="24" />
 								</template>
 							</NcAvatar>
 							<NcAvatar v-else-if="option.type === 'direct'"
-								:size="34"
-								:url="getUserIconUrl(option.id)"
+								:size="24"
+								:url="getUserIconUrl(option.user)"
 								:display-name="option.name" />
 							<NcHighlight
 								:text="option.name"
@@ -99,16 +99,16 @@
 					</template>
 					<template #selected-option="option">
 						<NcAvatar v-if="option.type === 'channel'"
-							:size="34"
+							:size="24"
 							display-name="C" />
 						<NcAvatar v-else-if="option.type === 'group'">
 							<template #icon>
-								<AccountMultiple :size="34" />
+								<AccountMultiple :size="24" />
 							</template>
 						</NcAvatar>
 						<NcAvatar v-else-if="option.type === 'direct'"
-							:size="34"
-							:url="getUserIconUrl(option.id)"
+							:size="24"
+							:url="getUserIconUrl(option.user)"
 							:display-name="option.name" />
 						<span class="multiselect-name">
 							{{ option.name }}
@@ -509,7 +509,7 @@ export default {
 			height: 40px;
 
 			> *:first-child {
-				width: 32px;
+				width: 24px;
 			}
 
 			img {
