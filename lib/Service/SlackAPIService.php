@@ -160,7 +160,7 @@ class SlackAPIService {
 			$rawChannels = array_merge($rawChannels, $convFetchResult['channels']);
 			$cursor = $convFetchResult['response_metadata']['next_cursor'] ?? '';
 
-			$this->logger->info('Slack channels fetch', ['count' => count($rawChannels)]);
+			$this->logger->debug('Slack channels fetch', ['count' => count($rawChannels)]);
 		}
 
 		/* Cheat sheet:
