@@ -7,7 +7,7 @@ OC.L10N.register(
     "Client ID" : "Klienta ID",
     "Files" : "Datnes",
     "Type" : "Veids",
-    "Set expiration date" : "Uzstādīt beigu termiņu",
+    "Set expiration date" : "Iestatīt derīguma beigu datumu",
     "Comment" : "Piebilde",
     "Cancel" : "Atcelt",
     "password" : "parole",

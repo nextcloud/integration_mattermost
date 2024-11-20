@@ -38,6 +38,7 @@ OC.L10N.register(
     "Files" : "الملفّات",
     "Remove file from list" : "حذف ملف من القائمة",
     "Conversation" : "محادثة",
+    "Refresh channels" : "تحديث القنوات",
     "Choose a conversation" : "إختَر مُحادثةً",
     "Type" : "النوع",
     "Set expiration date" : "تعيين تاريخ إنتهاء الصلاحية",

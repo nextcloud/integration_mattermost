@@ -38,6 +38,7 @@ OC.L10N.register(
     "Files" : "檔案",
     "Remove file from list" : "從清單移除檔案",
     "Conversation" : "對話",
+    "Refresh channels" : "重新整理頻道",
     "Choose a conversation" : "選擇對話",
     "Type" : "類型",
     "Set expiration date" : "設定到期日",
