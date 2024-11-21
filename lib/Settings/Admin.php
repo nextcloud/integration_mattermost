@@ -29,6 +29,7 @@ class Admin implements ISettings {
 
 		$oauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
 		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
+		$navlinkDefault = $this->config->getAppValue(Application::APP_ID, 'navlink_default', '0');
 
 		$adminConfig = [
 			'client_id' => $clientID,
@@ -36,6 +37,7 @@ class Admin implements ISettings {
 			'client_secret' => $clientSecret !== '' ? 'dummySecret' : '',
 			'oauth_instance_url' => $oauthUrl,
 			'use_popup' => ($usePopup === '1'),
+			'navlink_default' => ($navlinkDefault === '1'),
 		];
 		$this->initialStateService->provideInitialState('admin-config', $adminConfig);
 		return new TemplateResponse(Application::APP_ID, 'adminSettings');

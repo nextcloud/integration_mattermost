@@ -26,7 +26,8 @@ class Personal implements ISettings {
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
 		$token = $token === '' ? '' : $this->crypto->decrypt($token);
 		$searchMessagesEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'search_messages_enabled', '0') === '1';
-		$navigationEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'navigation_enabled', '0') === '1';
+		$navlinkDefault = $this->config->getAppValue(Application::APP_ID, 'navlink_default', '0');
+		$navigationEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'navigation_enabled', $navlinkDefault) === '1';
 		$fileActionEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'file_action_enabled', '1') === '1';
 		$mmUserId = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_id');
 		$mmUserName = $this->config->getUserValue($this->userId, Application::APP_ID, 'user_name');
