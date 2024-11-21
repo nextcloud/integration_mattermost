@@ -24,6 +24,7 @@ OC.L10N.register(
     "Cancel" : "Annulla",
     "View only" : "Isceti in visualizatzione",
     "Edit" : "Modìfica",
-    "Upload files" : "Càrriga archìvios"
+    "Upload files" : "Càrriga archìvios",
+    "Internal links (Only works for users with access to the files)" : "Ligòngios internos (funtzionat isceti pro utentes cun atzessu a is archìvios)"
 },
 "nplurals=2; plural=(n != 1);");
