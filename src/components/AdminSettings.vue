@@ -60,6 +60,11 @@
 				@update:checked="onUsePopupChanged">
 				{{ t('integration_mattermost', 'Use a popup to authenticate') }}
 			</NcCheckboxRadioSwitch>
+			<NcCheckboxRadioSwitch
+				:checked.sync="state.navlink_default"
+				@update:checked="onNavlinkDefaultChanged">
+				{{ t('integration_mattermost', 'Enable navigation link as default for all users') }}
+			</NcCheckboxRadioSwitch>
 		</div>
 	</div>
 </template>
@@ -112,6 +117,9 @@ export default {
 	methods: {
 		onUsePopupChanged(newValue) {
 			this.saveOptions({ use_popup: newValue ? '1' : '0' }, false)
+		},
+		onNavlinkDefaultChanged(newValue) {
+			this.saveOptions({ navlink_default: newValue ? '1' : '0' }, false)
 		},
 		onInput() {
 			delay(() => {
