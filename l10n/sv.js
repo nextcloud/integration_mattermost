@@ -38,6 +38,7 @@ OC.L10N.register(
     "Files" : "Filer",
     "Remove file from list" : "Ta bort filen från listan",
     "Conversation" : "Konversation",
+    "Refresh channels" : "Uppdatera kanaler",
     "Choose a conversation" : "Välj en konversation",
     "Type" : "Typ",
     "Set expiration date" : "Välj utgångsdatum",

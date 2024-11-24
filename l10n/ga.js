@@ -38,6 +38,7 @@ OC.L10N.register(
     "Files" : "Comhaid",
     "Remove file from list" : "Bain an comhad ón liosta",
     "Conversation" : "Comhrá",
+    "Refresh channels" : "Cainéil a athnuachan",
     "Choose a conversation" : "Roghnaigh comhrá",
     "Type" : "Cineál",
     "Set expiration date" : "Socraigh dáta éaga",
