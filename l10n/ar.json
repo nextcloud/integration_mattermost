@@ -25,6 +25,7 @@
     "Application secret" : "الرمر السري للتطبيق",
     "Client secret of your Mattermost application" : "سر العميل لتطبيق Mattermost الخاص بك",
     "Use a popup to authenticate" : "استخدم النافذة المنبثقة للتعريف عن نفسك ",
+    "Enable navigation link as default for all users" : "تمكين رابط التنقل بشكل افتراضي لجميع المستخدِمين",
     "Mattermost admin options saved" : "تم حفظ خيارات مسئول Mattermost",
     "Failed to save Mattermost admin options" : "فشل حفظ خيارات المسئول لبرنامج Mattermost ",
     "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "إذا كان مسموحًا لك بذلك ، يمكنك إنشاء رمز التحقق الشخصي للوصول في ملف تعريف Mattermost -> الأمان -> رموز الوصول الشخصية.",

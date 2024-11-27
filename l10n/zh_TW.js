@@ -27,6 +27,7 @@ OC.L10N.register(
     "Application secret" : "應用程式密碼",
     "Client secret of your Mattermost application" : "您 Mattermost 應用程式的客戶端密碼",
     "Use a popup to authenticate" : "使用彈出式視窗進行驗證",
+    "Enable navigation link as default for all users" : "將啟用導航連結設為所有使用者的預設值",
     "Mattermost admin options saved" : "已儲存 Mattermost 管理選項",
     "Failed to save Mattermost admin options" : "儲存 Mattermost 管理選項失敗",
     "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "若允許，您可以在您的 Mattermost「帳號設定」→「安全」→「個人存取權杖」中建立個人存取權杖。",

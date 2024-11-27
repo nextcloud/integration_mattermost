@@ -27,6 +27,7 @@ OC.L10N.register(
     "Application secret" : "Anwendungsgeheimnis",
     "Client secret of your Mattermost application" : "Geheime Zeichenkette des Clients Ihrer Mattermost-Anwendung",
     "Use a popup to authenticate" : "Pop-up zur Authentifizierung verwenden",
+    "Enable navigation link as default for all users" : "Navigationslink als Standard für alle Benutzer aktivieren",
     "Mattermost admin options saved" : "Mattermost-Administrationseinstellungen gespeichert.",
     "Failed to save Mattermost admin options" : "Fehler beim Speichern der Mattermost-Administrationseinstellungen",
     "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Wenn Sie dazu berechtigt sind, können Sie in Ihrem Mattermost-Profil -> Sicherheit -> Persönliche Zugangstoken einen persönlichen Zugangstoken erstellen.",

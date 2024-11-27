@@ -27,6 +27,7 @@ OC.L10N.register(
     "Application secret" : "Application secret",
     "Client secret of your Mattermost application" : "Client secret of your Mattermost application",
     "Use a popup to authenticate" : "Use a popup to authenticate",
+    "Enable navigation link as default for all users" : "Enable navigation link as default for all users",
     "Mattermost admin options saved" : "Mattermost admin options saved",
     "Failed to save Mattermost admin options" : "Failed to save Mattermost admin options",
     "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens.",
