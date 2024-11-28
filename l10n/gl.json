@@ -25,6 +25,7 @@
     "Application secret" : "Segredo da aplicación",
     "Client secret of your Mattermost application" : " Segredo do cliente da súa aplicación de Mattermost",
     "Use a popup to authenticate" : "Use unha xanela emerxente para autenticarse",
+    "Enable navigation link as default for all users" : "Activar a ligazón de navegación como predeterminada para todos os usuarios",
     "Mattermost admin options saved" : "Gardáronse as opcións de administración de Mattermost",
     "Failed to save Mattermost admin options" : "Produciuse un fallo ao gardar as opcións de administración de Mattermost",
     "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Se ten permiso, pode crear un testemuño de acceso persoal no seu perfil de Mattermost → Seguridade → Fichas de acceso persoal.",

@@ -25,6 +25,7 @@
     "Application secret" : "Rún iarratais",
     "Client secret of your Mattermost application" : "Rún an chliaint maidir le d'iarratas Mattermost",
     "Use a popup to authenticate" : "Bain úsáid as preabfhuinneog chun fíordheimhniú a dhéanamh",
+    "Enable navigation link as default for all users" : "Cumasaigh nasc nascleanúna mar réamhshocrú do gach úsáideoir",
     "Mattermost admin options saved" : "Sábháladh na roghanna riaracháin is tábhachtaí",
     "Failed to save Mattermost admin options" : "Theip ar shábháil roghanna riaracháin Mattermost",
     "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Má cheadaítear é, is féidir leat comhartha rochtana pearsanta a chruthú i do phróifíl Mattermost -> Slándáil -> Comharthaí Rochtana Pearsanta.",
