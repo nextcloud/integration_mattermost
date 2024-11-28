@@ -38,6 +38,7 @@ OC.L10N.register(
     "Files" : "Soubory",
     "Remove file from list" : "Odebrat soubor ze seznamu",
     "Conversation" : "Konverzace",
+    "Refresh channels" : "Znovu načíst kanály",
     "Choose a conversation" : "Zvolit konverzaci",
     "Type" : "Typ",
     "Set expiration date" : "Nastavit datum skončení platnosti",
