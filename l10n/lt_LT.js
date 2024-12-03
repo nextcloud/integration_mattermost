@@ -13,6 +13,8 @@ OC.L10N.register(
     "Login" : "Prisijungti",
     "Password" : "Slaptažodis",
     "Connected as {user}" : "Prisijungta kaip {user}",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "Invalid login/password" : "Neteisingas prisijungimas/slaptažodis",
     "Files" : "Failai",
     "Channel" : "Kanalas",
     "Type" : "Tipas",
