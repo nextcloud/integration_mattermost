@@ -25,6 +25,7 @@
     "Application secret" : "Secret Application",
     "Client secret of your Mattermost application" : "Secret client de votre application Mattermost",
     "Use a popup to authenticate" : "Utiliser un pop-up pour s'authentifier",
+    "Enable navigation link as default for all users" : "Activer les liens de navigation par défaut pour tous les utilisateurs",
     "Mattermost admin options saved" : "Options d'administration Mattermost enregistrées",
     "Failed to save Mattermost admin options" : "Échec de l'enregistrement des options d'administration Mattermost",
     "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Si vous êtes autorisé, vous pouvez créer un jeton d'accès personnel dans votre profil Mattermost → Sécurité → Jetons d'accès personnel.",
