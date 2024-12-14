@@ -27,6 +27,7 @@ OC.L10N.register(
     "Application secret" : "Тајна апликације",
     "Client secret of your Mattermost application" : "Клијентска тајна ваше Mattermost апликације",
     "Use a popup to authenticate" : "Користи искачући прозор за аутентификацију",
+    "Enable navigation link as default for all users" : "Укључи линк навигације као подразумевано за све кориснике",
     "Mattermost admin options saved" : "Сачуване су Mattermost админ опције",
     "Failed to save Mattermost admin options" : "Није успело чување Mattermost админ опција",
     "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Ако вам је дозвољено, можете да креирате лични приступни жетон у свом Mattermost профилу -> Security -> Personal Access Tokens.",
