@@ -38,6 +38,7 @@ OC.L10N.register(
     "Files" : "Фајлови",
     "Remove file from list" : "Уклони фајл са листе",
     "Conversation" : "Разговор",
+    "Refresh channels" : "Освежи канале",
     "Choose a conversation" : "Изаберите разговор",
     "Type" : "Тип",
     "Set expiration date" : "Постави датум истека",
