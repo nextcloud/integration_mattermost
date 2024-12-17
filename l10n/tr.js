@@ -38,6 +38,7 @@ OC.L10N.register(
     "Files" : "Dosyalar",
     "Remove file from list" : "Listeden kaldır",
     "Conversation" : "Görüşme",
+    "Refresh channels" : "Kanalları yenile",
     "Choose a conversation" : "Bir görüşme seçin",
     "Type" : "Tür",
     "Set expiration date" : "Geçerlilik sonu tarihini ayarla",
