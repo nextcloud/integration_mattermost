@@ -25,6 +25,7 @@
     "Application secret" : "Uygulama parolası",
     "Client secret of your Mattermost application" : "Mattermost uygulamanızın istemci parolası",
     "Use a popup to authenticate" : "Kimlik doğrulaması için açılan pencere kullanılsın",
+    "Enable navigation link as default for all users" : "Gezinme bağlantısı tüm kullanıcılar için varsayılan olarak kullanılsın",
     "Mattermost admin options saved" : "Mattermost yönetici ayarları kaydedildi",
     "Failed to save Mattermost admin options" : "Mattermost yönetici ayarları kaydedilemedi",
     "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Kullanıcınıza uygun izin verilmişse, Mattermost profilinizde -> Güvenlik -> Kişisel erişim kodları bölümünden bir kişisel erişim kodu oluşturabilirsiniz.",
