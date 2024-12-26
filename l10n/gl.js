@@ -43,7 +43,7 @@ OC.L10N.register(
     "Type" : "Escribir",
     "Set expiration date" : "Definir a data de caducidade",
     "Expires on" : "Caduca o",
-    "Set link password" : "Estabeleza o contrasinal da ligazón",
+    "Set link password" : "Definir o contrasinal da ligazón",
     "Comment" : "Comentario",
     "Directories will be skipped, they can only be sent as links." : "Omitiranse os directorios só é posíbel envialos como ligazóns.",
     "Cancel" : "Cancelar",
