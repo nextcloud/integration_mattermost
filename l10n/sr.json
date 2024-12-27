@@ -40,7 +40,7 @@
     "Connect to Mattermost" : "Повежи се са Mattermost",
     "Connected as {user}" : "Повезан као {user}",
     "Disconnect from Mattermost" : "Прекини везу са Mattermost",
-    "Add file action to send files to Mattermost" : "Додајте фајл акцију за слање фајлова на Mattermost",
+    "Add file action to send files to Mattermost" : "Додај фајл акцију за слање фајлова на Mattermost",
     "Enable navigation link (link to Mattermost with a top menu item)" : "Укључи линк навигације (линк на Mattermost са ставком менија на врху)",
     "Enable searching for messages" : "Укључи претрагу порука",
     "Warning, everything you type in the search bar will be sent to Mattermost." : "Упозорење, све што куцате у линији за претрагу се шаље Mattermost сервису.",
