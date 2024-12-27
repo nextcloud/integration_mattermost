@@ -29,7 +29,7 @@ OC.L10N.register(
     "Connect to Slack" : "Повежи се са Slack",
     "Connected as" : "Повезан као",
     "Disconnect from Slack" : "Прекини везу са Slack",
-    "Add file action to send files to Slack" : "Додајте фајл акцију за слање фајлова на Slack",
+    "Add file action to send files to Slack" : "Додај фајл акцију за слање фајлова на Slack",
     "Successfully connected to Slack!" : "Успешно је успостављена веза са Slack!",
     "Error connecting to Slack:" : "Грешка приликом повезивања са Slack:",
     "Slack options saved" : "Сачуване су Slack опције",
