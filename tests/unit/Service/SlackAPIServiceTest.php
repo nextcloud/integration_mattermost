@@ -181,6 +181,31 @@ class SlackAPIServiceTest extends TestCase {
 				] ];
 			}
 
+			if (isset($params) && $userId === 'user3') {
+				return [ 'channels' => [
+					[
+						// same channel details as above but no name
+						'id' => 'channelid1',
+						'name' => '',
+						'is_channel' => true,
+						'is_group' => false,
+						'is_im' => false,
+						'is_mpim' => false,
+						'updated' => 1678229664302,
+						'topic' => [
+							'value' => 'topic1',
+							'creator' => 'U061F7AUR',
+							'last_set' => 1678229664,
+						],
+						'purpose' => [
+							'value' => 'purpose1',
+							'creator' => 'U061F7AUR',
+							'last_set' => 1678229664,
+						],
+					]
+				] ];
+			}
+
 			return [ 'error' => 'invalid request' ];
 		});
 
@@ -219,5 +244,17 @@ class SlackAPIServiceTest extends TestCase {
 				'updated' => 0,
 			],
 		]);
+
+		// test un-named channels
+		$expected = $this->apiService->getMyChannels('user3', false);
+		$this->assertEquals($expected, [
+			[
+				'id' => 'channelid1',
+				'name' => 'topic1',
+				'type' => 'channel',
+				'updated' => 1678229664302,
+			]
+		]);
+
 	}
 }
