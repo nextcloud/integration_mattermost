@@ -378,7 +378,7 @@ export default {
 			const url = generateUrl('/apps/integration_slack/channels?useCache={useCache}', { useCache: `${useCache}` })
 			axios.get(url).then((response) => {
 				this.channels = response.data ?? []
-				this.channels.sort((a, b) => a.name.localeCompare(b.name))
+				this.channels.sort((a, b) => (a.name ?? '').localeCompare(b.name ?? ''))
 				if (this.channels.length > 0) {
 					this.selectedChannel = this.channels[0]
 				}
