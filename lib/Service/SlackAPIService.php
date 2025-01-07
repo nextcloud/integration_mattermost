@@ -129,7 +129,7 @@ class SlackAPIService {
 		$dCache = $this->cacheFactory->createDistributed(Application::APP_ID);
 		$cacheKey = 'channels-' . $userId;
 
-		if ($cachedChannels = $dCache->get($cacheKey)) {
+		if ($useCache && $cachedChannels = $dCache->get($cacheKey)) {
 			$this->logger->debug('Slack channels cache hit', ['userId' => $userId]);
 			return $cachedChannels;
 		}
@@ -171,20 +171,18 @@ class SlackAPIService {
 
 		foreach ($rawChannels as $channel) {
 			if (
-				isset(
-					$channel['is_group'],
-					$channel['is_mpim'],
-					$channel['name'],
-					$channel['purpose'],
-					$channel['purpose']['value'],
-					$channel['topic'],
-					$channel['topic']['value']
-				) && ($channel['is_group'] || $channel['is_mpim'])
+				(isset($channel['is_group']) && $channel['is_group'])
+				|| (isset($channel['is_mpim']) && $channel['is_mpim'])
 			) {
-				$groupName = array_filter(
-					[$channel['topic']['value'], $channel['purpose']['value'], $channel['name'], 'Group ' . $channel['id']],
-					fn ($val) => $val !== '' && $val !== null
-				)[0];
+				$groupName = array_values(array_filter(
+					[
+						$channel['topic']['value'] ?? null,
+						$channel['purpose']['value'] ?? null,
+						$channel['name'] ?? null,
+						'Group ' . $channel['id'],
+					],
+					fn ($val) => $val !== '' && $val !== null,
+				))[0];
 
 				$channels[] = [
 					'id' => $channel['id'],
@@ -192,10 +190,20 @@ class SlackAPIService {
 					'type' => 'group',
 					'updated' => $channel['updated'] ?? 0,
 				];
-			} elseif (isset($channel['is_channel'], $channel['name']) && $channel['is_channel']) {
+			} elseif (isset($channel['is_channel']) && $channel['is_channel']) {
+				$channelName = array_values(array_filter(
+					[
+						$channel['name'] ?? null,
+						$channel['topic']['value'] ?? null,
+						$channel['purpose']['value'] ?? null,
+						'Channel ' . $channel['id'],
+					],
+					fn ($val) => $val !== '' && $val !== null,
+				))[0];
+
 				$channels[] = [
 					'id' => $channel['id'],
-					'name' => $channel['name'],
+					'name' => $channelName,
 					'type' => 'channel',
 					'updated' => $channel['updated'] ?? 0,
 				];
