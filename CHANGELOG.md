@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 2.0.2 – 2025-01-07
+
+### Fixed
+* second fix for un-named channels and groups @kyteinsky
+
+
 ## 2.0.1 – 2024-11-18
 
 ### Fixed
