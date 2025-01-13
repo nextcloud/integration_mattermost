@@ -17,6 +17,7 @@ OC.L10N.register(
     "Remove file from list" : "Šalinti failą iš sąrašo",
     "Type" : "Tipas",
     "Set expiration date" : "Nustatyti galiojimo pabaigos datą",
+    "Expires on" : "Baigia galioti",
     "Comment" : "Komentaras",
     "Cancel" : "Atsisakyti",
     "password" : "slaptažodis",
