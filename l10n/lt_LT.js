@@ -19,6 +19,7 @@ OC.L10N.register(
     "Channel" : "Kanalas",
     "Type" : "Tipas",
     "Set expiration date" : "Nustatyti galiojimo pabaigos datą",
+    "Expires on" : "Baigia galioti",
     "Comment" : "Komentaras",
     "Cancel" : "Atsisakyti",
     "password" : "slaptažodis",
