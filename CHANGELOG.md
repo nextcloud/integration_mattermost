@@ -6,11 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 2.1.0 - 2025-01-17
+
+### Added
+
+- admin setting to enable navigation link per default @janepie [#54](https://github.com/nextcloud/integration_mattermost/pull/54)
+
+### Changed
+- Encrypt client id/secret and user tokens @julien-nc [#52](https://github.com/nextcloud/integration_mattermost/pull/52)
+
 ## 2.0.0 – 2024-10-15
 
 ### Changed
 
-- Use password confirmation for sensitive admin/pseronal setting values
+- Use password confirmation for sensitive admin/personal setting values
 
 ### Fixed
 
