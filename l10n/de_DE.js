@@ -51,7 +51,7 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "HINWEIS: Die Webhooks-Funktion wurde auf unbestimmte Zeit deaktiviert, bis Mattermost diese auf ihrer Seite implementiert.",
     "Enable webhooks" : "Webhooks aktivieren",
     "Calendar event created webhook URL" : "Vom Kalendertermin erstellte Webhook-URL",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook…",
     "Calendar event updated webhook URL" : "Vom Kalendertermin aktualisierte Webhook-URL",
     "Daily summary webhook URL" : "Webhook-URL für die tägliche Zusammenfassung",
     "Upcoming events webhook URL" : "Webhook-URL für bevorstehende Termine",
