@@ -25,6 +25,7 @@
     "Application secret" : "Alkalmazástitok",
     "Client secret of your Mattermost application" : "A Mattermost alkalmazás klienstitka",
     "Use a popup to authenticate" : "Felugró ablak használata a hitelesítéshez",
+    "Enable navigation link as default for all users" : "A navigációs link alapértelmezett engedélyezése minden felhasználó számára",
     "Mattermost admin options saved" : "A Mattermost rendszergazdai beállításai mentve",
     "Failed to save Mattermost admin options" : "A Mattermost rendszergazdai beállításainak mentése sikertelen",
     "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Ha engedélyezett, akkor létrehozhatja a személyes hozzáférési tokenjét a Mattermost-profil -> Biztonság -> Személyes hozzáférési token oldalon.",
