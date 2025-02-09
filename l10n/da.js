@@ -1,6 +1,8 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Bad credentials" : "Forkerte legitimationsoplysninger",
+    "Invalid credentials" : "Ugyldige legitimationsoplysninger",
     "Connected accounts" : "Forbundne konti",
     "Login" : "Login",
     "Password" : "Adgangskode",
@@ -10,14 +12,14 @@ OC.L10N.register(
     "Set expiration date" : "Angiv udløbsdato",
     "Expires on" : "Udløber den",
     "Set link password" : "Sæt link adgangskode",
-    "Comment" : "Kommentér",
+    "Comment" : "Kommenter",
     "Cancel" : "Annuller",
     "password" : "adgangskode",
     "Message to send with the files" : "Besked der skal sendes med filerne",
     "View only" : "Kun visning",
-    "Edit" : "Redigér",
+    "Edit" : "Rediger",
     "Go to settings" : "Gå til indstillinger",
-    "Upload files" : "Send filer",
+    "Upload files" : "Upload filer",
     "Public links" : "Offentlige links"
 },
 "nplurals=2; plural=(n != 1);");
