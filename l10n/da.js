@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Bad credentials" : "Forkerte legitimationsoplysninger",
     "Connected accounts" : "Forbundne konti",
     "Client ID" : "Klient-ID",
     "Files" : "Filer",
