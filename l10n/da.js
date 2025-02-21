@@ -2,7 +2,7 @@ OC.L10N.register(
     "integration_mattermost",
     {
     "Bad credentials" : "Forkerte legitimationsoplysninger",
-    "Bad HTTP method" : "Dårlig HTTP-metode",
+    "Bad HTTP method" : "Dårlig HTTP metode",
     "Invalid credentials" : "Ugyldige legitimationsoplysninger",
     "Connected accounts" : "Forbundne konti",
     "Personal access token" : "Personligt adgangstoken",
