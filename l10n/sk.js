@@ -25,15 +25,19 @@ OC.L10N.register(
     "Expires on" : "Koniec platnosti",
     "Set link password" : "Nastaviť heslo odkazu",
     "Comment" : "Komentár",
+    "Directories will be skipped, they can only be sent as links." : "Adresáre budú preskočené, môžu byť odoslané iba ako odkaz.",
     "Cancel" : "Zrušiť",
     "password" : "heslo",
+    "Message to send with the files" : "Správa ktorá bude odoslaná so súbormi",
     "View only" : "Iba pre čítanie",
     "Edit" : "Upraviť",
     "_Send file_::_Send files_" : ["Odoslať súbor","Odoslať súbory","Odoslať súbory","Odoslať súbory"],
     "_Send link_::_Send links_" : ["Odoslať odkaz","Odoslať odkazy","Odoslať odkazy","Odoslané odkazy"],
     "No Mattermost notifications!" : "Žiadne upozornenia od Mattermost!",
+    "Do you want to go to your \"Connect accounts\" personal settings?" : "Chcete prejsť do osobných nastavení „Pripojiť účty“?",
     "Go to settings" : "Prejsť do nastavení",
     "Upload files" : "Nahrať súbory",
-    "Public links" : "Verejné odkazy:"
+    "Public links" : "Verejné odkazy:",
+    "Internal links (Only works for users with access to the files)" : "Interné odkazy (funguje iba pre užívateľov s prístupom k súborom)"
 },
 "nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);");
