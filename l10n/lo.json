@@ -1,9 +1,9 @@
 { "translations": {
+    "Edit" : "ແກ້ໄຂ",
     "Files" : "ຟາຍ",
     "Type" : "ພິມ",
     "Set expiration date" : "ກໍານົດວັນໝົດອາຍຸ",
     "Cancel" : "ຍົກເລີກ",
-    "Edit" : "ແກ້ໄຂ",
     "Upload files" : "ອັບໂຫຼດຟາຍ"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

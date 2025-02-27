@@ -5,13 +5,13 @@ OC.L10N.register(
     "Bad credentials" : "Nederīgi pieteikšanās dati",
     "Connected accounts" : "Savienotie konti",
     "Client ID" : "Klienta ID",
+    "password" : "parole",
+    "View only" : "Tikai skatīt",
+    "Edit" : "Labot",
     "Files" : "Datnes",
     "Type" : "Veids",
     "Set expiration date" : "Iestatīt derīguma beigu datumu",
     "Comment" : "Piebilde",
-    "Cancel" : "Atcelt",
-    "password" : "parole",
-    "View only" : "Tikai skatīt",
-    "Edit" : "Labot"
+    "Cancel" : "Atcelt"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

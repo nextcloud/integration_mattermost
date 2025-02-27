@@ -1,5 +1,8 @@
 { "translations": {
     "Client ID" : "Хэрэглэгчийн ID",
+    "password" : "нууц үг",
+    "View only" : "Зөвхөн үзэх",
+    "Edit" : "Өөрчлөх",
     "Files" : "Файлууд",
     "Type" : "Төрөл",
     "Set expiration date" : "Дуусах хугацааг тохируулах",
@@ -7,9 +10,6 @@
     "Set link password" : "Холбоосын нууц үг тохируулах",
     "Comment" : "Сэтгэгдэл",
     "Cancel" : "Цуцлах",
-    "password" : "нууц үг",
-    "View only" : "Зөвхөн үзэх",
-    "Edit" : "Өөрчлөх",
     "_Send file to Slack_::_Send files to Slack_" : ["Слакд файл илгээх","Слакд файл илгээх"],
     "_Send link to Slack_::_Send links to Slack_" : ["Слакд холбоос илгээх","Слакд холбоос илгээх"],
     "_Send file_::_Send files_" : ["Файл илгээх","Файл илгээх"],

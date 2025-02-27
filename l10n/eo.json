@@ -1,8 +1,8 @@
 { "translations": {
     "Client ID" : "Klientidentigilo",
+    "Edit" : "Modifi",
     "Type" : "Tipo",
     "Set expiration date" : "Uzi limdaton",
-    "Comment" : "Komento",
-    "Edit" : "Modifi"
+    "Comment" : "Komento"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

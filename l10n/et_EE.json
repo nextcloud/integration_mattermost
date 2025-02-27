@@ -1,11 +1,11 @@
 { "translations": {
     "Client ID" : "Kliendi ID",
+    "Edit" : "Redigeeri",
     "Files" : "Failid",
     "Type" : "Tüüp",
     "Set expiration date" : "Määra aegumise kuupäev",
     "Comment" : "Kommentaar",
     "Cancel" : "Tühista",
-    "Edit" : "Redigeeri",
     "Upload files" : "Failide üleslaadimine"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

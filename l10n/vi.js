@@ -6,13 +6,13 @@ OC.L10N.register(
     "Connected accounts" : "Đã kết nối tài khoản",
     "Client ID" : "ID khách hàng",
     "Invalid access token" : "Mã thông báo truy cập không hợp lệ",
+    "View only" : "Chỉ xem",
+    "Edit" : "Chỉnh sửa",
     "Files" : "Tệp",
     "Type" : "Loại",
     "Set expiration date" : "Đặt ngày hết hạn",
     "Comment" : "Bình luận",
     "Cancel" : "Hủy",
-    "View only" : "Chỉ xem",
-    "Edit" : "Chỉnh sửa",
     "Upload files" : "Tải lên tập tin"
 },
 "nplurals=1; plural=0;");

@@ -3,9 +3,9 @@ OC.L10N.register(
     {
     "Connected accounts" : "Tilkopla kontoar",
     "Client ID" : "Klient-ID",
+    "Edit" : "Rediger",
     "Type" : "Skriv",
     "Set expiration date" : "Set utløpsdato",
-    "Comment" : "Kommentér",
-    "Edit" : "Rediger"
+    "Comment" : "Kommentér"
 },
 "nplurals=2; plural=(n != 1);");

@@ -10,6 +10,8 @@ OC.L10N.register(
     "Client ID" : "Asiakas-ID",
     "Application secret" : "Sovelluksen salaisuus",
     "Use a popup to authenticate" : "Käytä ponnahdusikkunaa tunnistautumista varten",
+    "View only" : "Vain katselu",
+    "Edit" : "Muokkaa",
     "Files" : "Tiedostot",
     "Type" : "Tyyppi",
     "Set expiration date" : "Aseta vanhenemispäivä",
@@ -17,8 +19,6 @@ OC.L10N.register(
     "Set link password" : "Aseta linkin salasana",
     "Comment" : "Kommentti",
     "Cancel" : "Peruuta",
-    "View only" : "Vain katselu",
-    "Edit" : "Muokkaa",
     "Go to settings" : "Mene asetuksiin",
     "Upload files" : "Lataa tiedostoja",
     "Public links" : "Julkiset linkit"

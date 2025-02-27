@@ -7,13 +7,13 @@ OC.L10N.register(
     "Connected accounts" : "Поврзани сметки",
     "Client ID" : "Клиент ИД",
     "Use a popup to authenticate" : "користи скокачки прозор за автентификација",
+    "View only" : "Само за гледање",
+    "Edit" : "Уреди",
     "Files" : "Датотеки",
     "Type" : "Вид",
     "Set expiration date" : "Постави рок на траење",
     "Comment" : "Коментар",
     "Cancel" : "Откажи",
-    "View only" : "Само за гледање",
-    "Edit" : "Уреди",
     "Upload files" : "Прикачи датотеки"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

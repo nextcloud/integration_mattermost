@@ -11,11 +11,11 @@ OC.L10N.register(
     "Application secret" : "Rahasia aplikasi",
     "Use a popup to authenticate" : "Gunakan sembulan untuk mengautentikasi",
     "Invalid access token" : "Token akses tidak valid",
+    "View only" : "Hanya lihat",
+    "Edit" : "Sunting",
     "Type" : "tipe",
     "Set expiration date" : "Atur tanggal kedaluwarsa",
     "Comment" : "Komentar",
-    "Cancel" : "Batal",
-    "View only" : "Hanya lihat",
-    "Edit" : "Sunting"
+    "Cancel" : "Batal"
 },
 "nplurals=1; plural=0;");

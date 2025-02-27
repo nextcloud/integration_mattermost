@@ -1,10 +1,10 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Edit" : "កែប្រែ",
     "Type" : "ប្រភេទ",
     "Set expiration date" : "កំណត់​ពេល​ផុត​កំណត់",
     "Comment" : "មតិ",
-    "Cancel" : "លើកលែង",
-    "Edit" : "កែប្រែ"
+    "Cancel" : "លើកលែង"
 },
 "nplurals=1; plural=0;");

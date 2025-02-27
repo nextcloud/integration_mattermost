@@ -9,13 +9,13 @@ OC.L10N.register(
     "Connected accounts" : "Comptes connectats",
     "Client ID" : "ID del client",
     "Application secret" : "Secret de l'aplicació",
+    "View only" : "Només visualitació",
+    "Edit" : "Edita",
     "Files" : "Fitxers",
     "Type" : "Tipus",
     "Set expiration date" : "Estableix la data de caducitat",
     "Comment" : "Comentari",
     "Cancel" : "Cancelar",
-    "View only" : "Només visualitació",
-    "Edit" : "Edita",
     "Upload files" : "Pujada de fitxers"
 },
 "nplurals=2; plural=(n != 1);");
