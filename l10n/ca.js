@@ -17,14 +17,14 @@ OC.L10N.register(
     "Login" : "Inici de sessió",
     "Password" : "Contrasenya",
     "Connected as {user}" : "S'ha connectat com a {user}",
+    "View only" : "Només visualitació",
+    "Edit" : "Edita",
     "Files" : "Fitxers",
     "Channel" : "Canal",
     "Type" : "Tipus",
     "Set expiration date" : "Defineix una data de tancament",
     "Comment" : "Comentari",
     "Cancel" : "Cancel·la",
-    "View only" : "Només visualitació",
-    "Edit" : "Edita",
     "Upload files" : "Carrega fitxers"
 },
 "nplurals=2; plural=(n != 1);");

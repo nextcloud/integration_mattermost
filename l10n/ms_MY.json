@@ -1,9 +1,9 @@
 { "translations": {
     "Login" : "Login",
     "Password" : "Kata laluan",
+    "Edit" : "Sunting",
     "Files" : "Fail",
     "Type" : "Jenis",
-    "Cancel" : "Batal",
-    "Edit" : "Sunting"
+    "Cancel" : "Batal"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

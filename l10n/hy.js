@@ -3,11 +3,11 @@ OC.L10N.register(
     {
     "Login" : "Login",
     "Password" : "Գաղտնաբառ",
+    "Edit" : "մշակել",
     "Files" : "Ֆայլեր",
     "Type" : "Տիպ",
     "Set expiration date" : "Սահմանել վավերականության ժամկետ",
     "Comment" : "Մեկնաբանել",
-    "Cancel" : "ընդհատել",
-    "Edit" : "մշակել"
+    "Cancel" : "ընդհատել"
 },
 "nplurals=2; plural=(n != 1);");

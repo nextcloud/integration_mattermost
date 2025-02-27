@@ -12,14 +12,14 @@ OC.L10N.register(
     "Login" : "ログイン",
     "Password" : "パスワード",
     "Connected as {user}" : "{user} に接続済み",
+    "View only" : "閲覧のみ",
+    "Edit" : "編集",
     "Files" : "ファイル",
     "Channel" : "チャンネル",
     "Type" : "タイプ",
     "Set expiration date" : "有効期限を設定",
     "Comment" : "コメント",
     "Cancel" : "キャンセル",
-    "View only" : "閲覧のみ",
-    "Edit" : "編集",
     "Upload files" : "アップロードファイル"
 },
 "nplurals=1; plural=0;");

@@ -16,14 +16,14 @@ OC.L10N.register(
     "Login" : "Inloggen",
     "Password" : "Wachtwoord",
     "Connected as {user}" : "Verbonden als {user}",
+    "View only" : "Alleen bekijken",
+    "Edit" : "Bewerk",
     "Files" : "Bestanden",
     "Channel" : "Kanaal",
     "Type" : "Type",
     "Set expiration date" : "Instellen vervaldatum",
     "Comment" : "Notitie",
     "Cancel" : "Annuleren",
-    "View only" : "Alleen bekijken",
-    "Edit" : "Bewerk",
     "Upload files" : "Bestanden uploaden"
 },
 "nplurals=2; plural=(n != 1);");

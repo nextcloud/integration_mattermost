@@ -6,13 +6,13 @@ OC.L10N.register(
     "Login" : "Login",
     "Password" : "Senhal",
     "Connected as {user}" : "Connectat coma {user}",
+    "View only" : "Veire solament",
+    "Edit" : "Modificar",
     "Files" : "Fichièrs",
     "Channel" : "Cadena",
     "Type" : "Tipe",
     "Set expiration date" : "Especificar una data d'expiracion",
     "Comment" : "Comentaris",
-    "Cancel" : "Anullar",
-    "View only" : "Veire solament",
-    "Edit" : "Modificar"
+    "Cancel" : "Anullar"
 },
 "nplurals=2; plural=(n > 1);");

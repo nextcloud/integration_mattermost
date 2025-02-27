@@ -3,11 +3,11 @@ OC.L10N.register(
     {
     "Login" : "Login",
     "Password" : "Passwuert",
+    "Edit" : "Änneren",
     "Files" : "Fichieren",
     "Type" : "Typ",
     "Set expiration date" : "Verfallsdatum setzen",
     "Comment" : "Kommentar",
-    "Cancel" : "Ofbriechen",
-    "Edit" : "Änneren"
+    "Cancel" : "Ofbriechen"
 },
 "nplurals=2; plural=(n != 1);");

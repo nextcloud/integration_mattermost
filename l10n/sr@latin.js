@@ -3,12 +3,12 @@ OC.L10N.register(
     {
     "Login" : "Korisničko ime",
     "Password" : "Lozinka",
+    "Edit" : "Izmeni",
     "Files" : "Фајлови",
     "Type" : "Tip",
     "Set expiration date" : "Postavi datum isteka",
     "Comment" : "Komentar",
     "Cancel" : "Otkaži",
-    "Edit" : "Izmeni",
     "Upload files" : "Otpremi fajlove"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

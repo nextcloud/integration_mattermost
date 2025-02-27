@@ -6,14 +6,14 @@ OC.L10N.register(
     "Connected accounts" : "Savienotie konti",
     "Login" : "Autorizēties",
     "Password" : "Parole",
+    "password" : "parole",
+    "View only" : "Tikai skatīt",
+    "Edit" : "Labot",
     "Files" : "Datnes",
     "Type" : "Veids",
     "Set expiration date" : "Iestatīt derīguma beigu datumu",
     "Comment" : "Piebilde",
     "Cancel" : "Atcelt",
-    "password" : "parole",
-    "View only" : "Tikai skatīt",
-    "Edit" : "Labot",
     "Upload files" : "Augšupielādē datnes"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

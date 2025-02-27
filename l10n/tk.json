@@ -1,10 +1,10 @@
 { "translations": {
     "Password" : "Açarsöz",
+    "Edit" : "Redaktirläň",
     "Files" : "Faýllar",
     "Type" : "Görnüşi",
     "Set expiration date" : "Möhlet möhletini belläň",
     "Cancel" : "ýatyrmak",
-    "Edit" : "Redaktirläň",
     "Upload files" : "Faýllary ýükläň"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

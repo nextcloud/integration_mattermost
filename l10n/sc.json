@@ -14,14 +14,14 @@
     "Login" : "Atzessu",
     "Password" : "Crae",
     "Connected as {user}" : "Connètidu comente {user}",
+    "View only" : "Isceti in visualizatzione",
+    "Edit" : "Modìfica",
     "Files" : "Archìvios",
     "Channel" : "Canale",
     "Type" : "Genia",
     "Set expiration date" : "Cunfigura una data de iscadèntzia",
     "Comment" : "Cummentu",
     "Cancel" : "Annulla",
-    "View only" : "Isceti in visualizatzione",
-    "Edit" : "Modìfica",
     "Upload files" : "Càrriga archìvios",
     "Internal links (Only works for users with access to the files)" : "Ligòngios internos (funtzionat isceti pro utentes cun atzessu a is archìvios)"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

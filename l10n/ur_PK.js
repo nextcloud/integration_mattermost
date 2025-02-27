@@ -3,9 +3,9 @@ OC.L10N.register(
     {
     "Login" : "Login",
     "Password" : "پاسورڈ",
+    "Edit" : "تدوین کریں",
     "Type" : "Type",
     "Set expiration date" : "تاریخ معیاد سیٹ کریں",
-    "Cancel" : "منسوخ کریں",
-    "Edit" : "تدوین کریں"
+    "Cancel" : "منسوخ کریں"
 },
 "nplurals=2; plural=(n != 1);");

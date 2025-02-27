@@ -3,10 +3,10 @@ OC.L10N.register(
     {
     "Login" : "Login",
     "Password" : "Şifrə",
+    "Edit" : "Dəyişiklik et",
     "Files" : "Fayllar",
     "Type" : "Type",
     "Comment" : "Komentariya",
-    "Cancel" : "Dayandır",
-    "Edit" : "Dəyişiklik et"
+    "Cancel" : "Dayandır"
 },
 "nplurals=2; plural=(n != 1);");

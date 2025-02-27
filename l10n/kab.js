@@ -3,11 +3,11 @@ OC.L10N.register(
     {
     "Login" : "Aseqdac",
     "Password" : "Awal uffir",
+    "Edit" : "Ẓreg",
     "Files" : "Ifuyla",
     "Type" : "Anaw",
     "Comment" : "Commentaire",
     "Cancel" : "Sefsex",
-    "Edit" : "Ẓreg",
     "Upload files" : "Azen ifuyla"
 },
 "nplurals=2; plural=(n != 1);");

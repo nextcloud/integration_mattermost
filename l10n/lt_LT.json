@@ -8,11 +8,14 @@
     "Instance address" : "Egzemplioriaus adresas",
     "Application ID" : "Programos ID",
     "Application secret" : "Programos paslaptis",
+    "Invalid login/password" : "Neteisingas prisijungimas/slaptažodis",
     "Login" : "Prisijungti",
     "Password" : "Slaptažodis",
     "Connected as {user}" : "Prisijungta kaip {user}",
     "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
-    "Invalid login/password" : "Neteisingas prisijungimas/slaptažodis",
+    "password" : "slaptažodis",
+    "View only" : "Tik peržiūrėti",
+    "Edit" : "Taisyti",
     "Files" : "Failai",
     "Channel" : "Kanalas",
     "Type" : "Tipas",
@@ -20,9 +23,6 @@
     "Expires on" : "Baigia galioti",
     "Comment" : "Komentaras",
     "Cancel" : "Atsisakyti",
-    "password" : "slaptažodis",
-    "View only" : "Tik peržiūrėti",
-    "Edit" : "Taisyti",
     "Upload files" : "Įkelti failus"
 },"pluralForm" :"nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);"
 }

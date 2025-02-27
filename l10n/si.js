@@ -4,10 +4,10 @@ OC.L10N.register(
     "Connected accounts" : "සම්බන්ධිත ගිණුම්",
     "Login" : "පිවිසෙන්න",
     "Password" : "මුර පදය",
+    "Edit" : "සංස්කරණය",
     "Files" : "ගොනු",
     "Comment" : "අදහස",
     "Cancel" : "අවලංගු කරන්න",
-    "Edit" : "සංස්කරණය",
     "Upload files" : "ගොනු උඩුගත කරන්න"
 },
 "nplurals=2; plural=(n != 1);");

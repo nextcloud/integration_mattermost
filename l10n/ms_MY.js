@@ -3,9 +3,9 @@ OC.L10N.register(
     {
     "Login" : "Login",
     "Password" : "Kata laluan",
+    "Edit" : "Sunting",
     "Files" : "Fail",
     "Type" : "Jenis",
-    "Cancel" : "Batal",
-    "Edit" : "Sunting"
+    "Cancel" : "Batal"
 },
 "nplurals=1; plural=0;");

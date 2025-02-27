@@ -1,11 +1,11 @@
 { "translations": {
     "Login" : "Aseqdac",
     "Password" : "Awal uffir",
+    "Edit" : "Ẓreg",
     "Files" : "Ifuyla",
     "Type" : "Anaw",
     "Comment" : "Commentaire",
     "Cancel" : "Sefsex",
-    "Edit" : "Ẓreg",
     "Upload files" : "Azen ifuyla"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

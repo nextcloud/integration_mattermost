@@ -10,13 +10,13 @@ OC.L10N.register(
     "Login" : "Најава",
     "Password" : "Лозинка",
     "Connected as {user}" : "Поврзан како {user}",
+    "View only" : "Само за гледање",
+    "Edit" : "Уреди",
     "Files" : "Датотеки",
     "Type" : "Вид",
     "Set expiration date" : "Постави рок на траење",
     "Comment" : "Коментар",
     "Cancel" : "Откажи",
-    "View only" : "Само за гледање",
-    "Edit" : "Уреди",
     "Upload files" : "Прикачи датотеки"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

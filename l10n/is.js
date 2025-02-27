@@ -8,13 +8,13 @@ OC.L10N.register(
     "Login" : "Innskráning",
     "Password" : "Lykilorð",
     "Connected as {user}" : "Tengt sem {user}",
+    "View only" : "View only",
+    "Edit" : "Breyta",
     "Files" : "Skrár",
     "Type" : "Tegund",
     "Set expiration date" : "Setja gildistíma",
     "Comment" : "Athugasemd",
     "Cancel" : "Hætta við",
-    "View only" : "View only",
-    "Edit" : "Breyta",
     "Upload files" : "Hlaða inn skrám"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

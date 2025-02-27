@@ -3,12 +3,12 @@ OC.L10N.register(
     {
     "Login" : "Login",
     "Password" : "Pasvorto",
+    "Edit" : "Modifi",
     "Files" : "Dosieroj",
     "Type" : "Tipo",
     "Set expiration date" : "Uzi limdaton",
     "Comment" : "Komento",
     "Cancel" : "Nuligi",
-    "Edit" : "Modifi",
     "Upload files" : "Alŝuti dosierojn"
 },
 "nplurals=2; plural=(n != 1);");

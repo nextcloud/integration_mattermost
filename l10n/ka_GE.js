@@ -3,12 +3,12 @@ OC.L10N.register(
     {
     "Login" : "ავტორიზაცია",
     "Password" : "პაროლი",
+    "Edit" : "შეცვლა",
     "Files" : "ფაილები",
     "Type" : "სახეობა",
     "Set expiration date" : "მიუთითეთ ვადის გასვლის დრო",
     "Comment" : "კომენტარი",
     "Cancel" : "უარყოფა",
-    "Edit" : "შეცვლა",
     "Upload files" : "ფაილების ატვირთვა"
 },
 "nplurals=2; plural=(n!=1);");
