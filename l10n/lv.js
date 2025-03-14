@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Bad credentials" : "Nederīgi pieteikšanās dati",
     "Bad HTTP method" : "Nederīgs HTTP pieprasījuma veids",
-    "Connected accounts" : "Savienotie konti",
+    "Connected accounts" : "Sasaistītie konti",
     "Login" : "Autorizēties",
     "Password" : "Parole",
     "password" : "parole",
@@ -14,6 +14,7 @@ OC.L10N.register(
     "Set expiration date" : "Iestatīt derīguma beigu datumu",
     "Comment" : "Piebilde",
     "Cancel" : "Atcelt",
+    "No Mattermost account connected" : "Nav sasaistītu Mattermost kontu",
     "Upload files" : "Augšupielādē datnes"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");
