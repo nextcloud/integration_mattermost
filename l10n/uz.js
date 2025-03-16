@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Edit" : "Tahrirlash",
     "Files" : "Files",
+    "Type" : "Turi",
     "Set expiration date" : "Set expiration date",
     "Cancel" : "Cancel"
 },
