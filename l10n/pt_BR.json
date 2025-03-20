@@ -27,6 +27,7 @@
     "Application secret" : "Segredo do aplicativo",
     "Client secret of your Mattermost application" : "Segredo do cliente do seu aplicativo mais importante",
     "Use a popup to authenticate" : "Use um pop-up para autenticar",
+    "Enable navigation link as default for all users" : "Habilitar o link de navegação como padrão para todos os usuários",
     "Successfully connected to Mattermost!" : "Conectado com sucesso ao Mais Importante",
     "Error connecting to Mattermost:" : "Erro ao conectar-se ao Mais Importante",
     "Invalid access token" : "Token de acesso inválido",
