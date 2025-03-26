@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Login" : "Logi sisse",
     "Password" : "Parool",
+    "View only" : "Ainult vaatamine",
     "Edit" : "Redigeeri",
     "Files" : "Failid",
     "Type" : "Tüüp",
