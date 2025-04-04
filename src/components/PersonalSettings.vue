@@ -46,8 +46,8 @@
 </template>
 
 <script>
-import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
 import CloseIcon from 'vue-material-design-icons/Close.vue'
+import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
 
 import SlackIcon from './icons/SlackIcon.vue'
 
@@ -55,11 +55,11 @@ import NcAvatar from '@nextcloud/vue/dist/Components/NcAvatar.js'
 import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 
+import axios from '@nextcloud/axios'
+import { showError, showSuccess } from '@nextcloud/dialogs'
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
-import axios from '@nextcloud/axios'
 import { oauthConnect } from '../utils.js'
-import { showSuccess, showError } from '@nextcloud/dialogs'
 
 export default {
 	name: 'PersonalSettings',
@@ -187,6 +187,8 @@ export default {
 	.settings-hint {
 		display: flex;
 		align-items: center;
+		color: var(--text-color);
+		justify-content: flex-start;
 		.icon {
 			margin-right: 4px;
 		}

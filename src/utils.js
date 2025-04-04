@@ -1,9 +1,9 @@
-import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 import { showError } from '@nextcloud/dialogs'
+import { generateUrl } from '@nextcloud/router'
 import FileIcon from 'vue-material-design-icons/File.vue'
-import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
 import LinkVariantIcon from 'vue-material-design-icons/LinkVariant.vue'
+import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
 
 const SLACK_OAUTH_URL = 'https://slack.com/oauth/v2/authorize'
 
