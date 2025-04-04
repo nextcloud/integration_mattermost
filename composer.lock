@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc538efb140bc06005b2f455b4083b81",
+    "content-hash": "c13ede834ba467e38337e7c4f54d5b3e",
     "packages": [
         {
             "name": "bamarni/composer-bin-plugin",
@@ -71,16 +71,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nextcloud-deps/ocp.git",
-                "reference": "2c8c97deb75e5c911093603e24ece37d515713df"
+                "reference": "6dafbfc3711b3811baf8bd4e1223eac9409d4b5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nextcloud-deps/ocp/zipball/2c8c97deb75e5c911093603e24ece37d515713df",
-                "reference": "2c8c97deb75e5c911093603e24ece37d515713df",
+                "url": "https://api.github.com/repos/nextcloud-deps/ocp/zipball/6dafbfc3711b3811baf8bd4e1223eac9409d4b5b",
+                "reference": "6dafbfc3711b3811baf8bd4e1223eac9409d4b5b",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.0 || ~8.1 || ~8.2 || ~8.3",
+                "php": "~8.1 || ~8.2 || ~8.3 || ~8.4",
                 "psr/clock": "^1.0",
                 "psr/container": "^2.0.2",
                 "psr/event-dispatcher": "^1.0",
@@ -90,7 +90,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "31.0.0-dev"
+                    "dev-master": "32.0.0-dev"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -101,14 +101,18 @@
                 {
                     "name": "Christoph Wurst",
                     "email": "christoph@winzerhof-wurst.at"
+                },
+                {
+                    "name": "Joas Schilling",
+                    "email": "coding@schilljs.com"
                 }
             ],
-            "description": "Composer package containing Nextcloud's public API (classes, interfaces)",
+            "description": "Composer package containing Nextcloud's public OCP API and the unstable NCU API",
             "support": {
                 "issues": "https://github.com/nextcloud-deps/ocp/issues",
                 "source": "https://github.com/nextcloud-deps/ocp/tree/master"
             },
-            "time": "2024-11-11T14:47:22+00:00"
+            "time": "2025-04-03T19:09:28+00:00"
         },
         {
             "name": "psr/clock",
@@ -320,11 +324,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.0 || ^8.1 || ^8.2 || ^8.3"
+        "php": "^8.0 || ^8.1 || ^8.2 || ^8.3 || ^8.4"
     },
-    "platform-dev": [],
-    "platform-overrides": {
-        "php": "8.0"
-    },
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
