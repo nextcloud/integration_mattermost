@@ -10,17 +10,20 @@
 import SendFilesModal from './components/SendFilesModal.vue'
 
 import axios from '@nextcloud/axios'
+import { showError, showSuccess } from '@nextcloud/dialogs'
+import { subscribe } from '@nextcloud/event-bus'
+import {
+	davGetClient, davGetDefaultPropfind, davResultToNode, davRootPath,
+	FileAction,
+	FileType,
+	Permission,
+	registerFileAction,
+} from '@nextcloud/files'
+import { translatePlural as n, translate as t } from '@nextcloud/l10n'
 import moment from '@nextcloud/moment'
 import { generateUrl } from '@nextcloud/router'
-import { showSuccess, showError } from '@nextcloud/dialogs'
-import { translate as t, translatePlural as n } from '@nextcloud/l10n'
-import { oauthConnect, oauthConnectConfirmDialog, gotoSettingsConfirmDialog, SEND_TYPE } from './utils.js'
-import {
-	registerFileAction, Permission, FileAction,
-	davGetClient, davGetDefaultPropfind, davResultToNode, davRootPath, FileType,
-} from '@nextcloud/files'
-import { subscribe } from '@nextcloud/event-bus'
 import SlackIcon from '../img/app-dark.svg'
+import { gotoSettingsConfirmDialog, oauthConnect, oauthConnectConfirmDialog, SEND_TYPE } from './utils.js'
 
 import Vue from 'vue'
 import './bootstrap.js'
@@ -224,6 +227,7 @@ const sendFile
 					{ name: file.name, channelName })
 				+ ': ' + error.response?.request?.responseText,
 			)
+			OCA.Slack.SlackSendModalVue.fileNone(file.id)
 			reject(error)
 		})
 	})

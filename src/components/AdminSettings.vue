@@ -8,7 +8,7 @@
 			<span>
 				{{ t('integration_slack', 'To allow your Nextcloud users to use OAuth to authenticate to the Slack app, and set the ID and secret here.') }}
 				{{ " " }}
-				<a href="https://api.slack.com/apps">{{ t('integration_slack', 'Link to create a Slack application') }}</a>
+				<a target="_blank" href="https://api.slack.com/apps">{{ t('integration_slack', 'Link to create a Slack application') }} ↗</a>
 			</span>
 		</p>
 		<br>
@@ -67,12 +67,12 @@ import KeyIcon from 'vue-material-design-icons/Key.vue'
 
 import SlackIcon from './icons/SlackIcon.vue'
 
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
-import { loadState } from '@nextcloud/initial-state'
-import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
-import { showSuccess, showError } from '@nextcloud/dialogs'
+import { showError, showSuccess } from '@nextcloud/dialogs'
+import { loadState } from '@nextcloud/initial-state'
 import { confirmPassword } from '@nextcloud/password-confirmation'
+import { generateUrl } from '@nextcloud/router'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 
 import { delay } from '../utils.js'
 
@@ -150,6 +150,8 @@ export default {
 	.settings-hint {
 		display: flex;
 		align-items: center;
+		color: var(--text-color);
+		justify-content: flex-start;
 		.icon {
 			margin-right: 4px;
 		}
@@ -171,7 +173,7 @@ export default {
 	}
 
 	a {
-		color: #006196;
+		text-decoration: underline;
 	}
 }
 </style>

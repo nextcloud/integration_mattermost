@@ -198,7 +198,7 @@
 					</NcButton>
 					<NcButton type="primary"
 						:class="{ loading, okButton: true }"
-						:disabled="!canValidate"
+						:disabled="!canValidate && loading"
 						:aria-label="sendType === SEND_TYPE.file.id
 							? n('integration_slack', 'Send file', 'Send files', files.length)
 							: n('integration_slack', 'Send link', 'Send links', files.length)"
@@ -248,6 +248,7 @@ import SlackIcon from './icons/SlackIcon.vue'
 import RadioElementSet from './RadioElementSet.vue'
 
 const STATES = {
+	NONE: 0,
 	IN_PROGRESS: 1,
 	FINISHED: 2,
 }
@@ -402,6 +403,9 @@ export default {
 		fileFinished(id) {
 			this.$set(this.fileStates, id, STATES.FINISHED)
 		},
+		fileNone(id) {
+			this.$set(this.fileStates, id, STATES.NONE)
+		},
 		getUserIconUrl(slackUserId) {
 			return generateUrl('/apps/integration_slack/users/{slackUserId}/image', { slackUserId })
 		},
@@ -431,7 +435,7 @@ export default {
 	padding: 16px;
 	display: flex;
 	flex-direction: column;
-	overflow-y: scroll;
+	overflow-y: auto;
 
 	h2 {
 		margin-top: 0;
