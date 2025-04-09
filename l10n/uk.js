@@ -8,6 +8,7 @@ OC.L10N.register(
     "Connected accounts" : "Підключені облікові записи",
     "Login" : "Логін",
     "Password" : "Пароль",
+    "password" : "пароль",
     "View only" : "Лише перегляд",
     "Edit" : "Редагувати",
     "Files" : "Файли",

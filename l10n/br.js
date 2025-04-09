@@ -5,7 +5,7 @@ OC.L10N.register(
     "Password" : "Ger-tremen",
     "Edit" : "Cheñch",
     "Files" : "Restroù",
-    "Type" : "Stumm",
+    "Type" : "Seurt",
     "Set expiration date" : "Lakaat un deizat termen",
     "Comment" : "Displegadenn",
     "Cancel" : "Arrest",
