@@ -7,6 +7,7 @@ OC.L10N.register(
     "OAuth access token refused" : "Токен доступу OAuth відхилено",
     "Connected accounts" : "Підключені облікові записи",
     "Client ID" : "Ідентифікатор клієнта",
+    "password" : "пароль",
     "View only" : "Лише перегляд",
     "Edit" : "Редагувати",
     "Files" : "Файли",

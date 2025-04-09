@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Client ID" : "ID kliant",
     "Edit" : "Cheñch",
-    "Type" : "Stumm",
+    "Type" : "Seurt",
     "Set expiration date" : "Lakaat un deizat termen",
     "Comment" : "Displegadenn",
     "Cancel" : "Nullañ",
