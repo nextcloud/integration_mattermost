@@ -14,6 +14,7 @@ OC.L10N.register(
     "Set expiration date" : "Iestatīt derīguma beigu datumu",
     "Comment" : "Piebilde",
     "Cancel" : "Atcelt",
+    "_Send file_::_Send files_" : ["Nosūtīt datnes","Nosūtīt datni","Nosūtīt datnes"],
     "No Mattermost account connected" : "Nav sasaistītu Mattermost kontu",
     "Upload files" : "Augšupielādē datnes"
 },
