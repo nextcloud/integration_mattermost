@@ -12,6 +12,7 @@ OC.L10N.register(
     "Type" : "Veids",
     "Set expiration date" : "Iestatīt derīguma beigu datumu",
     "Comment" : "Piebilde",
-    "Cancel" : "Atcelt"
+    "Cancel" : "Atcelt",
+    "_Send file_::_Send files_" : ["Nosūtīt datnes","Nosūtīt datni","Nosūtīt datnes"]
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");
