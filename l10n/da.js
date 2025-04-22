@@ -1,8 +1,10 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Error during OAuth exchanges" : "Fejl under OAuth-udvekslinger",
     "Bad credentials" : "Forkerte legitimationsoplysninger",
     "Bad HTTP method" : "Dårlig HTTP metode",
+    "OAuth access token refused" : "OAuth adgang token nægtet",
     "Invalid credentials" : "Ugyldige legitimationsoplysninger",
     "Connected accounts" : "Forbundne konti",
     "Personal access token" : "Personligt adgangstoken",
@@ -25,6 +27,7 @@ OC.L10N.register(
     "Cancel" : "Annuller",
     "Go to settings" : "Gå til indstillinger",
     "Upload files" : "Upload filer",
-    "Public links" : "Offentlige links"
+    "Public links" : "Offentlige links",
+    "Internal links (Only works for users with access to the files)" : "Interne links (virker kun for brugere med adgang til filerne)"
 },
 "nplurals=2; plural=(n != 1);");
