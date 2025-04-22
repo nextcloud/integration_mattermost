@@ -1,8 +1,10 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Error during OAuth exchanges" : "Fejl under OAuth-udvekslinger",
     "Bad HTTP method" : "Dårlig HTTP metode",
     "Bad credentials" : "Forkerte legitimationsoplysninger",
+    "OAuth access token refused" : "OAuth adgang token nægtet",
     "Connected accounts" : "Forbundne konti",
     "Client ID" : "Klient-ID",
     "password" : "adgangskode",
@@ -18,6 +20,7 @@ OC.L10N.register(
     "Cancel" : "Annuller",
     "Go to settings" : "Gå til indstillinger",
     "Upload files" : "Send filer",
-    "Public links" : "Offentlige links"
+    "Public links" : "Offentlige links",
+    "Internal links (Only works for users with access to the files)" : "Interne links (virker kun for brugere med adgang til filerne)"
 },
 "nplurals=2; plural=(n != 1);");
