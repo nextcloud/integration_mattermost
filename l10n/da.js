@@ -4,7 +4,7 @@ OC.L10N.register(
     "Error during OAuth exchanges" : "Fejl under OAuth-udvekslinger",
     "Bad credentials" : "Forkerte legitimationsoplysninger",
     "Bad HTTP method" : "Dårlig HTTP metode",
-    "OAuth access token refused" : "OAuth adgang token nægtet",
+    "OAuth access token refused" : "OAuth adgangsnøgle afvist",
     "Invalid credentials" : "Ugyldige legitimationsoplysninger",
     "Connected accounts" : "Forbundne konti",
     "Personal access token" : "Personligt adgangstoken",
