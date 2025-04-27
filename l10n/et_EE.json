@@ -3,6 +3,7 @@
     "Bad credentials" : "Vale kasutajanimi, salasõna või tunnusluba",
     "Connected accounts" : "Ühendatud kasutajakontod",
     "Client ID" : "Kliendi ID",
+    "Invalid access token" : "Vigane tunnusluba ligipääsuks",
     "View only" : "Ainult vaatamine",
     "Edit" : "Redigeeri",
     "Files" : "Failid",
