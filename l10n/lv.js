@@ -4,7 +4,7 @@ OC.L10N.register(
     "Bad credentials" : "Nederīgi pieteikšanās dati",
     "Bad HTTP method" : "Nederīgs HTTP pieprasījuma veids",
     "Connected accounts" : "Sasaistītie konti",
-    "Login" : "Autorizēties",
+    "Login" : "Pieteikumvārds",
     "Password" : "Parole",
     "password" : "parole",
     "View only" : "Tikai skatīt",
