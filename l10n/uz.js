@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Bad HTTP method" : "Yomon HTTP usuli",
     "Bad credentials" : "Akkaunt ma'lumotlari xato",
+    "Client ID" : "Mijoz identifikatori",
     "Edit" : "Tahrirlash",
     "Files" : "Files",
     "Type" : "Turi",
