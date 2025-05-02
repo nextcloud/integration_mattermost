@@ -13,6 +13,7 @@ OC.L10N.register(
     "Set expiration date" : "Iestatīt derīguma beigu datumu",
     "Comment" : "Piebilde",
     "Cancel" : "Atcelt",
-    "_Send file_::_Send files_" : ["Nosūtīt datnes","Nosūtīt datni","Nosūtīt datnes"]
+    "_Send file_::_Send files_" : ["Nosūtīt datnes","Nosūtīt datni","Nosūtīt datnes"],
+    "Upload files" : "Augšupielādēt datnes"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");
