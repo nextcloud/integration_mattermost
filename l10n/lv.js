@@ -16,6 +16,6 @@ OC.L10N.register(
     "Cancel" : "Atcelt",
     "_Send file_::_Send files_" : ["Nosūtīt datnes","Nosūtīt datni","Nosūtīt datnes"],
     "No Mattermost account connected" : "Nav sasaistītu Mattermost kontu",
-    "Upload files" : "Augšupielādē datnes"
+    "Upload files" : "Augšupielādēt datnes"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");
