@@ -59,7 +59,7 @@
     "_A link to {fileName} was sent to {channelName}_::_All of the {number} links were sent to {channelName}_" : ["Um link para {fileName} foi enviado para {channelName}","Todos os {number} links foram enviados para {channelName}","Todos os {number} links foram enviados para {channelName}"],
     "Failed to send links to Slack" : "Falha ao enviar links para o Slack",
     "_Failed to send the internal link to {channelName}_::_Failed to send internal links to {channelName}_" : ["Falha ao enviar link interno para {channelName}","Falha ao enviar links internos para {channelName}","Falha ao enviar links internos para {channelName}"],
-    "_{fileName} was successfully sent to {channelName}_::_All of the {number} files were sent to {channelName}_" : ["{fileName} foi enviada com sucesso para {channelName}","Todos os {number} arquivos foram enviados para {channelName}","Todos os {number} arquivos foram enviados para {channelName}"],
+    "_{fileName} was successfully sent to {channelName}_::_All of the {number} files were sent to {channelName}_" : ["{fileName} foi enviado com sucesso para {channelName}","Todos os {number} arquivos foram enviados para {channelName}","Todos os {number} arquivos foram enviados para {channelName}"],
     "Sign in with Slack" : "Autenticar com Slack",
     "Failed to open Slack OAuth popup window, please allow popups" : "Falha ao abrir o popup de OAuth do Slack, por favor permita popups",
     "Failed to save Slack OAuth state" : "Falha ao salvar estado de OAuth do Slack",
