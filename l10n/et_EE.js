@@ -14,6 +14,7 @@ OC.L10N.register(
     "View only" : "Ainult vaatamine",
     "Edit" : "Redigeeri",
     "Files" : "Failid",
+    "Channel" : "Kanal",
     "Type" : "Tüüp",
     "Set expiration date" : "Määra aegumise kuupäev",
     "Comment" : "Kommentaar",
