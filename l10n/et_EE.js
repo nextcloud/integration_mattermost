@@ -6,6 +6,7 @@ OC.L10N.register(
     "Invalid credentials" : "Vigane kasutajanimi, salasõna või tunnusluba",
     "Invalid response" : "Vigane vastus",
     "Connected accounts" : "Ühendatud kasutajakontod",
+    "Instance address" : "Serveri aadress",
     "Invalid access token" : "Vigane tunnusluba ligipääsuks",
     "Invalid login/password" : "Vigane kasutajanimi või salasõna",
     "Login" : "Logi sisse",
