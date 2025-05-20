@@ -9,6 +9,7 @@ OC.L10N.register(
     "Instance address" : "Serveri aadress",
     "Invalid access token" : "Vigane tunnusluba ligipääsuks",
     "Invalid login/password" : "Vigane kasutajanimi või salasõna",
+    "Personal access token" : "Isiklik tunnusluba ligipääsuks",
     "Login" : "Logi sisse",
     "Password" : "Parool",
     "Connected as {user}" : "Ühendatud kui {user}",
