@@ -7,6 +7,8 @@ OC.L10N.register(
     "Invalid response" : "Vigane vastus",
     "Connected accounts" : "Ühendatud kasutajakontod",
     "Instance address" : "Serveri aadress",
+    "Application ID" : "Rakenduse tunnus",
+    "Application secret" : "Rakenduse saladus",
     "Invalid access token" : "Vigane tunnusluba ligipääsuks",
     "Invalid login/password" : "Vigane kasutajanimi või salasõna",
     "Personal access token" : "Isiklik tunnusluba ligipääsuks",
