@@ -34,12 +34,14 @@ jobs:
       fail-fast: false
       matrix:
         php-versions: ['8.0', '8.1', '8.2', '8.3']
-        server-versions: ['stable28', 'stable29', 'stable30', 'master']
+        server-versions: ['stable28', 'stable29', 'stable30', 'stable31', 'master']
         exclude:
           - php-versions: '8.0'
             server-versions: 'master'
           - php-versions: '8.0'
             server-versions: 'stable30'
+          - php-versions: '8.0'
+            server-versions: 'stable31'
 
     name: php${{ matrix.php-versions }}-sqlite-${{ matrix.server-versions }}
 
@@ -65,7 +67,8 @@ jobs:
 
       - name: Set up PHPUnit
         working-directory: apps/${{ env.APP_NAME }}
-        run: composer i
+        composer i --no-dev
+        composer require --dev phpunit/phpunit
 
       - name: Set up Nextcloud
         run: |
