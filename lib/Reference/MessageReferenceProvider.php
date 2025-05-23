@@ -44,7 +44,7 @@ class MessageReferenceProvider extends ADiscoverableReferenceProvider implements
 		private IDateTimeFormatter $dateTimeFormatter,
 		private IDateTimeZone $dateTimeZone,
 		private MattermostAPIService $mattermostAPIService,
-		private ?string $userId
+		private ?string $userId,
 	) {
 	}
 

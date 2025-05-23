@@ -37,7 +37,7 @@ class MattermostAPIController extends Controller {
 		private IConfig $config,
 		private IURLGenerator $urlGenerator,
 		private MattermostAPIService $mattermostAPIService,
-		private ?string $userId
+		private ?string $userId,
 	) {
 		parent::__construct($appName, $request);
 	}
