@@ -5,6 +5,7 @@ OC.L10N.register(
     "Bad credentials" : "Vale kasutajanimi, salasõna või tunnusluba",
     "Connected accounts" : "Ühendatud kasutajakontod",
     "Client ID" : "Kliendi ID",
+    "Application secret" : "Rakenduse saladus",
     "Invalid access token" : "Vigane tunnusluba ligipääsuks",
     "View only" : "Ainult vaatamine",
     "Edit" : "Redigeeri",
