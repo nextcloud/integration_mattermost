@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2022 Julien Veyssier <julien-nc@posteo.net>
  *
@@ -34,11 +35,11 @@ use OCP\Util;
 class MattermostWidget implements IWidget {
 
 	public function __construct(
-		private IL10N         $l10n,
-		private IConfig       $config,
+		private IL10N $l10n,
+		private IConfig $config,
 		private IURLGenerator $url,
 		private IInitialState $initialStateService,
-		private ?string       $userId
+		private ?string $userId,
 	) {
 	}
 

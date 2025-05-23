@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Nextcloud - Mattermost
  *
@@ -32,7 +33,7 @@ class FilesController extends Controller {
 		IRequest $request,
 		private ImageService $imageService,
 		private LoggerInterface $logger,
-		private ?string  $userId
+		private ?string $userId,
 	) {
 		parent::__construct($appName, $request);
 	}
@@ -61,7 +62,7 @@ class FilesController extends Controller {
 			} elseif ($preview['type'] === 'icon') {
 				return new RedirectResponse($preview['icon']);
 			}
-		} catch (Exception | Throwable $e) {
+		} catch (Exception|Throwable $e) {
 			$this->logger->error('getImage error', ['exception' => $e]);
 			return new DataResponse('', Http::STATUS_NOT_FOUND);
 		}

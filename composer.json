@@ -15,12 +15,12 @@
 	},
 	"require-dev": {
 		"guzzlehttp/guzzle": "^7.8",
-		"nextcloud/ocp": "dev-master"
+		"nextcloud/ocp": "dev-stable28"
 	},
 	"scripts": {
 		"lint": "find . -name \\*.php -not -path './vendor*' -print0 | xargs -0 -n1 php -l",
-		"cs:check": "php-cs-fixer fix --dry-run --diff",
-		"cs:fix": "php-cs-fixer fix",
+		"cs:check": "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix --dry-run --diff",
+		"cs:fix": "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix",
 		"psalm": "psalm --no-cache",
 		"psalm:ci": "psalm --threads=1",
 		"psalm:update-baseline": "psalm --threads=1 --update-baseline",

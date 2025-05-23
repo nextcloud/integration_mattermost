@@ -47,7 +47,7 @@ class MattermostSearchMessagesProvider implements IProvider {
 		private IURLGenerator $urlGenerator,
 		private IDateTimeFormatter $dateTimeFormatter,
 		private IDateTimeZone $dateTimeZone,
-		private MattermostAPIService $service
+		private MattermostAPIService $service,
 	) {
 	}
 
@@ -141,7 +141,7 @@ class MattermostSearchMessagesProvider implements IProvider {
 	}
 
 	protected function getFormattedDate(int $timestamp): string {
-		return $this->dateTimeFormatter->formatDateTime((int) ($timestamp / 1000), 'long', 'short', $this->dateTimeZone->getTimeZone());
+		return $this->dateTimeFormatter->formatDateTime((int)($timestamp / 1000), 'long', 'short', $this->dateTimeZone->getTimeZone());
 	}
 
 	/**
