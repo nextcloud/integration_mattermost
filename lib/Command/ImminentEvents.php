@@ -20,7 +20,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ImminentEvents extends Command {
 
-	public function __construct(private WebhookService $webhookService) {
+	public function __construct(
+		private WebhookService $webhookService,
+	) {
 		parent::__construct();
 	}
 

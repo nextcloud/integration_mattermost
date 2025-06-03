@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Example process to validate a webhook request signature
  */

@@ -25,7 +25,7 @@ class ImageService {
 		private IRootFolder $root,
 		private LoggerInterface $logger,
 		private IPreview $previewManager,
-		private IMimeTypeDetector $mimeTypeDetector
+		private IMimeTypeDetector $mimeTypeDetector,
 	) {
 	}
 
