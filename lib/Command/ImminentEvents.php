@@ -34,7 +34,7 @@ class ImminentEvents extends Command {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$userId = $input->getArgument('user_id');
 		if ($userId !== null) {
 			$jobResult = $this->webhookService->userImminentEventsWebhook($userId);
