@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Nextcloud - Mattermost
  *
@@ -57,7 +58,7 @@ class NetworkService {
 		string $endPoint,
 		array $params = [],
 		string $method = 'GET',
-		bool $jsonResponse = true
+		bool $jsonResponse = true,
 	) {
 		$accessToken = $this->config->getUserValue($userId, Application::APP_ID, 'token');
 		$accessToken = $accessToken === '' ? '' : $this->crypto->decrypt($accessToken);
@@ -114,11 +115,11 @@ class NetworkService {
 					return $body;
 				}
 			}
-		} catch (ServerException | ClientException $e) {
+		} catch (ServerException|ClientException $e) {
 			$body = $e->getResponse()->getBody();
 			$this->logger->error('Mattermost API error : ' . (string)$body, ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
-		} catch (Exception | Throwable $e) {
+		} catch (Exception|Throwable $e) {
 			$this->logger->error('Mattermost API error', ['exception' => $e, 'app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
