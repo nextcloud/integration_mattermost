@@ -4,6 +4,7 @@ OC.L10N.register(
     "Client ID" : "Klant-ID",
     "Files" : "Lêer ",
     "Set expiration date" : "Stel vervaldatum",
-    "Comment" : "Kommentaar"
+    "Comment" : "Kommentaar",
+    "Cancel" : "Cancel"
 },
 "nplurals=2; plural=(n != 1);");

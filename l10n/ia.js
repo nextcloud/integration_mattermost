@@ -4,6 +4,7 @@ OC.L10N.register(
     "Edit" : "Modificar",
     "Type" : "Typo",
     "Set expiration date" : "Assignar data de expiration",
-    "Comment" : "Commentario"
+    "Comment" : "Commentario",
+    "Cancel" : "Cancel"
 },
 "nplurals=2; plural=(n != 1);");

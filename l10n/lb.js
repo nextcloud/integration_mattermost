@@ -6,6 +6,7 @@ OC.L10N.register(
     "Files" : "Dateien",
     "Type" : "Typ",
     "Set expiration date" : "Verfallsdatum setzen",
-    "Comment" : "Kommentar"
+    "Comment" : "Kommentar",
+    "Cancel" : "Cancel"
 },
 "nplurals=2; plural=(n != 1);");

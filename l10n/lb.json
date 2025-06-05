@@ -4,6 +4,7 @@
     "Files" : "Dateien",
     "Type" : "Typ",
     "Set expiration date" : "Verfallsdatum setzen",
-    "Comment" : "Kommentar"
+    "Comment" : "Kommentar",
+    "Cancel" : "Cancel"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
