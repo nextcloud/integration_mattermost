@@ -37,7 +37,7 @@ abstract class AbstractListener implements IEventListener {
 	public function __construct(
 		protected IConfig $config,
 		private WebhookService $webhookService,
-		protected ?string $userId
+		protected ?string $userId,
 	) {
 	}
 
