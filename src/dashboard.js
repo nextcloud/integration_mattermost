@@ -10,9 +10,9 @@
  */
 
 import { linkTo } from '@nextcloud/router'
-import { getRequestToken } from '@nextcloud/auth'
+import { getCSPNonce } from '@nextcloud/auth'
 
-__webpack_nonce__ = btoa(getRequestToken()) // eslint-disable-line
+__webpack_nonce__ = getCSPNonce() // eslint-disable-line
 __webpack_public_path__ = linkTo('integration_mattermost', 'js/') // eslint-disable-line
 
 document.addEventListener('DOMContentLoaded', () => {
