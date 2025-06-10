@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Error during OAuth exchanges" : "Viga OAuth andmevahetusel",
     "Bad credentials" : "Vale kasutajanimi, salasõna või tunnusluba",
     "Bad HTTP method" : "Vigane HTTP-meetod",
     "Invalid credentials" : "Vigane kasutajanimi, salasõna või tunnusluba",
