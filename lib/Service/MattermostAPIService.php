@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Nextcloud - Mattermost
  *
@@ -50,7 +51,7 @@ class MattermostAPIService {
 		private IURLGenerator $urlGenerator,
 		private ICrypto $crypto,
 		private NetworkService $networkService,
-		IClientService $clientService
+		IClientService $clientService,
 	) {
 		$this->client = $clientService->newClient();
 	}
@@ -104,8 +105,8 @@ class MattermostAPIService {
 
 		// sort post by creation date, DESC
 		usort($posts, function ($a, $b) {
-			$ta = (int) $a['create_at'];
-			$tb = (int) $b['create_at'];
+			$ta = (int)$a['create_at'];
+			$tb = (int)$b['create_at'];
 			return ($ta > $tb) ? -1 : 1;
 		});
 
@@ -174,7 +175,7 @@ class MattermostAPIService {
 
 		// since filter
 		$posts = array_filter($posts, function (array $post) use ($since) {
-			$postTs = (int) $post['create_at'];
+			$postTs = (int)$post['create_at'];
 			return $postTs > $since;
 		});
 
@@ -182,8 +183,8 @@ class MattermostAPIService {
 
 		// sort post by creation date, DESC
 		usort($posts, function ($a, $b) {
-			$ta = (int) $a['create_at'];
-			$tb = (int) $b['create_at'];
+			$ta = (int)$a['create_at'];
+			$tb = (int)$b['create_at'];
 			return ($ta > $tb) ? -1 : 1;
 		});
 		return $posts;
@@ -388,7 +389,7 @@ class MattermostAPIService {
 		string $comment,
 		string $permission,
 		?string $expirationDate = null,
-		?string $password = null
+		?string $password = null,
 	): array {
 		$links = [];
 		$userFolder = $this->root->getUserFolder($userId);
@@ -521,8 +522,8 @@ class MattermostAPIService {
 			} else {
 				return json_decode($body, true);
 			}
-		} catch (ServerException | ClientException $e) {
-			$this->logger->error('Mattermost API send file error : '.$e->getMessage(), ['app' => Application::APP_ID]);
+		} catch (ServerException|ClientException $e) {
+			$this->logger->error('Mattermost API send file error : ' . $e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}
@@ -558,7 +559,7 @@ class MattermostAPIService {
 		$expireAt = $this->config->getUserValue($userId, Application::APP_ID, 'token_expires_at');
 		if ($refreshToken !== '' && $expireAt !== '') {
 			$nowTs = (new Datetime())->getTimestamp();
-			$expireAt = (int) $expireAt;
+			$expireAt = (int)$expireAt;
 			// if token expires in less than a minute or is already expired
 			if ($nowTs > $expireAt - 60) {
 				$this->refreshToken($userId);
@@ -601,7 +602,7 @@ class MattermostAPIService {
 			$this->config->setUserValue($userId, Application::APP_ID, 'refresh_token', $encryptedRefreshToken);
 			if (isset($result['expires_in'])) {
 				$nowTs = (new DateTime())->getTimestamp();
-				$expiresAt = $nowTs + (int) $result['expires_in'];
+				$expiresAt = $nowTs + (int)$result['expires_in'];
 				$this->config->setUserValue($userId, Application::APP_ID, 'token_expires_at', strval($expiresAt));
 			}
 			return true;
@@ -661,7 +662,7 @@ class MattermostAPIService {
 				return json_decode($body, true);
 			}
 		} catch (Exception $e) {
-			$this->logger->error('Mattermost OAuth error : '.$e->getMessage(), ['app' => Application::APP_ID]);
+			$this->logger->error('Mattermost OAuth error : ' . $e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}
@@ -702,7 +703,7 @@ class MattermostAPIService {
 				return ['error' => $this->l10n->t('Invalid response')];
 			}
 		} catch (Exception $e) {
-			$this->logger->error('Mattermost login error : '.$e->getMessage(), ['app' => Application::APP_ID]);
+			$this->logger->error('Mattermost login error : ' . $e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
 	}

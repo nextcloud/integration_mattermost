@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Nextcloud - Mattermost
  *
@@ -31,12 +32,13 @@ use OCP\Lock\LockedException;
 class MattermostAPIController extends Controller {
 
 	public function __construct(
-		string                       $appName,
-		IRequest                     $request,
-		private IConfig              $config,
-		private IURLGenerator        $urlGenerator,
+		string $appName,
+		IRequest $request,
+		private IConfig $config,
+		private IURLGenerator $urlGenerator,
 		private MattermostAPIService $mattermostAPIService,
-		private ?string              $userId) {
+		private ?string $userId,
+	) {
 		parent::__construct($appName, $request);
 	}
 
@@ -181,7 +183,7 @@ class MattermostAPIController extends Controller {
 		string $comment,
 		string $permission,
 		?string $expirationDate = null,
-		?string $password = null
+		?string $password = null,
 	): DataResponse {
 		$result = $this->mattermostAPIService->sendPublicLinks(
 			$this->userId, $fileIds, $channelId, $channelName,

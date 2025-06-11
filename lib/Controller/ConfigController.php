@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Nextcloud - Mattermost
  *
@@ -41,7 +42,7 @@ class ConfigController extends Controller {
 		private IInitialState $initialStateService,
 		private ICrypto $crypto,
 		private MattermostAPIService $mattermostAPIService,
-		private ?string $userId
+		private ?string $userId,
 	) {
 		parent::__construct($appName, $request);
 	}
@@ -334,7 +335,7 @@ class ConfigController extends Controller {
 				$refreshToken = $result['refresh_token'] ?? '';
 				if (isset($result['expires_in'])) {
 					$nowTs = (new Datetime())->getTimestamp();
-					$expiresAt = $nowTs + (int) $result['expires_in'];
+					$expiresAt = $nowTs + (int)$result['expires_in'];
 					$this->config->setUserValue($this->userId, Application::APP_ID, 'token_expires_at', strval($expiresAt));
 				}
 				$encryptedToken = $accessToken === '' ? '' : $this->crypto->encrypt($accessToken);

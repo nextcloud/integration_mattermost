@@ -33,7 +33,7 @@ class DailySummaryWebhook extends TimedJob {
 	public function __construct(
 		ITimeFactory $time,
 		private WebhookService $webhookService,
-		private LoggerInterface $logger
+		private LoggerInterface $logger,
 	) {
 		parent::__construct($time);
 		// Every hour but it will only do something once a day

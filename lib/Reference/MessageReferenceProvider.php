@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2023 Julien Veyssier <eneiluj@posteo.net>
  *
@@ -43,7 +44,8 @@ class MessageReferenceProvider extends ADiscoverableReferenceProvider implements
 		private IDateTimeFormatter $dateTimeFormatter,
 		private IDateTimeZone $dateTimeZone,
 		private MattermostAPIService $mattermostAPIService,
-		private ?string $userId) {
+		private ?string $userId,
+	) {
 	}
 
 	/**
@@ -135,7 +137,7 @@ class MessageReferenceProvider extends ADiscoverableReferenceProvider implements
 	 * @return string
 	 */
 	private function getFormattedDate(int $timestamp): string {
-		return $this->dateTimeFormatter->formatDateTime((int) ($timestamp / 1000), 'long', 'short', $this->dateTimeZone->getTimeZone());
+		return $this->dateTimeFormatter->formatDateTime((int)($timestamp / 1000), 'long', 'short', $this->dateTimeZone->getTimeZone());
 	}
 
 	/**
