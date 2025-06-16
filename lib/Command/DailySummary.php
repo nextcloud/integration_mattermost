@@ -20,7 +20,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DailySummary extends Command {
 
-	public function __construct(private WebhookService $webhookService) {
+	public function __construct(
+		private WebhookService $webhookService,
+	) {
 		parent::__construct();
 	}
 
@@ -34,7 +36,7 @@ class DailySummary extends Command {
 			);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$userId = $input->getArgument('user_id');
 		if ($userId !== null) {
 			$jobResult = $this->webhookService->userDailySummaryWebhook($userId);

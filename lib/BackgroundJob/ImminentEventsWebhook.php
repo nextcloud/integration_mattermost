@@ -33,7 +33,7 @@ class ImminentEventsWebhook extends TimedJob {
 	public function __construct(
 		ITimeFactory $time,
 		private WebhookService $webhookService,
-		private LoggerInterface $logger
+		private LoggerInterface $logger,
 	) {
 		parent::__construct($time);
 		$this->setInterval(10 * 60);

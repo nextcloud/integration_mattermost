@@ -15,7 +15,7 @@ class Personal implements ISettings {
 		private IConfig $config,
 		private IInitialState $initialStateService,
 		private ICrypto $crypto,
-		private ?string $userId
+		private ?string $userId,
 	) {
 	}
 

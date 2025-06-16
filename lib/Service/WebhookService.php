@@ -42,7 +42,7 @@ class WebhookService {
 		private IManager $calendarManager,
 		private IURLGenerator $urlGenerator,
 		private IDateTimeFormatter $dateTimeFormatter,
-		private IUserManager $userManager
+		private IUserManager $userManager,
 	) {
 		$this->client = $clientService->newClient();
 	}
@@ -188,7 +188,7 @@ class WebhookService {
 
 		$now = (new DateTimeImmutable())->setTimezone($userTimeZone);
 		$nowTs = $now->getTimestamp();
-		$lastImminentJobTimestamp = (int) $this->config->getUserValue($userId, Application::APP_ID, Application::IMMINENT_EVENTS_WEBHOOK_LAST_TS_CONFIG_KEY);
+		$lastImminentJobTimestamp = (int)$this->config->getUserValue($userId, Application::APP_ID, Application::IMMINENT_EVENTS_WEBHOOK_LAST_TS_CONFIG_KEY);
 
 		if ($nowTs < $lastImminentJobTimestamp + (30 * 60)) {
 			$ago = intdiv($nowTs - $lastImminentJobTimestamp, 60);
@@ -199,7 +199,7 @@ class WebhookService {
 		}
 
 		$endDate = $now->add(new DateInterval('PT30M'));
-		$this->config->setUserValue($userId, Application::APP_ID, Application::IMMINENT_EVENTS_WEBHOOK_LAST_TS_CONFIG_KEY, (string) $nowTs);
+		$this->config->setUserValue($userId, Application::APP_ID, Application::IMMINENT_EVENTS_WEBHOOK_LAST_TS_CONFIG_KEY, (string)$nowTs);
 
 		$content = [
 			'calendarEvents' => $this->getEvents($userId, $now, $endDate),
@@ -291,7 +291,7 @@ class WebhookService {
 				$options['headers']['X-Webhook-Signature'] = $hash;
 			}
 			$this->client->post($url, $options);
-		} catch (Exception | Throwable $e) {
+		} catch (Exception|Throwable $e) {
 			$this->logger->error('Mattermost Webhook error : ' . $e->getMessage(), ['app' => Application::APP_ID]);
 		}
 	}
