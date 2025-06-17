@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Error getting OAuth access token. " : "Fejl ved anmodning om OAuth adgangsnøgle",
     "Error during OAuth exchanges" : "Fejl under OAuth-udvekslinger",
     "Bad credentials" : "Forkerte legitimationsoplysninger",
     "Bad HTTP method" : "Dårlig HTTP metode",
