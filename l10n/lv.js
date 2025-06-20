@@ -8,7 +8,7 @@ OC.L10N.register(
     "ID of your Mattermost application" : "Mattermost lietotnes Id",
     "Application secret" : "Lietotnes noslēpums",
     "Client secret of your Mattermost application" : "Mattermost lietotnes klienta noslēpums",
-    "Login" : "Pieteikumvārds",
+    "Login" : "Pieteikties",
     "Password" : "Parole",
     "password" : "parole",
     "View only" : "Tikai skatīt",
