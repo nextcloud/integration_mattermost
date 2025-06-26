@@ -5,6 +5,7 @@
     "Bad HTTP method" : "Foute HTTP methode",
     "OAuth access token refused" : "OAuth toegangstoken geweigerd",
     "Connected accounts" : "Verbonden accounts",
+    "Mattermost integration provides a dashboard widget displaying your most important notifications\nand a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files." : "Mattermost-integratie biedt een dashboardwidget waarin je belangrijkste meldingen worden weergegeven\nen een uniforme zoekprovider voor berichten. Hiermee kun je ook bestanden naar Mattermost verzenden vanuit Nextcloud-bestanden.",
     "Make sure you set the \"Redirect URI\" to" : "Zorg ervoor dat de \"Redirect URI\" is ingesteld op",
     "OAuth app instance address" : "OAuth app instance adres",
     "Instance address" : "Instantie adres",
