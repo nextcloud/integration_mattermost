@@ -1,12 +1,15 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Error getting OAuth access token. " : "Viga OAuthi tunnusloa laadimisel.",
     "Error during OAuth exchanges" : "Viga OAuth andmevahetusel",
     "Bad HTTP method" : "Vigane HTTP-meetod",
     "Bad credentials" : "Vale kasutajanimi, salasõna või tunnusluba",
+    "OAuth access token refused" : "OAuthi tunnusluba pole õige.",
     "Connected accounts" : "Ühendatud kasutajakontod",
     "Client ID" : "Kliendi ID",
     "Application secret" : "Rakenduse saladus",
+    "Use a popup to authenticate" : "Kasuta autentimiseks hüpikakent",
     "Invalid access token" : "Vigane tunnusluba ligipääsuks",
     "password" : "salasõna",
     "Message to send with the files" : "Failidele lisatav sõnum",
@@ -20,6 +23,7 @@ OC.L10N.register(
     "Expires on" : "Aegub",
     "Set link password" : "Sisesta lingi salasõna",
     "Comment" : "Kommentaar",
+    "Directories will be skipped, they can only be sent as links." : "Kaustad jäävad vahele - neid võib saata vaid linkidena.",
     "Cancel" : "Tühista",
     "_Send file_::_Send files_" : ["Saada fail","Saada failid"],
     "_Send link_::_Send links_" : ["Saada link","Saada lingid"],
