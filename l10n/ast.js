@@ -16,6 +16,7 @@ OC.L10N.register(
     "Failed to get Mattermost notifications" : "Nun se puen consiguir los avisos de Mattermost",
     "Failed to send links to Mattermost" : "Nun se puen unviar los avisos a Mattermost",
     "Failed to send internal links to Mattermost" : "Nun se puen unviar los enllaces internos a Mattermost",
-    "Failed to send files to Mattermost" : "Nun se puen unviar los ficheros a Mattermost"
+    "Failed to send files to Mattermost" : "Nun se puen unviar los ficheros a Mattermost",
+    "Connect" : "Coneutar"
 },
 "nplurals=2; plural=(n != 1);");

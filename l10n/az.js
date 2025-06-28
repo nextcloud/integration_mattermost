@@ -7,6 +7,7 @@ OC.L10N.register(
     "Files" : "Fayllar",
     "Type" : "Type",
     "Comment" : "Komentariya",
-    "Cancel" : "Dayandır"
+    "Cancel" : "Dayandır",
+    "Connect" : "Qoşul"
 },
 "nplurals=2; plural=(n != 1);");

@@ -9,6 +9,7 @@ OC.L10N.register(
     "Set expiration date" : "Stel vervaldatum",
     "Comment" : "Kommentaar",
     "Cancel" : "Kanselleer",
+    "Connect" : "Verbind",
     "Upload files" : "Laai lêers op"
 },
 "nplurals=2; plural=(n != 1);");

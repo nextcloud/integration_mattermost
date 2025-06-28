@@ -93,6 +93,7 @@
     "Failed to send files to Mattermost" : "Неуспешно изпращане на файлове към Mattermost",
     "Sign in with Mattermost" : "Вписване с Mattermost",
     "Failed to save Mattermost OAuth state" : "Неуспешно записване на състоянието на Mattermost OAuth",
+    "Connect" : "Свързване",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "Трябва да се свържете със сървър на Mattermost, преди да използвате интеграцията на Mattermost.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Искате ли да отидете в личните си настройки в \"Свързване на акаунти\"?",
     "Go to settings" : "Отидете в настройките",
