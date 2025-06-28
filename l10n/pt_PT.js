@@ -13,6 +13,7 @@ OC.L10N.register(
     "Set expiration date" : "Definir a data de expiração",
     "Comment" : "Comentário",
     "Cancel" : "Cancelar",
+    "Connect" : "Ligar",
     "Upload files" : "Enviar ficheiros"
 },
 "nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

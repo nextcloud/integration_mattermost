@@ -8,7 +8,7 @@ OC.L10N.register(
     "ID of your Mattermost application" : "Mattermost lietotnes Id",
     "Application secret" : "Lietotnes noslēpums",
     "Client secret of your Mattermost application" : "Mattermost lietotnes klienta noslēpums",
-    "Login" : "Pieteikties",
+    "Login" : "Pieteikumvārds",
     "Password" : "Parole",
     "password" : "parole",
     "View only" : "Tikai skatīt",
@@ -20,6 +20,7 @@ OC.L10N.register(
     "Cancel" : "Atcelt",
     "_Send file_::_Send files_" : ["Nosūtīt datnes","Nosūtīt datni","Nosūtīt datnes"],
     "No Mattermost account connected" : "Nav sasaistītu Mattermost kontu",
+    "Connect" : "Savienoties",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Vai doties uz saviem \"Savienot kontus\" personīgajiem iestatījumiem?",
     "Upload files" : "Augšupielādēt datnes"
 },

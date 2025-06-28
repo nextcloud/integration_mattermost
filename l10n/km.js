@@ -8,6 +8,7 @@ OC.L10N.register(
     "Type" : "ប្រភេទ",
     "Set expiration date" : "កំណត់​ពេល​ផុត​កំណត់",
     "Comment" : "មតិ",
-    "Cancel" : "បោះបង់"
+    "Cancel" : "បោះបង់",
+    "Connect" : "ភ្ជាប់"
 },
 "nplurals=1; plural=0;");

@@ -6,6 +6,7 @@ OC.L10N.register(
     "Edit" : "Sunting",
     "Files" : "Fail",
     "Type" : "Jenis",
-    "Cancel" : "Batal"
+    "Cancel" : "Batal",
+    "Connect" : "Berhubung"
 },
 "nplurals=1; plural=0;");

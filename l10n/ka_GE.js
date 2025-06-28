@@ -9,6 +9,7 @@ OC.L10N.register(
     "Set expiration date" : "მიუთითეთ ვადის გასვლის დრო",
     "Comment" : "კომენტარი",
     "Cancel" : "უარყოფა",
+    "Connect" : "დაკავშირება",
     "Upload files" : "ფაილების ატვირთვა"
 },
 "nplurals=2; plural=(n!=1);");

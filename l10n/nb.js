@@ -99,6 +99,7 @@ OC.L10N.register(
     "Failed to send files to Mattermost" : "Sending av filer til Mattermost feilet",
     "Sign in with Mattermost" : "Logg på med Mattermost",
     "Failed to save Mattermost OAuth state" : "Lagring av Mattermost sin OAuth-tilstand feilet",
+    "Connect" : "Koble til",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "Du må koble til en Mattermost-server før du bruker Mattermost-integrasjonen.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Vil du gå til dine personlige innstillinger for \"Koble til kontoer\"?",
     "Go to settings" : "Gå til innstillinger",

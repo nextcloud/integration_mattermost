@@ -17,6 +17,7 @@ OC.L10N.register(
     "Cancel" : "болиулах",
     "_Send file_::_Send files_" : ["Файл илгээх","Файл илгээх"],
     "_Send link_::_Send links_" : ["Холбоос илгээх","Холбоос илгээх"],
+    "Connect" : "Холбох",
     "Go to settings" : "Тохиргоо руу очих",
     "Upload files" : "Файл байршуулах",
     "Public links" : "Нээлттэй холбоос"

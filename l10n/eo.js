@@ -9,6 +9,7 @@ OC.L10N.register(
     "Set expiration date" : "Uzi limdaton",
     "Comment" : "Komento",
     "Cancel" : "Nuligi",
+    "Connect" : "Konekti",
     "Upload files" : "Alŝuti dosierojn"
 },
 "nplurals=2; plural=(n != 1);");

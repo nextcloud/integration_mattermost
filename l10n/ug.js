@@ -93,6 +93,7 @@ OC.L10N.register(
     "Failed to send files to Mattermost" : "Mattermost غا ھۆججەت ئەۋەتىش مەغلۇب بولدى",
     "Sign in with Mattermost" : "Mattermost بىلەن تىزىملىتىڭ",
     "Failed to save Mattermost OAuth state" : "Mattermost OAuth ھالىتىنى ساقلاپ قالالمىدى",
+    "Connect" : "ئۇلاڭ",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "Mattermost بىرلەشتۈرۈشنى ئىشلىتىشتىن بۇرۇن Mattermost مۇلازىمېتىرىغا ئۇلىنىشىڭىز كېرەك.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "«ئۇلىنىش ھېساباتى» شەخسىي تەڭشەكلىرىڭىزگە بارماقچىمۇ؟",
     "Go to settings" : "تەڭشەكلەرگە بېرىڭ",

@@ -70,6 +70,7 @@ OC.L10N.register(
     "Failed to send files to Mattermost" : "Failide saatmine Mattermosti ei õnnestunud",
     "Sign in with Mattermost" : "Logi sisse Mattermostiga",
     "Failed to save Mattermost OAuth state" : "Mattermosti OAuthi oleku salvestamine ei õnnestunud",
+    "Connect" : "Ühenda",
     "Go to settings" : "Ava seadistused",
     "Upload files" : "Failide üleslaadimine",
     "Public links" : "Avalikud lingid",

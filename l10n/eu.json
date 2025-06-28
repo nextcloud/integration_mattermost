@@ -90,6 +90,7 @@
     "Failed to send files to Mattermost" : "Ezin izan dira fitxategiak bidali Mattermostera",
     "Sign in with Mattermost" : "Saioa hasi Mattermost-ekin",
     "Failed to save Mattermost OAuth state" : "Ezin izan da Mattermost OAuth egoera gorde",
+    "Connect" : "Konektatu",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "Mattermost integrazioa erabiltzeko, lehenengo Mattermost zerbitzari batekin konexioa egin behar duzu.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Ezarpen pertsolaletako \"Konektatutako kontuak\" atalera joan nahi duzu?",
     "Go to settings" : "Joan ezarpenetara",

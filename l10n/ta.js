@@ -7,6 +7,7 @@ OC.L10N.register(
     "Files" : "கோப்புகள்",
     "Type" : "வகை",
     "Set expiration date" : "காலாவதி தேதியை குறிப்பிடுக",
-    "Cancel" : "இரத்து செய்க"
+    "Cancel" : "இரத்து செய்க",
+    "Connect" : "இணைக்க"
 },
 "nplurals=2; plural=(n != 1);");

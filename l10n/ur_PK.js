@@ -6,6 +6,7 @@ OC.L10N.register(
     "Edit" : "تدوین کریں",
     "Type" : "Type",
     "Set expiration date" : "تاریخ معیاد سیٹ کریں",
-    "Cancel" : "منسوخ کریں"
+    "Cancel" : "منسوخ کریں",
+    "Connect" : "منسلک"
 },
 "nplurals=2; plural=(n != 1);");

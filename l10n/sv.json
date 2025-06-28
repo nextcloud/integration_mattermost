@@ -31,6 +31,7 @@
     "Cancel" : "Avbryt",
     "_Send file_::_Send files_" : ["Skicka fil","Skicka filer"],
     "_Send link_::_Send links_" : ["Skicka länk","Skicka länkar"],
+    "Connect" : "Anslut",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Vill du gå till dina personliga inställningar för \"Anslut konton\"?",
     "Go to settings" : "Gå till Inställningar",
     "Upload files" : "Ladda upp filer",

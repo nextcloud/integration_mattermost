@@ -20,6 +20,7 @@ OC.L10N.register(
     "Set expiration date" : "有効期限を設定",
     "Comment" : "コメント",
     "Cancel" : "キャンセル",
+    "Connect" : "接続",
     "Upload files" : "アップロードファイル"
 },
 "nplurals=1; plural=0;");

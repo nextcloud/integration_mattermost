@@ -94,6 +94,7 @@
     "Failed to send files to Mattermost" : "Error al enviar archivos a Mattermost",
     "Sign in with Mattermost" : "Iniciar sesión con Mattermost",
     "Failed to save Mattermost OAuth state" : "Error al guardar el estado de autenticación de Mattermost",
+    "Connect" : "Conectar",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "Necesitas conectarte a un servidor de Mattermost antes de usar la integración de Mattermost.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "¿Deseas ir a la configuración personal de \"Conectar cuentas\"?",
     "Go to settings" : "Ir a configuración",

@@ -100,6 +100,7 @@ OC.L10N.register(
     "Failed to send files to Mattermost" : "Échec d'envoi des fichiers à Mattermost",
     "Sign in with Mattermost" : "Se connecter avec Mattermost",
     "Failed to save Mattermost OAuth state" : "Échec d'enregistrement de l'état de OAuth Mattermost",
+    "Connect" : "Se connecter",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "Vous devez d'abord vous connecter à un serveur Mattermost avant d'utiliser l'intégration Mattermost.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Vous souhaitez accéder à vos paramètres personnels \"Connecter des comptes\" ?",
     "Go to settings" : "Aller dans Paramètres",

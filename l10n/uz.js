@@ -11,6 +11,7 @@ OC.L10N.register(
     "Type" : "Turi",
     "Set expiration date" : "Set expiration date",
     "Comment" : "Izoh",
-    "Cancel" : "Cancel"
+    "Cancel" : "Cancel",
+    "Connect" : "Connect"
 },
 "nplurals=1; plural=0;");

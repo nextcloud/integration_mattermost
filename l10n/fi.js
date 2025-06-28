@@ -40,6 +40,7 @@ OC.L10N.register(
     "No Mattermost account connected" : "Mattermost-tiliä ei ole yhdistetty",
     "Error connecting to Mattermost" : "Virhe yhdistäessä Mattermostiin",
     "No Mattermost notifications!" : "Ei Mattermost-ilmoituksia!",
+    "Connect" : "Yhdistä",
     "Go to settings" : "Mene asetuksiin",
     "Upload files" : "Lähetä tiedostoja",
     "Public links" : "Julkiset linkit"

@@ -8,6 +8,7 @@ OC.L10N.register(
     "Type" : "Typo",
     "Set expiration date" : "Assignar data de expiration",
     "Comment" : "Commentario",
-    "Cancel" : "Cancellar"
+    "Cancel" : "Cancellar",
+    "Connect" : "Connecter se"
 },
 "nplurals=2; plural=(n != 1);");

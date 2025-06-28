@@ -38,6 +38,7 @@ OC.L10N.register(
     "Cancel" : "Ακύρωση",
     "_Send file_::_Send files_" : ["Αποστολή αρχείου","Αποστολή αρχείων"],
     "_Send link_::_Send links_" : ["Αποστολή συνδέσμου","Αποστολή συνδέσμων"],
+    "Connect" : "Σύνδεση",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Θέλετε να πάτε στις προσωπικές σας ρυθμίσεις \"Σύνδεση λογαριασμών\";",
     "Go to settings" : "Μετάβαση στις ρυθμίσεις",
     "Upload files" : "Μεταφόρτωση αρχείων",

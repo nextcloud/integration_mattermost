@@ -24,6 +24,7 @@
     "Cancel" : "취소",
     "_Send file_::_Send files_" : ["파일 보내기"],
     "_Send link_::_Send links_" : ["링크 보내기"],
+    "Connect" : "연결",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "\"계정 연결\"에 대한 개인 설정으로 이동하시겠습니까?",
     "Go to settings" : "설정으로 이동",
     "Upload files" : "파일 업로드",

@@ -100,6 +100,7 @@ OC.L10N.register(
     "Failed to send files to Mattermost" : "A fájlok küldése a Mattermostnak sikertelen",
     "Sign in with Mattermost" : "Bejelentkezés a Mattermosttal",
     "Failed to save Mattermost OAuth state" : "A Mattermost OAuth állapotának mentése sikertelen",
+    "Connect" : "Kapcsolódás",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "A Mattermost integráció használata előtt kapcsolódnia kell egy Mattermost-kiszolgálóhoz.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Biztos, hogy odaugrik a személyes beállításai „Fiókok csatlakoztatása” oldalához?",
     "Go to settings" : "Ugrás a beállításokhoz",

@@ -98,6 +98,7 @@
     "Failed to send files to Mattermost" : "傳送檔案至 Mattermost 失敗",
     "Sign in with Mattermost" : "使用 Mattermost 登入",
     "Failed to save Mattermost OAuth state" : "儲存 Mattermost OAuth 狀態失敗",
+    "Connect" : "連線",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "在使用 Mattermost 整合前，您必須連線至 Mattermost 伺服器。",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "您想要到您的「連結帳號」個人設定嗎？",
     "Go to settings" : "到設定",

@@ -100,6 +100,7 @@ OC.L10N.register(
     "Failed to send files to Mattermost" : "Theip ar chomhaid a sheoladh chuig Mattermost",
     "Sign in with Mattermost" : "Sínigh isteach le Mattermost",
     "Failed to save Mattermost OAuth state" : "Theip ar an stát Mattermost OAuth a shábháil",
+    "Connect" : "Ceangal",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "Ní mór duit ceangal le freastalaí Mattermost sula n-úsáideann tú an comhtháthú Mattermost.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Ar mhaith leat dul chuig do shocruithe pearsanta \"Ceangail cuntais\"?",
     "Go to settings" : "Téigh go dtí socruithe",

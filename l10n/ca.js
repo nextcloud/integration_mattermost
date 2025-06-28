@@ -25,6 +25,7 @@ OC.L10N.register(
     "Set expiration date" : "Defineix una data de tancament",
     "Comment" : "Comentari",
     "Cancel" : "Cancel·la",
+    "Connect" : "Connecta",
     "Upload files" : "Carrega fitxers"
 },
 "nplurals=2; plural=(n != 1);");

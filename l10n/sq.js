@@ -9,6 +9,7 @@ OC.L10N.register(
     "Set expiration date" : "Caktoni datë skadimi",
     "Comment" : "Koment",
     "Cancel" : "Anullo",
+    "Connect" : "Lidhu",
     "Upload files" : "Ngarko skedarët"
 },
 "nplurals=2; plural=(n != 1);");

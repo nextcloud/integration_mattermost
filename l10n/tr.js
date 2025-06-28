@@ -100,6 +100,7 @@ OC.L10N.register(
     "Failed to send files to Mattermost" : "Dosyalar Mattermost üzerine gönderilemedi",
     "Sign in with Mattermost" : "Mattermost ile oturum açın",
     "Failed to save Mattermost OAuth state" : "Mattermost OAuth durumu kaydedilemedi",
+    "Connect" : "Bağlan",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "Mattermost bütünleştirmesini kullanmadan önce bir Mattermost sunucusu ile bağlantı kurmalısınız.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Kişisel ayarlarınızdaki \"Hesapları ilişkilendir\" bölümüne gitmek ister misiniz?",
     "Go to settings" : "Ayarlara git",

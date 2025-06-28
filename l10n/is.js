@@ -15,6 +15,7 @@ OC.L10N.register(
     "Set expiration date" : "Setja gildistíma",
     "Comment" : "Athugasemd",
     "Cancel" : "Hætta við",
+    "Connect" : "Tengjast",
     "Upload files" : "Hlaða inn skrám"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

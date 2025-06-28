@@ -11,6 +11,7 @@ OC.L10N.register(
     "Set expiration date" : "Set utløpsdato",
     "Comment" : "Kommentér",
     "Cancel" : "Avbryt",
+    "Connect" : "Kople til",
     "Upload files" : "Last opp filar"
 },
 "nplurals=2; plural=(n != 1);");
