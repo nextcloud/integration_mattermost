@@ -16,6 +16,7 @@ OC.L10N.register(
     "Set expiration date" : "Instellen vervaldatum",
     "Comment" : "Notitie",
     "Cancel" : "Annuleren",
+    "Connect" : "Verbinden",
     "Upload files" : "Bestanden uploaden"
 },
 "nplurals=2; plural=(n != 1);");

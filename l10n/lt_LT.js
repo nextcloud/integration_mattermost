@@ -22,6 +22,7 @@ OC.L10N.register(
     "Set expiration date" : "Nustatyti galiojimo pabaigos datą",
     "Expires on" : "Baigia galioti",
     "Comment" : "Komentaras",
-    "Cancel" : "Atsisakyti"
+    "Cancel" : "Atsisakyti",
+    "Connect" : "Prisijungti"
 },
 "nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);");

@@ -59,6 +59,7 @@
     "Sign in with Slack" : "Sign in with Slack",
     "Failed to open Slack OAuth popup window, please allow popups" : "Failed to open Slack OAuth popup window, please allow popups",
     "Failed to save Slack OAuth state" : "Failed to save Slack OAuth state",
+    "Connect" : "متصل شدن",
     "You need to connect a Slack app before using the Slack integration." : "You need to connect a Slack app before using the Slack integration.",
     "Go to settings" : "Go to settings",
     "Upload files" : "بارگذاری فایل ها",

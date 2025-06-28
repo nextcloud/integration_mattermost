@@ -19,6 +19,7 @@ OC.L10N.register(
     "Set link password" : "Aseta linkin salasana",
     "Comment" : "Kommentti",
     "Cancel" : "Peruuta",
+    "Connect" : "Yhdistä",
     "Go to settings" : "Mene asetuksiin",
     "Upload files" : "Lataa tiedostoja",
     "Public links" : "Julkiset linkit"

@@ -33,6 +33,7 @@ OC.L10N.register(
     "Set expiration date" : "Ustaw datę wygaśnięcia",
     "Comment" : "Komentarz",
     "Cancel" : "Anuluj",
+    "Connect" : "Połącz",
     "Go to settings" : "Przejdź do ustawień",
     "Upload files" : "Wyślij pliki",
     "Public links" : "Odnośniki publiczne",

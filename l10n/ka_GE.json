@@ -3,6 +3,7 @@
     "Edit" : "შეცვლა",
     "Set expiration date" : "მიუთითეთ ვადის გასვლის დრო",
     "Comment" : "კომენტარი",
-    "Cancel" : "გაუქმება"
+    "Cancel" : "გაუქმება",
+    "Connect" : "დაკავშირება"
 },"pluralForm" :"nplurals=2; plural=(n!=1);"
 }

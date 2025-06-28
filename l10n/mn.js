@@ -18,6 +18,7 @@ OC.L10N.register(
     "_Send link_::_Send links_" : ["Холбоос илгээх","Холбоос илгээх"],
     "Send files to Slack" : "Слакд файл илгээх",
     "Sign in with Slack" : "Слакаар нэвтрэх",
+    "Connect" : "Холбох",
     "Go to settings" : "Тохиргоонд очих",
     "Upload files" : "Файл оруулах",
     "Public links" : "Нээлттэй холбоос"

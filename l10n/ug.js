@@ -57,6 +57,7 @@ OC.L10N.register(
     "Sign in with Slack" : "Slack بىلەن تىزىملىتىڭ",
     "Failed to open Slack OAuth popup window, please allow popups" : "Slack OAuth سەكرەش كۆزنىكىنى ئاچالمىدى ، قاڭقىش كۆزنىكىگە يول قويۇڭ",
     "Failed to save Slack OAuth state" : "Slack OAuth ھالىتىنى ساقلاپ قالالمىدى",
+    "Connect" : "ئۇلاڭ",
     "You need to connect a Slack app before using the Slack integration." : "Slack بىرلەشتۈرۈشنى ئىشلىتىشتىن بۇرۇن Slack دېتالىنى ئۇلىشىڭىز كېرەك.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "«ئۇلىنىش ھېساباتى» شەخسىي تەڭشەكلىرىڭىزگە بارماقچىمۇ؟",
     "Go to settings" : "تەڭشەكلەرگە بېرىڭ",

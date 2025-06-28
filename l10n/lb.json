@@ -5,6 +5,7 @@
     "Type" : "Typ",
     "Set expiration date" : "Verfallsdatum setzen",
     "Comment" : "Kommentar",
-    "Cancel" : "Cancel"
+    "Cancel" : "Cancel",
+    "Connect" : "Verbannen"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

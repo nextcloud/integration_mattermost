@@ -65,6 +65,7 @@ OC.L10N.register(
     "Sign in with Slack" : "Пријави се са Slack",
     "Failed to open Slack OAuth popup window, please allow popups" : "Није успело отварање Slack OAuth искачућег прозора, молимо вас да дозволите искачуће прозоре",
     "Failed to save Slack OAuth state" : "Није успело чување Slack OAuth стања",
+    "Connect" : "Повежи се",
     "You need to connect a Slack app before using the Slack integration." : "Пре него што кренете да користите Slack интеграцију, морате да повежете Slack апликацију.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Да ли желите да одете на своја лична подешавања „Повежи налоге”?",
     "Go to settings" : "Иди на подешавања",

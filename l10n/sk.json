@@ -63,6 +63,7 @@
     "Sign in with Slack" : "Prihlásiť pomocou Slacku",
     "Failed to open Slack OAuth popup window, please allow popups" : "Nepodarilo sa otvoriť vyskakovacie okno pre Slack OAuth, prosím povoľte vyskakovacie okná",
     "Failed to save Slack OAuth state" : "Nepodarilo sa uložiť stav Slack OAuth",
+    "Connect" : "Pripojiť",
     "You need to connect a Slack app before using the Slack integration." : "Je potrebné sa pripojiť k aplikácii Slack predtým, ako začnete používať Slack integráciu.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Chcete prejsť do osobných nastavení „Pripojiť účty“?",
     "Go to settings" : "Prejsť do nastavení",

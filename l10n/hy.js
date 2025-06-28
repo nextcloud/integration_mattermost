@@ -5,6 +5,7 @@ OC.L10N.register(
     "Type" : "Տիպ",
     "Set expiration date" : "Սահմանել վավերականության ժամկետ",
     "Comment" : "Մեկնաբանել",
-    "Cancel" : "չեղարկել"
+    "Cancel" : "չեղարկել",
+    "Connect" : "միացնել"
 },
 "nplurals=2; plural=(n != 1);");

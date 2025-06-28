@@ -52,6 +52,7 @@ OC.L10N.register(
     "Sign in with Slack" : "Bejelentkezés Slack-el",
     "Failed to open Slack OAuth popup window, please allow popups" : "Nem sikerült a Slack OAuth felugró ablak megnyitása. Engedélyezze a felugró ablakokat.",
     "Failed to save Slack OAuth state" : "Nem sikerült menteni a Slack OAuth állapotot",
+    "Connect" : "Kapcsolódás",
     "You need to connect a Slack app before using the Slack integration." : "A Slack integráció használata előtt kapcsolódnia kell a Slack alkalmazáshoz.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Biztos, hogy odaugrik a személyes beállításai „Fiókok csatlakoztatása” oldalához?",
     "Go to settings" : "Ugrás a beállításokhoz",

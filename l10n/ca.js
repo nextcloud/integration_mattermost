@@ -16,6 +16,7 @@ OC.L10N.register(
     "Set expiration date" : "Estableix la data de caducitat",
     "Comment" : "Comentari",
     "Cancel" : "Cancelar",
+    "Connect" : "Connecta",
     "Upload files" : "Pujada de fitxers"
 },
 "nplurals=2; plural=(n != 1);");

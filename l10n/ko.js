@@ -26,6 +26,7 @@ OC.L10N.register(
     "_A link to {fileName} was sent to {channelName}_::_All of the {number} links were sent to {channelName}_" : ["모든 {number} 링크를 {channelName} 에 보냈습니다. "],
     "_Failed to send the internal link to {channelName}_::_Failed to send internal links to {channelName}_" : ["내부 링크를 {channelName} 에 보내는데 실패했습니다."],
     "_{fileName} was successfully sent to {channelName}_::_All of the {number} files were sent to {channelName}_" : ["모든 {number} 파일을 {channelName} 에 보냈습니다."],
+    "Connect" : "연결",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "\"계정 연결\"에 대한 개인 설정으로 이동하시겠습니까?",
     "Go to settings" : "설정으로 이동",
     "Upload files" : "파일 업로드",

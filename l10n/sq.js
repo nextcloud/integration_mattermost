@@ -7,6 +7,7 @@ OC.L10N.register(
     "Type" : "Tipi",
     "Set expiration date" : "Caktoni datë skadimi",
     "Comment" : "Koment",
-    "Cancel" : "Anuloje"
+    "Cancel" : "Anuloje",
+    "Connect" : "Lidhu"
 },
 "nplurals=2; plural=(n != 1);");

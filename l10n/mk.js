@@ -14,6 +14,7 @@ OC.L10N.register(
     "Set expiration date" : "Постави рок на траење",
     "Comment" : "Коментар",
     "Cancel" : "Откажи",
+    "Connect" : "Поврзи се",
     "Upload files" : "Прикачи датотеки"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

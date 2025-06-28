@@ -7,6 +7,7 @@ OC.L10N.register(
     "Type" : "Typ",
     "Set expiration date" : "Verfallsdatum setzen",
     "Comment" : "Kommentar",
-    "Cancel" : "Cancel"
+    "Cancel" : "Cancel",
+    "Connect" : "Verbannen"
 },
 "nplurals=2; plural=(n != 1);");

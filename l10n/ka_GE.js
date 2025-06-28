@@ -5,6 +5,7 @@ OC.L10N.register(
     "Edit" : "შეცვლა",
     "Set expiration date" : "მიუთითეთ ვადის გასვლის დრო",
     "Comment" : "კომენტარი",
-    "Cancel" : "გაუქმება"
+    "Cancel" : "გაუქმება",
+    "Connect" : "დაკავშირება"
 },
 "nplurals=2; plural=(n!=1);");

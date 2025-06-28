@@ -17,6 +17,7 @@ OC.L10N.register(
     "Set expiration date" : "Nastavi datum preteka",
     "Comment" : "Opomba",
     "Cancel" : "Prekliči",
+    "Connect" : "Poveži",
     "Go to settings" : "Skoči na nastavitve",
     "Upload files" : "Pošlji datoteke"
 },

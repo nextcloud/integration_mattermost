@@ -65,6 +65,7 @@ OC.L10N.register(
     "Sign in with Slack" : "Slack ile oturum açın",
     "Failed to open Slack OAuth popup window, please allow popups" : "Slack OAuth penceresi açılamadı. Lütfen açılır pencerelere izin verin",
     "Failed to save Slack OAuth state" : "Slack OAuth durumu kaydedilemedi",
+    "Connect" : "Bağlan",
     "You need to connect a Slack app before using the Slack integration." : "Slack bütünleştirmesini kullanmadan önce bir Slack uygulaması ile bağlantı kurmalısınız.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Kişisel ayarlarınızdaki \"Hesapları ilişkilendir\" bölümüne gitmek ister misiniz?",
     "Go to settings" : "Ayarlara git",

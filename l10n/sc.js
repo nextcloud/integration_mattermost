@@ -16,6 +16,7 @@ OC.L10N.register(
     "Set expiration date" : "Cunfigura sa data de iscadèntzia",
     "Comment" : "Cummentu",
     "Cancel" : "Annulla",
+    "Connect" : "Connete",
     "Upload files" : "Càrriga archìvios",
     "Internal links (Only works for users with access to the files)" : "Ligòngios internos (funtzionat isceti pro utentes cun atzessu a is archìvios)"
 },

@@ -62,6 +62,7 @@
     "Sign in with Slack" : "Logg på med Slack",
     "Failed to open Slack OAuth popup window, please allow popups" : "Åpning av Slack OAuth-sprettoppvindu feilet, vennligst tillatt sprettoppvinduer",
     "Failed to save Slack OAuth state" : "Lagring av Slack Oauth-tilstand feilet",
+    "Connect" : "Koble til",
     "You need to connect a Slack app before using the Slack integration." : "Du må koble til en Slack-app før du bruker Slack-integrasjonen.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Vil du gå til dine personlige innstillinger for \"Koble til kontoer\"?",
     "Go to settings" : "Gå til innstillinger",

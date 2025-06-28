@@ -25,6 +25,7 @@ OC.L10N.register(
     "Cancel" : "Cancelar",
     "_Send file_::_Send files_" : ["Enviar archivo","Enviar archivos","Enviar archivos"],
     "_Send link_::_Send links_" : ["Enviar enlace","Enviar enlaces","Enviar enlaces"],
+    "Connect" : "Conectar",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "¿Deseas ir a la configuración personal de \"Conectar cuentas\"?",
     "Go to settings" : "Ir a configuración",
     "Public links" : "Enlaces públicos",

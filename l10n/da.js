@@ -19,6 +19,7 @@ OC.L10N.register(
     "Set link password" : "Sæt link adgangskode",
     "Comment" : "Kommenter",
     "Cancel" : "Annuller",
+    "Connect" : "Tilslut",
     "Go to settings" : "Gå til indstillinger",
     "Upload files" : "Send filer",
     "Public links" : "Offentlige links",

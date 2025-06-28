@@ -16,6 +16,7 @@ OC.L10N.register(
     "Type" : "tipe",
     "Set expiration date" : "Atur tanggal kedaluwarsa",
     "Comment" : "Komentar",
-    "Cancel" : "Batal"
+    "Cancel" : "Batal",
+    "Connect" : "Sambung"
 },
 "nplurals=1; plural=0;");

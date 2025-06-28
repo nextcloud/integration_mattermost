@@ -11,6 +11,7 @@ OC.L10N.register(
     "Cancel" : "ยกเลิก",
     "_Send file_::_Send files_" : ["ส่งไฟล์"],
     "_Send link_::_Send links_" : ["ส่งลิงค์"],
+    "Connect" : "เชื่อมต่อ",
     "Upload files" : "อัพโหลดไฟล์จากเครื่อง"
 },
 "nplurals=1; plural=0;");

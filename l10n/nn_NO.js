@@ -7,6 +7,7 @@ OC.L10N.register(
     "Type" : "Skriv",
     "Set expiration date" : "Set utløpsdato",
     "Comment" : "Kommentér",
-    "Cancel" : "Cancel"
+    "Cancel" : "Cancel",
+    "Connect" : "Kople til"
 },
 "nplurals=2; plural=(n != 1);");

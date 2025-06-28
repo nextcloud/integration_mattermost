@@ -65,6 +65,7 @@ OC.L10N.register(
     "Sign in with Slack" : "Logga in med Slack",
     "Failed to open Slack OAuth popup window, please allow popups" : "Det gick inte att öppna Slack OAuth popup-fönster, tillåt popup-fönster",
     "Failed to save Slack OAuth state" : "Det gick inte att spara Slack OAuth-tillstånd",
+    "Connect" : "Anslut",
     "You need to connect a Slack app before using the Slack integration." : "Du måste ansluta en Slack-app innan du använder Slack-integrationen.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Vill du gå till dina personliga inställningar för \"Anslut konton\"?",
     "Go to settings" : "Gå till Inställningar",

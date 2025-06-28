@@ -27,6 +27,7 @@ OC.L10N.register(
     "Cancel" : "Tühista",
     "_Send file_::_Send files_" : ["Saada fail","Saada failid"],
     "_Send link_::_Send links_" : ["Saada link","Saada lingid"],
+    "Connect" : "Ühenda",
     "Go to settings" : "Ava seadistused",
     "Upload files" : "Failide üleslaadimine",
     "Public links" : "Avalikud lingid",

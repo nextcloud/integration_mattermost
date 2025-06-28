@@ -5,6 +5,7 @@ OC.L10N.register(
     "Type" : "ប្រភេទ",
     "Set expiration date" : "កំណត់​ពេល​ផុត​កំណត់",
     "Comment" : "មតិ",
-    "Cancel" : "លើកលែង"
+    "Cancel" : "លើកលែង",
+    "Connect" : "ភ្ជាប់"
 },
 "nplurals=1; plural=0;");

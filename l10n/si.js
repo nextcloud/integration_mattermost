@@ -6,6 +6,7 @@ OC.L10N.register(
     "Files" : "ගොනු",
     "Comment" : "අදහස",
     "Cancel" : "අවලංගු",
+    "Connect" : "සම්බන්ධ කරන්න",
     "Upload files" : "ගොනු උඩුගත කරන්න"
 },
 "nplurals=2; plural=(n != 1);");

@@ -17,6 +17,7 @@ OC.L10N.register(
     "Type" : "Tipo",
     "Set expiration date" : "Imposta data di scadenza",
     "Comment" : "Commento",
-    "Cancel" : "Annulla"
+    "Cancel" : "Annulla",
+    "Connect" : "Connetti"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
