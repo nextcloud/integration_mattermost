@@ -63,6 +63,7 @@
     "Sign in with Slack" : "تسجيل الدخول باستعمال Slack",
     "Failed to open Slack OAuth popup window, please allow popups" : "فشل فتح نافذة Slack OAuth المنبثقة> يُرجى السماح بالنوافذ المنبثقة",
     "Failed to save Slack OAuth state" : "فشل حفظ حالة Slack OAuth",
+    "Connect" : "اتصال",
     "You need to connect a Slack app before using the Slack integration." : "تحتاج إلى توصيل تطبيق Slack قبل استخدام مكاملة Slack.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "هل تريد الانتقال إلى الإعدادات الشخصية \"ربط الحسابات\"؟",
     "Go to settings" : "اذهب للاعدادات",
