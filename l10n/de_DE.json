@@ -63,6 +63,8 @@
     "Sign in with Slack" : "Mit Slack anmelden",
     "Failed to open Slack OAuth popup window, please allow popups" : "Das Slack OAuth-Pop-up-Fenster konnte nicht geöffnet werden. Bitte erlauben Sie Pop-ups.",
     "Failed to save Slack OAuth state" : "Slack OAuth-Status konnte nicht gespeichert werden",
+    "You need to connect before using the Slack integration." : "Zum Verwenden der Slack-Integration muss eine Verbindung hergestellt werden.",
+    "You can set Slack API keys in the {settingsHtmlLink} section of your personal settings." : "Im {settingsHtmlLink}-Abschnitt der persönlichen Einstellungen kann ein anderer Slack-Server ausgewählt werden.",
     "Connect" : "Verbinden",
     "You need to connect a Slack app before using the Slack integration." : "Sie müssen eine Slack-App verbinden, bevor Sie die Slack-Integration verwenden können.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Möchten Sie zu \"Konten verbinden\" in Ihren Ihren persönlichen Einstellungen springen?",
