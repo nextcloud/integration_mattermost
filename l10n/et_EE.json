@@ -37,6 +37,7 @@
     "_{fileName} was successfully sent to {channelName}_::_All of the {number} files were sent to {channelName}_" : ["{fileName} on saadetud {channelName} kanalisse","Kõik {number} faili on saadetud {channelName} kanalisse"],
     "You need to connect before using the Slack integration." : "Enne Slacki lõimingu kasutamist peab olema loodud ühendus Slacki serveriga.",
     "Connect" : "Ühenda",
+    "Do you want to go to your \"Connect accounts\" personal settings?" : "Kas sa sooviksid avada oma isiklike seadistuste „Seo kasutajakonto“ valiku?",
     "Go to settings" : "Ava seadistused",
     "Upload files" : "Failide üleslaadimine",
     "Public links" : "Avalikud lingid",
