@@ -65,6 +65,8 @@ OC.L10N.register(
     "Sign in with Slack" : "使用 Slack 登入",
     "Failed to open Slack OAuth popup window, please allow popups" : "無法開啟 Slack OAuth 彈出式視窗，請允許彈出式視窗",
     "Failed to save Slack OAuth state" : "儲存 Slack OAuth 狀態失敗",
+    "You need to connect before using the Slack integration." : "在使用 Slack 整合前，您必須先連線至 Slack 應用程式。",
+    "You can set Slack API keys in the {settingsHtmlLink} section of your personal settings." : "您可以在個人設定中的 {settingsHtmlLink} 區塊設定 Slack API 金鑰。",
     "Connect" : "連線",
     "You need to connect a Slack app before using the Slack integration." : "在使用 Slack 整合前，您必須連結到 Slack 應用程式。",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "您想要到您的「連結帳號」個人設定嗎？",
