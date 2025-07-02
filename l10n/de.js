@@ -67,7 +67,7 @@ OC.L10N.register(
     "Failed to save Slack OAuth state" : "Slack OAuth-Status konnte nicht gespeichert werden",
     "You need to connect before using the Slack integration." : "Zum Verwenden der Slack-Integration muss eine Verbindung hergestellt werden.",
     "You can set Slack API keys in the {settingsHtmlLink} section of your personal settings." : "Im {settingsHtmlLink}-Abschnitt der persönlichen Einstellungen kann ein anderer Slack-Server ausgewählt werden.",
-    "Connect" : "Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).",
+    "Connect" : "Verbinden",
     "You need to connect a Slack app before using the Slack integration." : "Du musst eine Slack-App verbinden, bevor du die Slack-Integration verwenden kannst.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Möchteat du zu deinen persönlichen Einstellungen von \"Konten verbinden\" gehen?",
     "Go to settings" : "Gehe zu den Einstellungen",
