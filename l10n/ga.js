@@ -65,6 +65,8 @@ OC.L10N.register(
     "Sign in with Slack" : "Sínigh isteach le Slack",
     "Failed to open Slack OAuth popup window, please allow popups" : "Theip ar fhuinneog aníos Slack OAuth a oscailt, ceadaigh preabfhuinneoga le do thoil",
     "Failed to save Slack OAuth state" : "Theip ar shábháil stát Slack OAuth",
+    "You need to connect before using the Slack integration." : "Ní mór duit ceangal a dhéanamh sula n-úsáideann tú comhtháthú Slack.",
+    "You can set Slack API keys in the {settingsHtmlLink} section of your personal settings." : "Is féidir leat eochracha API Slack a shocrú sa rannán {settingsHtmlLink} de do shocruithe pearsanta.",
     "Connect" : "Ceangal",
     "You need to connect a Slack app before using the Slack integration." : "Ní mór duit aip Slack a nascadh sula n-úsáideann tú comhtháthú Slack.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Ar mhaith leat dul chuig do shocruithe pearsanta \"Ceangail cuntais\"?",
