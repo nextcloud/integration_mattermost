@@ -10,6 +10,7 @@ OC.L10N.register(
     "Client secret of your Mattermost application" : "Mattermost lietotnes klienta noslēpums",
     "Login" : "Pieteikumvārds",
     "Password" : "Parole",
+    "Connected as {user}" : "Savienojies kā {user}",
     "password" : "parole",
     "View only" : "Tikai skatīt",
     "Edit" : "Labot",
