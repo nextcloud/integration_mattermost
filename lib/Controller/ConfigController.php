@@ -205,8 +205,8 @@ class ConfigController extends Controller {
 		} catch (Exception $e) {
 			$this->logger->error('Could not decrypt client secret', ['exception' => $e]);
 			return new RedirectResponse(
-				$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']) .
-				'?result=error&message=' . $this->l->t('Invalid client secret')
+				$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts'])
+				. '?result=error&message=' . $this->l->t('Invalid client secret')
 			);
 		}
 
@@ -255,8 +255,8 @@ class ConfigController extends Controller {
 
 					if ($oauthOrigin === 'settings') {
 						return new RedirectResponse(
-							$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']) .
-							'?result=success'
+							$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts'])
+							. '?result=success'
 						);
 					} elseif (preg_match('/^files--.*/', $oauthOrigin)) {
 						$parts = explode('--', $oauthOrigin);
@@ -280,8 +280,8 @@ class ConfigController extends Controller {
 			$result = $this->l->t('Error during OAuth exchanges');
 		}
 		return new RedirectResponse(
-			$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts']) .
-			'?result=error&message=' . urlencode($result)
+			$this->urlGenerator->linkToRoute('settings.PersonalSettings.index', ['section' => 'connected-accounts'])
+			. '?result=error&message=' . urlencode($result)
 		);
 	}
 
