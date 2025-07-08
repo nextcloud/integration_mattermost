@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2ad733c8fb286e68d1bea7e63ca33ea",
+    "content-hash": "839e4c991d5c60018590df69ed6d0ba4",
     "packages": [],
     "packages-dev": [
         {
@@ -106,16 +106,16 @@
         },
         {
             "name": "php-cs-fixer/shim",
-            "version": "v3.82.0",
+            "version": "v3.82.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/shim.git",
-                "reference": "5235d634c362d789ba4c305042d17ff8c5ce0f07"
+                "reference": "daff83ac6980d852d9f41b0227b3b77b3320a542"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/shim/zipball/5235d634c362d789ba4c305042d17ff8c5ce0f07",
-                "reference": "5235d634c362d789ba4c305042d17ff8c5ce0f07",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/shim/zipball/daff83ac6980d852d9f41b0227b3b77b3320a542",
+                "reference": "daff83ac6980d852d9f41b0227b3b77b3320a542",
                 "shasum": ""
             },
             "require": {
@@ -152,9 +152,9 @@
             "description": "A tool to automatically fix PHP code style",
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/shim/issues",
-                "source": "https://github.com/PHP-CS-Fixer/shim/tree/v3.82.0"
+                "source": "https://github.com/PHP-CS-Fixer/shim/tree/v3.82.1"
             },
-            "time": "2025-07-07T22:38:42+00:00"
+            "time": "2025-07-08T10:19:41+00:00"
         }
     ],
     "aliases": [],
@@ -163,7 +163,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.0 || ^8.1 || ^8.2 || ^8.3 || ^8.4"
+        "php": "^8.1 || ^8.2 || ^8.3 || ^8.4"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
