@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 2.1.0 – 2025-07-08
+
+### Changed
+* Maintenance updates (#30, #31) @kyteinsky
+* Bump max NC version to 32 (#30) @kyteinsky
+* Use outline icons instead of solid ones (#33) @kyteinsky
+
+
 ## 2.0.2 – 2025-01-07
 
 ### Fixed
