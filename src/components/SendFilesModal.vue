@@ -14,7 +14,7 @@
 					</span>
 				</h2>
 				<span class="field-label">
-					<FileIcon />
+					<FileOutlineIcon />
 					<span>
 						<strong>
 							{{ t('integration_slack', 'Files') }}
@@ -50,7 +50,7 @@
 					</div>
 				</div>
 				<span class="field-label">
-					<PoundBoxIcon />
+					<PoundBoxOutlineIcon />
 					<span>
 						<strong>
 							{{ t('integration_slack', 'Conversation') }}
@@ -117,7 +117,7 @@
 				</NcSelect>
 				<div class="advanced-options">
 					<span class="field-label">
-						<PackageUpIcon />
+						<ArrowUpBoldBoxOutline />
 						<span>
 							<strong>
 								{{ t('integration_slack', 'Type') }}
@@ -169,7 +169,7 @@
 							:placeholder="passwordPlaceholder">
 					</div>
 					<span class="field-label">
-						<CommentIcon />
+						<CommentOutlineIcon />
 						<span>
 							<strong>
 								{{ t('integration_slack', 'Comment') }}
@@ -226,16 +226,16 @@ import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
 import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
 import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
 
-import AccountMultiple from 'vue-material-design-icons/AccountMultiple.vue'
+import AccountMultiple from 'vue-material-design-icons/AccountMultipleOutline.vue'
 import AlertBoxIcon from 'vue-material-design-icons/AlertBox.vue'
+import ArrowUpBoldBoxOutline from 'vue-material-design-icons/ArrowUpBoldBoxOutline.vue'
 import CheckCircleIcon from 'vue-material-design-icons/CheckCircle.vue'
 import CloseIcon from 'vue-material-design-icons/Close.vue'
-import CommentIcon from 'vue-material-design-icons/Comment.vue'
-import EyeIcon from 'vue-material-design-icons/Eye.vue'
-import FileIcon from 'vue-material-design-icons/File.vue'
-import PackageUpIcon from 'vue-material-design-icons/PackageUp.vue'
-import PencilIcon from 'vue-material-design-icons/Pencil.vue'
-import PoundBoxIcon from 'vue-material-design-icons/PoundBox.vue'
+import CommentOutlineIcon from 'vue-material-design-icons/CommentOutline.vue'
+import EyeOutlineIcon from 'vue-material-design-icons/EyeOutline.vue'
+import FileOutlineIcon from 'vue-material-design-icons/FileOutline.vue'
+import PencilOutlineIcon from 'vue-material-design-icons/PencilOutline.vue'
+import PoundBoxOutlineIcon from 'vue-material-design-icons/PoundBoxOutline.vue'
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
 import SendIcon from 'vue-material-design-icons/Send.vue'
 
@@ -268,10 +268,10 @@ export default {
 		NcButton,
 		NcAvatar,
 		SendIcon,
-		PoundBoxIcon,
-		FileIcon,
-		PackageUpIcon,
-		CommentIcon,
+		PoundBoxOutlineIcon,
+		FileOutlineIcon,
+		ArrowUpBoldBoxOutline,
+		CommentOutlineIcon,
 		CheckCircleIcon,
 		AlertBoxIcon,
 		CloseIcon,
@@ -301,8 +301,8 @@ export default {
 			STATES,
 			commentPlaceholder: t('integration_slack', 'Message to send with the files'),
 			permissionOptions: {
-				view: { label: t('integration_slack', 'View only'), icon: EyeIcon },
-				edit: { label: t('integration_slack', 'Edit'), icon: PencilIcon },
+				view: { label: t('integration_slack', 'View only'), icon: EyeOutlineIcon },
+				edit: { label: t('integration_slack', 'Edit'), icon: PencilOutlineIcon },
 			},
 		}
 	},

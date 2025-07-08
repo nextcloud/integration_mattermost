@@ -1,7 +1,7 @@
 import axios from '@nextcloud/axios'
 import { showError } from '@nextcloud/dialogs'
 import { generateUrl } from '@nextcloud/router'
-import FileIcon from 'vue-material-design-icons/File.vue'
+import FileOutlineIcon from 'vue-material-design-icons/FileOutline.vue'
 import LinkVariantIcon from 'vue-material-design-icons/LinkVariant.vue'
 import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
 
@@ -155,7 +155,7 @@ export const SEND_TYPE = {
 	file: {
 		id: 'file',
 		label: t('integration_slack', 'Upload files'),
-		icon: FileIcon,
+		icon: FileOutlineIcon,
 	},
 	public_link: {
 		id: 'public_link',

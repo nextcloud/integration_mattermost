@@ -28,7 +28,7 @@
 		<div id="slack-content">
 			<div class="line">
 				<label for="slack-client-id">
-					<KeyIcon :size="20" class="icon" />
+					<AccountOutlineIcon :size="20" class="icon" />
 					{{ t('integration_slack', 'Client ID') }}
 				</label>
 				<input id="slack-client-id"
@@ -41,7 +41,7 @@
 			</div>
 			<div class="line">
 				<label for="slack-client-secret">
-					<KeyIcon :size="20" class="icon" />
+					<KeyOutlineIcon :size="20" class="icon" />
 					{{ t('integration_slack', 'Application secret') }}
 				</label>
 				<input id="slack-client-secret"
@@ -52,18 +52,21 @@
 					@focus="readonly = false"
 					@input="onInput">
 			</div>
-			<NcCheckboxRadioSwitch
-				:checked.sync="state.use_popup"
-				@update:checked="onUsePopupChanged">
-				{{ t('integration_slack', 'Use a popup to authenticate') }}
-			</NcCheckboxRadioSwitch>
+			<div class="line slack-checkbox">
+				<NcCheckboxRadioSwitch
+					:checked.sync="state.use_popup"
+					@update:checked="onUsePopupChanged">
+					{{ t('integration_slack', 'Use a popup to authenticate') }}
+				</NcCheckboxRadioSwitch>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import AccountOutlineIcon from 'vue-material-design-icons/AccountOutline.vue'
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue'
-import KeyIcon from 'vue-material-design-icons/Key.vue'
+import KeyOutlineIcon from 'vue-material-design-icons/KeyOutline.vue'
 
 import SlackIcon from './icons/SlackIcon.vue'
 
@@ -82,8 +85,9 @@ export default {
 	components: {
 		SlackIcon,
 		NcCheckboxRadioSwitch,
+		AccountOutlineIcon,
 		InformationOutlineIcon,
-		KeyIcon,
+		KeyOutlineIcon,
 	},
 
 	props: [],
@@ -110,10 +114,10 @@ export default {
 		onInput() {
 			delay(() => {
 				const values = {
-					client_id: this.state.client_id,
+					client_id: (this.state.client_id ?? '').trim(),
 				}
 				if (this.state.client_secret !== 'dummyClientSecret') {
-					values.client_secret = this.state.client_secret
+					values.client_secret = (this.state.client_secret ?? '').trim()
 				}
 				this.saveOptions(values, true)
 			}, 2000)()
@@ -169,6 +173,10 @@ export default {
 		}
 		> input {
 			width: 300px;
+		}
+
+		&.slack-checkbox {
+			margin-top: 16px;
 		}
 	}
 
