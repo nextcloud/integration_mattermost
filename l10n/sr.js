@@ -100,6 +100,7 @@ OC.L10N.register(
     "Failed to send files to Mattermost" : "Није успело слање фајлова на Mattermost",
     "Sign in with Mattermost" : "Пријавите се на Mattermost",
     "Failed to save Mattermost OAuth state" : "Није успело чување Mattermost OAuth стања",
+    "Do you want to connect to {mmUrl}?" : "Желите ли да се повежете са {mmUrl}?",
     "Connect" : "Повежи се",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "Пре него што кренете да користите Mattermost интеграцију, морате да се пријавите на Mattermost сервер.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Да ли желите да одете на своја лична подешавања „Повежи налоге”?",
