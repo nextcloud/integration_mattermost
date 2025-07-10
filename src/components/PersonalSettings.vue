@@ -29,7 +29,7 @@
 				<div v-show="showToken"
 					class="line">
 					<label for="mattermost-token">
-						<KeyIcon :size="20" class="icon" />
+						<KeyOutlineIcon :size="20" class="icon" />
 						{{ t('integration_mattermost', 'Personal access token') }}
 					</label>
 					<input id="mattermost-token"
@@ -43,7 +43,7 @@
 					class="line">
 					<label
 						for="mattermost-login">
-						<AccountIcon :size="20" class="icon" />
+						<AccountOutlineIcon :size="20" class="icon" />
 						{{ t('integration_mattermost', 'Login') }}
 					</label>
 					<input id="mattermost-login"
@@ -56,7 +56,7 @@
 					class="line">
 					<label
 						for="mattermost-password">
-						<LockIcon :size="20" class="icon" />
+						<LockOutlineIcon :size="20" class="icon" />
 						{{ t('integration_mattermost', 'Password') }}
 					</label>
 					<input id="mattermost-password"
@@ -173,7 +173,7 @@
 					</div>
 					<div class="line">
 						<label for="mattermost-webhook-secret">
-							<KeyIcon :size="20" class="icon" />
+							<KeyOutlineIcon :size="20" class="icon" />
 							{{ t('integration_mattermost', 'Webhook secret') }}
 						</label>
 						<input id="mattermost-webhook-secret"
@@ -189,9 +189,9 @@
 </template>
 
 <script>
-import LockIcon from 'vue-material-design-icons/Lock.vue'
-import AccountIcon from 'vue-material-design-icons/Account.vue'
-import KeyIcon from 'vue-material-design-icons/Key.vue'
+import LockOutlineIcon from 'vue-material-design-icons/LockOutline.vue'
+import AccountOutlineIcon from 'vue-material-design-icons/AccountOutline.vue'
+import KeyOutlineIcon from 'vue-material-design-icons/KeyOutline.vue'
 import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
 import CloseIcon from 'vue-material-design-icons/Close.vue'
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue'
@@ -225,9 +225,9 @@ export default {
 		WebhookIcon,
 		EarthIcon,
 		CheckIcon,
-		LockIcon,
-		KeyIcon,
-		AccountIcon,
+		LockOutlineIcon,
+		KeyOutlineIcon,
+		AccountOutlineIcon,
 	},
 
 	props: [],

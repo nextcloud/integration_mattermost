@@ -15,7 +15,7 @@
 					</span>
 				</h2>
 				<span class="field-label">
-					<FileIcon />
+					<FileOutlineIcon />
 					<span>
 						<strong>
 							{{ t('integration_mattermost', 'Files') }}
@@ -28,7 +28,7 @@
 						class="file">
 						<NcLoadingIcon v-if="fileStates[f.id] === STATES.IN_PROGRESS"
 							:size="20" />
-						<CheckCircleIcon v-else-if="fileStates[f.id] === STATES.FINISHED"
+						<CheckCircleOutlineIcon v-else-if="fileStates[f.id] === STATES.FINISHED"
 							class="check-icon"
 							:size="24" />
 						<img v-else
@@ -50,7 +50,7 @@
 					</div>
 				</div>
 				<span class="field-label">
-					<PoundBoxIcon />
+					<PoundIcon />
 					<span>
 						<strong>
 							{{ t('integration_mattermost', 'Channel') }}
@@ -108,7 +108,7 @@
 				</NcSelect>
 				<div class="advanced-options">
 					<span class="field-label">
-						<PackageUpIcon />
+						<UploadBoxOutlineIcon />
 						<span>
 							<strong>
 								{{ t('integration_mattermost', 'Type') }}
@@ -169,7 +169,7 @@
 							:placeholder="passwordPlaceholder">
 					</div>
 					<span class="field-label">
-						<CommentIcon />
+						<CommentOutlineIcon />
 						<span>
 							<strong>
 								{{ t('integration_mattermost', 'Comment') }}
@@ -184,7 +184,7 @@
 				</div>
 				<span v-if="warnAboutSendingDirectories"
 					class="warning-container">
-					<AlertBoxIcon class="warning-icon" />
+					<AlertBoxOutlineIcon class="warning-icon" />
 					<label>
 						{{ t('integration_mattermost', 'Directories will be skipped, they can only be sent as links.') }}
 					</label>
@@ -200,7 +200,7 @@
 						:disabled="!canValidate"
 						@click="onSendClick">
 						<template #icon>
-							<SendIcon />
+							<SendOutlineIcon />
 						</template>
 						{{ sendType === SEND_TYPE.file.id
 							? n('integration_mattermost', 'Send file', 'Send files', files.length)
@@ -223,16 +223,16 @@ import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
 import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
 import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
 
-import AlertBoxIcon from 'vue-material-design-icons/AlertBox.vue'
-import CheckCircleIcon from 'vue-material-design-icons/CheckCircle.vue'
+import AlertBoxOutlineIcon from 'vue-material-design-icons/AlertBoxOutline.vue'
+import CheckCircleOutlineIcon from 'vue-material-design-icons/CheckCircleOutline.vue'
 import CloseIcon from 'vue-material-design-icons/Close.vue'
-import CommentIcon from 'vue-material-design-icons/Comment.vue'
-import EyeIcon from 'vue-material-design-icons/Eye.vue'
-import FileIcon from 'vue-material-design-icons/File.vue'
-import PackageUpIcon from 'vue-material-design-icons/PackageUp.vue'
-import PencilIcon from 'vue-material-design-icons/Pencil.vue'
-import PoundBoxIcon from 'vue-material-design-icons/PoundBox.vue'
-import SendIcon from 'vue-material-design-icons/Send.vue'
+import CommentOutlineIcon from 'vue-material-design-icons/CommentOutline.vue'
+import EyeOutlineIcon from 'vue-material-design-icons/EyeOutline.vue'
+import FileOutlineIcon from 'vue-material-design-icons/FileOutline.vue'
+import UploadBoxOutlineIcon from 'vue-material-design-icons/UploadBoxOutline.vue'
+import PencilOutlineIcon from 'vue-material-design-icons/PencilOutline.vue'
+import PoundIcon from 'vue-material-design-icons/Pound.vue'
+import SendOutlineIcon from 'vue-material-design-icons/SendOutline.vue'
 
 import axios from '@nextcloud/axios'
 import { showError } from '@nextcloud/dialogs'
@@ -261,13 +261,13 @@ export default {
 		NcLoadingIcon,
 		NcButton,
 		NcAvatar,
-		SendIcon,
-		PoundBoxIcon,
-		FileIcon,
-		PackageUpIcon,
-		CommentIcon,
-		CheckCircleIcon,
-		AlertBoxIcon,
+		SendOutlineIcon,
+		PoundIcon,
+		FileOutlineIcon,
+		UploadBoxOutlineIcon,
+		CommentOutlineIcon,
+		CheckCircleOutlineIcon,
+		AlertBoxOutlineIcon,
 		CloseIcon,
 	},
 
@@ -294,8 +294,8 @@ export default {
 			STATES,
 			commentPlaceholder: t('integration_mattermost', 'Message to send with the files'),
 			permissionOptions: {
-				view: { label: t('integration_mattermost', 'View only'), icon: EyeIcon },
-				edit: { label: t('integration_mattermost', 'Edit'), icon: PencilIcon },
+				view: { label: t('integration_mattermost', 'View only'), icon: EyeOutlineIcon },
+				edit: { label: t('integration_mattermost', 'Edit'), icon: PencilOutlineIcon },
 			},
 		}
 	},
