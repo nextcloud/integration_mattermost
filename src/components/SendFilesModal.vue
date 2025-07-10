@@ -117,7 +117,7 @@
 				</NcSelect>
 				<div class="advanced-options">
 					<span class="field-label">
-						<ArrowUpBoldBoxOutline />
+						<UploadBoxOutline />
 						<span>
 							<strong>
 								{{ t('integration_slack', 'Type') }}
@@ -228,7 +228,7 @@ import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
 
 import AccountMultiple from 'vue-material-design-icons/AccountMultipleOutline.vue'
 import AlertBoxIcon from 'vue-material-design-icons/AlertBox.vue'
-import ArrowUpBoldBoxOutline from 'vue-material-design-icons/ArrowUpBoldBoxOutline.vue'
+import UploadBoxOutline from 'vue-material-design-icons/UploadBoxOutline.vue'
 import CheckCircleIcon from 'vue-material-design-icons/CheckCircle.vue'
 import CloseIcon from 'vue-material-design-icons/Close.vue'
 import CommentOutlineIcon from 'vue-material-design-icons/CommentOutline.vue'
@@ -270,7 +270,7 @@ export default {
 		SendIcon,
 		PoundBoxOutlineIcon,
 		FileOutlineIcon,
-		ArrowUpBoldBoxOutline,
+		UploadBoxOutline,
 		CommentOutlineIcon,
 		CheckCircleIcon,
 		AlertBoxIcon,
