@@ -31,7 +31,7 @@
 			</div>
 			<div class="line">
 				<label for="mattermost-client-id">
-					<KeyIcon :size="20" class="icon" />
+					<KeyOutlineIcon :size="20" class="icon" />
 					{{ t('integration_mattermost', 'Application ID') }}
 				</label>
 				<input id="mattermost-client-id"
@@ -44,7 +44,7 @@
 			</div>
 			<div class="line">
 				<label for="mattermost-client-secret">
-					<KeyIcon :size="20" class="icon" />
+					<KeyOutlineIcon :size="20" class="icon" />
 					{{ t('integration_mattermost', 'Application secret') }}
 				</label>
 				<input id="mattermost-client-secret"
@@ -72,7 +72,7 @@
 <script>
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue'
 import EarthIcon from 'vue-material-design-icons/Earth.vue'
-import KeyIcon from 'vue-material-design-icons/Key.vue'
+import KeyOutlineIcon from 'vue-material-design-icons/KeyOutline.vue'
 
 import MattermostIcon from './icons/MattermostIcon.vue'
 
@@ -94,7 +94,7 @@ export default {
 		NcCheckboxRadioSwitch,
 		InformationOutlineIcon,
 		EarthIcon,
-		KeyIcon,
+		KeyOutlineIcon,
 	},
 
 	props: [],
