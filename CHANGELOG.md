@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 2.1.1 – 2025-07-16
+
+### Changed
+- CSP Nonce updated @janepie [#57](https://github.com/nextcloud/integration_mattermost/pull/57)
+- icons changed to outlined versions @janepie [#77](https://github.com/nextcloud/integration_mattermost/pull/77)
+- npm packages updated @janepie [#77](https://github.com/nextcloud/integration_mattermost/pull/77)
+- bump max supported NC version to 32 @janepie
+
 ## 2.1.0 - 2025-01-17
 
 ### Added
