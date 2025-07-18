@@ -11,6 +11,7 @@ OC.L10N.register(
     "Login" : "Ingia",
     "Password" : "Nenosiri",
     "Connected as {user}" : "Imeunganishwa kama {user}",
+    "View only" : "View only",
     "Edit" : "Hariri",
     "Files" : "Mafaili",
     "Type" : "Aina",
