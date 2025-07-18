@@ -8,6 +8,7 @@ OC.L10N.register(
     "Connected accounts" : "Akaunti zilizounganishwa",
     "Client ID" : "Kitambulisho cha mteja",
     "Use a popup to authenticate" : "Tumia dirisha ibukizi ili kuthibitisha",
+    "View only" : "View only",
     "Edit" : "Hariri",
     "Files" : "Mafaili",
     "Type" : "Aina",
