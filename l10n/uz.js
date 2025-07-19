@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Bad credentials" : "Akkaunt ma'lumotlari xato",
     "Bad HTTP method" : "Yomon HTTP usuli",
+    "Connected accounts" : "Ulangan akkauntlar",
     "Personal access token" : "Shaxsiy kirish belgisi",
     "Login" : "Login",
     "Password" : "Password",
