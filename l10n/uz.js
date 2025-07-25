@@ -6,11 +6,11 @@ OC.L10N.register(
     "Connected accounts" : "Ulangan akkauntlar",
     "Client ID" : "Mijoz identifikatori",
     "Edit" : "Tahrirlash",
-    "Files" : "Files",
+    "Files" : "Fayllar",
     "Type" : "Turi",
     "Set expiration date" : "Set expiration date",
     "Comment" : "Izoh",
-    "Cancel" : "Cancel",
+    "Cancel" : "Bekor qilish",
     "Connect" : "Connect"
 },
 "nplurals=1; plural=0;");
