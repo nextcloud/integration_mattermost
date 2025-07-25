@@ -8,11 +8,11 @@ OC.L10N.register(
     "Login" : "Login",
     "Password" : "Password",
     "Edit" : "Tahrirlash",
-    "Files" : "Files",
+    "Files" : "Fayllar",
     "Type" : "Turi",
     "Set expiration date" : "Set expiration date",
     "Comment" : "Izoh",
-    "Cancel" : "Cancel",
+    "Cancel" : "Bekor qilish",
     "Connect" : "Connect"
 },
 "nplurals=1; plural=0;");
