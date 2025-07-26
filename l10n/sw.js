@@ -8,6 +8,7 @@ OC.L10N.register(
     "Connected accounts" : "Akaunti zilizounganishwa",
     "Make sure you set the \"Redirect URI\" to" : "Make sure you set the \"Redirect URI\" to",
     "Use a popup to authenticate" : "Tumia dirisha ibukizi ili kuthibitisha",
+    "Personal access token" : "Personal access token",
     "Login" : "Ingia",
     "Password" : "Nenosiri",
     "Connected as {user}" : "Imeunganishwa kama {user}",
