@@ -14,6 +14,7 @@ OC.L10N.register(
     "Type" : "Aina",
     "Set expiration date" : "Panga tarehe ya mwisho wa matumizi",
     "Comment" : "Maoni",
-    "Cancel" : "Cancel"
+    "Cancel" : "Cancel",
+    "Connect" : "Unganisha"
 },
 "nplurals=2; plural=(n != 1);");
