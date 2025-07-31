@@ -27,6 +27,7 @@ OC.L10N.register(
     "Set expiration date" : "Panga tarehe ya mwisho wa matumizi",
     "Comment" : "Maoni",
     "Cancel" : "Cancel",
-    "Connect" : "Unganisha"
+    "Connect" : "Unganisha",
+    "Upload files" : "Upload files"
 },
 "nplurals=2; plural=(n != 1);");
