@@ -27,6 +27,7 @@ OC.L10N.register(
     "View only" : "View only",
     "Edit" : "Hariri",
     "Files" : "Mafaili",
+    "Channel" : "Channel",
     "Type" : "Aina",
     "Set expiration date" : "Panga tarehe ya mwisho wa matumizi",
     "Expires on" : "Inaisha muda ",
