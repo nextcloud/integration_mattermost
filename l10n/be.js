@@ -7,6 +7,7 @@ OC.L10N.register(
     "Edit" : "Рэдагаваць",
     "Files" : "Файлы",
     "Channel" : "Канал",
+    "Choose a channel" : "Выберыце канал",
     "Type" : "Тып",
     "Comment" : "Каментарый",
     "Cancel" : "Скасаваць",
