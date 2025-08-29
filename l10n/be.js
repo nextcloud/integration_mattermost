@@ -5,6 +5,7 @@ OC.L10N.register(
     "View only" : "Толькі прагляд",
     "Edit" : "Рэдагаваць",
     "Files" : "Файлы",
+    "Remove file from list" : "Выдаліць файл са спісу",
     "Type" : "Тып",
     "Comment" : "Каментарый",
     "Cancel" : "Скасаваць",
