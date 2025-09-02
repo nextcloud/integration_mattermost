@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "The instance URL does not match the one currently configured for OAuth authentication" : "URL-адрес экземпляра не соответствует текущему URL-адресу, настроенному для аутентификации OAuth",
     "Error getting OAuth access token. " : "Ошибка получения токена доступа OAuth",
     "Error during OAuth exchanges" : "Ошибка по время обмена OAuth",
     "Mattermost messages" : "Важные сообщения",
@@ -40,6 +41,7 @@ OC.L10N.register(
     "Type" : "Тип",
     "Set expiration date" : "Установить крайний срок для ответов",
     "Comment" : "Комментарий",
+    "Directories will be skipped, they can only be sent as links." : "Каталоги будут пропущены, их можно отправлять только как ссылки.",
     "Cancel" : "Отменить",
     "Failed to edit Mattermost todo" : "Не удалось изменить задачу в Mattermost",
     "Send files to Mattermost" : "Отправить файлы в Mattermost",
