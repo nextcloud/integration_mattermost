@@ -20,6 +20,7 @@ OC.L10N.register(
     "Type" : "Тип",
     "Set expiration date" : "Установить крайний срок для ответов",
     "Comment" : "Комментарий",
+    "Directories will be skipped, they can only be sent as links." : "Каталоги будут пропущены, их можно отправлять только как ссылки.",
     "Cancel" : "Отмена",
     "Sign in with Slack" : "Войти через Slack",
     "Connect" : "Подключиться",
