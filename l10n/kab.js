@@ -8,6 +8,7 @@ OC.L10N.register(
     "Type" : "Anaw",
     "Comment" : "Commentaire",
     "Cancel" : "Sefsex",
+    "Connect" : "Qqen",
     "Upload files" : "Azen ifuyla"
 },
 "nplurals=2; plural=(n != 1);");
