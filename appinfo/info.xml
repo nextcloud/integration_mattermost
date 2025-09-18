@@ -20,7 +20,7 @@ and a unified search provider for messages. It also lets you send files to Matte
 	<screenshot>https://raw.githubusercontent.com/nextcloud/integration_mattermost/main/img/screenshot2.jpg</screenshot>
 	<screenshot>https://raw.githubusercontent.com/nextcloud/integration_mattermost/main/img/screenshot3.jpg</screenshot>
 	<dependencies>
-		<nextcloud min-version="32" max-version="32"/>
+		<nextcloud min-version="32" max-version="33"/>
 	</dependencies>
 	<background-jobs>
 		<job>OCA\Mattermost\BackgroundJob\DailySummaryWebhook</job>

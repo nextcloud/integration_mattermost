@@ -33,12 +33,13 @@ use OCP\IDateTimeZone;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\IUser;
+use OCP\Search\IExternalProvider;
 use OCP\Search\IProvider;
 use OCP\Search\ISearchQuery;
 use OCP\Search\SearchResult;
 use OCP\Search\SearchResultEntry;
 
-class MattermostSearchMessagesProvider implements IProvider {
+class MattermostSearchMessagesProvider implements IProvider, IExternalProvider {
 
 	public function __construct(
 		private IAppManager $appManager,
@@ -175,5 +176,9 @@ class MattermostSearchMessagesProvider implements IProvider {
 				$this->urlGenerator->linkToRoute('integration_mattermost.mattermostAPI.getUserAvatar', ['userId' => $userId])
 			)
 			: '';
+	}
+
+	public function isExternalProvider(): bool {
+		return true;
 	}
 }
