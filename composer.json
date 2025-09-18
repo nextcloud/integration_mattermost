@@ -15,7 +15,7 @@
 	},
 	"require-dev": {
 		"guzzlehttp/guzzle": "^7.8",
-		"nextcloud/ocp": "dev-master"
+		"nextcloud/ocp": "dev-stable31"
 	},
 	"scripts": {
 		"lint": "find . -name \\*.php -not -path './vendor*' -print0 | xargs -0 -n1 php -l",
