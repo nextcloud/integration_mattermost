@@ -1,7 +1,11 @@
 OC.L10N.register(
     "integration_slack",
     {
+    "Error getting OAuth access token. " : "Памылка атрымання токена доступу OAuth.",
+    "OAuth access token refused" : "Токен доступу OAuth адхілены",
+    "In the same \"OAuth & Permissions\" section, token rotation can be enabled. If enabled, your access token would be regularly refreshed with a refresh token. This is handled automatically." : "У тым жа раздзеле \"OAuth і дазволы\" можна ўключыць ратацыю токенаў. Калі гэта функцыя ўключана, ваш токен доступу будзе рэгулярна абнаўляцца з дапамогай токена абнаўлення. Гэта робіцца аўтаматычна.",
     "Client ID" : "Ідэнтыфікатар кліента",
+    "Invalid access token" : "Памылковы токен доступу",
     "View only" : "Толькі прагляд",
     "Edit" : "Рэдагаваць",
     "Files" : "Файлы",
