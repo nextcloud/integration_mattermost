@@ -1,5 +1,12 @@
 { "translations": {
+    "Error getting OAuth access token. " : "Памылка атрымання токена доступу OAuth.",
+    "OAuth access token refused" : "Токен доступу OAuth адхілены",
     "Mattermost integration provides a dashboard widget displaying your most important notifications\nand a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files." : "Інтэграцыя з Mattermost стварае віджэт на панэлі кіравання, які адлюстроўвае найважнейшыя апавяшчэнні,\nа таксама адзіную службу пошуку для паведамленняў. Яна таксама дазваляе адпраўляць файлы ў Mattermost з Nextcloud Файлаў.",
+    "Invalid access token" : "Памылковы токен доступу",
+    "If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens." : "Калі ў вас ёсць на гэта дазвол, вы можаце стварыць асабісты токен доступу ў сваім профілі Mattermost -> Бяспека -> Асабістыя токены доступу.",
+    "You can connect with a personal token OR just with your login/password." : "Вы можаце падключыцца з дапамогай асабістага токена АБО проста з дапамогай лагіна/пароля.",
+    "Personal access token" : "Асабісты токен доступу",
+    "Mattermost personal access token" : "Асабісты токен доступу Mattermost",
     "Login" : "Лагін",
     "Password" : "Пароль",
     "View only" : "Толькі прагляд",
