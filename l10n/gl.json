@@ -13,7 +13,7 @@
     "Slack admin options saved" : "Gardáronse as opcións de administración de Slack",
     "Failed to save Slack admin options" : "Produciuse un fallo ao gardar as opcións de administración de Slack.",
     "Slack integration" : "Integración de Slack",
-    "To allow your Nextcloud users to use OAuth to authenticate to the Slack app, and set the ID and secret here." : "Para permitir que os usuarios de Nextcloud utilicen OAuth para autenticarse na aplicación Slack e establecer aquí o ID e o segredo.",
+    "To allow your Nextcloud users to use OAuth to authenticate to the Slack app, and set the ID and secret here." : "Para permitir que os usuarios de Nextcloud utilicen OAuth para autenticarse na aplicación Slack e estabelecer aquí o ID e o segredo.",
     "Link to create a Slack application" : "Ligazón para crear unha aplicación de Slack",
     "Make sure you set the \"Redirect URI\" in the \"OAuth & Permissions\" section of your Slack app settings to" : "Asegúrese de configurar o «URI de redirección» na sección «OAuth e permisos» da configuración da súa aplicación Slack para",
     "Put the \"Client ID\" and \"Client secret\" below. Your Nextcloud users will then see a \"Connect to Slack\" button in their personal settings." : "Engada deseguido o «ID de cliente» e o «Segredo de cliente». Os seus usuarios de Nextcloud verán entón un botón «Conectar con Slack» nos seus axustes persoais.",
