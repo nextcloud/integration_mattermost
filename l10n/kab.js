@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Login" : "Aseqdac",
     "Password" : "Awal uffir",
+    "Connected as {user}" : "D uqqin am {user}",
     "Edit" : "Ẓreg",
     "Files" : "Ifuyla",
     "Type" : "Anaw",
