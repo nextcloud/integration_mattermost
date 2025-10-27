@@ -105,7 +105,7 @@ OC.L10N.register(
     "You can choose another Mattermost server in the {settingsHtmlLink} section of your personal settings." : "Im {settingsHtmlLink}-Abschnitt der persönlichen Einstellungen kann ein anderer Mattermost-Server ausgewählt werden.",
     "Connect" : "Verbinden",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "Sie müssen eine Verbindung zu einem Mattermost-Server herstellen, bevor Sie die Mattermost-Integration verwenden können.",
-    "Do you want to go to your \"Connect accounts\" personal settings?" : "Möchten Sie zu \"Konten verbinden\" in Ihren Ihren persönlichen Einstellungen springen?",
+    "Do you want to go to your \"Connect accounts\" personal settings?" : "Möchten Sie zu \"Konten verbinden\" in Ihren persönlichen Einstellungen wechseln?",
     "Go to settings" : "Gehe zu den Einstellungen",
     "Upload files" : "Dateien hochladen",
     "Public links" : "Öffentliche Links",
