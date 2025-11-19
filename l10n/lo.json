@@ -4,9 +4,12 @@
     "View only" : "ເບິ່ງເທົ່ານັ້ນ",
     "Edit" : "ແກ້ໄຂ",
     "Files" : "ຟາຍ",
+    "Channel" : "Channel",
     "Type" : "ພິມ",
     "Set expiration date" : "ກໍານົດວັນໝົດອາຍຸ",
+    "Comment" : "Comment",
     "Cancel" : "ຍົກເລີກ",
+    "Connect" : "Connect",
     "Upload files" : "ອັບໂຫຼດຟາຍ"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
