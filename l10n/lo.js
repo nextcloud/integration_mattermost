@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Personal access token" : "ໂທເຄັນການເຂົ້າເຖິງສ່ວນຕົວ",
     "Login" : "ເຂົ້າສູ່ລະບົບ",
     "Password" : "ລະຫັດຜ່ານ",
     "View only" : "ເບິ່ງເທົ່ານັ້ນ",
