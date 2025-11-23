@@ -26,6 +26,7 @@ OC.L10N.register(
     "Channel" : "Kanał",
     "Type" : "Rodzaj",
     "Set expiration date" : "Ustaw datę wygaśnięcia",
+    "Expires on" : "Wygasa",
     "Comment" : "Komentarz",
     "Cancel" : "Anuluj",
     "Connect" : "Połącz",
