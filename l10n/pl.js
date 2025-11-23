@@ -31,6 +31,7 @@ OC.L10N.register(
     "Choose a conversation" : "Wybierz rozmowę",
     "Type" : "Rodzaj",
     "Set expiration date" : "Ustaw datę wygaśnięcia",
+    "Expires on" : "Wygasa",
     "Comment" : "Komentarz",
     "Cancel" : "Anuluj",
     "Connect" : "Połącz",
