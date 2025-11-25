@@ -24,6 +24,7 @@ use OCP\AppFramework\Http\Attribute\PasswordConfirmationRequired;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -41,6 +42,7 @@ class ConfigController extends Controller {
 		string $appName,
 		IRequest $request,
 		private IConfig $config,
+		private IAppConfig $appConfig,
 		private IURLGenerator $urlGenerator,
 		private IL10N $l,
 		private IInitialState $initialStateService,
@@ -58,10 +60,10 @@ class ConfigController extends Controller {
 	#[NoAdminRequired]
 	public function isUserConnected(): DataResponse {
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
-		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+		$clientID = $this->appConfig->getAppValueString('client_id', lazy: true);
+		$clientSecret = $this->appConfig->getAppValueString('client_secret', lazy: true);
 		$oauthPossible = $clientID !== '' && $clientSecret !== '';
-		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
+		$usePopup = $this->appConfig->getAppValueString('use_popup', '0', lazy: true);
 
 		return new DataResponse([
 			'connected' => ($token !== ''),
@@ -135,7 +137,7 @@ class ConfigController extends Controller {
 			if (in_array($key, self::SENSITIVE_ADMIN_KEYS, true)) {
 				continue;
 			}
-			$this->config->setAppValue(Application::APP_ID, $key, $value);
+			$this->appConfig->setAppValueString($key, $value, lazy: true);
 		}
 		return new DataResponse([]);
 	}
@@ -157,13 +159,13 @@ class ConfigController extends Controller {
 					$value = $this->crypto->encrypt($value);
 				}
 			} catch (Exception $e) {
-				$this->config->setAppValue(Application::APP_ID, 'client_secret', '');
+				$this->appConfig->setAppValueString('client_secret', '', lazy: true);
 				// logger takes care not to leak the secret
 				$this->logger->error('Could not encrypt client secret', ['exception' => $e]);
 				return new DataResponse(['message' => $this->l->t('Could not encrypt client secret')]);
 			}
 
-			$this->config->setAppValue(Application::APP_ID, $key, $value);
+			$this->appConfig->setAppValueString($key, $value, lazy: true);
 		}
 		return new DataResponse([]);
 	}
@@ -196,8 +198,8 @@ class ConfigController extends Controller {
 	 */
 	public function oauthRedirect(string $code = '', string $state = ''): RedirectResponse {
 		$configState = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_state');
-		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+		$clientID = $this->appConfig->getAppValueString('client_id', lazy: true);
+		$clientSecret = $this->appConfig->getAppValueString('client_secret', lazy: true);
 
 		// decrypt client secret
 		try {
@@ -240,7 +242,7 @@ class ConfigController extends Controller {
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $encryptedRefreshToken);
 
 				$userInfo = $this->storeUserInfo($result['authed_user']['id']);
-				$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0') === '1';
+				$usePopup = $this->appConfig->getAppValueString('use_popup', '0', lazy: true) === '1';
 
 				if ($usePopup) {
 					return new RedirectResponse(

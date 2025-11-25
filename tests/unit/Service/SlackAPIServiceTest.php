@@ -7,6 +7,7 @@ use OC\L10N\L10N;
 use OCA\Slack\AppInfo\Application;
 use OCA\Slack\Service\NetworkService;
 use OCA\Slack\Service\SlackAPIService;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\Files\IRootFolder;
 use OCP\Http\Client\IClientService;
 use OCP\ICacheFactory;
@@ -22,6 +23,7 @@ class SlackAPIServiceTest extends TestCase {
 	private LoggerInterface $logger;
 	private IL10N $l10n;
 	private IConfig $config;
+	private IAppConfig $appConfig;
 	private IRootFolder $root;
 	private ShareManager $shareManager;
 	private IURLGenerator $urlGenerator;
@@ -42,6 +44,7 @@ class SlackAPIServiceTest extends TestCase {
 		$this->logger = $this->createMock(LoggerInterface::class);
 		$this->l10n = $this->createMock(L10N::class);
 		$this->config = $this->createMock(IConfig::class);
+		$this->appConfig = $this->createMock(IAppConfig::class);
 		$this->root = $this->createMock(IRootFolder::class);
 		$this->shareManager = $this->createMock(ShareManager::class);
 		$this->urlGenerator = $this->createMock(IURLGenerator::class);
@@ -58,6 +61,7 @@ class SlackAPIServiceTest extends TestCase {
 			$this->logger,
 			$this->l10n,
 			$this->config,
+			$this->appConfig,
 			$this->root,
 			$this->shareManager,
 			$this->urlGenerator,

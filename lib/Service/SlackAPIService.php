@@ -18,6 +18,7 @@ use DateTime;
 use Exception;
 use OC\User\NoUserException;
 use OCA\Slack\AppInfo\Application;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\Constants;
 use OCP\Files\File;
 use OCP\Files\Folder;
@@ -47,6 +48,7 @@ class SlackAPIService {
 		private LoggerInterface $logger,
 		private IL10N $l10n,
 		private IConfig $config,
+		private IAppConfig $appConfig,
 		private IRootFolder $root,
 		private ShareManager $shareManager,
 		private IURLGenerator $urlGenerator,
@@ -440,8 +442,8 @@ class SlackAPIService {
 	 * @throws \OCP\PreConditionNotMetException
 	 */
 	private function refreshToken(string $userId): bool {
-		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+		$clientID = $this->appConfig->getAppValueString('client_id', lazy: true);
+		$clientSecret = $this->appConfig->getAppValueString('client_secret', lazy: true);
 		$refreshToken = $this->config->getUserValue($userId, Application::APP_ID, 'refresh_token');
 		$refreshToken = $refreshToken === '' ? '' : $this->crypto->decrypt($refreshToken);
 
