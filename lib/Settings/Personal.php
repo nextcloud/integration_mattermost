@@ -4,6 +4,7 @@ namespace OCA\Slack\Settings;
 
 use OCA\Slack\AppInfo\Application;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\IConfig;
 use OCP\Settings\ISettings;
@@ -12,6 +13,7 @@ class Personal implements ISettings {
 
 	public function __construct(
 		private IConfig $config,
+		private IAppConfig $appConfig,
 		private IInitialState $initialStateService,
 		private ?string $userId,
 	) {
@@ -27,9 +29,9 @@ class Personal implements ISettings {
 		$fileActionEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'file_action_enabled', '1') === '1';
 
 		// for OAuth
-		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
-		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
+		$clientID = $this->appConfig->getAppValueString('client_id', lazy: true);
+		$clientSecret = $this->appConfig->getAppValueString('client_secret', lazy: true);
+		$usePopup = $this->appConfig->getAppValueString('use_popup', '0', lazy: true);
 
 		$userConfig = [
 			// don't need to decrypt it, just need to know if it's set

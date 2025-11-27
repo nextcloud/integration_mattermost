@@ -5,8 +5,8 @@ namespace OCA\Slack\Settings;
 use Exception;
 use OCA\Slack\AppInfo\Application;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\AppFramework\Services\IInitialState;
-use OCP\IConfig;
 use OCP\Security\ICrypto;
 use OCP\Settings\ISettings;
 use Psr\Log\LoggerInterface;
@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
 class Admin implements ISettings {
 
 	public function __construct(
-		private IConfig $config,
+		private IAppConfig $appConfig,
 		private IInitialState $initialStateService,
 		private ICrypto $crypto,
 		private LoggerInterface $logger,
@@ -25,9 +25,9 @@ class Admin implements ISettings {
 	 * @return TemplateResponse
 	 */
 	public function getForm(): TemplateResponse {
-		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
-		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
+		$clientID = $this->appConfig->getAppValueString('client_id', lazy: true);
+		$clientSecret = $this->appConfig->getAppValueString('client_secret', lazy: true);
+		$usePopup = $this->appConfig->getAppValueString('use_popup', '0', lazy: true);
 
 		try {
 			if ($clientSecret !== '') {
