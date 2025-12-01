@@ -54,8 +54,8 @@
 			</div>
 			<div class="line slack-checkbox">
 				<NcCheckboxRadioSwitch
-					:checked.sync="state.use_popup"
-					@update:checked="onUsePopupChanged">
+					v-model="state.use_popup"
+					@update:model-value="onUsePopupChanged">
 					{{ t('integration_slack', 'Use a popup to authenticate') }}
 				</NcCheckboxRadioSwitch>
 			</div>
@@ -75,7 +75,7 @@ import { showError, showSuccess } from '@nextcloud/dialogs'
 import { loadState } from '@nextcloud/initial-state'
 import { confirmPassword } from '@nextcloud/password-confirmation'
 import { generateUrl } from '@nextcloud/router'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
 
 import { delay } from '../utils.js'
 

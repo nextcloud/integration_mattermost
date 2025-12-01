@@ -127,7 +127,7 @@
 					<div>
 						<NcCheckboxRadioSwitch v-for="(type, key) in SEND_TYPE"
 							:key="key"
-							:checked.sync="sendType"
+							v-model="sendType"
 							:value="type.id"
 							name="send_type_radio"
 							type="radio">
@@ -137,36 +137,48 @@
 							</div>
 						</NcCheckboxRadioSwitch>
 					</div>
-					<RadioElementSet v-if="sendType === SEND_TYPE.public_link.id"
-						name="perm_radio"
-						:options="permissionOptions"
-						:value="selectedPermission"
-						class="radios"
-						@update:value="selectedPermission = $event" />
-					<div v-show="sendType === SEND_TYPE.public_link.id"
-						class="expiration-field">
-						<NcCheckboxRadioSwitch :checked.sync="expirationEnabled">
-							{{ t('integration_slack', 'Set expiration date') }}
-						</NcCheckboxRadioSwitch>
-						<div class="spacer" />
-						<NcDateTimePicker v-show="expirationEnabled"
-							id="expiration-datepicker"
-							v-model="expirationDate"
-							:disabled-date="isDateDisabled"
-							:placeholder="t('integration_slack', 'Expires on')"
-							:clearable="true" />
-					</div>
-					<div v-show="sendType === SEND_TYPE.public_link.id"
-						class="password-field">
-						<NcCheckboxRadioSwitch :checked.sync="passwordEnabled">
-							{{ t('integration_slack', 'Set link password') }}
-						</NcCheckboxRadioSwitch>
-						<div class="spacer" />
-						<input v-show="passwordEnabled"
-							id="password-input"
-							v-model="password"
-							type="text"
-							:placeholder="passwordPlaceholder">
+					<NcRadioGroup v-if="sendType === SEND_TYPE.public_link.id"
+						v-model="selectedPermission"
+						:label="t('integration_slack', 'Public share permission')"
+						hide-label
+						class="radios">
+						<NcRadioGroupButton v-for="(option, optionId) in permissionOptions"
+							:key="optionId"
+							:label="option.label"
+							:value="optionId">
+							<template #icon>
+								<component :is="option.icon" :size="20" />
+							</template>
+						</NcRadioGroupButton>
+					</NcRadioGroup>
+					<div v-show="sendType === SEND_TYPE.public_link.id" class="public-link-options">
+						<div
+							class="expiration-field">
+							<NcCheckboxRadioSwitch v-model="expirationEnabled">
+								{{ t('integration_slack', 'Set expiration date') }}
+							</NcCheckboxRadioSwitch>
+							<div class="spacer" />
+							<NcDateTimePickerNative v-show="expirationEnabled"
+								id="expiration-datepicker"
+								v-model="expirationDate"
+								type="date"
+								:min="new Date()"
+								:placeholder="t('integration_slack', 'Expires on')"
+								:label="t('integration_slack', 'Expires on')"
+								hide-label />
+						</div>
+						<div
+							class="password-field">
+							<NcCheckboxRadioSwitch v-model="passwordEnabled">
+								{{ t('integration_slack', 'Set link password') }}
+							</NcCheckboxRadioSwitch>
+							<div class="spacer" />
+							<input v-show="passwordEnabled"
+								id="password-input"
+								v-model="password"
+								type="text"
+								:placeholder="passwordPlaceholder">
+						</div>
 					</div>
 					<span class="field-label">
 						<CommentOutlineIcon />
@@ -196,7 +208,7 @@
 						@click="closeModal">
 						{{ t('integration_slack', 'Cancel') }}
 					</NcButton>
-					<NcButton type="primary"
+					<NcButton variant="primary"
 						:class="{ loading, okButton: true }"
 						:disabled="!canValidate && loading"
 						:aria-label="sendType === SEND_TYPE.file.id
@@ -217,18 +229,19 @@
 </template>
 
 <script>
-import NcAvatar from '@nextcloud/vue/dist/Components/NcAvatar.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
-import NcDateTimePicker from '@nextcloud/vue/dist/Components/NcDateTimePicker.js'
-import NcHighlight from '@nextcloud/vue/dist/Components/NcHighlight.js'
-import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
-import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
-import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
+import NcAvatar from '@nextcloud/vue/components/NcAvatar'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
+import NcDateTimePickerNative from '@nextcloud/vue/components/NcDateTimePickerNative'
+import NcHighlight from '@nextcloud/vue/components/NcHighlight'
+import NcLoadingIcon from '@nextcloud/vue/components/NcLoadingIcon'
+import NcModal from '@nextcloud/vue/components/NcModal'
+import NcRadioGroup from '@nextcloud/vue/components/NcRadioGroup'
+import NcRadioGroupButton from '@nextcloud/vue/components/NcRadioGroupButton'
+import NcSelect from '@nextcloud/vue/components/NcSelect'
 
 import AccountMultiple from 'vue-material-design-icons/AccountMultipleOutline.vue'
 import AlertBoxIcon from 'vue-material-design-icons/AlertBox.vue'
-import UploadBoxOutline from 'vue-material-design-icons/UploadBoxOutline.vue'
 import CheckCircleIcon from 'vue-material-design-icons/CheckCircle.vue'
 import CloseIcon from 'vue-material-design-icons/Close.vue'
 import CommentOutlineIcon from 'vue-material-design-icons/CommentOutline.vue'
@@ -238,14 +251,15 @@ import PencilOutlineIcon from 'vue-material-design-icons/PencilOutline.vue'
 import PoundBoxOutlineIcon from 'vue-material-design-icons/PoundBoxOutline.vue'
 import RefreshIcon from 'vue-material-design-icons/Refresh.vue'
 import SendIcon from 'vue-material-design-icons/Send.vue'
+import UploadBoxOutline from 'vue-material-design-icons/UploadBoxOutline.vue'
 
 import axios from '@nextcloud/axios'
 import { showError } from '@nextcloud/dialogs'
 import { FileType } from '@nextcloud/files'
 import { generateUrl } from '@nextcloud/router'
+import { shallowRef } from 'vue'
 import { humanFileSize, SEND_TYPE } from '../utils.js'
 import SlackIcon from './icons/SlackIcon.vue'
-import RadioElementSet from './RadioElementSet.vue'
 
 const STATES = {
 	NONE: 0,
@@ -260,10 +274,11 @@ export default {
 		SlackIcon,
 		NcSelect,
 		NcCheckboxRadioSwitch,
-		NcDateTimePicker,
+		NcDateTimePickerNative,
 		NcHighlight,
 		NcModal,
-		RadioElementSet,
+		NcRadioGroup,
+		NcRadioGroupButton,
 		NcLoadingIcon,
 		NcButton,
 		NcAvatar,
@@ -294,15 +309,15 @@ export default {
 			selectedChannel: null,
 			selectedPermission: 'view',
 			expirationEnabled: false,
-			expirationDate: null,
+			expirationDate: new Date(),
 			passwordEnabled: false,
 			password: '',
 			passwordPlaceholder: t('integration_slack', 'password'),
 			STATES,
 			commentPlaceholder: t('integration_slack', 'Message to send with the files'),
 			permissionOptions: {
-				view: { label: t('integration_slack', 'View only'), icon: EyeOutlineIcon },
-				edit: { label: t('integration_slack', 'Edit'), icon: PencilOutlineIcon },
+				view: { label: t('integration_slack', 'View only'), icon: shallowRef(EyeOutlineIcon) },
+				edit: { label: t('integration_slack', 'Edit'), icon: shallowRef(PencilOutlineIcon) },
 			},
 		}
 	},
@@ -335,7 +350,7 @@ export default {
 			this.sendType = SEND_TYPE.file.id
 			this.selectedPermission = 'view'
 			this.expirationEnabled = false
-			this.expirationDate = null
+			this.expirationDate = new Date()
 			this.passwordEnabled = false
 			this.password = null
 		},
@@ -344,7 +359,7 @@ export default {
 		},
 		closeModal() {
 			this.show = false
-			this.$emit('closed')
+			this.$el.dispatchEvent(new CustomEvent('closed', { bubbles: true }))
 			this.reset()
 		},
 		setFiles(files) {
@@ -352,16 +367,22 @@ export default {
 		},
 		onSendClick() {
 			this.loading = true
-			this.$emit('validate', {
+			const _data = {
 				filesToSend: [...this.files],
 				channelId: this.selectedChannel.id,
 				channelName: this.selectedChannel.name,
 				type: this.sendType,
 				comment: this.comment,
 				permission: this.selectedPermission,
-				expirationDate: this.sendType === SEND_TYPE.public_link.id && this.expirationEnabled ? this.expirationDate : null,
+				expirationDate: this.sendType === SEND_TYPE.public_link.id && this.expirationEnabled ? this.expirationDate : new Date(),
 				password: this.sendType === SEND_TYPE.public_link.id && this.passwordEnabled ? this.password : null,
-			})
+			}
+			this.$el.dispatchEvent(
+				new CustomEvent('validate', {
+					detail: _data,
+					bubbles: true,
+				}),
+			)
 		},
 		success() {
 			this.loading = false
@@ -398,13 +419,14 @@ export default {
 			return generateUrl('/apps/integration_slack/preview?id={fileId}&x=24&y=24', { fileId })
 		},
 		fileStarted(id) {
-			this.$set(this.fileStates, id, STATES.IN_PROGRESS)
+			// vue3 is deeply reactive, no need to use $set
+			this.fileStates[id] = STATES.IN_PROGRESS
 		},
 		fileFinished(id) {
-			this.$set(this.fileStates, id, STATES.FINISHED)
+			this.fileStates[id] = STATES.FINISHED
 		},
 		fileNone(id) {
-			this.$set(this.fileStates, id, STATES.NONE)
+			this.fileStates[id] = STATES.NONE
 		},
 		getUserIconUrl(slackUserId) {
 			return generateUrl('/apps/integration_slack/users/{slackUserId}/image', { slackUserId })
@@ -473,21 +495,24 @@ export default {
 		flex-direction: column;
 	}
 
-	.expiration-field {
-		margin-top: 8px;
-	}
-
-	.password-field,
-	.expiration-field {
+	.public-link-options {
 		display: flex;
-		align-items: center;
-		> *:first-child {
-			margin-right: 20px;
-		}
-		#expiration-datepicker,
-		#password-input {
-			width: 250px;
-			margin: 0;
+		flex-direction: column;
+		gap: 4px;
+		margin-top: 8px;
+
+		.password-field,
+		.expiration-field {
+			display: flex;
+			align-items: center;
+			> *:first-child {
+				margin-right: 20px;
+			}
+			:deep(#expiration-datepicker),
+			#password-input {
+				width: 250px;
+				margin: 0;
+			}
 		}
 	}
 

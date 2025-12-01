@@ -1,9 +1,12 @@
 import axios from '@nextcloud/axios'
 import { showError } from '@nextcloud/dialogs'
 import { generateUrl } from '@nextcloud/router'
+import { spawnDialog } from '@nextcloud/vue/functions/dialog'
+import { shallowRef } from 'vue'
 import FileOutlineIcon from 'vue-material-design-icons/FileOutline.vue'
 import LinkVariantIcon from 'vue-material-design-icons/LinkVariant.vue'
 import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
+import SlackDialog from './components/SlackDialog.vue'
 
 const SLACK_OAUTH_URL = 'https://slack.com/oauth/v2/authorize'
 
@@ -72,58 +75,27 @@ export function oauthConnect(clientId, oauthOrigin, usePopup = false) {
 	})
 }
 
-export function oauthConnectConfirmDialog() {
-	return new Promise((resolve) => {
-		const settingsLink = generateUrl('/settings/user/connected-accounts')
-		const linkText = t('integration_slack', 'Connected accounts')
-		const settingsHtmlLink = `<a href="${settingsLink}" class="external">${linkText}</a>`
-		OC.dialogs.message(
-			t('integration_slack', 'You need to connect before using the Slack integration.')
-			+ '<br><br>'
-			+ t('integration_slack',
-				'You can set Slack API keys in the {settingsHtmlLink} section of your personal settings.',
-				{ settingsHtmlLink },
-				null,
-				{ escape: false }),
-			t('integration_slack', 'Connect to Slack'),
-			'none',
-			{
-				type: OC.dialogs.YES_NO_BUTTONS,
-				confirm: t('integration_slack', 'Connect'),
-				confirmClasses: 'success',
-				cancel: t('integration_slack', 'Cancel'),
-			},
-			(result) => {
-				resolve(result)
-			},
-			true,
-			true,
-		)
+export async function oauthConnectConfirmDialog() {
+	return await spawnDialog(SlackDialog, {
+		title: t('integration_slack', 'Connect to Slack'),
+		message: t('integration_slack', 'You need to connect before using the Slack integration.'),
+		confirmText: t('integration_slack', 'Connect'),
 	})
 }
 
-export function gotoSettingsConfirmDialog() {
-	const settingsLink = generateUrl('/settings/user/connected-accounts')
-	OC.dialogs.message(
-		t('integration_slack', 'You need to connect a Slack app before using the Slack integration.')
-		+ '<br><br>'
-		+ t('integration_slack', 'Do you want to go to your "Connect accounts" personal settings?'),
-		t('integration_slack', 'Connect to Slack'),
-		'none',
-		{
-			type: OC.dialogs.YES_NO_BUTTONS,
-			confirm: t('integration_slack', 'Go to settings'),
-			confirmClasses: 'success',
-			cancel: t('integration_slack', 'Cancel'),
-		},
-		(result) => {
-			if (result) {
-				window.location.replace(settingsLink)
-			}
-		},
-		true,
-		true,
-	)
+// seems like this function is unused
+export async function gotoSettingsConfirmDialog() {
+	const res = await spawnDialog(SlackDialog, {
+		title: t('integration_slack', 'Connect to Slack'),
+		message: t('integration_slack', 'You need to connect a Slack app before using the Slack integration.')
+			+ '<br><br>'
+			+ t('integration_slack', 'Do you want to go to your "Connect accounts" personal settings?'),
+		confirmText: t('integration_slack', 'Go to settings'),
+	})
+
+	if (res) {
+		window.location.href = generateUrl('/settings/user/connected-accounts')
+	}
 }
 
 export function humanFileSize(bytes, approx = false, si = false, dp = 1) {
@@ -155,16 +127,16 @@ export const SEND_TYPE = {
 	file: {
 		id: 'file',
 		label: t('integration_slack', 'Upload files'),
-		icon: FileOutlineIcon,
+		icon: shallowRef(FileOutlineIcon),
 	},
 	public_link: {
 		id: 'public_link',
 		label: t('integration_slack', 'Public links'),
-		icon: LinkVariantIcon,
+		icon: shallowRef(LinkVariantIcon),
 	},
 	internal_link: {
 		id: 'internal_link',
 		label: t('integration_slack', 'Internal links (Only works for users with access to the files)'),
-		icon: OpenInNewIcon,
+		icon: shallowRef(OpenInNewIcon),
 	},
 }

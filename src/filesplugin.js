@@ -25,8 +25,7 @@ import { generateUrl } from '@nextcloud/router'
 import SlackIcon from '../img/app-dark.svg'
 import { gotoSettingsConfirmDialog, oauthConnect, oauthConnectConfirmDialog, SEND_TYPE } from './utils.js'
 
-import Vue from 'vue'
-import './bootstrap.js'
+import { createApp } from 'vue'
 
 const DEBUG = false
 
@@ -75,17 +74,17 @@ const sendAction = new FileAction({
 	},
 	iconSvgInline: () => SlackIcon,
 	async exec(node) {
-		sendSelectedNodes([node])
+		await sendSelectedNodes([node])
 		return null
 	},
 	async execBatch(nodes) {
-		sendSelectedNodes(nodes)
+		await sendSelectedNodes(nodes)
 		return nodes.map(_ => null)
 	},
 })
 registerFileAction(sendAction)
 
-function sendSelectedNodes(nodes) {
+async function sendSelectedNodes(nodes) {
 	const formattedNodes = nodes.map((node) => {
 		return {
 			id: node.fileid,
@@ -99,7 +98,7 @@ function sendSelectedNodes(nodes) {
 	} else if (OCA.Slack.oauthPossible) {
 		connectToSlack(formattedNodes)
 	} else {
-		gotoSettingsConfirmDialog()
+		await gotoSettingsConfirmDialog()
 	}
 }
 
@@ -246,13 +245,16 @@ const modalElement = document.createElement('div')
 modalElement.id = modalId
 document.body.append(modalElement)
 
-const View = Vue.extend(SendFilesModal)
-OCA.Slack.SlackSendModalVue = new View().$mount(modalElement)
+const app = createApp(SendFilesModal)
+app.mixin({ methods: { t, n } })
+OCA.Slack.SlackSendModalVue = app.mount(modalElement)
 
-OCA.Slack.SlackSendModalVue.$on('closed', () => {
+modalElement.addEventListener('closed', () => {
 	if (DEBUG) console.debug('[Slack] modal closed')
 })
-OCA.Slack.SlackSendModalVue.$on('validate', ({ filesToSend, channelId, channelName, type, comment, permission, expirationDate, password }) => {
+modalElement.addEventListener('validate', (data) => {
+	const { filesToSend, channelId, channelName, type, comment, permission, expirationDate, password } = data.detail
+
 	if (filesToSend.length === 0) {
 		return
 	}

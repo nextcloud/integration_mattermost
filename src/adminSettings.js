@@ -13,9 +13,9 @@
  * @copyright Anupam Kumar 2023
  */
 
-import Vue from 'vue'
-import './bootstrap.js'
+import { createApp } from 'vue'
 import AdminSettings from './components/AdminSettings.vue'
 
-const VueAdminSettings = Vue.extend(AdminSettings)
-new VueAdminSettings().$mount('#slack_prefs')
+const app = createApp(AdminSettings)
+app.mixin({ methods: { t, n } })
+app.mount('#slack_prefs')

@@ -37,8 +37,8 @@
 			</div>
 			<br>
 			<NcCheckboxRadioSwitch
-				:checked.sync="state.file_action_enabled"
-				@update:checked="onCheckboxChanged($event, 'file_action_enabled')">
+				v-model="state.file_action_enabled"
+				@update:model-value="onCheckboxChanged($event, 'file_action_enabled')">
 				{{ t('integration_slack', 'Add file action to send files to Slack') }}
 			</NcCheckboxRadioSwitch>
 		</div>
@@ -51,9 +51,9 @@ import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
 
 import SlackIcon from './icons/SlackIcon.vue'
 
-import NcAvatar from '@nextcloud/vue/dist/Components/NcAvatar.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import NcAvatar from '@nextcloud/vue/components/NcAvatar'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
 
 import axios from '@nextcloud/axios'
 import { showError, showSuccess } from '@nextcloud/dialogs'
