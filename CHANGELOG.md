@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 2.2.0 – 2025-12-01
+
+### Changed
+* Set max NC version to 33 (#39) @kyteinsky
+* lazy config migration (#39) @kyteinsky
+
+### Added
+* migrate to vue3 (#40) (#41) @kyteinsky
+
+
 ## 2.1.1 – 2025-07-18
 
 ### Changed
