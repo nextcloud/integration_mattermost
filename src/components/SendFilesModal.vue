@@ -173,11 +173,10 @@
 								{{ t('integration_slack', 'Set link password') }}
 							</NcCheckboxRadioSwitch>
 							<div class="spacer" />
-							<input v-show="passwordEnabled"
-								id="password-input"
+							<NcPasswordField v-show="passwordEnabled"
 								v-model="password"
-								type="text"
-								:placeholder="passwordPlaceholder">
+								class="password-input"
+								:placeholder="passwordPlaceholder" />
 						</div>
 					</div>
 					<span class="field-label">
@@ -236,6 +235,7 @@ import NcDateTimePickerNative from '@nextcloud/vue/components/NcDateTimePickerNa
 import NcHighlight from '@nextcloud/vue/components/NcHighlight'
 import NcLoadingIcon from '@nextcloud/vue/components/NcLoadingIcon'
 import NcModal from '@nextcloud/vue/components/NcModal'
+import NcPasswordField from '@nextcloud/vue/components/NcPasswordField'
 import NcRadioGroup from '@nextcloud/vue/components/NcRadioGroup'
 import NcRadioGroupButton from '@nextcloud/vue/components/NcRadioGroupButton'
 import NcSelect from '@nextcloud/vue/components/NcSelect'
@@ -292,6 +292,7 @@ export default {
 		CloseIcon,
 		AccountMultiple,
 		RefreshIcon,
+		NcPasswordField,
 	},
 
 	data() {
@@ -352,7 +353,7 @@ export default {
 			this.expirationEnabled = false
 			this.expirationDate = new Date()
 			this.passwordEnabled = false
-			this.password = null
+			this.password = ''
 		},
 		showModal() {
 			this.show = true
@@ -375,7 +376,7 @@ export default {
 				comment: this.comment,
 				permission: this.selectedPermission,
 				expirationDate: this.sendType === SEND_TYPE.public_link.id && this.expirationEnabled ? this.expirationDate : new Date(),
-				password: this.sendType === SEND_TYPE.public_link.id && this.passwordEnabled ? this.password : null,
+				password: this.sendType === SEND_TYPE.public_link.id && this.passwordEnabled ? this.password : '',
 			}
 			this.$el.dispatchEvent(
 				new CustomEvent('validate', {
@@ -509,7 +510,7 @@ export default {
 				margin-right: 20px;
 			}
 			:deep(#expiration-datepicker),
-			#password-input {
+			.password-input {
 				width: 250px;
 				margin: 0;
 			}
