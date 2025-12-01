@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 3.0.0 – 2025-12-01
+
+### Changed
+- drop NC 32 and below (#44) @kyteinsky
+
+
 ## 2.2.0 – 2025-12-01
 
 ### Changed
