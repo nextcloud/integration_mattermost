@@ -5,6 +5,7 @@ OC.L10N.register(
     "Type" : "Anaw",
     "Comment" : "Commentaire",
     "Cancel" : "Cancel",
+    "Confirm" : "Sergeg",
     "Connect" : "Qqen",
     "Upload files" : "Azen ifuyla"
 },

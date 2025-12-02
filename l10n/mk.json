@@ -12,6 +12,7 @@
     "Set expiration date" : "Постави рок на траење",
     "Comment" : "Коментар",
     "Cancel" : "Откажи",
+    "Confirm" : "Потврди",
     "Connect" : "Поврзи се",
     "Upload files" : "Прикачи датотеки"
 },"pluralForm" :"nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;"

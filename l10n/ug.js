@@ -51,6 +51,7 @@ OC.L10N.register(
     "Comment" : "باھا",
     "Directories will be skipped, they can only be sent as links." : "مۇندەرىجە ئاتلىنىدۇ ، ئۇلارنى پەقەت ئۇلىنىش قىلىپلا ئەۋەتكىلى بولىدۇ.",
     "Cancel" : "بىكار قىلىش",
+    "Confirm" : "جەزملەشتۈرۈڭ",
     "Send files to Slack" : "Slack غا ھۆججەت ئەۋەتىڭ",
     "Failed to send {name} to {channelName} on Slack" : "Slack دىكى {name} نى {channelName} غا ئەۋەتمىدى",
     "Failed to send links to Slack" : "Slack غا ئۇلىنىش ئەۋەتەلمىدى",

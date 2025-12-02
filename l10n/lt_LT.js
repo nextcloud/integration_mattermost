@@ -23,6 +23,7 @@ OC.L10N.register(
     "Expires on" : "Baigia galioti",
     "Comment" : "Komentaras",
     "Cancel" : "Atsisakyti",
+    "Confirm" : "Patvirtinti",
     "Connect" : "Prisijungti",
     "Upload files" : "Įkelti failus"
 },

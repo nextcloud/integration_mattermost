@@ -32,6 +32,7 @@
     "Cancel" : "Tühista",
     "_Send file_::_Send files_" : ["Saada fail","Saada failid"],
     "_Send link_::_Send links_" : ["Saada link","Saada lingid"],
+    "Confirm" : "Kinnita",
     "_A link to {fileName} was sent to {channelName}_::_All of the {number} links were sent to {channelName}_" : ["Link {fileName} failile on saadetud {channelName} kanalisse","Kõik {number} linki on saadetud {channelName} kanalisse"],
     "_Failed to send the internal link to {channelName}_::_Failed to send internal links to {channelName}_" : ["Siselingi saatmine {channelName} kanalisse ei õnnestunud","Siselinkide saatmine {channelName} kanalisse ei õnnestunud"],
     "_{fileName} was successfully sent to {channelName}_::_All of the {number} files were sent to {channelName}_" : ["{fileName} on saadetud {channelName} kanalisse","Kõik {number} faili on saadetud {channelName} kanalisse"],

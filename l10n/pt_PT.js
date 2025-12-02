@@ -12,6 +12,7 @@ OC.L10N.register(
     "Set expiration date" : "Definir a data de expiração",
     "Comment" : "Comentário",
     "Cancel" : "Cancelar",
+    "Confirm" : "Confirmar",
     "_Failed to send the internal link to {channelName}_::_Failed to send internal links to {channelName}_" : ["Falha ao enviar link interno para {channelName}","Falha ao enviar links internos para {channelName}","Falha ao enviar links internos para {channelName}"],
     "Connect" : "Ligar",
     "Upload files" : "Carregar ficheiros",

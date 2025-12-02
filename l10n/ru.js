@@ -22,6 +22,7 @@ OC.L10N.register(
     "Comment" : "Комментарий",
     "Directories will be skipped, they can only be sent as links." : "Каталоги будут пропущены, их можно отправлять только как ссылки.",
     "Cancel" : "Отмена",
+    "Confirm" : "Подтвердить",
     "Sign in with Slack" : "Войти через Slack",
     "Connect" : "Подключиться",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Хотите перейти в личные настройки «Подключения учетных записей»?",

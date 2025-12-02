@@ -10,6 +10,7 @@ OC.L10N.register(
     "Set expiration date" : "Especificar una data d'expiracion",
     "Comment" : "Comentaris",
     "Cancel" : "Anullar",
+    "Confirm" : "Confirmar",
     "Connect" : "Connectar"
 },
 "nplurals=2; plural=(n > 1);");

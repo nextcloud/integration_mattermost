@@ -13,6 +13,7 @@ OC.L10N.register(
     "Set expiration date" : "Đặt ngày hết hạn",
     "Comment" : "Bình luận",
     "Cancel" : "Hủy",
+    "Confirm" : "Xác nhận",
     "Connect" : "Kết nối",
     "Upload files" : "Tải lên tập tin"
 },

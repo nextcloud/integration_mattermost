@@ -6,6 +6,7 @@ OC.L10N.register(
     "Set expiration date" : "Assignar data de expiration",
     "Comment" : "Commentario",
     "Cancel" : "Cancel",
+    "Confirm" : "Confirmar",
     "Connect" : "Connecter se"
 },
 "nplurals=2; plural=(n != 1);");

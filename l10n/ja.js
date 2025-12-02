@@ -15,6 +15,7 @@ OC.L10N.register(
     "Set expiration date" : "有効期限を設定",
     "Comment" : "コメント",
     "Cancel" : "キャンセル",
+    "Confirm" : "承認",
     "Connect" : "接続",
     "Upload files" : "アップロードファイル"
 },

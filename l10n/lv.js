@@ -16,6 +16,7 @@ OC.L10N.register(
     "Comment" : "Piebilde",
     "Cancel" : "Atcelt",
     "_Send file_::_Send files_" : ["Nosūtīt datnes","Nosūtīt datni","Nosūtīt datnes"],
+    "Confirm" : "Apstiprināt",
     "Connect" : "Savienoties",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Vai doties uz saviem \"Savienot kontus\" personīgajiem iestatījumiem?",
     "Upload files" : "Augšupielādēt datnes"

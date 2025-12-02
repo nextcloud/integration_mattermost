@@ -14,6 +14,7 @@ OC.L10N.register(
     "Set expiration date" : "Постави рок на траење",
     "Comment" : "Коментар",
     "Cancel" : "Откажи",
+    "Confirm" : "Потврди",
     "Connect" : "Поврзи се",
     "Upload files" : "Прикачи датотеки"
 },

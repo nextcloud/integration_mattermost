@@ -11,6 +11,7 @@ OC.L10N.register(
     "Set expiration date" : "Set expiration date",
     "Comment" : "Izoh",
     "Cancel" : "Bekor qilish",
+    "Confirm" : "Tasdiqlash",
     "Connect" : "Connect"
 },
 "nplurals=1; plural=0;");

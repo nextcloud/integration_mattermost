@@ -13,6 +13,7 @@ OC.L10N.register(
     "Set expiration date" : "Setja gildistíma",
     "Comment" : "Athugasemd",
     "Cancel" : "Hætta við",
+    "Confirm" : "Staðfesta",
     "Connect" : "Tengjast",
     "Upload files" : "Hlaða inn skrám"
 },

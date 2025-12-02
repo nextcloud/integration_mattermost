@@ -34,6 +34,7 @@ OC.L10N.register(
     "Expires on" : "Wygasa",
     "Comment" : "Komentarz",
     "Cancel" : "Anuluj",
+    "Confirm" : "Potwierdź",
     "Connect" : "Połącz",
     "Go to settings" : "Przejdź do ustawień",
     "Upload files" : "Wyślij pliki",

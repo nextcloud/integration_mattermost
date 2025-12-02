@@ -13,6 +13,7 @@ OC.L10N.register(
     "Set expiration date" : "Specifică data expirării",
     "Comment" : "Comentariu",
     "Cancel" : "Anulare",
+    "Confirm" : "Confirmă",
     "Connect" : "Conectare",
     "Upload files" : "Încarcă fișiere"
 },

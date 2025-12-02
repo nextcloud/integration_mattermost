@@ -15,6 +15,7 @@ OC.L10N.register(
     "Set expiration date" : "הגדרת תאריך תפוגה",
     "Comment" : "הערה",
     "Cancel" : "ביטול",
+    "Confirm" : "אישור",
     "Connect" : "התחברות",
     "Upload files" : "העלאת קבצים"
 },

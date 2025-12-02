@@ -64,7 +64,6 @@
     "Failed to open Slack OAuth popup window, please allow popups" : "Αποτυχία ανοίγματος παραθύρου εξουσιοδότησης Slack, παρακαλώ επιτρέψτε τα αναδυόμενα παράθυρα",
     "Failed to save Slack OAuth state" : "Αποτυχία αποθήκευσης κατάστασης OAuth εξουσιοδότησης του Slack",
     "You need to connect before using the Slack integration." : "Πρέπει να συνδεθείτε πριν χρησιμοποιήσετε την ενσωμάτωση Slack.",
-    "You can set Slack API keys in the {settingsHtmlLink} section of your personal settings." : "Μπορείτε να ορίσετε τα κλειδιά API του Slack στην ενότητα {settingsHtmlLink} των προσωπικών σας ρυθμίσεων.",
     "Connect" : "Σύνδεση",
     "You need to connect a Slack app before using the Slack integration." : "Πρέπει να συνδέσετε μια εφαρμογή Slack πριν χρησιμοποιήσετε την ενσωμάτωση του Slack.",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Θέλετε να πάτε στις προσωπικές σας ρυθμίσεις \"Σύνδεση λογαριασμών\";",

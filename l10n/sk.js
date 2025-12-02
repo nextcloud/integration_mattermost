@@ -56,6 +56,7 @@ OC.L10N.register(
     "_Send link to Slack_::_Send links to Slack_" : ["Odoslať odkaz do Slacku","Odoslať odkazy do Slacku","Odoslať odkazy do Slacku","Odoslať odkazy do Slacku"],
     "_Send file_::_Send files_" : ["Odoslať súbor","Odoslať súbory","Odoslať súbory","Odoslať súbory"],
     "_Send link_::_Send links_" : ["Odoslať odkaz","Odoslať odkazy","Odoslať odkaz","Odoslať odkazy"],
+    "Confirm" : "Potvrdiť",
     "Send files to Slack" : "Odoslať súbory do Slacku",
     "Failed to send {name} to {channelName} on Slack" : "Nepodarilo sa odoslať {name} do {channelName} na Slacku",
     "_A link to {fileName} was sent to {channelName}_::_All of the {number} links were sent to {channelName}_" : ["Odkaz {fileName} bol odoslaný do {channelName}","Všetky {number} odkazy boli odoslané do {channelName}","Všetkých {number} odkazov bolo odoslaných do {channelName}","Všetkých {number} odkazov bolo odoslaných do {channelName}"],

@@ -16,6 +16,7 @@ OC.L10N.register(
     "Set expiration date" : "Instellen vervaldatum",
     "Comment" : "Notitie",
     "Cancel" : "Annuleren",
+    "Confirm" : "Bevestigen",
     "Connect" : "Verbinden",
     "Upload files" : "Bestanden uploaden"
 },
