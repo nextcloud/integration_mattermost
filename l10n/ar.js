@@ -56,6 +56,7 @@ OC.L10N.register(
     "_Send link to Slack_::_Send links to Slack_" : ["إرسال رابط إلى Slack","إرسال رابط إلى Slack","إرسال رابطين إلى Slack","إرسال روابط إلى Slack","إرسال روابط إلى Slack","إرسال روابط إلى Slack"],
     "_Send file_::_Send files_" : ["إرسال ملفات","إرسال ملف","إرسال ملفات","إرسال ملفات","إرسال ملفات","إرسال ملفات"],
     "_Send link_::_Send links_" : ["إرسال روابط","إرسال رابط","إرسال روابط","إرسال روابط","إرسال روابط","إرسال روابط"],
+    "Confirm" : "تأكيد",
     "Send files to Slack" : "إرسال ملفات إلى Slack",
     "Failed to send {name} to {channelName} on Slack" : "تعذّر إرسال {name} إلى {channelName} على Slack",
     "_A link to {fileName} was sent to {channelName}_::_All of the {number} links were sent to {channelName}_" : ["كل الـ {number} روابط تمّ إرسالها إلى {channelName}","كل الـ {number} روابط تمّ إرسالها إلى {channelName}","كل الـ {number} روابط تمّ إرسالها إلى {channelName}","كل الـ {number} روابط تمّ إرسالها إلى {channelName}","كل الـ {number} روابط تمّ إرسالها إلى {channelName}","كل الـ {number} روابط تمّ إرسالها إلى  {channelName}"],

@@ -46,6 +46,7 @@ OC.L10N.register(
     "Refresh channels" : "重新整理頻道",
     "Choose a conversation" : "選擇對話",
     "Type" : "類型",
+    "Public share permission" : "公開分享權限",
     "Set expiration date" : "設定屆滿日期",
     "Expires on" : "過期於",
     "Set link password" : "設置連結密碼",

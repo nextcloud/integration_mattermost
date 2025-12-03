@@ -9,6 +9,7 @@ OC.L10N.register(
     "Set expiration date" : "Afitar la data de caducidá",
     "Comment" : "Comentariu",
     "Cancel" : "Encaboxar",
+    "Confirm" : "Confirmar",
     "Connect" : "Coneutar"
 },
 "nplurals=2; plural=(n != 1);");

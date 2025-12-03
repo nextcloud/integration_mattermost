@@ -25,6 +25,7 @@ OC.L10N.register(
     "Cancel" : "Отказ",
     "_Send file_::_Send files_" : ["Изпращане на файлове","Изпращане на файлове"],
     "_Send link_::_Send links_" : ["Изпращане на връзки","Изпращане на връзки"],
+    "Confirm" : "Потвърдете",
     "Connect" : "Свързване",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Искате ли да отидете в личните си настройки в \"Свързване на акаунти\"?",
     "Go to settings" : "Отидете в настройките",

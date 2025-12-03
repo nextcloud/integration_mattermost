@@ -46,6 +46,7 @@ OC.L10N.register(
     "Refresh channels" : "Actualizar as canles",
     "Choose a conversation" : "Escoller unha conversa",
     "Type" : "Escribir",
+    "Public share permission" : "Permiso de compartición pública",
     "Set expiration date" : "Definir a data de caducidade",
     "Expires on" : "Caduca o",
     "Set link password" : "Definir o contrasinal da ligazón",

@@ -7,6 +7,7 @@ OC.L10N.register(
     "Set expiration date" : "Lakaat un deizat termen",
     "Comment" : "Displegadenn",
     "Cancel" : "Nullañ",
+    "Confirm" : "Kadarnaat",
     "Connect" : "Kenstagañ",
     "Upload files" : "Pellkas restr"
 },
