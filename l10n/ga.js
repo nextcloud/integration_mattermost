@@ -46,6 +46,7 @@ OC.L10N.register(
     "Refresh channels" : "Cainéil a athnuachan",
     "Choose a conversation" : "Roghnaigh comhrá",
     "Type" : "Cineál",
+    "Public share permission" : "Cead comhroinnte poiblí",
     "Set expiration date" : "Socraigh dáta éaga",
     "Expires on" : "In éag ar",
     "Set link password" : "Socraigh pasfhocal naisc",
