@@ -46,6 +46,7 @@ OC.L10N.register(
     "Refresh channels" : "Kanalları yenile",
     "Choose a conversation" : "Bir görüşme seçin",
     "Type" : "Tür",
+    "Public share permission" : "Herkese açık paylaşım izni",
     "Set expiration date" : "Geçerlilik sonu tarihini ayarla",
     "Expires on" : "Geçerlilik sonu",
     "Set link password" : "Bağlantı parolasını ayarla",
