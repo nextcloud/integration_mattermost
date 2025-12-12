@@ -23,8 +23,8 @@ use OCP\AppFramework\Http\Attribute\PasswordConfirmationRequired;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\AppFramework\Services\IInitialState;
 use OCP\AppFramework\Services\IAppConfig;
+use OCP\AppFramework\Services\IInitialState;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IRequest;
@@ -262,7 +262,7 @@ class ConfigController extends Controller {
 			if (in_array($key, ['client_id', 'client_secret', 'oauth_instance_url'], true)) {
 				return new DataResponse([], Http::STATUS_BAD_REQUEST);
 			}
-			$this->appConfig->setAppValueString( $key, $value, lazy: true);
+			$this->appConfig->setAppValueString($key, $value, lazy: true);
 		}
 		return new DataResponse([]);
 	}
@@ -277,9 +277,9 @@ class ConfigController extends Controller {
 	public function setSensitiveAdminConfig(array $values): DataResponse {
 		foreach ($values as $key => $value) {
 			if (in_array($key, ['client_id', 'client_secret'], true) && $value !== '') {
-				$this->appConfig->setAppValueString( $key, $value, sensitive: true, lazy: true);
+				$this->appConfig->setAppValueString($key, $value, sensitive: true, lazy: true);
 			} else {
-				$this->appConfig->setAppValueString( $key, $value, lazy: true);
+				$this->appConfig->setAppValueString($key, $value, lazy: true);
 			}
 		}
 		return new DataResponse([]);
@@ -311,13 +311,13 @@ class ConfigController extends Controller {
 		$configState = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_state');
 		$clientID = $this->appConfig->getAppValueString('client_id', lazy: true);
 		$clientID = $clientID === '' ? '' : $this->crypto->decrypt($clientID);
-		$clientSecret = $this->appConfig->getAppValueString( 'client_secret', lazy: true);
+		$clientSecret = $this->appConfig->getAppValueString('client_secret', lazy: true);
 		$clientSecret = $clientSecret === '' ? '' : $this->crypto->decrypt($clientSecret);
 
 		// anyway, reset state
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_state');
 
-		$adminOauthUrl = $this->appConfig->getAppValueString( 'oauth_instance_url', lazy: true);
+		$adminOauthUrl = $this->appConfig->getAppValueString('oauth_instance_url', lazy: true);
 		$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 
 		if ($mattermostUrl !== $adminOauthUrl) {

@@ -3,15 +3,14 @@
 namespace OCA\Mattermost\Tests;
 
 use DateTime;
-use OCA\Mattermost\AppInfo\Application;
 use OCA\Mattermost\Service\MattermostAPIService;
 use OCA\Mattermost\Service\NetworkService;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\Constants;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\Http\Client\IClientService;
-use OCP\AppFramework\Services\IAppConfig;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
@@ -55,7 +54,7 @@ class MattermostAPIServiceTest extends TestCase {
 		$this->logger = $this->createMock(LoggerInterface::class);
 		$this->l10n = $this->createMock(IL10N::class);
 		$this->config = $this->createMock(IConfig::class);
-		$this->appConfig = $this->createMock(IConfig::class);
+		$this->appConfig = $this->createMock(IAppConfig::class);
 		$this->rootFolder = $this->createMock(IRootFolder::class);
 		$this->shareManager = $this->createMock(ShareManager::class);
 		$this->urlGenerator = $this->createMock(IURLGenerator::class);

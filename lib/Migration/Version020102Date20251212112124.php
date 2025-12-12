@@ -38,11 +38,10 @@ class Version020102Date20251212112124 extends SimpleMigrationStep {
 			if (in_array($key, ['client_id', 'client_secret'], true)) {
 				$value = $this->crypto->decrypt($value);
 				$this->appConfig->setAppValueString($key, $value, lazy: true, sensitive: true);
-			}
-			else {
+			} else {
 				$this->appConfig->setAppValueString($key, $value, lazy: true);
 			}
-			
+
 		}
 	}
 }
