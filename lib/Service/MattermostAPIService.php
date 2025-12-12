@@ -18,6 +18,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use OC\User\NoUserException;
 use OCA\Mattermost\AppInfo\Application;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\Constants;
 use OCP\Files\File;
 use OCP\Files\Folder;
@@ -45,6 +46,7 @@ class MattermostAPIService {
 	public function __construct(
 		private LoggerInterface $logger,
 		private IL10N $l10n,
+		private IAppConfig $appConfig,
 		private IConfig $config,
 		private IRootFolder $root,
 		private ShareManager $shareManager,
@@ -61,7 +63,7 @@ class MattermostAPIService {
 	 * @return string
 	 */
 	public function getMattermostUrl(string $userId): string {
-		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$adminOauthUrl = $this->appConfig->getAppValueString('oauth_instance_url', lazy: true);
 		return $this->config->getUserValue($userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 	}
 
@@ -573,10 +575,10 @@ class MattermostAPIService {
 	 * @throws \OCP\PreConditionNotMetException
 	 */
 	private function refreshToken(string $userId): bool {
-		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
-		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
+		$adminOauthUrl = $this->appConfig->getAppValueString('oauth_instance_url', lazy: true);
+		$clientID = $this->appConfig->getAppValueString('client_id', lazy: true);
 		$clientID = $clientID === '' ? '' : $this->crypto->decrypt($clientID);
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+		$clientSecret = $this->appConfig->getAppValueString('client_secret', lazy: true);
 		$clientSecret = $clientSecret === '' ? '' : $this->crypto->decrypt($clientSecret);
 		$redirect_uri = $this->config->getUserValue($userId, Application::APP_ID, 'redirect_uri');
 		$refreshToken = $this->config->getUserValue($userId, Application::APP_ID, 'refresh_token');

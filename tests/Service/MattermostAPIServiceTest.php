@@ -11,6 +11,7 @@ use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\Http\Client\IClientService;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
@@ -29,6 +30,8 @@ class MattermostAPIServiceTest extends TestCase {
 	private $logger;
 	/** @var IL10N|MockObject */
 	private $l10n;
+	/** @var IAppConfig|MockObject */
+	private $appConfig;
 	/** @var IConfig|MockObject */
 	private $config;
 	/** @var IRootFolder|MockObject */
@@ -52,6 +55,7 @@ class MattermostAPIServiceTest extends TestCase {
 		$this->logger = $this->createMock(LoggerInterface::class);
 		$this->l10n = $this->createMock(IL10N::class);
 		$this->config = $this->createMock(IConfig::class);
+		$this->appConfig = $this->createMock(IConfig::class);
 		$this->rootFolder = $this->createMock(IRootFolder::class);
 		$this->shareManager = $this->createMock(ShareManager::class);
 		$this->urlGenerator = $this->createMock(IURLGenerator::class);
@@ -62,6 +66,7 @@ class MattermostAPIServiceTest extends TestCase {
 		$this->service = new MattermostAPIService(
 			$this->logger,
 			$this->l10n,
+			$this->appConfig,
 			$this->config,
 			$this->rootFolder,
 			$this->shareManager,
@@ -573,7 +578,7 @@ class MattermostAPIServiceTest extends TestCase {
 	}
 
 	private function setupCommonMocks(bool $mattermostTokenValid) {
-		$this->config->method('getAppValue')->with(Application::APP_ID, 'oauth_instance_url')->willReturn(static::MATTERMOST_URL);
+		$this->appConfig->method('getAppValueString')->with('oauth_instance_url')->willReturn(static::MATTERMOST_URL);
 		$this->config->method('getUserValue')->willReturnCallback(function ($userId, $appId, $key) use ($mattermostTokenValid) {
 			switch ($key) {
 				case 'url':
@@ -689,7 +694,7 @@ class MattermostAPIServiceTest extends TestCase {
 		$userFolder = $this->createMock(Folder::class);
 		$share = $this->createMock(IShare::class);
 
-		$this->config->method('getAppValue')->with(Application::APP_ID, 'oauth_instance_url')->willReturn(static::MATTERMOST_URL);
+		$this->appConfig->method('getAppValueString')->with('oauth_instance_url')->willReturn(static::MATTERMOST_URL);
 		$this->urlGenerator->method('linkToRoute')->with('files_sharing.Share.showShare', ['token' => $shareToken]);
 		$this->urlGenerator->method('getAbsoluteURL')->willReturn($publicLink);
 

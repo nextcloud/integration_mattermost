@@ -24,6 +24,7 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IRequest;
@@ -37,6 +38,7 @@ class ConfigController extends Controller {
 		string $appName,
 		IRequest $request,
 		private IConfig $config,
+		private IAppConfig $appConfig,
 		private IURLGenerator $urlGenerator,
 		private IL10N $l,
 		private IInitialState $initialStateService,
@@ -52,14 +54,14 @@ class ConfigController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function isUserConnected(): DataResponse {
-		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$adminOauthUrl = $this->appConfig->getAppValueString('oauth_instance_url', lazy: true);
 		$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
 
-		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+		$clientID = $this->appConfig->getAppValueString('client_id', lazy: true);
+		$clientSecret = $this->appConfig->getAppValueString('client_secret', lazy: true);
 		$oauthPossible = $clientID !== '' && $clientSecret !== '' && $mattermostUrl === $adminOauthUrl;
-		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
+		$usePopup = $this->appConfig->getAppValueString('use_popup', '0', lazy: true);
 
 		return new DataResponse([
 			'connected' => $mattermostUrl && $token,
@@ -75,7 +77,7 @@ class ConfigController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function getFilesToSend(): DataResponse {
-		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$adminOauthUrl = $this->appConfig->getAppValueString('oauth_instance_url', lazy: true);
 		$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 		$token = $this->config->getUserValue($this->userId, Application::APP_ID, 'token');
 		$isConnected = $mattermostUrl && $token;
@@ -260,7 +262,7 @@ class ConfigController extends Controller {
 			if (in_array($key, ['client_id', 'client_secret', 'oauth_instance_url'], true)) {
 				return new DataResponse([], Http::STATUS_BAD_REQUEST);
 			}
-			$this->config->setAppValue(Application::APP_ID, $key, $value);
+			$this->appConfig->setAppValueString( $key, $value, lazy: true);
 		}
 		return new DataResponse([]);
 	}
@@ -275,10 +277,9 @@ class ConfigController extends Controller {
 	public function setSensitiveAdminConfig(array $values): DataResponse {
 		foreach ($values as $key => $value) {
 			if (in_array($key, ['client_id', 'client_secret'], true) && $value !== '') {
-				$encryptedValue = $this->crypto->encrypt($value);
-				$this->config->setAppValue(Application::APP_ID, $key, $encryptedValue);
+				$this->appConfig->setAppValueString( $key, $value, sensitive: true, lazy: true);
 			} else {
-				$this->config->setAppValue(Application::APP_ID, $key, $value);
+				$this->appConfig->setAppValueString( $key, $value, lazy: true);
 			}
 		}
 		return new DataResponse([]);
@@ -308,15 +309,15 @@ class ConfigController extends Controller {
 	#[NoCSRFRequired]
 	public function oauthRedirect(string $code = '', string $state = ''): RedirectResponse {
 		$configState = $this->config->getUserValue($this->userId, Application::APP_ID, 'oauth_state');
-		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
+		$clientID = $this->appConfig->getAppValueString('client_id', lazy: true);
 		$clientID = $clientID === '' ? '' : $this->crypto->decrypt($clientID);
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
+		$clientSecret = $this->appConfig->getAppValueString( 'client_secret', lazy: true);
 		$clientSecret = $clientSecret === '' ? '' : $this->crypto->decrypt($clientSecret);
 
 		// anyway, reset state
 		$this->config->deleteUserValue($this->userId, Application::APP_ID, 'oauth_state');
 
-		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$adminOauthUrl = $this->appConfig->getAppValueString( 'oauth_instance_url', lazy: true);
 		$mattermostUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 
 		if ($mattermostUrl !== $adminOauthUrl) {
@@ -343,7 +344,7 @@ class ConfigController extends Controller {
 				$encryptedRefreshToken = $refreshToken === '' ? '' : $this->crypto->encrypt($refreshToken);
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $encryptedRefreshToken);
 				$userInfo = $this->storeUserInfo();
-				$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0') === '1';
+				$usePopup = $this->appConfig->getAppValueString('use_popup', '0', lazy: true) === '1';
 				if ($usePopup) {
 					return new RedirectResponse(
 						$this->urlGenerator->linkToRoute('integration_mattermost.config.popupSuccessPage', [

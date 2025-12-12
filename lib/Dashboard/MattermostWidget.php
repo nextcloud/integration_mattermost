@@ -25,6 +25,7 @@
 namespace OCA\Mattermost\Dashboard;
 
 use OCA\Mattermost\AppInfo\Application;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\Dashboard\IWidget;
 use OCP\IConfig;
@@ -36,6 +37,7 @@ class MattermostWidget implements IWidget {
 
 	public function __construct(
 		private IL10N $l10n,
+		private IAppConfig $appConfig,
 		private IConfig $config,
 		private IURLGenerator $url,
 		private IInitialState $initialStateService,
@@ -82,12 +84,12 @@ class MattermostWidget implements IWidget {
 	 * @inheritDoc
 	 */
 	public function load(): void {
-		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
-		$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+		$clientID = $this->appConfig->getAppValueString('client_id', lazy: true);
+		$clientSecret = $this->appConfig->getAppValueString('client_secret', lazy: true);
+		$adminOauthUrl = $this->appConfig->getAppValueString('oauth_instance_url', lazy: true);
 		$userMMUrl = $this->config->getUserValue($this->userId, Application::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 		$oauthPossible = $clientID !== '' && $clientSecret !== '' && $userMMUrl === $adminOauthUrl;
-		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
+		$usePopup = $this->appConfig->getAppValueString('use_popup', '0', lazy: true);
 
 		$userConfig = [
 			'oauth_is_possible' => $oauthPossible,
