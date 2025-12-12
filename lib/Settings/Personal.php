@@ -39,11 +39,7 @@ class Personal implements ISettings {
 
 		// for OAuth
 		$clientID = $this->appConfig->getAppValueString('client_id', lazy: true);
-		$clientID = $clientID === '' ? '' : $this->crypto->decrypt($clientID);
 		$clientSecret = $this->appConfig->getAppValueString('client_secret', lazy: true);
-		if ($clientSecret !== '') {
-			$clientSecret = $this->crypto->decrypt($clientSecret);
-		}
 		$oauthUrl = $this->appConfig->getAppValueString('oauth_instance_url', lazy: true);
 		$usePopup = $this->appConfig->getAppValueString('use_popup', '0', lazy: true);
 
