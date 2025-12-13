@@ -23,7 +23,7 @@ OC.L10N.register(
     "Client ID" : "Kliendi ID",
     "ID of your Slack application" : "Sinu Slacki rakenduse tunnus",
     "Application secret" : "Rakenduse saladus",
-    "Client secret of your Slack application" : "Sinu Slack rakenduse salasõna",
+    "Client secret of your Slack application" : "Sinu Slacki rakenduse salasõna",
     "Use a popup to authenticate" : "Kasuta autentimiseks hüpikakent",
     "Successfully connected to Slack!" : "Edukalt ühendatud Slackiga!",
     "Error connecting to Slack:" : "Viga ühenduse loomisel Slackiga:",
