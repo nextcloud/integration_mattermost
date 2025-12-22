@@ -56,6 +56,7 @@ OC.L10N.register(
     "_Send link to Slack_::_Send links to Slack_" : ["Αποστολή συνδέσμου στο Slack","Αποστολή συνδέσμων στο Slack"],
     "_Send file_::_Send files_" : ["Αποστολή αρχείου","Αποστολή αρχείων"],
     "_Send link_::_Send links_" : ["Αποστολή συνδέσμου","Αποστολή συνδέσμων"],
+    "Confirm" : "Επιβεβαίωση",
     "Send files to Slack" : "Αποστολή αρχείων στο Slack",
     "Failed to send {name} to {channelName} on Slack" : "Αποτυχία αποστολής του {name} στο {channelName} στο Slack",
     "_A link to {fileName} was sent to {channelName}_::_All of the {number} links were sent to {channelName}_" : ["Ένας σύνδεσμος για το {fileName} εστάλη στο {channelName}","Όλοι οι {number} σύνδεσμοι εστάλησαν στο {channelName}"],

@@ -15,7 +15,7 @@ OC.L10N.register(
     "Slack admin options saved" : "Slacki haldusseadistused on salvestatud",
     "Failed to save Slack admin options" : "Slacki haldusseadistuste salvestamine ei õnnestunud",
     "Slack integration" : "Slacki lõiming",
-    "To allow your Nextcloud users to use OAuth to authenticate to the Slack app, and set the ID and secret here." : "Et selle Nextcloudi serveru kasutajad võiks Slacki rakenduse autentimiseks kasutada OAuthi sisesta palun siin klienditunnus ja kliendisaladus.",
+    "To allow your Nextcloud users to use OAuth to authenticate to the Slack app, and set the ID and secret here." : "Et selle Nextcloudi serveri kasutajad võiks Slacki rakenduse autentimiseks kasutada OAuthi sisesta palun siin klienditunnus ja kliendisaladus.",
     "Link to create a Slack application" : "Slacki rakenduse loomiseks vajalik link",
     "Make sure you set the \"Redirect URI\" in the \"OAuth & Permissions\" section of your Slack app settings to" : "Palun kontrolli, et „Ümbersuunamise aadress“ oleks Slacki rakenduse „OAuth ja õigused“ eelistustes seadistatud kui",
     "Put the \"Client ID\" and \"Client secret\" below. Your Nextcloud users will then see a \"Connect to Slack\" button in their personal settings." : "Sisesta alljärgnevalt klienditunnus ja kliendisaladus. Seejärel näevad selle Nextcloudi serveri kasutajad oma isiklikes seadistustes nuppu „Ühenda Slackiga“.",

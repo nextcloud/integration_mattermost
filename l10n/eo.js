@@ -7,6 +7,7 @@ OC.L10N.register(
     "Set expiration date" : "Uzi limdaton",
     "Comment" : "Komento",
     "Cancel" : "Cancel",
+    "Confirm" : "Konfirmi",
     "Connect" : "Konekti"
 },
 "nplurals=2; plural=(n != 1);");
