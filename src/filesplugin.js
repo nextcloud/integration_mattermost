@@ -22,8 +22,7 @@ import {
 import { subscribe } from '@nextcloud/event-bus'
 import MattermostIcon from '../img/app-dark.svg'
 
-import Vue from 'vue'
-import './bootstrap.js'
+import { createApp } from 'vue'
 
 const DEBUG = false
 
@@ -340,13 +339,17 @@ const modalElement = document.createElement('div')
 modalElement.id = modalId
 document.body.append(modalElement)
 
-const View = Vue.extend(SendFilesModal)
-OCA.Mattermost.MattermostSendModalVue = new View().$mount(modalElement)
+const app = createApp(SendFilesModal)
+app.mixin({ methods: { t, n } })
+OCA.Mattermost.MattermostSendModalVue = app.mount(modalElement)
 
-OCA.Mattermost.MattermostSendModalVue.$on('closed', () => {
+modalElement.addEventListener('closed', () => {
 	if (DEBUG) console.debug('[Mattermost] modal closed')
 })
-OCA.Mattermost.MattermostSendModalVue.$on('validate', ({ filesToSend, channelId, channelName, type, comment, permission, expirationDate, password }) => {
+
+modalElement.addEventListener('validate', (data) => {
+	const { filesToSend, channelId, channelName, type, comment, permission, expirationDate, password } = data.detail
+
 	OCA.Mattermost.filesToSend = filesToSend
 	if (type === SEND_TYPE.public_link.id) {
 		sendPublicLinks(channelId, channelName, comment, permission, expirationDate, password)

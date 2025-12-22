@@ -4,79 +4,80 @@
 			<MattermostIcon class="icon" />
 			{{ t('integration_mattermost', 'Mattermost integration') }}
 		</h2>
-		<p class="settings-hint">
-			{{ t('integration_mattermost', 'If you want to allow your Nextcloud users to use OAuth to authenticate to a Mattermost instance of your choice, create an application in your Mattermost settings and set the ID and secret here.') }}
-		</p>
-		<br>
-		<p class="settings-hint">
-			<InformationOutlineIcon :size="24" class="icon" />
-			{{ t('integration_mattermost', 'Make sure you set the "Redirect URI" to') }}
-		</p>
-		<strong>{{ redirect_uri }}</strong>
-		<br><br>
-		<p class="settings-hint">
-			{{ t('integration_mattermost', 'Put the "Application ID" and "Application secret" below. Your Nextcloud users will then see a "Connect to Mattermost" button in their personal settings if they select the Mattermost instance defined here.') }}
-		</p>
 		<div id="mattermost-content">
-			<div class="line">
-				<label for="mattermost-oauth-instance">
-					<EarthIcon :size="20" class="icon" />
-					{{ t('integration_mattermost', 'OAuth app instance address') }}
-				</label>
-				<input id="mattermost-oauth-instance"
-					v-model="state.oauth_instance_url"
-					type="text"
-					:placeholder="t('integration_mattermost', 'Instance address')"
-					@input="onInput">
-			</div>
-			<div class="line">
-				<label for="mattermost-client-id">
-					<KeyOutlineIcon :size="20" class="icon" />
-					{{ t('integration_mattermost', 'Application ID') }}
-				</label>
-				<input id="mattermost-client-id"
-					v-model="state.client_id"
-					type="password"
-					:readonly="readonly"
-					:placeholder="t('integration_mattermost', 'ID of your Mattermost application')"
-					@input="onInput"
-					@focus="readonly = false">
-			</div>
-			<div class="line">
-				<label for="mattermost-client-secret">
-					<KeyOutlineIcon :size="20" class="icon" />
-					{{ t('integration_mattermost', 'Application secret') }}
-				</label>
-				<input id="mattermost-client-secret"
-					v-model="state.client_secret"
-					type="password"
-					:readonly="readonly"
-					:placeholder="t('integration_mattermost', 'Client secret of your Mattermost application')"
-					@focus="readonly = false"
-					@input="onInput">
-			</div>
-			<NcCheckboxRadioSwitch
-				:checked.sync="state.use_popup"
-				@update:checked="onUsePopupChanged">
-				{{ t('integration_mattermost', 'Use a popup to authenticate') }}
-			</NcCheckboxRadioSwitch>
-			<NcCheckboxRadioSwitch
-				:checked.sync="state.navlink_default"
-				@update:checked="onNavlinkDefaultChanged">
-				{{ t('integration_mattermost', 'Enable navigation link as default for all users') }}
-			</NcCheckboxRadioSwitch>
+			<NcNoteCard type="info">
+				{{ t('integration_mattermost', 'If you want to allow your Nextcloud users to use OAuth to authenticate to a Mattermost instance of your choice, create an application in your Mattermost settings and set the ID and secret here.') }}
+				{{ t('integration_mattermost', 'Make sure you set the "Redirect URI" to') }}
+				<br>
+				<strong>{{ redirect_uri }}</strong>
+				<br>
+				{{ t('integration_mattermost', 'Put the "Application ID" and "Application secret" below. Your Nextcloud users will then see a "Connect to Mattermost" button in their personal settings if they select the Mattermost instance defined here.') }}
+			</NcNoteCard>
+			<NcTextField
+				v-model="state.oauth_instance_url"
+				:label="t('integration_mattermost', 'OAuth app instance address')"
+				:placeholder="t('integration_mattermost', 'Instance address')"
+				:show-trailing-button="!!state.oauth_instance_url"
+				@trailing-button-click="state.oauth_instance_url = ''; onInput()"
+				@update:model-value="onInput">
+				<template #icon>
+					<EarthIcon :size="20" />
+				</template>
+			</NcTextField>
+			<NcTextField
+				v-model="state.client_id"
+				type="password"
+				:label="t('integration_mattermost', 'Application ID')"
+				:placeholder="t('integration_mattermost', 'ID of your Mattermost application')"
+				:readonly="readonly"
+				:show-trailing-button="!!state.client_id"
+				@trailing-button-click="state.client_id = ''; onInput()"
+				@focus="readonly = false"
+				@update:model-value="onInput">
+				<template #icon>
+					<KeyOutlineIcon :size="20" />
+				</template>
+			</NcTextField>
+			<NcTextField
+				v-model="state.client_secret"
+				type="password"
+				:label="t('integration_mattermost', 'Application secret')"
+				:placeholder="t('integration_mattermost', 'Application secret of your Mattermost application')"
+				:readonly="readonly"
+				:show-trailing-button="!!state.client_secret"
+				@trailing-button-click="state.client_secret = ''; onInput()"
+				@focus="readonly = false"
+				@update:model-value="onInput">
+				<template #icon>
+					<KeyOutlineIcon :size="20" />
+				</template>
+			</NcTextField>
+			<NcFormBox>
+				<NcFormBoxSwitch
+					v-model="state.use_popup"
+					@update:model-value="onUsePopupChanged">
+					{{ t('integration_mattermost', 'Use a popup to authenticate') }}
+				</NcFormBoxSwitch>
+				<NcFormBoxSwitch
+					v-model="state.navlink_default"
+					@update:model-value="onNavlinkDefaultChanged">
+					{{ t('integration_mattermost', 'Enable navigation link as default for all users') }}
+				</NcFormBoxSwitch>
+			</NcFormBox>
 		</div>
 	</div>
 </template>
 
 <script>
-import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue'
 import EarthIcon from 'vue-material-design-icons/Earth.vue'
 import KeyOutlineIcon from 'vue-material-design-icons/KeyOutline.vue'
 
 import MattermostIcon from './icons/MattermostIcon.vue'
 
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import NcFormBox from '@nextcloud/vue/components/NcFormBox'
+import NcFormBoxSwitch from '@nextcloud/vue/components/NcFormBoxSwitch'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
+import NcTextField from '@nextcloud/vue/components/NcTextField'
 
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
@@ -91,8 +92,10 @@ export default {
 
 	components: {
 		MattermostIcon,
-		NcCheckboxRadioSwitch,
-		InformationOutlineIcon,
+		NcNoteCard,
+		NcTextField,
+		NcFormBox,
+		NcFormBoxSwitch,
 		EarthIcon,
 		KeyOutlineIcon,
 	},
@@ -158,31 +161,16 @@ export default {
 #mattermost_prefs {
 	#mattermost-content {
 		margin-left: 40px;
-	}
-
-	h2,
-	.line,
-	.settings-hint {
 		display: flex;
-		align-items: center;
-		.icon {
-			margin-right: 4px;
-		}
+		flex-direction: column;
+		gap: 8px;
+		max-width: 800px;
 	}
 
-	h2 .icon {
-		margin-right: 8px;
-	}
-
-	.line {
-		> label {
-			width: 300px;
-			display: flex;
-			align-items: center;
-		}
-		> input {
-			width: 300px;
-		}
+	h2 {
+		display: flex;
+		justify-content: start;
+		gap: 8px;
 	}
 }
 </style>
