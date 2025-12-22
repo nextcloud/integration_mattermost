@@ -8,8 +8,7 @@
 			:value="value"
 			@change="onUpdateValue(value)">
 		<label :for="name + '-' + value">
-			<span v-if="$scopedSlots.icon"
-				class="option-icon">
+			<span class="option-icon">
 				<slot name="icon" />
 			</span>
 			<span class="option-title">

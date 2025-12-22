@@ -136,9 +136,9 @@
 						:value="selectedPermission"
 						class="radios"
 						@update:value="selectedPermission = $event">
-						<!--template #icon="{option}">
+						<template #icon="{option}">
 							{{ option.label }}
-						</template-->
+						</template>
 						<!--template-- #label="{option}">
 							{{ option.label + 'lala' }}
 						</template-->
