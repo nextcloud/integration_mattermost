@@ -26,6 +26,7 @@ webpackConfig.plugins.push(
 		extensions: ['js', 'vue'],
 		files: 'src',
 		failOnError: !isDev,
+		configType: 'eslintrc',
 	})
 )
 webpackConfig.plugins.push(

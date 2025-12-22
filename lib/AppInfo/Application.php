@@ -23,6 +23,7 @@ use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -48,12 +49,14 @@ class Application extends App implements IBootstrap {
 	 * @var mixed
 	 */
 	private $config;
+	private $appConfig;
 
 	public function __construct(array $urlParams = []) {
 		parent::__construct(self::APP_ID, $urlParams);
 
 		$container = $this->getContainer();
 		$this->config = $container->get(IConfig::class);
+		$this->appConfig = $container->get(IAppConfig::class);
 	}
 
 	public function register(IRegistrationContext $context): void {
@@ -90,9 +93,9 @@ class Application extends App implements IBootstrap {
 		if ($user !== null) {
 			$userId = $user->getUID();
 			$container = $this->getContainer();
-			$navlinkDefault = $this->config->getAppValue(Application::APP_ID, 'navlink_default');
+			$navlinkDefault = $this->appConfig->getAppValueString('navlink_default', lazy: true);
 			if ($this->config->getUserValue($userId, self::APP_ID, 'navigation_enabled', $navlinkDefault) === '1') {
-				$adminOauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
+				$adminOauthUrl = $this->appConfig->getAppValueString('oauth_instance_url', lazy: true);
 				$mattermostUrl = $this->config->getUserValue($userId, self::APP_ID, 'url', $adminOauthUrl) ?: $adminOauthUrl;
 				if ($mattermostUrl === '') {
 					return;

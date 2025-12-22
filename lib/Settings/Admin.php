@@ -4,17 +4,15 @@ namespace OCA\Mattermost\Settings;
 
 use OCA\Mattermost\AppInfo\Application;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\AppFramework\Services\IInitialState;
-use OCP\IConfig;
-use OCP\Security\ICrypto;
 use OCP\Settings\ISettings;
 
 class Admin implements ISettings {
 
 	public function __construct(
-		private IConfig $config,
+		private IAppConfig $appConfig,
 		private IInitialState $initialStateService,
-		private ICrypto $crypto,
 	) {
 	}
 
@@ -22,14 +20,12 @@ class Admin implements ISettings {
 	 * @return TemplateResponse
 	 */
 	public function getForm(): TemplateResponse {
-		$clientID = $this->config->getAppValue(Application::APP_ID, 'client_id');
-		$clientID = $clientID === '' ? '' : $this->crypto->decrypt($clientID);
-		$clientSecret = $this->config->getAppValue(Application::APP_ID, 'client_secret');
-		$clientSecret = $clientSecret === '' ? '' : $this->crypto->decrypt($clientSecret);
+		$clientID = $this->appConfig->getAppValueString('client_id', lazy: true);
+		$clientSecret = $this->appConfig->getAppValueString('client_secret', lazy: true);
 
-		$oauthUrl = $this->config->getAppValue(Application::APP_ID, 'oauth_instance_url');
-		$usePopup = $this->config->getAppValue(Application::APP_ID, 'use_popup', '0');
-		$navlinkDefault = $this->config->getAppValue(Application::APP_ID, 'navlink_default', '0');
+		$oauthUrl = $this->appConfig->getAppValueString('oauth_instance_url', lazy: true);
+		$usePopup = $this->appConfig->getAppValueString('use_popup', '0', lazy: true);
+		$navlinkDefault = $this->appConfig->getAppValueString('navlink_default', '0', lazy: true);
 
 		$adminConfig = [
 			'client_id' => $clientID,
