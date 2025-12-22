@@ -60,6 +60,7 @@
 						<LockOutlineIcon :size="20" />
 					</template>
 				</NcTextField>
+				<br>
 				<NcButton v-if="!connected"
 					id="mattermost-connect"
 					:disabled="loading === true || (!showOAuth && !state.token && !(login && password))"
@@ -70,7 +71,7 @@
 					</template>
 					{{ t('integration_mattermost', 'Connect to Mattermost') }}
 				</NcButton>
-				<div v-if="connected" class="line">
+				<div v-else class="line">
 					<label class="mattermost-connected">
 						<CheckIcon :size="20" class="icon" />
 						{{ t('integration_mattermost', 'Connected as {user}', { user: connectedDisplayName }) }}

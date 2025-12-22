@@ -15,10 +15,13 @@ import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { oauthConnect, oauthConnectConfirmDialog, gotoSettingsConfirmDialog, SEND_TYPE } from './utils.js'
+import { registerFileAction, Permission, FileAction } from '@nextcloud/files'
 import {
-	registerFileAction, Permission, FileAction,
-	davGetClient, davGetDefaultPropfind, davResultToNode, davRootPath,
-} from '@nextcloud/files'
+	getClient,
+	getDefaultPropfind,
+	resultToNode,
+	defaultRootPath,
+} from '@nextcloud/files/dav'
 import { subscribe } from '@nextcloud/event-bus'
 import MattermostIcon from '../img/app-dark.svg'
 
@@ -52,12 +55,12 @@ function openChannelSelector(files) {
 
 const sendAction = new FileAction({
 	id: 'mattermostSend',
-	displayName: (nodes) => {
+	displayName: ({ nodes }) => {
 		return nodes.length > 1
 			? t('integration_mattermost', 'Send files to Mattermost')
 			: t('integration_mattermost', 'Send file to Mattermost')
 	},
-	enabled(nodes, view) {
+	enabled({ nodes, view }) {
 		return !OCA.Mattermost.actionIgnoreLists.includes(view.id)
 			&& nodes.length > 0
 			&& !nodes.some(({ permissions }) => (permissions & Permission.READ) === 0)
@@ -65,11 +68,11 @@ const sendAction = new FileAction({
 			// && nodes.every(({ mime }) => mime === 'application/some+type')
 	},
 	iconSvgInline: () => MattermostIcon,
-	async exec(node) {
-		sendSelectedNodes([node])
+	async exec({ nodes }) {
+		sendSelectedNodes([nodes[0]])
 		return null
 	},
-	async execBatch(nodes) {
+	async execBatch({ nodes }) {
 		sendSelectedNodes(nodes)
 		return nodes.map(_ => null)
 	},
@@ -123,13 +126,13 @@ async function sendFileIdsAfterOAuth(fileIdsStr, currentDir) {
 	// this is only true after an OAuth connection initated from a file action
 	if (fileIdsStr) {
 		// get files info
-		const client = davGetClient()
-		const results = await client.getDirectoryContents(`${davRootPath}${currentDir}`, {
+		const client = getClient()
+		const results = await client.getDirectoryContents(`${defaultRootPath}${currentDir}`, {
 			details: true,
 			// Query all required properties for a Node
-			data: davGetDefaultPropfind(),
+			data: getDefaultPropfind(),
 		})
-		const nodes = results.data.map((r) => davResultToNode(r))
+		const nodes = results.data.map((r) => resultToNode(r))
 
 		const fileIds = fileIdsStr.split(',')
 		const files = fileIds.map((fid) => {
