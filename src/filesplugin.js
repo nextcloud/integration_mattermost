@@ -13,12 +13,17 @@ import axios from '@nextcloud/axios'
 import { showError, showSuccess } from '@nextcloud/dialogs'
 import { subscribe } from '@nextcloud/event-bus'
 import {
-	davGetClient, davGetDefaultPropfind, davResultToNode, davRootPath,
 	FileAction,
 	FileType,
 	Permission,
 	registerFileAction,
 } from '@nextcloud/files'
+import {
+	getClient,
+	getDefaultPropfind,
+	resultToNode,
+	defaultRootPath,
+} from '@nextcloud/files/dav'
 import { translatePlural as n, translate as t } from '@nextcloud/l10n'
 import moment from '@nextcloud/moment'
 import { generateUrl } from '@nextcloud/router'
@@ -60,12 +65,12 @@ function openChannelSelector(files) {
 
 const sendAction = new FileAction({
 	id: 'slackSend',
-	displayName: (nodes) => {
+	displayName: ({ nodes }) => {
 		return nodes.length > 1
 			? t('integration_slack', 'Send files to Slack')
 			: t('integration_slack', 'Send file to Slack')
 	},
-	enabled(nodes, view) {
+	enabled({ nodes, view }) {
 		return !OCA.Slack.actionIgnoreLists.includes(view.id)
 			&& nodes.length > 0
 			&& !nodes.some(({ permissions }) => (permissions & Permission.READ) === 0)
@@ -73,11 +78,11 @@ const sendAction = new FileAction({
 		// && nodes.every(({ mime }) => mime === 'application/some+type')
 	},
 	iconSvgInline: () => SlackIcon,
-	async exec(node) {
-		await sendSelectedNodes([node])
+	async exec({ nodes }) {
+		await sendSelectedNodes([nodes[0]])
 		return null
 	},
-	async execBatch(nodes) {
+	async execBatch({ nodes }) {
 		await sendSelectedNodes(nodes)
 		return nodes.map(_ => null)
 	},
@@ -131,13 +136,13 @@ async function sendFileIdsAfterOAuth(fileIdsStr, currentDir) {
 	// this is only true after an OAuth connection initated from a file action
 	if (fileIdsStr) {
 		// get files info
-		const client = davGetClient()
-		const results = await client.getDirectoryContents(`${davRootPath}${currentDir}`, {
+		const client = getClient()
+		const results = await client.getDirectoryContents(`${defaultRootPath}${currentDir}`, {
 			details: true,
 			// Query all required properties for a Node
-			data: davGetDefaultPropfind(),
+			data: getDefaultPropfind(),
 		})
-		const nodes = results.data.map((r) => davResultToNode(r))
+		const nodes = results.data.map((r) => resultToNode(r))
 
 		const fileIds = fileIdsStr.split(',')
 		const files = fileIds.map((fid) => {
