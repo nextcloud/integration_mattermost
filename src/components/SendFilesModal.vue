@@ -118,7 +118,7 @@
 					<div>
 						<NcCheckboxRadioSwitch v-for="(type, key) in SEND_TYPE"
 							:key="key"
-							:checked.sync="sendType"
+							v-model="sendType"
 							:value="type.id"
 							name="send_type_radio"
 							type="radio">
@@ -136,16 +136,17 @@
 						:value="selectedPermission"
 						class="radios"
 						@update:value="selectedPermission = $event">
-						<!--template #icon="{option}">
+						<template #icon="{option}">
 							{{ option.label }}
-						</template-->
+						</template>
 						<!--template-- #label="{option}">
 							{{ option.label + 'lala' }}
 						</template-->
 					</RadioElementSet>
 					<div v-show="sendType === SEND_TYPE.public_link.id"
 						class="expiration-field">
-						<NcCheckboxRadioSwitch :checked.sync="expirationEnabled">
+						<NcCheckboxRadioSwitch
+							v-model="expirationEnabled">
 							{{ t('integration_mattermost', 'Set expiration date') }}
 						</NcCheckboxRadioSwitch>
 						<div class="spacer" />
@@ -158,7 +159,8 @@
 					</div>
 					<div v-show="sendType === SEND_TYPE.public_link.id"
 						class="password-field">
-						<NcCheckboxRadioSwitch :checked.sync="passwordEnabled">
+						<NcCheckboxRadioSwitch
+							v-model="passwordEnabled">
 							{{ t('integration_mattermost', 'Set link password') }}
 						</NcCheckboxRadioSwitch>
 						<div class="spacer" />
@@ -195,7 +197,7 @@
 						@click="closeModal">
 						{{ t('integration_mattermost', 'Cancel') }}
 					</NcButton>
-					<NcButton type="primary"
+					<NcButton variant="primary"
 						:class="{ loading, okButton: true }"
 						:disabled="!canValidate"
 						@click="onSendClick">
@@ -214,14 +216,14 @@
 </template>
 
 <script>
-import NcAvatar from '@nextcloud/vue/dist/Components/NcAvatar.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
-import NcDateTimePicker from '@nextcloud/vue/dist/Components/NcDateTimePicker.js'
-import NcHighlight from '@nextcloud/vue/dist/Components/NcHighlight.js'
-import NcLoadingIcon from '@nextcloud/vue/dist/Components/NcLoadingIcon.js'
-import NcModal from '@nextcloud/vue/dist/Components/NcModal.js'
-import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
+import NcAvatar from '@nextcloud/vue/components/NcAvatar'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
+import NcDateTimePicker from '@nextcloud/vue/components/NcDateTimePicker'
+import NcHighlight from '@nextcloud/vue/components/NcHighlight'
+import NcLoadingIcon from '@nextcloud/vue/components/NcLoadingIcon'
+import NcModal from '@nextcloud/vue/components/NcModal'
+import NcSelect from '@nextcloud/vue/components/NcSelect'
 
 import AlertBoxOutlineIcon from 'vue-material-design-icons/AlertBoxOutline.vue'
 import CheckCircleOutlineIcon from 'vue-material-design-icons/CheckCircleOutline.vue'
@@ -351,7 +353,7 @@ export default {
 		},
 		closeModal() {
 			this.show = false
-			this.$emit('closed')
+			this.$el.dispatchEvent(new CustomEvent('closed', { bubbles: true }))
 			this.reset()
 		},
 		setFiles(files) {
@@ -359,7 +361,7 @@ export default {
 		},
 		onSendClick() {
 			this.loading = true
-			this.$emit('validate', {
+			const _data = {
 				filesToSend: [...this.files],
 				channelId: this.selectedChannel.id,
 				channelName: this.selectedChannel.display_name,
@@ -368,7 +370,13 @@ export default {
 				permission: this.selectedPermission,
 				expirationDate: this.sendType === SEND_TYPE.public_link.id && this.expirationEnabled ? this.expirationDate : null,
 				password: this.sendType === SEND_TYPE.public_link.id && this.passwordEnabled ? this.password : null,
-			})
+			}
+			this.$el.dispatchEvent(
+				new CustomEvent('validate', {
+					detail: _data,
+					bubbles: true,
+				}),
+			)
 		},
 		success() {
 			this.loading = false

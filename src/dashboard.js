@@ -17,12 +17,12 @@ __webpack_public_path__ = linkTo('integration_mattermost', 'js/') // eslint-disa
 
 document.addEventListener('DOMContentLoaded', () => {
 	OCA.Dashboard.register('mattermost_notifications', async (el, { widget }) => {
-		const { default: Vue } = await import(/* webpackChunkName: "dashboard-lazy" */'vue')
-		Vue.mixin({ methods: { t, n } })
+		const { createApp } = await import('vue')
 		const { default: Dashboard } = await import(/* webpackChunkName: "dashboard-lazy" */'./views/Dashboard.vue')
-		const View = Vue.extend(Dashboard)
-		new View({
-			propsData: { title: widget.title },
-		}).$mount(el)
+		const app = createApp(Dashboard, {
+			title: widget.title,
+		})
+		app.mixin({ methods: { t, n } })
+		app.mount(el)
 	})
 })

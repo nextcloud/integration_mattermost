@@ -47,9 +47,9 @@ import { generateUrl, imagePath } from '@nextcloud/router'
 import { showError } from '@nextcloud/dialogs'
 import { loadState } from '@nextcloud/initial-state'
 import moment from '@nextcloud/moment'
-import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
-import NcDashboardWidget from '@nextcloud/vue/dist/Components/NcDashboardWidget.js'
+import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcDashboardWidget from '@nextcloud/vue/components/NcDashboardWidget'
 
 import { oauthConnect, oauthConnectConfirmDialog } from '../utils.js'
 
@@ -141,7 +141,7 @@ export default {
 		},
 	},
 
-	beforeDestroy() {
+	beforeUnmount() {
 		document.removeEventListener('visibilitychange', this.changeWindowVisibility)
 	},
 

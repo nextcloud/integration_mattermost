@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-
 /**
  * Nextcloud - Mattermost
  *
@@ -11,9 +9,9 @@
  * @copyright Julien Veyssier 2022
  */
 
-import Vue from 'vue'
-import './bootstrap.js'
+import { createApp } from 'vue'
 import AdminSettings from './components/AdminSettings.vue'
 
-const VueAdminSettings = Vue.extend(AdminSettings)
-new VueAdminSettings().$mount('#mattermost_prefs')
+const app = createApp(AdminSettings)
+app.mixin({ methods: { t, n } })
+app.mount('#mattermost_prefs')

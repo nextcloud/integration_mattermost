@@ -4,184 +4,179 @@
 			<MattermostIcon class="icon" />
 			{{ t('integration_mattermost', 'Mattermost integration') }}
 		</h2>
-		<br>
 		<div id="mattermost-content">
 			<div id="mattermost-connect-block">
-				<p v-if="!showOAuth && !connected" class="settings-hint">
-					<InformationOutlineIcon :size="24" class="icon" />
+				<NcNoteCard v-if="!showOAuth && !connected"
+					type="info">
 					{{ t('integration_mattermost', 'If you are allowed to, you can create a personal access token in your Mattermost profile -> Security -> Personal Access Tokens.') }}
-				</p>
-				<p v-if="!showOAuth && !connected" class="settings-hint">
+					<br>
 					{{ t('integration_mattermost', 'You can connect with a personal token OR just with your login/password.') }}
-				</p>
-				<div class="line">
-					<label for="mattermost-url">
-						<EarthIcon :size="20" class="icon" />
-						{{ t('integration_mattermost', 'Mattermost instance address') }}
-					</label>
-					<input id="mattermost-url"
-						v-model="state.url"
-						type="text"
-						:disabled="connected === true"
-						:placeholder="t('integration_mattermost', 'Mattermost instance address')"
-						@input="onSensitiveInput">
-				</div>
-				<div v-show="showToken"
-					class="line">
-					<label for="mattermost-token">
-						<KeyOutlineIcon :size="20" class="icon" />
-						{{ t('integration_mattermost', 'Personal access token') }}
-					</label>
-					<input id="mattermost-token"
-						v-model="state.token"
-						type="password"
-						:disabled="connected === true"
-						:placeholder="t('integration_mattermost', 'Mattermost personal access token')"
-						@keyup.enter="onConnectClick">
-				</div>
-				<div v-show="showLoginPassword"
-					class="line">
-					<label
-						for="mattermost-login">
-						<AccountOutlineIcon :size="20" class="icon" />
-						{{ t('integration_mattermost', 'Login') }}
-					</label>
-					<input id="mattermost-login"
-						v-model="login"
-						type="text"
-						:placeholder="t('integration_mattermost', 'Mattermost login')"
-						@keyup.enter="onConnectClick">
-				</div>
-				<div v-show="showLoginPassword"
-					class="line">
-					<label
-						for="mattermost-password">
-						<LockOutlineIcon :size="20" class="icon" />
-						{{ t('integration_mattermost', 'Password') }}
-					</label>
-					<input id="mattermost-password"
-						v-model="password"
-						type="password"
-						:placeholder="t('integration_mattermost', 'Mattermost password')"
-						@keyup.enter="onConnectClick">
-				</div>
+				</NcNoteCard>
+				<NcTextField
+					v-model="state.url"
+					:label="t('integration_mattermost', 'Mattermost instance address')"
+					:placeholder="t('integration_mattermost', 'Mattermost instance address')"
+					:disabled="connected === true"
+					:show-trailing-button="!!state.url"
+					@trailing-button-click="state.url = ''; onSensitiveInput()"
+					@update:model-value="onSensitiveInput">
+					<template #icon>
+						<EarthIcon :size="20" />
+					</template>
+				</NcTextField>
+				<NcTextField v-show="showToken"
+					v-model="state.token"
+					type="password"
+					:label="t('integration_mattermost', 'Personal access token')"
+					:placeholder="t('integration_mattermost', 'Mattermost personal access token')"
+					:disabled="connected === true"
+					:show-trailing-button="!!state.token"
+					@trailing-button-click="state.token = ''"
+					@keyup.enter="onConnectClick">
+					<template #icon>
+						<KeyOutlineIcon :size="20" />
+					</template>
+				</NcTextField>
+				<NcTextField v-show="showLoginPassword"
+					v-model="login"
+					:label="t('integration_mattermost', 'Login')"
+					:placeholder="t('integration_mattermost', 'Mattermost login')"
+					:show-trailing-button="!!login"
+					@trailing-button-click="login = ''"
+					@keyup.enter="onConnectClick">
+					<template #icon>
+						<AccountOutlineIcon :size="20" />
+					</template>
+				</NcTextField>
+				<NcTextField v-show="showLoginPassword"
+					v-model="password"
+					type="password"
+					:label="t('integration_mattermost', 'Password')"
+					:placeholder="t('integration_mattermost', 'Mattermost password')"
+					:show-trailing-button="!!password"
+					@trailing-button-click="password = ''"
+					@keyup.enter="onConnectClick">
+					<template #icon>
+						<LockOutlineIcon :size="20" />
+					</template>
+				</NcTextField>
+				<br>
 				<NcButton v-if="!connected"
 					id="mattermost-connect"
 					:disabled="loading === true || (!showOAuth && !state.token && !(login && password))"
-					:class="{ loading }"
 					@click="onConnectClick">
 					<template #icon>
-						<OpenInNewIcon />
+						<NcLoadingIcon v-if="loading" />
+						<OpenInNewIcon v-else :size="20" />
 					</template>
 					{{ t('integration_mattermost', 'Connect to Mattermost') }}
 				</NcButton>
-				<div v-if="connected" class="line">
+				<div v-else class="line">
 					<label class="mattermost-connected">
 						<CheckIcon :size="20" class="icon" />
 						{{ t('integration_mattermost', 'Connected as {user}', { user: connectedDisplayName }) }}
 					</label>
 					<NcButton id="mattermost-rm-cred" @click="onLogoutClick">
 						<template #icon>
-							<CloseIcon />
+							<CloseIcon :size="20" />
 						</template>
 						{{ t('integration_mattermost', 'Disconnect from Mattermost') }}
 					</NcButton>
 				</div>
 			</div>
 			<br>
-			<NcCheckboxRadioSwitch
-				:checked.sync="state.file_action_enabled"
-				@update:checked="onCheckboxChanged($event, 'file_action_enabled')">
-				{{ t('integration_mattermost', 'Add file action to send files to Mattermost') }}
-			</NcCheckboxRadioSwitch>
-			<NcCheckboxRadioSwitch
-				:checked.sync="state.navigation_enabled"
-				@update:checked="onNavigationChange">
-				{{ t('integration_mattermost', 'Enable navigation link (link to Mattermost with a top menu item)') }}
-			</NcCheckboxRadioSwitch>
-			<div v-if="connected" id="mattermost-search-block">
-				<NcCheckboxRadioSwitch
-					:checked.sync="state.search_messages_enabled"
-					@update:checked="onSearchChange">
+			<NcFormBox>
+				<NcFormBoxSwitch
+					v-model="state.file_action_enabled"
+					@update:model-value="onCheckboxChanged($event, 'file_action_enabled')">
+					{{ t('integration_mattermost', 'Add file action to send files to Mattermost') }}
+				</NcFormBoxSwitch>
+				<NcFormBoxSwitch
+					v-model="state.navigation_enabled"
+					@update:model-value="onNavigationChange">
+					{{ t('integration_mattermost', 'Enable navigation link (link to Mattermost with a top menu item)') }}
+				</NcFormBoxSwitch>
+				<NcFormBoxSwitch v-if="connected"
+					v-model="state.search_messages_enabled"
+					@update:model-value="onSearchChange">
 					{{ t('integration_mattermost', 'Enable searching for messages') }}
-				</NcCheckboxRadioSwitch>
-				<br>
-				<p v-if="state.search_messages_enabled" class="settings-hint">
-					<InformationOutlineIcon :size="24" class="icon" />
-					{{ t('integration_mattermost', 'Warning, everything you type in the search bar will be sent to Mattermost.') }}
-				</p>
-			</div>
+				</NcFormBoxSwitch>
+			</NcFormBox>
+			<NcNoteCard v-if="connected && state.search_messages_enabled"
+				type="info">
+				{{ t('integration_mattermost', 'Warning, everything you type in the search bar will be sent to Mattermost.') }}
+			</NcNoteCard>
 			<br>
 			<div id="mattermost-webhooks-block">
-				<p class="settings-hint">
-					<InformationOutlineIcon :size="24" class="icon" />
+				<NcNoteCard type="info">
 					{{ t('integration_mattermost', 'If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks.') }}
 					{{ t('integration_mattermost', 'This section does not require to be connected to Mattermost from Nextcloud.') }}
 					<br>
 					{{ t('integration_mattermost', 'NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end.') }}
-				</p>
-				<NcCheckboxRadioSwitch
-					:checked.sync="state.webhooks_enabled"
+				</NcNoteCard>
+				<NcFormBoxSwitch
+					v-model="state.webhooks_enabled"
 					disabled
-					@update:checked="onCheckboxChanged($event, 'webhooks_enabled')">
+					@update:model-value="onCheckboxChanged($event, 'webhooks_enabled')">
 					{{ t('integration_mattermost', 'Enable webhooks') }}
-				</NcCheckboxRadioSwitch>
+				</NcFormBoxSwitch>
 				<div v-if="state.webhooks_enabled" id="webhook-fields">
-					<div class="line">
-						<label for="mattermost-cal-event-add">
-							<WebhookIcon :size="20" class="icon" />
-							{{ t('integration_mattermost', 'Calendar event created webhook URL') }}
-						</label>
-						<input id="mattermost-cal-event-add"
-							v-model="state.calendar_event_created_webhook"
-							type="text"
-							:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
-							@input="onInput">
-					</div>
-					<div class="line">
-						<label for="mattermost-cal-event-edit">
-							<WebhookIcon :size="20" class="icon" />
-							{{ t('integration_mattermost', 'Calendar event updated webhook URL') }}
-						</label>
-						<input id="mattermost-cal-event-edit"
-							v-model="state.calendar_event_updated_webhook"
-							type="text"
-							:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
-							@input="onInput">
-					</div>
-					<div class="line">
-						<label for="mattermost-daily-summary">
-							<WebhookIcon :size="20" class="icon" />
-							{{ t('integration_mattermost', 'Daily summary webhook URL') }}
-						</label>
-						<input id="mattermost-daily-summary"
-							v-model="state.daily_summary_webhook"
-							type="text"
-							:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
-							@input="onInput">
-					</div>
-					<div class="line">
-						<label for="mattermost-imminent-events">
-							<WebhookIcon :size="20" class="icon" />
-							{{ t('integration_mattermost', 'Upcoming events webhook URL') }}
-						</label>
-						<input id="mattermost-imminent-events"
-							v-model="state.imminent_events_webhook"
-							type="text"
-							:placeholder="t('integration_mattermost', 'https://my.mattermost.org/webhook...')"
-							@input="onInput">
-					</div>
-					<div class="line">
-						<label for="mattermost-webhook-secret">
-							<KeyOutlineIcon :size="20" class="icon" />
-							{{ t('integration_mattermost', 'Webhook secret') }}
-						</label>
-						<input id="mattermost-webhook-secret"
-							v-model="state.webhook_secret"
-							type="password"
-							:placeholder="t('integration_mattermost', 'secret')"
-							@input="onInput">
-					</div>
+					<NcTextField
+						v-model="state.calendar_event_created_webhook"
+						:label="t('integration_mattermost', 'Calendar event created webhook URL')"
+						:placeholder="'https://my.mattermost.org/webhook...'"
+						:show-trailing-button="!!state.calendar_event_created_webhook"
+						@trailing-button-click="state.calendar_event_created_webhook = ''; onInput()"
+						@update:model-value="onInput">
+						<template #icon>
+							<WebhookIcon :size="20" />
+						</template>
+					</NcTextField>
+					<NcTextField
+						v-model="state.calendar_event_updated_webhook"
+						:label="t('integration_mattermost', 'Calendar event updated webhook URL')"
+						:placeholder="'https://my.mattermost.org/webhook...'"
+						:show-trailing-button="!!state.calendar_event_updated_webhook"
+						@trailing-button-click="state.calendar_event_updated_webhook = ''; onInput()"
+						@update:model-value="onInput">
+						<template #icon>
+							<WebhookIcon :size="20" />
+						</template>
+					</NcTextField>
+					<NcTextField
+						v-model="state.daily_summary_webhook"
+						:label="t('integration_mattermost', 'Daily summary webhook URL')"
+						:placeholder="'https://my.mattermost.org/webhook...'"
+						:show-trailing-button="!!state.daily_summary_webhook"
+						@trailing-button-click="state.daily_summary_webhook = ''; onInput()"
+						@update:model-value="onInput">
+						<template #icon>
+							<WebhookIcon :size="20" />
+						</template>
+					</NcTextField>
+					<NcTextField
+						v-model="state.imminent_events_webhook"
+						:label="t('integration_mattermost', 'Upcoming events webhook URL')"
+						:placeholder="'https://my.mattermost.org/webhook...'"
+						:show-trailing-button="!!state.imminent_events_webhook"
+						@trailing-button-click="state.imminent_events_webhook = ''; onInput()"
+						@update:model-value="onInput">
+						<template #icon>
+							<WebhookIcon :size="20" />
+						</template>
+					</NcTextField>
+					<NcTextField
+						v-model="state.webhook_secret"
+						type="password"
+						:label="t('integration_mattermost', 'Webhook secret')"
+						:placeholder="'https://my.mattermost.org/webhook...'"
+						:show-trailing-button="!!state.webhook_secret"
+						@trailing-button-click="state.webhook_secret = ''; onInput()"
+						@update:model-value="onInput">
+						<template #icon>
+							<KeyOutlineIcon :size="20" />
+						</template>
+					</NcTextField>
 				</div>
 			</div>
 		</div>
@@ -194,15 +189,18 @@ import AccountOutlineIcon from 'vue-material-design-icons/AccountOutline.vue'
 import KeyOutlineIcon from 'vue-material-design-icons/KeyOutline.vue'
 import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
 import CloseIcon from 'vue-material-design-icons/Close.vue'
-import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue'
 import WebhookIcon from 'vue-material-design-icons/Webhook.vue'
 import EarthIcon from 'vue-material-design-icons/Earth.vue'
 import CheckIcon from 'vue-material-design-icons/Check.vue'
 
 import MattermostIcon from './icons/MattermostIcon.vue'
 
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
+import NcButton from '@nextcloud/vue/components/NcButton'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
+import NcFormBox from '@nextcloud/vue/components/NcFormBox'
+import NcFormBoxSwitch from '@nextcloud/vue/components/NcFormBoxSwitch'
+import NcTextField from '@nextcloud/vue/components/NcTextField'
+import NcLoadingIcon from '@nextcloud/vue/components/NcLoadingIcon'
 
 import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
@@ -217,11 +215,14 @@ export default {
 
 	components: {
 		MattermostIcon,
-		NcCheckboxRadioSwitch,
+		NcNoteCard,
+		NcFormBox,
+		NcFormBoxSwitch,
 		NcButton,
+		NcTextField,
+		NcLoadingIcon,
 		OpenInNewIcon,
 		CloseIcon,
-		InformationOutlineIcon,
 		WebhookIcon,
 		EarthIcon,
 		CheckIcon,
@@ -285,8 +286,7 @@ export default {
 			this.saveOptions({ token: '' })
 		},
 		onCheckboxChanged(newValue, key) {
-			// disabled webhooks option indefinitely until Mattermost implements it
-			// this.saveOptions({ [key]: newValue ? '1' : '0' }, false)
+			this.saveOptions({ [key]: newValue ? '1' : '0' }, false)
 		},
 		onSearchChange(newValue) {
 			this.saveOptions({ search_messages_enabled: newValue ? '1' : '0' }, false)
@@ -396,32 +396,31 @@ export default {
 
 <style scoped lang="scss">
 #mattermost_prefs {
+	h2 {
+		display: flex;
+		justify-content: start;
+		gap: 8px;
+	}
 	#mattermost-content {
 		margin-left: 40px;
-	}
-
-	h2,
-	.line,
-	.settings-hint {
 		display: flex;
-		align-items: center;
-		.icon {
-			margin-right: 4px;
+		flex-direction: column;
+		gap: 8px;
+		max-width: 800px;
+
+		#mattermost-connect {
+			margin-top: 8px;
 		}
-	}
 
-	h2 .icon {
-		margin-right: 8px;
-	}
-
-	.line {
-		> label {
-			width: 300px;
+		.line {
 			display: flex;
 			align-items: center;
-		}
-		> input {
-			width: 300px;
+
+			> label {
+				width: 300px;
+				display: flex;
+				align-items: center;
+			}
 		}
 	}
 }
