@@ -88,7 +88,7 @@ export async function gotoSettingsConfirmDialog() {
 	const res = await spawnDialog(SlackDialog, {
 		title: t('integration_slack', 'Connect to Slack'),
 		message: t('integration_slack', 'You need to connect a Slack app before using the Slack integration.')
-			+ '<br><br>'
+			+ ' '
 			+ t('integration_slack', 'Do you want to go to your "Connect accounts" personal settings?'),
 		confirmText: t('integration_slack', 'Go to settings'),
 	})

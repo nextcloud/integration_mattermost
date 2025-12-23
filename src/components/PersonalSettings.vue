@@ -4,11 +4,11 @@
 			<SlackIcon class="icon" />
 			{{ t('integration_slack', 'Slack integration') }}
 		</h2>
-		<p v-if="state.client_id === '' || state.client_secret === ''" class="settings-hint">
-			{{ t('integration_slack', 'The admin must fill in client ID and client secret for you to continue from here') }}
-		</p>
-		<br>
 		<div id="slack-content">
+			<NcNoteCard v-if="state.client_id === '' || state.client_secret === ''"
+				type="warning">
+				{{ t('integration_slack', 'The admin must fill in client ID and client secret for you to continue from here') }}
+			</NcNoteCard>
 			<div id="slack-connect-block">
 				<NcButton v-if="!connected"
 					id="slack-connect"
@@ -21,7 +21,7 @@
 					{{ t('integration_slack', 'Connect to Slack') }}
 				</NcButton>
 				<div v-if="connected" class="line">
-					<NcAvatar :url="getUserIconUrl()" :size="48" dispay-name="User" />
+					<NcAvatar :url="getUserIconUrl()" :size="40" dispay-name="User" />
 					<label class="slack-connected">
 						{{ t('integration_slack', 'Connected as') }}
 						{{ " " }}
@@ -36,11 +36,11 @@
 				</div>
 			</div>
 			<br>
-			<NcCheckboxRadioSwitch
+			<NcFormBoxSwitch
 				v-model="state.file_action_enabled"
 				@update:model-value="onCheckboxChanged($event, 'file_action_enabled')">
 				{{ t('integration_slack', 'Add file action to send files to Slack') }}
-			</NcCheckboxRadioSwitch>
+			</NcFormBoxSwitch>
 		</div>
 	</div>
 </template>
@@ -53,7 +53,8 @@ import SlackIcon from './icons/SlackIcon.vue'
 
 import NcAvatar from '@nextcloud/vue/components/NcAvatar'
 import NcButton from '@nextcloud/vue/components/NcButton'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
+import NcFormBoxSwitch from '@nextcloud/vue/components/NcFormBoxSwitch'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
 
 import axios from '@nextcloud/axios'
 import { showError, showSuccess } from '@nextcloud/dialogs'
@@ -67,7 +68,8 @@ export default {
 	components: {
 		SlackIcon,
 		NcAvatar,
-		NcCheckboxRadioSwitch,
+		NcNoteCard,
+		NcFormBoxSwitch,
 		NcButton,
 		OpenInNewIcon,
 		CloseIcon,
@@ -180,28 +182,20 @@ export default {
 #slack_prefs {
 	#slack-content {
 		margin-left: 40px;
+		max-width: 800px;
 	}
 
-	h2,
-	.line,
-	.settings-hint {
+	h2 {
 		display: flex;
-		align-items: center;
-		color: var(--text-color);
-		justify-content: flex-start;
-		.icon {
-			margin-right: 4px;
-		}
-	}
-
-	h2 .icon {
-		margin-right: 8px;
+		justify-content: start;
+		gap: 8px;
 	}
 
 	.line {
 		width: 450px;
 		display: flex;
 		align-items: center;
+		color: var(--text-color);
 		justify-content: space-between;
 	}
 }

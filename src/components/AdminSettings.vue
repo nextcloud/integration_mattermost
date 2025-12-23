@@ -4,78 +4,73 @@
 			<SlackIcon class="icon" />
 			{{ t('integration_slack', 'Slack integration') }}
 		</h2>
-		<p class="settings-hint">
-			<span>
+		<div id="slack-content">
+			<NcNoteCard type="info">
 				{{ t('integration_slack', 'To allow your Nextcloud users to use OAuth to authenticate to the Slack app, and set the ID and secret here.') }}
 				{{ " " }}
-				<a target="_blank" href="https://api.slack.com/apps">{{ t('integration_slack', 'Link to create a Slack application') }} ↗</a>
-			</span>
-		</p>
-		<br>
-		<p class="settings-hint">
-			<InformationOutlineIcon :size="24" class="icon" />
-			{{ t('integration_slack', 'Make sure you set the "Redirect URI" in the "OAuth & Permissions" section of your Slack app settings to') }}
-		</p>
-		<strong>{{ redirect_uri }}</strong>
-		<br><br>
-		<p class="settings-hint">
-			{{ t('integration_slack', 'Put the "Client ID" and "Client secret" below. Your Nextcloud users will then see a "Connect to Slack" button in their personal settings.') }}
-		</p>
-		<p class="settings-hint">
-			{{ t('integration_slack', 'In the same "OAuth & Permissions" section, token rotation can be enabled. If enabled, your access token would be regularly refreshed with a refresh token. This is handled automatically.') }}
-		</p>
-		<br>
-		<div id="slack-content">
-			<div class="line">
-				<label for="slack-client-id">
+				<a target="_blank" class="external" href="https://api.slack.com/apps">{{ t('integration_slack', 'Link to create a Slack application') }} ↗</a>
+				<br>
+				{{ t('integration_slack', 'Make sure you set the "Redirect URI" in the "OAuth & Permissions" section of your Slack app settings to') }}
+				<br>
+				<strong>{{ redirect_uri }}</strong>
+				<br>
+				{{ t('integration_slack', 'Put the "Client ID" and "Client secret" below. Your Nextcloud users will then see a "Connect to Slack" button in their personal settings.') }}
+				<br>
+				{{ t('integration_slack', 'In the same "OAuth & Permissions" section, token rotation can be enabled. If enabled, your access token would be regularly refreshed with a refresh token. This is handled automatically.') }}
+			</NcNoteCard>
+			<NcTextField
+				v-model="state.client_id"
+				type="password"
+				:label="t('integration_slack', 'Application ID')"
+				:placeholder="t('integration_slack', 'ID of your Slack application')"
+				:readonly="readonly"
+				:show-trailing-button="!!state.client_id"
+				@trailing-button-click="state.client_id = ''; onInput()"
+				@focus="readonly = false"
+				@update:model-value="onInput">
+				<template #icon>
 					<AccountOutlineIcon :size="20" class="icon" />
-					{{ t('integration_slack', 'Client ID') }}
-				</label>
-				<input id="slack-client-id"
-					v-model="state.client_id"
-					type="password"
-					:readonly="readonly"
-					:placeholder="t('integration_slack', 'ID of your Slack application')"
-					@input="onInput"
-					@focus="readonly = false">
-			</div>
-			<div class="line">
-				<label for="slack-client-secret">
-					<KeyOutlineIcon :size="20" class="icon" />
-					{{ t('integration_slack', 'Application secret') }}
-				</label>
-				<input id="slack-client-secret"
-					v-model="state.client_secret"
-					type="password"
-					:readonly="readonly"
-					:placeholder="t('integration_slack', 'Client secret of your Slack application')"
-					@focus="readonly = false"
-					@input="onInput">
-			</div>
-			<div class="line slack-checkbox">
-				<NcCheckboxRadioSwitch
-					v-model="state.use_popup"
-					@update:model-value="onUsePopupChanged">
-					{{ t('integration_slack', 'Use a popup to authenticate') }}
-				</NcCheckboxRadioSwitch>
-			</div>
+				</template>
+			</NcTextField>
+			<NcTextField
+				v-model="state.client_secret"
+				type="password"
+				:label="t('integration_slack', 'Application secret')"
+				:placeholder="t('integration_slack', 'Application secret of your Mattermost application')"
+				:readonly="readonly"
+				:show-trailing-button="!!state.client_secret"
+				@trailing-button-click="state.client_secret = ''; onInput()"
+				@focus="readonly = false"
+				@update:model-value="onInput">
+				<template #icon>
+					<KeyOutlineIcon :size="20" />
+				</template>
+			</NcTextField>
+			<br>
+			<NcFormBoxSwitch
+				v-model="state.use_popup"
+				@update:model-value="onUsePopupChanged">
+				{{ t('integration_slack', 'Use a popup to authenticate') }}
+			</NcFormBoxSwitch>
 		</div>
 	</div>
 </template>
 
 <script>
 import AccountOutlineIcon from 'vue-material-design-icons/AccountOutline.vue'
-import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline.vue'
 import KeyOutlineIcon from 'vue-material-design-icons/KeyOutline.vue'
 
 import SlackIcon from './icons/SlackIcon.vue'
+
+import NcFormBoxSwitch from '@nextcloud/vue/components/NcFormBoxSwitch'
+import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
+import NcTextField from '@nextcloud/vue/components/NcTextField'
 
 import axios from '@nextcloud/axios'
 import { showError, showSuccess } from '@nextcloud/dialogs'
 import { loadState } from '@nextcloud/initial-state'
 import { confirmPassword } from '@nextcloud/password-confirmation'
 import { generateUrl } from '@nextcloud/router'
-import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
 
 import { delay } from '../utils.js'
 
@@ -84,9 +79,10 @@ export default {
 
 	components: {
 		SlackIcon,
-		NcCheckboxRadioSwitch,
+		NcFormBoxSwitch,
+		NcNoteCard,
+		NcTextField,
 		AccountOutlineIcon,
-		InformationOutlineIcon,
 		KeyOutlineIcon,
 	},
 
@@ -147,41 +143,13 @@ export default {
 #slack_prefs {
 	#slack-content {
 		margin-left: 40px;
+		max-width: 800px;
 	}
 
-	h2,
-	.line,
-	.settings-hint {
+	h2 {
 		display: flex;
-		align-items: center;
-		color: var(--text-color);
-		justify-content: flex-start;
-		.icon {
-			margin-right: 4px;
-		}
-	}
-
-	h2 .icon {
-		margin-right: 8px;
-	}
-
-	.line {
-		> label {
-			width: 300px;
-			display: flex;
-			align-items: center;
-		}
-		> input {
-			width: 300px;
-		}
-
-		&.slack-checkbox {
-			margin-top: 16px;
-		}
-	}
-
-	a {
-		text-decoration: underline;
+		justify-content: start;
+		gap: 8px;
 	}
 }
 </style>
