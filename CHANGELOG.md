@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 3.0.0 – 2025-12-23
+
+### Changed
+- npm and composer packages updated @janepie [#99](https://github.com/nextcloud/integration_mattermost/pull/99)
+- lazy config loading and removing deprecated config method @janepie [#99](https://github.com/nextcloud/integration_mattermost/pull/99)
+- migrated to vue3 @julien-nc [#100](https://github.com/nextcloud/integration_mattermost/pull/100)
+- Use new settings components @julien-nc [#100](https://github.com/nextcloud/integration_mattermost/pull/100)
+- Adjust to nc/files breaking changes for NC 33 @julien-nc [#100](https://github.com/nextcloud/integration_mattermost/pull/100)
+
+
 ## 2.1.1 – 2025-07-16
 
 ### Changed
