@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "Αναγνωριστικό εφαρμογής",
     "ID of your Mattermost application" : "Αναγνωριστικό της εφαρμογής σας Mattermost",
     "Application secret" : "Μυστικό εφαρμογής",
-    "Client secret of your Mattermost application" : "Μυστικό πελάτη της εφαρμογής σας Mattermost",
     "Use a popup to authenticate" : "Χρησιμοποιήστε ένα αναδυόμενο παράθυρο για έλεγχο ταυτότητας",
     "Enable navigation link as default for all users" : "Ενεργοποίηση συνδέσμου πλοήγησης ως προεπιλογή για όλους τους χρήστες",
     "Successfully connected to Mattermost!" : "Επιτυχής σύνδεση στο Mattermost!",
@@ -57,12 +56,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "ΣΗΜΕΙΩΣΗ: Η λειτουργία Webhooks έχει απενεργοποιηθεί επ' αόριστον μέχρι το Mattermost να την υλοποιήσει από την πλευρά του.",
     "Enable webhooks" : "Ενεργοποίηση webhooks",
     "Calendar event created webhook URL" : "URL webhook δημιουργίας συμβάντος ημερολογίου",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "URL webhook ενημέρωσης συμβάντος ημερολογίου",
     "Daily summary webhook URL" : "URL webhook ημερήσιας σύνοψης",
     "Upcoming events webhook URL" : "URL webhook επερχόμενων συμβάντων",
     "Webhook secret" : "Μυστικό Webhook",
-    "secret" : "μυστικό",
     "password" : "συνθηματικό",
     "Message to send with the files" : "Μήνυμα προς αποστολή με τα αρχεία",
     "View only" : "Μόνο προβολή",
@@ -109,6 +106,9 @@ OC.L10N.register(
     "Go to settings" : "Μετάβαση στις ρυθμίσεις",
     "Upload files" : "Μεταφόρτωση αρχείων",
     "Public links" : "Δημόσιοι σύνδεσμοι",
-    "Internal links (Only works for users with access to the files)" : "Εσωτερικοί σύνδεσμοι (Λειτουργεί μόνο για χρήστες με πρόσβαση στα αρχεία)"
+    "Internal links (Only works for users with access to the files)" : "Εσωτερικοί σύνδεσμοι (Λειτουργεί μόνο για χρήστες με πρόσβαση στα αρχεία)",
+    "Client secret of your Mattermost application" : "Μυστικό πελάτη της εφαρμογής σας Mattermost",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "μυστικό"
 },
 "nplurals=2; plural=(n != 1);");

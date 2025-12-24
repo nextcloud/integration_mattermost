@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "Anwendungs-ID",
     "ID of your Mattermost application" : "ID Ihrer Mattermost -Anwendung",
     "Application secret" : "Anwendungsgeheimnis",
-    "Client secret of your Mattermost application" : "Geheime Zeichenkette des Clients Ihrer Mattermost-Anwendung",
     "Use a popup to authenticate" : "Pop-up zur Authentifizierung verwenden",
     "Enable navigation link as default for all users" : "Navigationslink als Standard für alle Benutzer aktivieren",
     "Successfully connected to Mattermost!" : "Erfolgreich mit Mattermost verbunden!",
@@ -57,12 +56,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "HINWEIS: Die Webhooks-Funktion wurde auf unbestimmte Zeit deaktiviert, bis Mattermost diese auf ihrer Seite implementiert.",
     "Enable webhooks" : "Webhooks aktivieren",
     "Calendar event created webhook URL" : "Vom Kalendertermin erstellte Webhook-URL",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook…",
     "Calendar event updated webhook URL" : "Vom Kalendertermin aktualisierte Webhook-URL",
     "Daily summary webhook URL" : "Webhook-URL für die tägliche Zusammenfassung",
     "Upcoming events webhook URL" : "Webhook-URL für bevorstehende Termine",
     "Webhook secret" : "Webhook-Geheimnis",
-    "secret" : "Geheimnis",
     "password" : "Passwort",
     "Message to send with the files" : "Nachricht, die mit den Dateien versandt werden soll",
     "View only" : "Nur anzeigen",
@@ -109,6 +106,9 @@ OC.L10N.register(
     "Go to settings" : "Gehe zu den Einstellungen",
     "Upload files" : "Dateien hochladen",
     "Public links" : "Öffentliche Links",
-    "Internal links (Only works for users with access to the files)" : "Interne Links (Funktioniert nur für Benutzer mit Zugriff auf die Dateien)"
+    "Internal links (Only works for users with access to the files)" : "Interne Links (Funktioniert nur für Benutzer mit Zugriff auf die Dateien)",
+    "Client secret of your Mattermost application" : "Geheime Zeichenkette des Clients Ihrer Mattermost-Anwendung",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook…",
+    "secret" : "Geheimnis"
 },
 "nplurals=2; plural=(n != 1);");

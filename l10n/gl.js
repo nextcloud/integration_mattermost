@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "ID da aplicación",
     "ID of your Mattermost application" : "ID da súa aplicación de Mattermost",
     "Application secret" : "Segredo da aplicación",
-    "Client secret of your Mattermost application" : " Segredo do cliente da súa aplicación de Mattermost",
     "Use a popup to authenticate" : "Use unha xanela emerxente para autenticarse",
     "Enable navigation link as default for all users" : "Activar a ligazón de navegación como predeterminada para todos os usuarios",
     "Successfully connected to Mattermost!" : "Conectou satisfactoriamente con Mattermost!",
@@ -57,12 +56,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "NOTA: a función de ancoraxe web foi desactivada indefinidamente ata que Mattermost a implemente desde o seu remate.",
     "Enable webhooks" : "Activar os puntos de ancoraxe web",
     "Calendar event created webhook URL" : "URL do punto de ancoraxe web do evento de calendario creado",
-    "https://my.mattermost.org/webhook..." : "https://o-meu.mattermost.org/ancoraxe...",
     "Calendar event updated webhook URL" : "URL do punto de ancoraxe web actualizado do evento de calendario",
     "Daily summary webhook URL" : "URL do punto de ancoraxe web de resumo diario",
     "Upcoming events webhook URL" : "URL do punto de ancoraxe web dos próximos eventos",
     "Webhook secret" : "Segredo do punto de ancoraxe web",
-    "secret" : "segredo",
     "password" : "contrasinal",
     "Message to send with the files" : "Mensaxe para enviar cos ficheiros",
     "View only" : "Só ver",
@@ -109,6 +106,9 @@ OC.L10N.register(
     "Go to settings" : "Ir aos axustes",
     "Upload files" : "Enviar ficheiros",
     "Public links" : "Ligazóns públicas",
-    "Internal links (Only works for users with access to the files)" : "Ligazóns internas (Só funciona para usuarios con acceso aos ficheiros)"
+    "Internal links (Only works for users with access to the files)" : "Ligazóns internas (Só funciona para usuarios con acceso aos ficheiros)",
+    "Client secret of your Mattermost application" : " Segredo do cliente da súa aplicación de Mattermost",
+    "https://my.mattermost.org/webhook..." : "https://o-meu.mattermost.org/ancoraxe...",
+    "secret" : "segredo"
 },
 "nplurals=2; plural=(n != 1);");

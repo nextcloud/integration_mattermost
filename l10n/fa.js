@@ -26,7 +26,6 @@ OC.L10N.register(
     "Application ID" : "Application ID",
     "ID of your Mattermost application" : "ID of your Mattermost application",
     "Application secret" : "Application secret",
-    "Client secret of your Mattermost application" : "Client secret of your Mattermost application",
     "Use a popup to authenticate" : "Use a popup to authenticate",
     "Successfully connected to Mattermost!" : "Successfully connected to Mattermost!",
     "Error connecting to Mattermost:" : "Error connecting to Mattermost:",
@@ -53,12 +52,10 @@ OC.L10N.register(
     "This section does not require to be connected to Mattermost from Nextcloud." : "This section does not require to be connected to Mattermost from Nextcloud.",
     "Enable webhooks" : "Enable webhooks",
     "Calendar event created webhook URL" : "Calendar event created webhook URL",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "Calendar event updated webhook URL",
     "Daily summary webhook URL" : "Daily summary webhook URL",
     "Upcoming events webhook URL" : "Upcoming events webhook URL",
     "Webhook secret" : "Webhook secret",
-    "secret" : "secret",
     "password" : "password",
     "Message to send with the files" : "Message to send with the files",
     "View only" : "تنها مشاهده",
@@ -100,6 +97,9 @@ OC.L10N.register(
     "Go to settings" : "Go to settings",
     "Upload files" : "بارگذاری فایل ها",
     "Public links" : "Public links",
-    "Internal links (Only works for users with access to the files)" : "Internal links (Only works for users with access to the files)"
+    "Internal links (Only works for users with access to the files)" : "Internal links (Only works for users with access to the files)",
+    "Client secret of your Mattermost application" : "Client secret of your Mattermost application",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "secret"
 },
 "nplurals=2; plural=(n > 1);");

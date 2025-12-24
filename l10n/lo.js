@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "ID ແອັບພລິເຄຊັນ",
     "ID of your Mattermost application" : "ID ຂອງແອັບພລິເຄຊັນ Mattermost ຂອງທ່ານ",
     "Application secret" : "ລະຫັດລັບແອັບພລິເຄຊັນ",
-    "Client secret of your Mattermost application" : "ລະຫັດລັບ client ຂອງແອັບພລິເຄຊັນ Mattermost ຂອງທ່ານ",
     "Use a popup to authenticate" : "ໃຊ້ປັອບອັບເພື່ອຢືນຢັນຕົວຕົນ",
     "Enable navigation link as default for all users" : "ເປີດໃຊ້ລິງນຳທາງເປັນຄ່າເລີ່ມຕົ້ນສຳລັບຜູ້ໃຊ້ທັງໝົດ",
     "Successfully connected to Mattermost!" : "ເຊື່ອມຕໍ່ກັບ Mattermost ສຳເລັດແລ້ວ!",
@@ -57,12 +56,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "ໝາຍເຫດ: ຄຸນສົມບັດ Webhooks ໄດ້ຖືກປິດໃຊ້ງານຢ່າງບໍ່ມີກຳນົດຈົນກວ່າ Mattermost ຈະນຳໃຊ້ມັນຈາກຝັ່ງຂອງພວກເຂົາ.",
     "Enable webhooks" : "ເປີດໃຊ້ webhooks",
     "Calendar event created webhook URL" : "URL webhook ເມື່ອມີການສ້າງນັດໝາຍໃນປະຕິທິນ",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "URL webhook ເມື່ອມີການອັບເດດນັດໝາຍໃນປະຕິທິນ",
     "Daily summary webhook URL" : "URL webhook ສໍາລັບສະຫຼຸບປະຈຳວັນ",
     "Upcoming events webhook URL" : "URL webhook ສໍາລັບນັດໝາຍທີ່ຈະມາເຖິງ",
     "Webhook secret" : "ລະຫັດລັບ Webhook",
-    "secret" : "ລະຫັດລັບ",
     "password" : "ລະຫັດຜ່ານ",
     "Message to send with the files" : "ຂໍ້ຄວາມທີ່ຈະສົ່ງພ້ອມກັບຟາຍ",
     "View only" : "ເບິ່ງເທົ່ານັ້ນ",
@@ -109,6 +106,9 @@ OC.L10N.register(
     "Go to settings" : "ໄປທີ່ການຕັ້ງຄ່າ",
     "Upload files" : "ອັບໂຫຼດຟາຍ",
     "Public links" : "ລິງສາທາລະນະ",
-    "Internal links (Only works for users with access to the files)" : "ລິງພາຍໃນ (ໃຊ້ໄດ້ສະເພາະຜູ້ໃຊ້ທີ່ມີສິດເຂົ້າເຖິງຟາຍເທົ່ານັ້ນ)"
+    "Internal links (Only works for users with access to the files)" : "ລິງພາຍໃນ (ໃຊ້ໄດ້ສະເພາະຜູ້ໃຊ້ທີ່ມີສິດເຂົ້າເຖິງຟາຍເທົ່ານັ້ນ)",
+    "Client secret of your Mattermost application" : "ລະຫັດລັບ client ຂອງແອັບພລິເຄຊັນ Mattermost ຂອງທ່ານ",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "ລະຫັດລັບ"
 },
 "nplurals=1; plural=0;");

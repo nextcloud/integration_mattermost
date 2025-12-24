@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "ID Feidhmchláir",
     "ID of your Mattermost application" : "ID d'fheidhmchlár Mattermost",
     "Application secret" : "Rún iarratais",
-    "Client secret of your Mattermost application" : "Rún an chliaint maidir le d'iarratas Mattermost",
     "Use a popup to authenticate" : "Bain úsáid as preabfhuinneog chun fíordheimhniú a dhéanamh",
     "Enable navigation link as default for all users" : "Cumasaigh nasc nascleanúna mar réamhshocrú do gach úsáideoir",
     "Successfully connected to Mattermost!" : "D'éirigh le nascadh le Mattermost!",
@@ -57,12 +56,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "TABHAIR FAOI DEARA: Tá an ghné Webbhooks díchumasaithe ar feadh tréimhse éiginnte go dtí go gcuireann Mattermost i bhfeidhm é ón deireadh.",
     "Enable webhooks" : "Cumasaigh cuaillí gréasáin",
     "Calendar event created webhook URL" : "URL cuaille gréasáin cruthaithe ag imeacht féilire",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "URL cuaille gréasáin nuashonraithe imeacht féilire",
     "Daily summary webhook URL" : "URL achoimre laethúil ar chuaille gréasáin",
     "Upcoming events webhook URL" : "URL cuaille gréasáin imeachtaí atá le teacht",
     "Webhook secret" : "An rún gréasáin",
-    "secret" : "rún",
     "password" : "pasfhocal",
     "Message to send with the files" : "Teachtaireacht le seoladh leis na comhaid",
     "View only" : "Amharc amháin",
@@ -109,6 +106,9 @@ OC.L10N.register(
     "Go to settings" : "Téigh go dtí socruithe",
     "Upload files" : "Uaslódáil comhaid",
     "Public links" : "Naisc phoiblí",
-    "Internal links (Only works for users with access to the files)" : "Naisc inmheánacha (Ní oibríonn ach d’úsáideoirí a bhfuil rochtain acu ar na comhaid)"
+    "Internal links (Only works for users with access to the files)" : "Naisc inmheánacha (Ní oibríonn ach d’úsáideoirí a bhfuil rochtain acu ar na comhaid)",
+    "Client secret of your Mattermost application" : "Rún an chliaint maidir le d'iarratas Mattermost",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "rún"
 },
 "nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4);");

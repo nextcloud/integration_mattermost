@@ -25,7 +25,6 @@ OC.L10N.register(
     "Application ID" : "Идентификатор на приложение",
     "ID of your Mattermost application" : "Идентификатор на вашето приложение Mattermost",
     "Application secret" : "Тайна на приложение",
-    "Client secret of your Mattermost application" : "Клиентска тайна на вашето Mattermost приложение",
     "Use a popup to authenticate" : "Използване на изскачащ прозорец за удостоверяване",
     "Successfully connected to Mattermost!" : "Успешно свързване с Mattermost!",
     "Error connecting to Mattermost:" : "Грешка при свързването с Mattermost:",
@@ -53,12 +52,10 @@ OC.L10N.register(
     "This section does not require to be connected to Mattermost from Nextcloud." : "Този раздел не изисква да сте свързани към Mattermost от Nextcloud.",
     "Enable webhooks" : "Активиране на уеб обратно повикване",
     "Calendar event created webhook URL" : "URL адрес на уеб обратно повикване за събитие, създадено от календара",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "Актуализиран URL адрес на уеб обратно повикване за събитие от календара",
     "Daily summary webhook URL" : " URL адрес на уеб обратно повикване на дневното обобщение",
     "Upcoming events webhook URL" : "URL адрес за уеб обратно повикване на предстоящи събития",
     "Webhook secret" : " Тайна на уеб обратно повикване",
-    "secret" : "тайна",
     "password" : "парола",
     "Message to send with the files" : "Съобщение, за изпращане с файловете",
     "View only" : "Само преглед",
@@ -101,6 +98,9 @@ OC.L10N.register(
     "Go to settings" : "Отидете в настройките",
     "Upload files" : "Качи файлове",
     "Public links" : "Публични връзки",
-    "Internal links (Only works for users with access to the files)" : "Вътрешни връзки (Работи само за потребители с достъп до файловете)"
+    "Internal links (Only works for users with access to the files)" : "Вътрешни връзки (Работи само за потребители с достъп до файловете)",
+    "Client secret of your Mattermost application" : "Клиентска тайна на вашето Mattermost приложение",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "тайна"
 },
 "nplurals=2; plural=(n != 1);");

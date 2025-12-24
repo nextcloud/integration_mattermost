@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "ID do aplicativo",
     "ID of your Mattermost application" : "ID do seu aplicativo Mattermost",
     "Application secret" : "Segredo do aplicativo",
-    "Client secret of your Mattermost application" : "Segredo do cliente do seu aplicativo Mattermost",
     "Use a popup to authenticate" : "Usar um pop-up para autenticar",
     "Enable navigation link as default for all users" : "Ativar o link de navegação como padrão para todos os usuários",
     "Successfully connected to Mattermost!" : "Conectado com sucesso ao Mattermost!",
@@ -57,12 +56,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "NOTA: O recurso Webhooks foi desativado indefinidamente até que o Mattermost o implemente.",
     "Enable webhooks" : "Ativar webhooks",
     "Calendar event created webhook URL" : "URL do webhook de eventos criados no calendário",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "URL do webhook de eventos atualizados no calendário",
     "Daily summary webhook URL" : "URL do webhook de resumos diários",
     "Upcoming events webhook URL" : "URL do webhook de próximos eventos",
     "Webhook secret" : "Segredo do webhook",
-    "secret" : "segredo",
     "password" : "senha",
     "Message to send with the files" : "Mensagem para enviar com os arquivos",
     "View only" : "Somente visualização ",
@@ -109,6 +106,9 @@ OC.L10N.register(
     "Go to settings" : "Vá para as configurações",
     "Upload files" : "Fazer upload de arquivos",
     "Public links" : "Links públicos",
-    "Internal links (Only works for users with access to the files)" : "Links internos (Só funciona para usuários com acesso aos arquivos)"
+    "Internal links (Only works for users with access to the files)" : "Links internos (Só funciona para usuários com acesso aos arquivos)",
+    "Client secret of your Mattermost application" : "Segredo do cliente do seu aplicativo Mattermost",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "segredo"
 },
 "nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "Applikasjons-ID",
     "ID of your Mattermost application" : "ID til din Mattermost-applikasjon",
     "Application secret" : "Søknadshemmelighet",
-    "Client secret of your Mattermost application" : "Klienthemmelighet til din Mattermost-applikasjon",
     "Use a popup to authenticate" : "Bruk en popup for å autentisere",
     "Successfully connected to Mattermost!" : "Koblet til Mattermost",
     "Error connecting to Mattermost:" : "Feil under tilkobling til Mattermost",
@@ -56,12 +55,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "MERK: Webhooks-funksjonen er deaktivert på ubestemt tid til Mattermost implementerer den fra deres side.",
     "Enable webhooks" : "Aktiver webhooks",
     "Calendar event created webhook URL" : "Kalenderhendelse opprettet webhook-URL",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "Kalenderhendelse oppdaterte webhook-URL",
     "Daily summary webhook URL" : "Daglig sammendrag webhook-URL",
     "Upcoming events webhook URL" : "Kommende hendelser webhook-URL",
     "Webhook secret" : "Webhook-hemmelighet",
-    "secret" : "hemmelighet",
     "password" : "passord",
     "Message to send with the files" : "Melding som skal sendes med filene",
     "View only" : "Kun se",
@@ -105,6 +102,9 @@ OC.L10N.register(
     "Go to settings" : "Gå til innstillinger",
     "Upload files" : "Last opp filer",
     "Public links" : "Offentlige koblinger",
-    "Internal links (Only works for users with access to the files)" : "Interne lenker (fungerer kun for brukere med tilgang til filene)"
+    "Internal links (Only works for users with access to the files)" : "Interne lenker (fungerer kun for brukere med tilgang til filene)",
+    "Client secret of your Mattermost application" : "Klienthemmelighet til din Mattermost-applikasjon",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "hemmelighet"
 },
 "nplurals=2; plural=(n != 1);");

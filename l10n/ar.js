@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "الرقم المُعرّف للتطبيق ",
     "ID of your Mattermost application" : "معرف تطبيق Mattermost الخاص بك",
     "Application secret" : "الرمر السري للتطبيق",
-    "Client secret of your Mattermost application" : "سر العميل لتطبيق Mattermost الخاص بك",
     "Use a popup to authenticate" : "استخدم النافذة المنبثقة للتعريف عن نفسك ",
     "Enable navigation link as default for all users" : "تمكين رابط التنقل بشكل افتراضي لجميع المستخدِمين",
     "Successfully connected to Mattermost!" : "تم الاتصال ببرنامج Mattermost بنجاح!",
@@ -57,12 +56,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "ملاحظة: تم تعطيل ميزة Webhooks إلى أجل غير مسمى حتى تقوم Mattermost بتنفيذها من جهتها.",
     "Enable webhooks" : "تمكين خطافات الويب",
     "Calendar event created webhook URL" : "أنشئ حدث التقويم عنوان URL للويب هوك",
-    "https://my.mattermost.org/webhook..." : "https: //my.mattermost.org/webhook ...",
     "Calendar event updated webhook URL" : "قام حدث التقويم بتحديث عنوان URL لخطاف الويب",
     "Daily summary webhook URL" : "ملخص يومي لعنوان URL خطاف الويب ",
     "Upcoming events webhook URL" : "عنوان URL خطاف الويب للأحداث القادمة",
     "Webhook secret" : "سر خطاف الويب",
-    "secret" : "السر",
     "password" : "سيتم تخطي الأدلة، ولا يمكن إرسالها إلا كروابط.",
     "Message to send with the files" : "كلمة المرور",
     "View only" : "لعرضه فقط",
@@ -106,6 +103,9 @@ OC.L10N.register(
     "Go to settings" : "اذهب للاعدادات",
     "Upload files" : "رفع الملفات",
     "Public links" : "روابط عامة",
-    "Internal links (Only works for users with access to the files)" : "الروابط الداخلية (يعمل فقط للمستخدمين الذين لديهم حق الوصول إلى الملفات)"
+    "Internal links (Only works for users with access to the files)" : "الروابط الداخلية (يعمل فقط للمستخدمين الذين لديهم حق الوصول إلى الملفات)",
+    "Client secret of your Mattermost application" : "سر العميل لتطبيق Mattermost الخاص بك",
+    "https://my.mattermost.org/webhook..." : "https: //my.mattermost.org/webhook ...",
+    "secret" : "السر"
 },
 "nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;");

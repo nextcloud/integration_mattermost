@@ -13,7 +13,6 @@ OC.L10N.register(
     "Password" : "Adgangskode",
     "Connected as {user}" : "Forbundet som {user}",
     "Enable webhooks" : "Aktiver webhooks",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Webhook secret" : "Webhook hemmelighed",
     "password" : "adgangskode",
     "Message to send with the files" : "Besked der skal sendes med filerne",
@@ -30,6 +29,7 @@ OC.L10N.register(
     "Go to settings" : "Gå til indstillinger",
     "Upload files" : "Upload filer",
     "Public links" : "Offentlige links",
-    "Internal links (Only works for users with access to the files)" : "Interne links (virker kun for brugere med adgang til filerne)"
+    "Internal links (Only works for users with access to the files)" : "Interne links (virker kun for brugere med adgang til filerne)",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook..."
 },
 "nplurals=2; plural=(n != 1);");

@@ -25,7 +25,6 @@
     "Application ID" : "ئىلتىماس كىملىكى",
     "ID of your Mattermost application" : "Mattermost قوللىنىشچان پروگراممىڭىزنىڭ كىملىكى",
     "Application secret" : "ئىلتىماس مەخپىيىتى",
-    "Client secret of your Mattermost application" : "سىزنىڭ Mattermost ئىلتىماسىڭىزنىڭ مەخپىيىتى",
     "Use a popup to authenticate" : "دەلىللەش ئۈچۈن قاڭقىش كۆزنىكى ئىشلىتىڭ",
     "Enable navigation link as default for all users" : "بارلىق ئىشلەتكۈچىلەر ئۈچۈن زىيارەت ئۇلىنىشىنى سۈكۈتتىكى قىلىپ قوزغىتىڭ",
     "Successfully connected to Mattermost!" : "مۇۋەپپەقىيەتلىك ھالدا Mattermost غا ئۇلاندى!",
@@ -55,12 +54,10 @@
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "ئەسكەرتىش: Webhooks ئىقتىدارى Mattermost ئۇنى ئاخىرىدىن باشلاپ يولغا قويغۇچە مۇددەتسىز چەكلەنگەن.",
     "Enable webhooks" : "توربېكەتنى قوزغىتىڭ",
     "Calendar event created webhook URL" : "كالېندار پائالىيىتى توربېكەت URL نى قۇردى",
-    "https://my.mattermost.org/webhook..." : "https: //my.mattermost.org/webhook ...",
     "Calendar event updated webhook URL" : "كالېندار پائالىيىتى توربېكەت URL نى يېڭىلىدى",
     "Daily summary webhook URL" : "كۈندىلىك خۇلاسە توربېكەت URL",
     "Upcoming events webhook URL" : "ئالدىمىزدىكى ۋەقەلەر webhook URL",
     "Webhook secret" : "Webhook مەخپىيىتى",
-    "secret" : "مەخپىي",
     "password" : "پارول",
     "Message to send with the files" : "ھۆججەتلەر بىلەن ئەۋەتىدىغان ئۇچۇر",
     "View only" : "پەقەت كۆرۈش",
@@ -107,6 +104,9 @@
     "Go to settings" : "تەڭشەكلەرگە بېرىڭ",
     "Upload files" : "ھۆججەتلەرنى يۈكلەڭ",
     "Public links" : "ئاممىۋى ئۇلىنىش",
-    "Internal links (Only works for users with access to the files)" : "ئىچكى ئۇلىنىش (پەقەت ھۆججەتلەرنى زىيارەت قىلالايدىغان ئىشلەتكۈچىلەر ئۈچۈن ئىشلەيدۇ)"
+    "Internal links (Only works for users with access to the files)" : "ئىچكى ئۇلىنىش (پەقەت ھۆججەتلەرنى زىيارەت قىلالايدىغان ئىشلەتكۈچىلەر ئۈچۈن ئىشلەيدۇ)",
+    "Client secret of your Mattermost application" : "سىزنىڭ Mattermost ئىلتىماسىڭىزنىڭ مەخپىيىتى",
+    "https://my.mattermost.org/webhook..." : "https: //my.mattermost.org/webhook ...",
+    "secret" : "مەخپىي"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

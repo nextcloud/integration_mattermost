@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "Kitambulisho cha maombi",
     "ID of your Mattermost application" : "Kitambulisho cha programu yako ya Mattermost",
     "Application secret" : "Siri ya maombi",
-    "Client secret of your Mattermost application" : "Siri ya mteja ya programu yako ya Mattermost",
     "Use a popup to authenticate" : "Tumia dirisha ibukizi ili kuthibitisha",
     "Enable navigation link as default for all users" : "Washa kiungo cha kusogeza kuwa chaguomsingi kwa watumiaji wote",
     "Successfully connected to Mattermost!" : "Imeunganishwa kwa Mattermost!",
@@ -57,12 +56,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "KUMBUKA: Kipengele cha Webhook kimezimwa kwa muda usiojulikana hadi Mattermost kitekeleze kutoka mwisho wao.",
     "Enable webhooks" : "Wezesha webhooks",
     "Calendar event created webhook URL" : "URL ya webhook ya tukio la kalenda iliundwa",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "URL ya webhook ya tukio la kalenda iliyosasishwa",
     "Daily summary webhook URL" : "URL ya webhook ya muhtasari wa kila siku",
     "Upcoming events webhook URL" : "URL ya webhook ya matukio yajayo",
     "Webhook secret" : "Siri ya Webhook ",
-    "secret" : "siri",
     "password" : "nenosiri",
     "Message to send with the files" : "Ujumbe wa kutuma pamoja na faili",
     "View only" : "Tazama pekee",
@@ -109,6 +106,9 @@ OC.L10N.register(
     "Go to settings" : "Nenda kwenye mipangilio",
     "Upload files" : "Pakia faili",
     "Public links" : "Viungo vya umma",
-    "Internal links (Only works for users with access to the files)" : "Viungo vya ndani (Hufanya kazi kwa watumiaji walio na ufikiaji wa faili pekee)"
+    "Internal links (Only works for users with access to the files)" : "Viungo vya ndani (Hufanya kazi kwa watumiaji walio na ufikiaji wa faili pekee)",
+    "Client secret of your Mattermost application" : "Siri ya mteja ya programu yako ya Mattermost",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "siri"
 },
 "nplurals=2; plural=(n != 1);");

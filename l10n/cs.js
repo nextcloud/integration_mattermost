@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "Identif. aplikace",
     "ID of your Mattermost application" : "Identif. vaší Mattermost aplikace",
     "Application secret" : "Tajemství pro aplikaci",
-    "Client secret of your Mattermost application" : "Klientské tajemství vaší Mattermost aplikace",
     "Use a popup to authenticate" : "Ověřte se ve vyskakovacím okně",
     "Enable navigation link as default for all users" : "Zapnout odkaz pro navigaci jako výchozí stav pro všechny uživatele",
     "Successfully connected to Mattermost!" : "Úspěšně spojeno s Mattermost!",
@@ -57,12 +56,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "POZN.: funkce webových háčků byla trvale vypnuto dokud ji Mattermost neimplementuje ze své strany.",
     "Enable webhooks" : "Zapnout webové háčky",
     "Calendar event created webhook URL" : "Událost v kalendáři vytvořila URL webového háčku",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook",
     "Calendar event updated webhook URL" : "Událost v kalendáři aktualizovala URL webového háčku",
     "Daily summary webhook URL" : "URL webového háčku pro denní souhrn",
     "Upcoming events webhook URL" : "URL webového háčku nadcházejících událostí",
     "Webhook secret" : "Tajemství pro webový háček",
-    "secret" : "tajemství",
     "password" : "heslo",
     "Message to send with the files" : "Zpráva kterou poslat společně se soubory",
     "View only" : "Pouze prohlížet",
@@ -109,6 +106,9 @@ OC.L10N.register(
     "Go to settings" : "Přejít do nastavení",
     "Upload files" : "Nahrát soubory",
     "Public links" : "Veřejné odkazy",
-    "Internal links (Only works for users with access to the files)" : "Interním odkazy (funguje pouze pro uživatele, kteří mají k těmto souborům přístup)"
+    "Internal links (Only works for users with access to the files)" : "Interním odkazy (funguje pouze pro uživatele, kteří mají k těmto souborům přístup)",
+    "Client secret of your Mattermost application" : "Klientské tajemství vaší Mattermost aplikace",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook",
+    "secret" : "tajemství"
 },
 "nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");

@@ -24,7 +24,6 @@ OC.L10N.register(
     "Application ID" : "Aplikazio ID",
     "ID of your Mattermost application" : "Zure Mattermost aplikazioaren IDa",
     "Application secret" : "Aplikazio-sekretua",
-    "Client secret of your Mattermost application" : "Zure Mattermost aplikazioaren bezero-sekretua",
     "Use a popup to authenticate" : "Erabili laster-menua autentifikatzeko",
     "Successfully connected to Mattermost!" : "Ondo konektatu da Mattermostekin!",
     "Error connecting to Mattermost:" : "Errorea Mattermostekin konektatzen",
@@ -52,12 +51,10 @@ OC.L10N.register(
     "This section does not require to be connected to Mattermost from Nextcloud." : "Atal honek ez du behar Nextckoud Mattermostekin konektaturik egotea.",
     "Enable webhooks" : "Gaitu webhook-ak",
     "Calendar event created webhook URL" : "Eguterian sorturiko gertaeraren webhook URLa",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "Egutegian eguneratu den gertaeraren webhook URLa",
     "Daily summary webhook URL" : "Eguneroko laburpenaren webhook URLa",
     "Upcoming events webhook URL" : "Hurrengo gertaeren webhook URLa",
     "Webhook secret" : "Webhook sekretua",
-    "secret" : "sekretua",
     "password" : "pasahitza",
     "Message to send with the files" : "Fitxategiekin batera bidaltzeko mezua",
     "View only" : "Ikusi soilik",
@@ -98,6 +95,9 @@ OC.L10N.register(
     "Go to settings" : "Joan ezarpenetara",
     "Upload files" : "Igo fitxategiak",
     "Public links" : "Esteka publikoak",
-    "Internal links (Only works for users with access to the files)" : "Barruko estekak (fitxategiak atzitzeko baimena daukaten erabiltzaileei bakarrik balio diete)"
+    "Internal links (Only works for users with access to the files)" : "Barruko estekak (fitxategiak atzitzeko baimena daukaten erabiltzaileei bakarrik balio diete)",
+    "Client secret of your Mattermost application" : "Zure Mattermost aplikazioaren bezero-sekretua",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "sekretua"
 },
 "nplurals=2; plural=(n != 1);");

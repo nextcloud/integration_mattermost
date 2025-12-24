@@ -17,8 +17,6 @@ OC.L10N.register(
     "Login" : "Accedi",
     "Password" : "Password",
     "Connected as {user}" : "Connesso come {user}",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
-    "secret" : "segreto",
     "password" : "password",
     "View only" : "Sola lettura",
     "Edit" : "Modifica",
@@ -30,6 +28,8 @@ OC.L10N.register(
     "Cancel" : "Annulla",
     "Nothing" : "Niente",
     "Connect" : "Connetti",
-    "Upload files" : "Carica file"
+    "Upload files" : "Carica file",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "segreto"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
