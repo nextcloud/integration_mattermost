@@ -26,7 +26,6 @@ OC.L10N.register(
     "Application ID" : "ID de la aplicación",
     "ID of your Mattermost application" : "ID de tu aplicación Mattermost",
     "Application secret" : "Secreto de la aplicación",
-    "Client secret of your Mattermost application" : "Clave de tu aplicación Mattermost",
     "Use a popup to authenticate" : "Usar un popup para la autenticación",
     "Successfully connected to Mattermost!" : "¡Conexión exitosa a Mattermost!",
     "Error connecting to Mattermost:" : "Error al conectar a Mattermost:",
@@ -54,12 +53,10 @@ OC.L10N.register(
     "This section does not require to be connected to Mattermost from Nextcloud." : "Esta sección no requiere estar conectado a Mattermost desde Nextcloud.",
     "Enable webhooks" : "Habilitar webhooks",
     "Calendar event created webhook URL" : "URL del webhook para eventos de calendario creados",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "URL del webhook para eventos de calendario actualizados",
     "Daily summary webhook URL" : "URL del webhook para resumen diario",
     "Upcoming events webhook URL" : "URL del webhook para próximos eventos",
     "Webhook secret" : "Secreto del webhook",
-    "secret" : "secreto",
     "password" : "contraseña",
     "Message to send with the files" : "Mensaje para enviar con los archivos",
     "View only" : "Solo vista",
@@ -102,6 +99,9 @@ OC.L10N.register(
     "Go to settings" : "Ir a configuración",
     "Upload files" : "Cargar archivos",
     "Public links" : "Enlaces públicos",
-    "Internal links (Only works for users with access to the files)" : "Enlaces internos (solo funciona para usuarios con acceso a los archivos)"
+    "Internal links (Only works for users with access to the files)" : "Enlaces internos (solo funciona para usuarios con acceso a los archivos)",
+    "Client secret of your Mattermost application" : "Clave de tu aplicación Mattermost",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "secreto"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");

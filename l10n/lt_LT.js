@@ -14,7 +14,6 @@ OC.L10N.register(
     "Login" : "Prisijungti",
     "Password" : "Slaptažodis",
     "Connected as {user}" : "Prisijungta kaip {user}",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "password" : "slaptažodis",
     "View only" : "Tik peržiūrėti",
     "Edit" : "Taisyti",
@@ -26,6 +25,7 @@ OC.L10N.register(
     "Comment" : "Komentaras",
     "Cancel" : "Atsisakyti",
     "Connect" : "Prisijungti",
-    "Upload files" : "Įkelti failus"
+    "Upload files" : "Įkelti failus",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook..."
 },
 "nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);");

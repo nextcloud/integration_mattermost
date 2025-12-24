@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "ID апликације",
     "ID of your Mattermost application" : "ID ваше Mattermost апликације",
     "Application secret" : "Тајна апликације",
-    "Client secret of your Mattermost application" : "Клијентска тајна ваше Mattermost апликације",
     "Use a popup to authenticate" : "Користи искачући прозор за аутентификацију",
     "Enable navigation link as default for all users" : "Укључи линк навигације као подразумевано за све кориснике",
     "Successfully connected to Mattermost!" : "Успешно је успостављена веза са Mattermost!",
@@ -57,12 +56,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "НАПОМЕНА: Webhooks функционалност је искључена на неодређено време све док је Mattermost не имплементира са своје стране.",
     "Enable webhooks" : "Укључи веб куке",
     "Calendar event created webhook URL" : "URL веб куке креиран је догађај календара",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "URL веб куке догађај календара је ажуриран",
     "Daily summary webhook URL" : "URL веб куке дневног сажетка",
     "Upcoming events webhook URL" : "URL веб куке долазећих догађаја",
     "Webhook secret" : "Тајна веб куке",
-    "secret" : "тајна",
     "password" : "лозинка",
     "Message to send with the files" : "Порука која треба да се пошаље уз фајлове",
     "View only" : "Само преглед",
@@ -109,6 +106,9 @@ OC.L10N.register(
     "Go to settings" : "Иди на подешавања",
     "Upload files" : "Отпреми фајлове",
     "Public links" : "Јавни линкови",
-    "Internal links (Only works for users with access to the files)" : "Интерни линкови (функционишу само за кориснике који имају приступ фајловима)"
+    "Internal links (Only works for users with access to the files)" : "Интерни линкови (функционишу само за кориснике који имају приступ фајловима)",
+    "Client secret of your Mattermost application" : "Клијентска тајна ваше Mattermost апликације",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "тајна"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

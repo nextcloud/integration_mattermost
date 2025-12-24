@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "應用程式 ID",
     "ID of your Mattermost application" : "您 Mattermost 應用程式的 ID",
     "Application secret" : "應用程式密碼",
-    "Client secret of your Mattermost application" : "您 Mattermost 應用程式的客戶端密碼",
     "Use a popup to authenticate" : "使用彈出窗口進行身份驗證",
     "Enable navigation link as default for all users" : "將導航連結設為所有用戶的默認選項",
     "Successfully connected to Mattermost!" : "成功連線至 Mattermost！",
@@ -57,12 +56,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "注意：Webhook 功能已無限期停用，直到 Mattermost 端實作該功能為止。",
     "Enable webhooks" : "啟用 webhooks",
     "Calendar event created webhook URL" : "日曆事件創建了 webhook URL",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "日曆事件更新了 webhook URL",
     "Daily summary webhook URL" : "每日總結 webhook URL",
     "Upcoming events webhook URL" : "即將舉行的活動的 webhook URL",
     "Webhook secret" : "Webhook 密碼",
-    "secret" : "密碼",
     "password" : "密碼",
     "Message to send with the files" : "與檔案一起傳送的訊息",
     "View only" : "僅檢視",
@@ -109,6 +106,9 @@ OC.L10N.register(
     "Go to settings" : "前往設定",
     "Upload files" : "上傳檔案",
     "Public links" : "公共連結",
-    "Internal links (Only works for users with access to the files)" : "內部連結（僅對有權存取此檔案的用戶有效）"
+    "Internal links (Only works for users with access to the files)" : "內部連結（僅對有權存取此檔案的用戶有效）",
+    "Client secret of your Mattermost application" : "您 Mattermost 應用程式的客戶端密碼",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "密碼"
 },
 "nplurals=1; plural=0;");

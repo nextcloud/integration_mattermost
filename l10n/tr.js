@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "Uygulama kimliği",
     "ID of your Mattermost application" : "Mattermost uygulamanızın kimliği",
     "Application secret" : "Uygulama parolası",
-    "Client secret of your Mattermost application" : "Mattermost uygulamanızın istemci parolası",
     "Use a popup to authenticate" : "Kimlik doğrulaması için açılan pencere kullanılsın",
     "Enable navigation link as default for all users" : "Gezinme bağlantısı tüm kullanıcılar için varsayılan olarak kullanılsın",
     "Successfully connected to Mattermost!" : "Mattermost ile bağlantı kuruldu!",
@@ -57,12 +56,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "Not: Mattermost kendi tarafında ekleyene kadar İnternet kancaları özelliği süresiz olarak kapatıldı. ",
     "Enable webhooks" : "Site bağlantıları kullanılsın",
     "Calendar event created webhook URL" : "Takvim etkinliği eklendi site bağlantısı adresi",
-    "https://my.mattermost.org/webhook..." : "https://benim.mattermost.org/sitebaglantisi...",
     "Calendar event updated webhook URL" : "Takvim etkinliği güncellendi site bağlantısı adresi",
     "Daily summary webhook URL" : "Günlük özet site bağlantısı adresi",
     "Upcoming events webhook URL" : "Yaklaşan etkinlikler site bağlantısı adresi",
     "Webhook secret" : "Site bağlantısı parolası",
-    "secret" : "parola",
     "password" : "parola",
     "Message to send with the files" : "Dosyalar ile gönderilecek ileti",
     "View only" : "Yalnızca görüntüleme",
@@ -109,6 +106,9 @@ OC.L10N.register(
     "Go to settings" : "Ayarlara git",
     "Upload files" : "Dosyaları yükle",
     "Public links" : "Herkese açık bağlantılar",
-    "Internal links (Only works for users with access to the files)" : "İç bağlantılar (yalnızca bu dosyalara erişebilen kullanıcılar için geçerlidir)"
+    "Internal links (Only works for users with access to the files)" : "İç bağlantılar (yalnızca bu dosyalara erişebilen kullanıcılar için geçerlidir)",
+    "Client secret of your Mattermost application" : "Mattermost uygulamanızın istemci parolası",
+    "https://my.mattermost.org/webhook..." : "https://benim.mattermost.org/sitebaglantisi...",
+    "secret" : "parola"
 },
 "nplurals=2; plural=(n > 1);");

@@ -27,7 +27,6 @@ OC.L10N.register(
     "Application ID" : "Alkalmazásazonosító",
     "ID of your Mattermost application" : "A Mattermost alkalmazás azonosítója",
     "Application secret" : "Alkalmazástitok",
-    "Client secret of your Mattermost application" : "A Mattermost alkalmazás klienstitka",
     "Use a popup to authenticate" : "Felugró ablak használata a hitelesítéshez",
     "Enable navigation link as default for all users" : "Navigációs hivatkozás alapértelmezett engedélyezése az összes felhasználó számára",
     "Successfully connected to Mattermost!" : "Sikeresen kapcsolódott a Mattermosthoz!",
@@ -57,12 +56,10 @@ OC.L10N.register(
     "NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end." : "MEGJEGYZÉS: A Webhooks funkció határozatlan időre le van tiltva, amíg a Mattermost nem valósítja meg a saját részéről.",
     "Enable webhooks" : "Webhookok engedélyezése",
     "Calendar event created webhook URL" : "Naptáresemény-létrehozási webhook webcíme",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
     "Calendar event updated webhook URL" : "Naptáresemény-frissítési webhook webcíme",
     "Daily summary webhook URL" : "Napi összefoglaló webhook webcíme",
     "Upcoming events webhook URL" : "Közelgő események webhook webcíme",
     "Webhook secret" : "Webhook titka",
-    "secret" : "titok",
     "password" : "jelszó",
     "Message to send with the files" : "A fájlokkal küldendő üzenet",
     "View only" : "Csak megtekintés",
@@ -109,6 +106,9 @@ OC.L10N.register(
     "Go to settings" : "Ugrás a beállításokhoz",
     "Upload files" : "Fájlok feltöltése",
     "Public links" : "Nyilvános hivatkozások",
-    "Internal links (Only works for users with access to the files)" : "Belső hivatkozások (Csak a fájlokhoz hozzáférő felhasználók esetén működik)"
+    "Internal links (Only works for users with access to the files)" : "Belső hivatkozások (Csak a fájlokhoz hozzáférő felhasználók esetén működik)",
+    "Client secret of your Mattermost application" : "A Mattermost alkalmazás klienstitka",
+    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
+    "secret" : "titok"
 },
 "nplurals=2; plural=(n != 1);");

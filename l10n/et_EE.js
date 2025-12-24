@@ -22,7 +22,6 @@ OC.L10N.register(
     "Application ID" : "Rakenduse tunnus",
     "ID of your Mattermost application" : "Sinu Mattermosti rakenduse tunnus",
     "Application secret" : "Rakenduse saladus",
-    "Client secret of your Mattermost application" : "Sinu Mattermosti rakenduse kliendisaladus",
     "Use a popup to authenticate" : "Kasuta autentimiseks hüpikakent",
     "Enable navigation link as default for all users" : "Lisa vaikimisi menüülink kõikide kasutajate jaoks",
     "Successfully connected to Mattermost!" : "Edukalt ühendatud Mattermostiga!",
@@ -43,7 +42,6 @@ OC.L10N.register(
     "Disconnect from Mattermost" : "Katkesta Mattermosti ühendus",
     "Add file action to send files to Mattermost" : "Saatmaks faile Mattermosti lisa vastav failitoiming",
     "Enable searching for messages" : "Luba sõnumite otsimist",
-    "secret" : "saladus",
     "password" : "salasõna",
     "Message to send with the files" : "Failidele lisatav sõnum",
     "View only" : "Ainult vaatamine",
@@ -88,6 +86,8 @@ OC.L10N.register(
     "Go to settings" : "Ava seadistused",
     "Upload files" : "Failide üleslaadimine",
     "Public links" : "Avalikud lingid",
-    "Internal links (Only works for users with access to the files)" : "Sisemine jagamislink (töötab ainult nende kasutajate puhul, kelle on ligipääs nendele failidele)"
+    "Internal links (Only works for users with access to the files)" : "Sisemine jagamislink (töötab ainult nende kasutajate puhul, kelle on ligipääs nendele failidele)",
+    "Client secret of your Mattermost application" : "Sinu Mattermosti rakenduse kliendisaladus",
+    "secret" : "saladus"
 },
 "nplurals=2; plural=(n != 1);");
