@@ -25,6 +25,7 @@
     "Application ID" : "Anwendungs-ID",
     "ID of your Mattermost application" : "ID Ihrer Mattermost -Anwendung",
     "Application secret" : "Anwendungsgeheimnis",
+    "Application secret of your Mattermost application" : "Anwendungsgeheimnis Ihrer Mattermost-Anwendung",
     "Use a popup to authenticate" : "Pop-up zur Authentifizierung verwenden",
     "Enable navigation link as default for all users" : "Navigationslink als Standard für alle Benutzer aktivieren",
     "Successfully connected to Mattermost!" : "Erfolgreich mit Mattermost verbunden!",

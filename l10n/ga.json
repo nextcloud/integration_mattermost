@@ -25,6 +25,7 @@
     "Application ID" : "ID Feidhmchláir",
     "ID of your Mattermost application" : "ID d'fheidhmchlár Mattermost",
     "Application secret" : "Rún iarratais",
+    "Application secret of your Mattermost application" : "Rún feidhmchláir d'fheidhmchláir Mattermost",
     "Use a popup to authenticate" : "Bain úsáid as preabfhuinneog chun fíordheimhniú a dhéanamh",
     "Enable navigation link as default for all users" : "Cumasaigh nasc nascleanúna mar réamhshocrú do gach úsáideoir",
     "Successfully connected to Mattermost!" : "D'éirigh le nascadh le Mattermost!",

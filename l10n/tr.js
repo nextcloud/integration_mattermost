@@ -27,6 +27,7 @@ OC.L10N.register(
     "Application ID" : "Uygulama kimliği",
     "ID of your Mattermost application" : "Mattermost uygulamanızın kimliği",
     "Application secret" : "Uygulama parolası",
+    "Application secret of your Mattermost application" : "Mattermost uygulamanızın uygulama parolası",
     "Use a popup to authenticate" : "Kimlik doğrulaması için açılan pencere kullanılsın",
     "Enable navigation link as default for all users" : "Gezinme bağlantısı tüm kullanıcılar için varsayılan olarak kullanılsın",
     "Successfully connected to Mattermost!" : "Mattermost ile bağlantı kuruldu!",
