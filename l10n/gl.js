@@ -27,6 +27,7 @@ OC.L10N.register(
     "Application ID" : "ID da aplicación",
     "ID of your Mattermost application" : "ID da súa aplicación de Mattermost",
     "Application secret" : "Segredo da aplicación",
+    "Application secret of your Mattermost application" : "Segredo da aplicación da súa aplicación de Mattermost",
     "Use a popup to authenticate" : "Use unha xanela emerxente para autenticarse",
     "Enable navigation link as default for all users" : "Activar a ligazón de navegación como predeterminada para todos os usuarios",
     "Successfully connected to Mattermost!" : "Conectou satisfactoriamente con Mattermost!",
@@ -107,7 +108,7 @@ OC.L10N.register(
     "Upload files" : "Enviar ficheiros",
     "Public links" : "Ligazóns públicas",
     "Internal links (Only works for users with access to the files)" : "Ligazóns internas (Só funciona para usuarios con acceso aos ficheiros)",
-    "Client secret of your Mattermost application" : " Segredo do cliente da súa aplicación de Mattermost",
+    "Client secret of your Mattermost application" : "Segredo do cliente da súa aplicación de Mattermost",
     "https://my.mattermost.org/webhook..." : "https://o-meu.mattermost.org/ancoraxe...",
     "secret" : "segredo"
 },

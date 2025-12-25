@@ -27,6 +27,7 @@ OC.L10N.register(
     "Application ID" : "Anwendungs-ID",
     "ID of your Mattermost application" : "ID deiner Mattermost-Anwendung",
     "Application secret" : "Anwendungsgeheimnis",
+    "Application secret of your Mattermost application" : "Anwendungsgeheimnis deiner Mattermost-Anwendung",
     "Use a popup to authenticate" : "Popup zur Authentifizierung verwenden",
     "Enable navigation link as default for all users" : "Navigationslink als Standard für alle Benutzer aktivieren",
     "Successfully connected to Mattermost!" : "Erfolgreich mit Mattermost verbunden!",
