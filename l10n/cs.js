@@ -27,6 +27,7 @@ OC.L10N.register(
     "Application ID" : "Identif. aplikace",
     "ID of your Mattermost application" : "Identif. vaší Mattermost aplikace",
     "Application secret" : "Tajemství pro aplikaci",
+    "Application secret of your Mattermost application" : "Tajemství aplikace vaší Mattermost aplikace",
     "Use a popup to authenticate" : "Ověřte se ve vyskakovacím okně",
     "Enable navigation link as default for all users" : "Zapnout odkaz pro navigaci jako výchozí stav pro všechny uživatele",
     "Successfully connected to Mattermost!" : "Úspěšně spojeno s Mattermost!",
