@@ -27,6 +27,7 @@ OC.L10N.register(
     "Application ID" : "應用程式 ID",
     "ID of your Mattermost application" : "您 Mattermost 應用程式的 ID",
     "Application secret" : "應用程式密碼",
+    "Application secret of your Mattermost application" : "您 Mattermost 應用程式的應用程式密碼",
     "Use a popup to authenticate" : "使用彈出窗口進行身份驗證",
     "Enable navigation link as default for all users" : "將導航連結設為所有用戶的默認選項",
     "Successfully connected to Mattermost!" : "成功連線至 Mattermost！",
