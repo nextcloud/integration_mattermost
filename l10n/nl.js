@@ -26,6 +26,8 @@ OC.L10N.register(
     "Comment" : "Notitie",
     "Cancel" : "Annuleren",
     "Connect" : "Verbinden",
-    "Upload files" : "Bestanden uploaden"
+    "Go to settings" : "Ga naar instellingen",
+    "Upload files" : "Bestanden uploaden",
+    "Public links" : "Openbare links"
 },
 "nplurals=2; plural=(n != 1);");
