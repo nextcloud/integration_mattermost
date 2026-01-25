@@ -13,6 +13,7 @@ OC.L10N.register(
     "Instance address" : "Indirizzo istanza",
     "Application ID" : "ID applicazione",
     "Application secret" : "Segreto applicazione",
+    "Invalid access token" : "Token di accesso non valido",
     "Personal access token" : "Token di accesso personale",
     "Login" : "Accedi",
     "Password" : "Password",
