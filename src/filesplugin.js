@@ -15,7 +15,7 @@ import { generateUrl } from '@nextcloud/router'
 import { showSuccess, showError } from '@nextcloud/dialogs'
 import { translate as t, translatePlural as n } from '@nextcloud/l10n'
 import { oauthConnect, oauthConnectConfirmDialog, gotoSettingsConfirmDialog, SEND_TYPE } from './utils.js'
-import { registerFileAction, Permission, FileAction } from '@nextcloud/files'
+import { registerFileAction, Permission } from '@nextcloud/files'
 import {
 	getClient,
 	getDefaultPropfind,
@@ -53,7 +53,7 @@ function openChannelSelector(files) {
 	modalVue.showModal()
 }
 
-const sendAction = new FileAction({
+const sendAction = {
 	id: 'mattermostSend',
 	displayName: ({ nodes }) => {
 		return nodes.length > 1
@@ -76,7 +76,7 @@ const sendAction = new FileAction({
 		sendSelectedNodes(nodes)
 		return nodes.map(_ => null)
 	},
-})
+}
 registerFileAction(sendAction)
 
 function sendSelectedNodes(nodes) {
