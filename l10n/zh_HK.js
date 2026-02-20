@@ -107,9 +107,6 @@ OC.L10N.register(
     "Go to settings" : "前往設定",
     "Upload files" : "上傳檔案",
     "Public links" : "公共連結",
-    "Internal links (Only works for users with access to the files)" : "內部連結（僅對有權存取此檔案的用戶有效）",
-    "Client secret of your Mattermost application" : "您 Mattermost 應用程式的客戶端密碼",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
-    "secret" : "密碼"
+    "Internal links (Only works for users with access to the files)" : "內部連結（僅對有權存取此檔案的用戶有效）"
 },
 "nplurals=1; plural=0;");

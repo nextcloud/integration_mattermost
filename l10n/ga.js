@@ -107,9 +107,6 @@ OC.L10N.register(
     "Go to settings" : "Téigh go dtí socruithe",
     "Upload files" : "Uaslódáil comhaid",
     "Public links" : "Naisc phoiblí",
-    "Internal links (Only works for users with access to the files)" : "Naisc inmheánacha (Ní oibríonn ach d’úsáideoirí a bhfuil rochtain acu ar na comhaid)",
-    "Client secret of your Mattermost application" : "Rún an chliaint maidir le d'iarratas Mattermost",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
-    "secret" : "rún"
+    "Internal links (Only works for users with access to the files)" : "Naisc inmheánacha (Ní oibríonn ach d’úsáideoirí a bhfuil rochtain acu ar na comhaid)"
 },
 "nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4);");

@@ -25,7 +25,6 @@ OC.L10N.register(
     "Comment" : "Komentaras",
     "Cancel" : "Atsisakyti",
     "Connect" : "Prisijungti",
-    "Upload files" : "Įkelti failus",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook..."
+    "Upload files" : "Įkelti failus"
 },
 "nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);");

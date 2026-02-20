@@ -93,9 +93,6 @@
     "Go to settings" : "Joan ezarpenetara",
     "Upload files" : "Igo fitxategiak",
     "Public links" : "Esteka publikoak",
-    "Internal links (Only works for users with access to the files)" : "Barruko estekak (fitxategiak atzitzeko baimena daukaten erabiltzaileei bakarrik balio diete)",
-    "Client secret of your Mattermost application" : "Zure Mattermost aplikazioaren bezero-sekretua",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
-    "secret" : "sekretua"
+    "Internal links (Only works for users with access to the files)" : "Barruko estekak (fitxategiak atzitzeko baimena daukaten erabiltzaileei bakarrik balio diete)"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

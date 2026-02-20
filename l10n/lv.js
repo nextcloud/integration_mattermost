@@ -22,7 +22,6 @@ OC.L10N.register(
     "No Mattermost account connected" : "Nav sasaistītu Mattermost kontu",
     "Connect" : "Savienoties",
     "Do you want to go to your \"Connect accounts\" personal settings?" : "Vai doties uz saviem \"Savienot kontus\" personīgajiem iestatījumiem?",
-    "Upload files" : "Augšupielādēt datnes",
-    "Client secret of your Mattermost application" : "Mattermost lietotnes klienta noslēpums"
+    "Upload files" : "Augšupielādēt datnes"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

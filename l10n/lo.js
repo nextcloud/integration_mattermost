@@ -106,9 +106,6 @@ OC.L10N.register(
     "Go to settings" : "ໄປທີ່ການຕັ້ງຄ່າ",
     "Upload files" : "ອັບໂຫຼດຟາຍ",
     "Public links" : "ລິງສາທາລະນະ",
-    "Internal links (Only works for users with access to the files)" : "ລິງພາຍໃນ (ໃຊ້ໄດ້ສະເພາະຜູ້ໃຊ້ທີ່ມີສິດເຂົ້າເຖິງຟາຍເທົ່ານັ້ນ)",
-    "Client secret of your Mattermost application" : "ລະຫັດລັບ client ຂອງແອັບພລິເຄຊັນ Mattermost ຂອງທ່ານ",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
-    "secret" : "ລະຫັດລັບ"
+    "Internal links (Only works for users with access to the files)" : "ລິງພາຍໃນ (ໃຊ້ໄດ້ສະເພາະຜູ້ໃຊ້ທີ່ມີສິດເຂົ້າເຖິງຟາຍເທົ່ານັ້ນ)"
 },
 "nplurals=1; plural=0;");

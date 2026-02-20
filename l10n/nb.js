@@ -102,9 +102,6 @@ OC.L10N.register(
     "Go to settings" : "Gå til innstillinger",
     "Upload files" : "Last opp filer",
     "Public links" : "Offentlige koblinger",
-    "Internal links (Only works for users with access to the files)" : "Interne lenker (fungerer kun for brukere med tilgang til filene)",
-    "Client secret of your Mattermost application" : "Klienthemmelighet til din Mattermost-applikasjon",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
-    "secret" : "hemmelighet"
+    "Internal links (Only works for users with access to the files)" : "Interne lenker (fungerer kun for brukere med tilgang til filene)"
 },
 "nplurals=2; plural=(n != 1);");

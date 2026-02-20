@@ -98,9 +98,6 @@ OC.L10N.register(
     "Go to settings" : "Отидете в настройките",
     "Upload files" : "Качи файлове",
     "Public links" : "Публични връзки",
-    "Internal links (Only works for users with access to the files)" : "Вътрешни връзки (Работи само за потребители с достъп до файловете)",
-    "Client secret of your Mattermost application" : "Клиентска тайна на вашето Mattermost приложение",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
-    "secret" : "тайна"
+    "Internal links (Only works for users with access to the files)" : "Вътрешни връзки (Работи само за потребители с достъп до файловете)"
 },
 "nplurals=2; plural=(n != 1);");

@@ -107,9 +107,6 @@ OC.L10N.register(
     "Go to settings" : "Ir aos axustes",
     "Upload files" : "Enviar ficheiros",
     "Public links" : "Ligazóns públicas",
-    "Internal links (Only works for users with access to the files)" : "Ligazóns internas (Só funciona para usuarios con acceso aos ficheiros)",
-    "Client secret of your Mattermost application" : "Segredo do cliente da súa aplicación de Mattermost",
-    "https://my.mattermost.org/webhook..." : "https://o-meu.mattermost.org/ancoraxe...",
-    "secret" : "segredo"
+    "Internal links (Only works for users with access to the files)" : "Ligazóns internas (Só funciona para usuarios con acceso aos ficheiros)"
 },
 "nplurals=2; plural=(n != 1);");

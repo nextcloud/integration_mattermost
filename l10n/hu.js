@@ -106,9 +106,6 @@ OC.L10N.register(
     "Go to settings" : "Ugrás a beállításokhoz",
     "Upload files" : "Fájlok feltöltése",
     "Public links" : "Nyilvános hivatkozások",
-    "Internal links (Only works for users with access to the files)" : "Belső hivatkozások (Csak a fájlokhoz hozzáférő felhasználók esetén működik)",
-    "Client secret of your Mattermost application" : "A Mattermost alkalmazás klienstitka",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
-    "secret" : "titok"
+    "Internal links (Only works for users with access to the files)" : "Belső hivatkozások (Csak a fájlokhoz hozzáférő felhasználók esetén működik)"
 },
 "nplurals=2; plural=(n != 1);");

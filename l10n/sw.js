@@ -106,9 +106,6 @@ OC.L10N.register(
     "Go to settings" : "Nenda kwenye mipangilio",
     "Upload files" : "Pakia faili",
     "Public links" : "Viungo vya umma",
-    "Internal links (Only works for users with access to the files)" : "Viungo vya ndani (Hufanya kazi kwa watumiaji walio na ufikiaji wa faili pekee)",
-    "Client secret of your Mattermost application" : "Siri ya mteja ya programu yako ya Mattermost",
-    "https://my.mattermost.org/webhook..." : "https://my.mattermost.org/webhook...",
-    "secret" : "siri"
+    "Internal links (Only works for users with access to the files)" : "Viungo vya ndani (Hufanya kazi kwa watumiaji walio na ufikiaji wa faili pekee)"
 },
 "nplurals=2; plural=(n != 1);");
