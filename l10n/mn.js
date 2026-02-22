@@ -1,6 +1,8 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Bad credentials" : "Буруу нэвтрэх мэдээлэл",
+    "Bad HTTP method" : "Буруу HTTP арга",
     "Login" : "Нэвтрэх",
     "Password" : "Нууц үг",
     "password" : "нууц үг",
