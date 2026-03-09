@@ -29,6 +29,7 @@ OC.L10N.register(
     "Cancel" : "Annulla",
     "Nothing" : "Niente",
     "Connect" : "Connetti",
-    "Upload files" : "Carica file"
+    "Upload files" : "Carica file",
+    "Public links" : "Link pubblici"
 },
 "nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;");
