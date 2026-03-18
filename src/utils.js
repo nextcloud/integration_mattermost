@@ -1,6 +1,6 @@
 import { generateUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
-import { showError } from '@nextcloud/dialogs'
+import { DialogBuilder, showError } from '@nextcloud/dialogs'
 import FileOutlineIcon from 'vue-material-design-icons/FileOutline.vue'
 import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
 import LinkVariantIcon from 'vue-material-design-icons/LinkVariant.vue'
@@ -63,60 +63,62 @@ export function oauthConnect(mattermostUrl, clientId, oauthOrigin, usePopup = fa
 
 export function oauthConnectConfirmDialog(mattermostUrl) {
 	return new Promise((resolve, reject) => {
-		const settingsLink = generateUrl('/settings/user/connected-accounts')
-		const linkText = t('integration_mattermost', 'Connected accounts')
-		const settingsHtmlLink = `<a href="${settingsLink}" class="external">${linkText}</a>`
-		OC.dialogs.message(
-			t('integration_mattermost', 'You need to connect before using the Mattermost integration.')
-			+ '<br><br>'
-			+ t('integration_mattermost', 'Do you want to connect to {mmUrl}?', { mmUrl: mattermostUrl })
-			+ '<br><br>'
-			+ t(
-				'integration_mattermost',
-				'You can choose another Mattermost server in the {settingsHtmlLink} section of your personal settings.',
-				{ settingsHtmlLink },
-				null,
-				{ escape: false },
-			),
-			t('integration_mattermost', 'Connect to Mattermost'),
-			'none',
-			{
-				type: OC.dialogs.YES_NO_BUTTONS,
-				confirm: t('integration_mattermost', 'Connect'),
-				confirmClasses: 'success',
-				cancel: t('integration_mattermost', 'Cancel'),
-			},
-			(result) => {
-				resolve(result)
-			},
-			true,
-			true,
-		)
+		new DialogBuilder()
+			.setName(t('integration_mattermost', 'Connect to Mattermost'))
+			.setText(
+				t('integration_mattermost', 'You need to connect to a Mattermost server before using the Mattermost integration.')
+				+ ' --- '
+				+ t('integration_mattermost', 'You can choose another Mattermost server in the "Mattermost" section of your personal settings.')
+				+ ' --- '
+				+ t('integration_mattermost', 'Do you want to connect to {mmUrl}?', { mmUrl: mattermostUrl }),
+			)
+			.setButtons([
+				{
+					label: t('integration_mattermost', 'Cancel'),
+					variant: 'secondary',
+					callback: () => {
+						reject(new Error('OAuth connection canceled'))
+					},
+				},
+				{
+					label: t('integration_mattermost', 'Connect'),
+					variant: 'primary',
+					callback: () => {
+						resolve()
+					},
+				},
+			])
+			.build()
+			.show()
 	})
 }
 
 export function gotoSettingsConfirmDialog() {
 	const settingsLink = generateUrl('/settings/user/connected-accounts')
-	OC.dialogs.message(
-		t('integration_mattermost', 'You need to connect to a Mattermost server before using the Mattermost integration.')
-		+ '<br><br>'
-		+ t('integration_mattermost', 'Do you want to go to your "Connect accounts" personal settings?'),
-		t('integration_mattermost', 'Connect to Mattermost'),
-		'none',
-		{
-			type: OC.dialogs.YES_NO_BUTTONS,
-			confirm: t('integration_mattermost', 'Go to settings'),
-			confirmClasses: 'success',
-			cancel: t('integration_mattermost', 'Cancel'),
-		},
-		(result) => {
-			if (result) {
-				window.location.replace(settingsLink)
-			}
-		},
-		true,
-		true,
-	)
+	new DialogBuilder()
+		.setName(t('integration_mattermost', 'Connect to Mattermost'))
+		.setText(
+			t('integration_mattermost', 'You need to connect to a Mattermost server before using the Mattermost integration.')
+			+ ' --- '
+			+ t('integration_mattermost', 'Do you want to go to your "Connected accounts" personal settings?'),
+		)
+		.setButtons([
+			{
+				label: t('integration_mattermost', 'Cancel'),
+				variant: 'secondary',
+				callback: () => {
+				},
+			},
+			{
+				label: t('integration_mattermost', 'Go to settings'),
+				variant: 'primary',
+				callback: () => {
+					window.location.replace(settingsLink)
+				},
+			},
+		])
+		.build()
+		.show()
 }
 
 export function humanFileSize(bytes, approx = false, si = false, dp = 1) {
