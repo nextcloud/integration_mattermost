@@ -156,24 +156,24 @@ async function sendFileIdsAfterOAuth(fileIdsStr, currentDir) {
 }
 
 function connectToMattermost(selectedFiles = []) {
-	oauthConnectConfirmDialog(OCA.Mattermost.mattermostUrl).then((result) => {
-		if (result) {
-			if (OCA.Mattermost.usePopup) {
-				oauthConnect(OCA.Mattermost.mattermostUrl, OCA.Mattermost.clientId, null, true)
-					.then((data) => {
-						OCA.Mattermost.mattermostConnected = true
-						openChannelSelector(selectedFiles)
-					})
-			} else {
-				const selectedFilesIds = selectedFiles.map(f => f.id)
-				const currentDirectory = OCA.Mattermost.currentFileList?.folder?.attributes?.filename
-				oauthConnect(
-					OCA.Mattermost.mattermostUrl,
-					OCA.Mattermost.clientId,
-					'files--' + currentDirectory + '--' + selectedFilesIds.join(','),
-				)
-			}
+	oauthConnectConfirmDialog(OCA.Mattermost.mattermostUrl).then(() => {
+		if (OCA.Mattermost.usePopup) {
+			oauthConnect(OCA.Mattermost.mattermostUrl, OCA.Mattermost.clientId, null, true)
+				.then((data) => {
+					OCA.Mattermost.mattermostConnected = true
+					openChannelSelector(selectedFiles)
+				})
+		} else {
+			const selectedFilesIds = selectedFiles.map(f => f.id)
+			const currentDirectory = OCA.Mattermost.currentFileList?.folder?.attributes?.filename
+			oauthConnect(
+				OCA.Mattermost.mattermostUrl,
+				OCA.Mattermost.clientId,
+				'files--' + currentDirectory + '--' + selectedFilesIds.join(','),
+			)
 		}
+	}).catch((error) => {
+		console.debug('Oauth error', error)
 	})
 }
 
