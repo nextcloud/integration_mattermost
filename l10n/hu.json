@@ -25,6 +25,7 @@
     "Application ID" : "Alkalmazásazonosító",
     "ID of your Mattermost application" : "A Mattermost alkalmazás azonosítója",
     "Application secret" : "Alkalmazástitok",
+    "Application secret of your Mattermost application" : "A Mattermost alkalmazástitka",
     "Use a popup to authenticate" : "Felugró ablak használata a hitelesítéshez",
     "Enable navigation link as default for all users" : "Navigációs hivatkozás alapértelmezett engedélyezése az összes felhasználó számára",
     "Successfully connected to Mattermost!" : "Sikeresen kapcsolódott a Mattermosthoz!",
