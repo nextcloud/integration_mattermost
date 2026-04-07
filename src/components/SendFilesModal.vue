@@ -492,6 +492,7 @@ export default {
 	}
 
 	.modal-title {
+		margin-top: 0;
 		display: flex;
 		justify-content: center;
 		span {
