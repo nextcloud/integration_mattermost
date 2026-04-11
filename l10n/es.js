@@ -27,6 +27,7 @@ OC.L10N.register(
     "Application ID" : "ID de la aplicación",
     "ID of your Mattermost application" : "ID de su aplicación Mattermost",
     "Application secret" : "Secreto de la aplicación",
+    "Application secret of your Mattermost application" : "Secreto de aplicación para tu aplicación Mattermost",
     "Use a popup to authenticate" : "Usar una ventana emergente para autenticar",
     "Enable navigation link as default for all users" : "Habilitar el enlace de navegación como el predeterminado para todos los usuarios",
     "Successfully connected to Mattermost!" : "¡Se ha conectado exitosamente a Mattermost!",
