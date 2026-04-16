@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+
+## 3.1.0 – 2026-04-16
+
+### Added
+- Support for NC34 @julien-nc [#106](https://github.com/nextcloud/integration_mattermost/pull/106)
+
+### Changed
+- updated dependencies
+
+### Fixed
+- No more FileAction class in @nextcloud/files @julien-nc [#106](https://github.com/nextcloud/integration_mattermost/pull/106)
+- small UI issues @julien-nc [#114](https://github.com/nextcloud/integration_mattermost/pull/114)
+
+
+
 ## 3.0.0 – 2025-12-23
 
 ### Changed
