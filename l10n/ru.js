@@ -49,7 +49,6 @@ OC.L10N.register(
     "Nothing" : "Ничего",
     "Sign in with Mattermost" : "Войти через Mattermost",
     "Connect" : "Подключиться",
-    "Do you want to go to your \"Connect accounts\" personal settings?" : "Хотите перейти в личные настройки «Подключения учетных записей»?",
     "Go to settings" : "Перейти к настройкам",
     "Upload files" : "Отправить файлы"
 },

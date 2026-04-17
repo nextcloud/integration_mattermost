@@ -35,7 +35,6 @@ OC.L10N.register(
     "_Send link_::_Send links_" : ["Odoslať odkaz","Odoslať odkazy","Odoslať odkazy","Odoslané odkazy"],
     "No Mattermost notifications!" : "Žiadne upozornenia od Mattermost!",
     "Connect" : "Pripojiť",
-    "Do you want to go to your \"Connect accounts\" personal settings?" : "Chcete prejsť do osobných nastavení „Pripojiť účty“?",
     "Go to settings" : "Prejsť do nastavení",
     "Upload files" : "Nahrať súbory",
     "Public links" : "Verejné odkazy:",

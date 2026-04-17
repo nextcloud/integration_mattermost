@@ -37,7 +37,6 @@ OC.L10N.register(
     "_Send file_::_Send files_" : ["Kirim file"],
     "_Send link_::_Send links_" : ["Kirim tautan"],
     "Connect" : "Sambung",
-    "Do you want to go to your \"Connect accounts\" personal settings?" : "Apakah Anda ingin menuju pengaturan pribadi \"Hubungkan akun\"?",
     "Go to settings" : "Buka pengaturan",
     "Upload files" : "Unggah berkas",
     "Public links" : "Tautan publik",
