@@ -88,6 +88,7 @@ OC.L10N.register(
     "Sign in with Mattermost" : "Logi sisse Mattermostiga",
     "Failed to save Mattermost OAuth state" : "Mattermosti OAuthi oleku salvestamine ei õnnestunud",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "Enne Mattermosti lõimingu kasutamist peab olema loodud ühendus Mattermosti serveriga.",
+    "You can choose another Mattermost server in the \"Mattermost\" section of your personal settings." : "Oma isiklike seadistuste „Mattermost“ alajaotuses võid luua ühenduse mõne muu Mattermosti serveriga.",
     "Do you want to connect to {mmUrl}?" : "Kas sa soovid luua ühendust {mmUrl} serveriga?",
     "Connect" : "Ühenda",
     "Go to settings" : "Ava seadistused",
