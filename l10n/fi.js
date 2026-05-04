@@ -37,6 +37,8 @@ OC.L10N.register(
     "Set link password" : "Aseta linkin salasana",
     "Comment" : "Kommentti",
     "Cancel" : "Peruuta",
+    "_Send file_::_Send files_" : ["Lähetä tiedosto","Lähetä tiedostot"],
+    "_Send link_::_Send links_" : ["Lähetä linkki","Lähetä linkit"],
     "No Mattermost account connected" : "Mattermost-tiliä ei ole yhdistetty",
     "Error connecting to Mattermost" : "Virhe yhdistäessä Mattermostiin",
     "No Mattermost notifications!" : "Ei Mattermost-ilmoituksia!",
