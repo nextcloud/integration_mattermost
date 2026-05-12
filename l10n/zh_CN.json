@@ -32,6 +32,8 @@
     "Cancel" : "取消",
     "_Send file_::_Send files_" : ["发送文件"],
     "_Send link_::_Send links_" : ["发送连结"],
+    "Nothing" : "无",
+    "_{fileName} was sent to {channelName}_::_{count} files were sent to {channelName}_" : ["{count} 文件发送到 {channelName}"],
     "Connect" : "连接",
     "Go to settings" : "前往设置",
     "Upload files" : "上传文件",
