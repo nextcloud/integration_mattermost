@@ -93,6 +93,7 @@ OC.L10N.register(
     "Sign in with Mattermost" : "Sign in with Mattermost",
     "Failed to save Mattermost OAuth state" : "Failed to save Mattermost OAuth state",
     "You need to connect to a Mattermost server before using the Mattermost integration." : "You need to connect to a Mattermost server before using the Mattermost integration.",
+    "Do you want to connect to {mmUrl}?" : "می‌خواهید به {mmUrl} متصل شوید؟",
     "Connect" : "متصل شدن",
     "Go to settings" : "Go to settings",
     "Upload files" : "بارگذاری فایل ها",
