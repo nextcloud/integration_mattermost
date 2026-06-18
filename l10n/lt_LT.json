@@ -28,6 +28,7 @@
     "Expires on" : "Baigia galioti",
     "Comment" : "Komentaras",
     "Cancel" : "Atsisakyti",
+    "Do you want to connect to {mmUrl}?" : "Ar norite prisijungti prie {mmUrl}?",
     "Connect" : "Prisijungti",
     "Upload files" : "Įkelti failus",
     "Public links" : "Viešos nuorodos"
