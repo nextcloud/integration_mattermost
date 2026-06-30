@@ -6,11 +6,15 @@
     "Bad HTTP method" : "Método HTTP incorreto",
     "OAuth access token refused" : "Token de acesso OAuth recusado",
     "Invalid credentials" : "Credenciais inválidas",
+    "Invalid response" : "Resposta inválida",
     "Connected accounts" : "Contas conectadas",
     "Mattermost integration provides a dashboard widget displaying your most important notifications\nand a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files." : "A integração do Mattermost fornece um widget de painel exibindo suas notificações mais importantes\ne um provedor de pesquisa unificado para mensagens. Ele também permite enviar arquivos para o Mattermost a partir do Nextcloud Files.",
     "Failed to save Mattermost admin options" : "Falha ao salvar as opções de administração do Mattermost",
+    "Application ID" : "ID do aplicativo",
+    "Application secret" : "Segredo de aplicativo",
     "Error connecting to Mattermost:" : "Erro ao conectar ao Mattermost:",
     "Invalid access token" : "Token de acesso inválido",
+    "Invalid login/password" : "Login/senha inválido/a",
     "Failed to save Mattermost options" : "Falha ao salvar as opções do Mattermost",
     "Login" : "Iniciar sessão",
     "Password" : "Palavra-passe",
@@ -20,6 +24,7 @@
     "Channel" : "Canal",
     "Type" : "Tipo",
     "Set expiration date" : "Definir a data de expiração",
+    "Set link password" : "Definir senha do link",
     "Comment" : "Comentário",
     "Cancel" : "Cancelar",
     "No Mattermost account connected" : "Nenhuma conta Mattermost conectada",
@@ -32,6 +37,7 @@
     "Connect" : "Ligar",
     "Go to settings" : "Vá para as configurações",
     "Upload files" : "Enviar ficheiros",
+    "Public links" : "Links públicos",
     "Internal links (Only works for users with access to the files)" : "Links internos (Funcionam apenas para utilizadores com acesso aos ficheiros)"
 },"pluralForm" :"nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;"
 }
