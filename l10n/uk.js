@@ -11,7 +11,7 @@ OC.L10N.register(
     "Bad credentials" : "Погані облікові дані",
     "Bad HTTP method" : "Поганий метод HTTP",
     "OAuth access token refused" : "Токен доступу OAuth відхилено",
-    "Invalid credentials" : "Невірні облікові дані",
+    "Invalid credentials" : "Недійсні облікові дані",
     "Invalid response" : "Неправильна відповідь",
     "Connected accounts" : "Підключені облікові записи",
     "Mattermost integration" : "Найважливіша інтеграція",
