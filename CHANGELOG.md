@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 3.2.0 – 2026-07-24
+
+### Added
+- Support for NC35 @janepie [#148](https://github.com/nextcloud/integration_mattermost/pull/148)
+
+### Changed
+- updated dependencies @janepie [#148](https://github.com/nextcloud/integration_mattermost/pull/148)
 
 ## 3.1.0 – 2026-04-16
 
