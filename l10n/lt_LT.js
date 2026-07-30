@@ -16,7 +16,7 @@ OC.L10N.register(
     "Connected accounts" : "Prijungtos paskyros",
     "Mattermost integration" : "„Mattermost“ integracija",
     "Integration of Mattermost" : "„Mattermost“ integracija",
-    "Mattermost integration provides a dashboard widget displaying your most important notifications\nand a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files." : "„Mattermost“ integracija suteikia informacinės lentelės valdiklį, kuriame rodomi svarbiausi pranešimai,\nir vieningą pranešimų paieškos sistemą. Be to, ji leidžia siųsti failus į „Mattermost“ iš „Nextcloud“ „Failų“.",
+    "Mattermost integration provides a dashboard widget displaying your most important notifications\nand a unified search provider for messages. It also lets you send files to Mattermost from Nextcloud Files." : "„Mattermost“ integracija suteikia informacinės lentelės valdiklį, kuriame rodomi svarbiausi pranešimai,\nir vieningą pranešimų paieškos sistemą. Be to, ji leidžia siųsti failus į „Mattermost“ iš „Nextcloud Failai“.",
     "Mattermost admin options saved" : "Išsaugoti „Mattermost“ administratoriaus nustatymai",
     "Failed to save Mattermost admin options" : "Nepavyko išsaugoti „Mattermost“ administratoriaus nustatymų",
     "If you want to allow your Nextcloud users to use OAuth to authenticate to a Mattermost instance of your choice, create an application in your Mattermost settings and set the ID and secret here." : "Jei norite, kad jūsų „Nextcloud“ vartotojai galėtų naudoti „OAuth“ autentifikuotis jūsų pasirinktame „Mattermost“ serveryje, sukurkite programėlę „Mattermost“ nustatymuose ir čia nurodykite jos ID bei slaptažodį.",
