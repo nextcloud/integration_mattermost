@@ -5,6 +5,7 @@ OC.L10N.register(
     "Password" : "Passwuert",
     "Edit" : "Änneren",
     "Files" : "Fichieren",
+    "Channel" : "Kanal",
     "Type" : "Typ",
     "Set expiration date" : "Verfallsdatum setzen",
     "Comment" : "Kommentar",
