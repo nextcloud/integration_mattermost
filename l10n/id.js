@@ -27,6 +27,7 @@ OC.L10N.register(
     "View only" : "Hanya lihat",
     "Edit" : "Sunting",
     "Files" : "Berkas",
+    "Channel" : "Saluran",
     "Type" : "tipe",
     "Set expiration date" : "Atur tanggal kedaluwarsa",
     "Expires on" : "Kedaluwarsa pada",

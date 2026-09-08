@@ -11,6 +11,7 @@ OC.L10N.register(
     "View only" : "View only",
     "Edit" : "Breyta",
     "Files" : "Skrár",
+    "Channel" : "Rás",
     "Type" : "Tegund",
     "Set expiration date" : "Setja gildistíma",
     "Comment" : "Athugasemd",
