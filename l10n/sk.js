@@ -28,7 +28,7 @@ OC.L10N.register(
     "ID of your Mattermost application" : "ID vašej aplikácie Mattermost",
     "Application secret" : "Aplikačný tajný kľúč",
     "Application secret of your Mattermost application" : "Tajný kľúč vašej aplikácie Mattermost",
-    "Use a popup to authenticate" : "Pre overenie použite kontextové okno",
+    "Use a popup to authenticate" : "Na overenie použite kontextové okno",
     "Enable navigation link as default for all users" : "Povoliť predvolene navigačný odkaz pre všetkých používateľov",
     "Successfully connected to Mattermost!" : "Pripojenie k službe Mattermost bolo úspešné!",
     "Error connecting to Mattermost:" : "Chyba pri pripájaní k službe Mattermost:",
