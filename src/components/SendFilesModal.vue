@@ -406,10 +406,10 @@ export default {
 			return generateUrl('/apps/integration_mattermost/preview?id={fileId}&x=100&y=100', { fileId })
 		},
 		fileStarted(id) {
-			this.$set(this.fileStates, id, STATES.IN_PROGRESS)
+			this.fileStates[id] = STATES.IN_PROGRESS
 		},
 		fileFinished(id) {
-			this.$set(this.fileStates, id, STATES.FINISHED)
+			this.fileStates[id] = STATES.FINISHED
 		},
 		getTeamIconUrl(teamId) {
 			return generateUrl('/apps/integration_mattermost/teams/{teamId}/image', { teamId })
