@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 3.2.1 - 2026-10-15
+
+### Fixed
+- replace removed Vue 2 this.$set with direct assignment @damluji-pgt [163](https://github.com/nextcloud/integration_mattermost/pull/163)
+
+### Changed
+- updated dependencies
+
 ## 3.2.0 – 2026-07-24
 
 ### Added
