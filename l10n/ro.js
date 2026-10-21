@@ -11,6 +11,7 @@ OC.L10N.register(
     "View only" : "Numai se vizualizează",
     "Edit" : "Editează",
     "Files" : "Fișiere",
+    "Channel" : "Canal",
     "Type" : "Tip",
     "Set expiration date" : "Specifică data expirării",
     "Comment" : "Comentariu",
