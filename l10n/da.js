@@ -104,7 +104,7 @@ OC.L10N.register(
     "Connect" : "Forbind",
     "Do you want to go to your \"Connected accounts\" personal settings?" : "Vil du gå til \"Forbundne konti\" i dine personlige indstillinger?",
     "Go to settings" : "Gå til indstillinger",
-    "Upload files" : "Upload filer",
+    "Upload files" : "Overfør filer",
     "Public links" : "Offentlige links",
     "Internal links (Only works for users with access to the files)" : "Interne links (virker kun for brugere med adgang til filerne)"
 },
