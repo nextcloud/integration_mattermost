@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Personal access token" : "Token personal hyrjeje",
     "Login" : "Hyrje",
     "Password" : "Fjalëkalim",
     "Edit" : "Përpuno",

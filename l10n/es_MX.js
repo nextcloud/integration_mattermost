@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Personal access token" : "Token de acceso personal",
     "Login" : "Iniciar sesión",
     "Password" : "Contraseña",
     "View only" : "Sólo lectura",

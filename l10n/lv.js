@@ -7,6 +7,7 @@ OC.L10N.register(
     "Application ID" : "Lietotnes Id",
     "ID of your Mattermost application" : "Mattermost lietotnes Id",
     "Application secret" : "Lietotnes noslēpums",
+    "Personal access token" : "Personīgā piekļuves pilnvara",
     "Login" : "Pieteikumvārds",
     "Password" : "Parole",
     "Connected as {user}" : "Savienojies kā {user}",

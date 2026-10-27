@@ -6,6 +6,7 @@
     "Connected accounts" : "Conturile conectate",
     "Make sure you set the \"Redirect URI\" to" : "Asigură-te că setezi „Redirect URI” la",
     "Use a popup to authenticate" : "Folosește o fereastră pop-up pentru autentificare",
+    "Personal access token" : "Token de acces personal",
     "Login" : "Autentificare",
     "Password" : "Parolă",
     "Connected as {user}" : "Conectat ca {user}",

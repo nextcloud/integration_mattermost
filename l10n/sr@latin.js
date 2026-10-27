@@ -1,6 +1,7 @@
 OC.L10N.register(
     "integration_mattermost",
     {
+    "Personal access token" : "Lični pristupni žeton",
     "Login" : "Korisničko ime",
     "Password" : "Lozinka",
     "Edit" : "Izmeni",

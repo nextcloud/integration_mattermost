@@ -7,6 +7,7 @@ OC.L10N.register(
     "Connected accounts" : "Поврзани сметки",
     "Make sure you set the \"Redirect URI\" to" : "И бидете сигурни дека сте ја поставиле \"Redirect URI\" во",
     "Use a popup to authenticate" : "користи скокачки прозор за автентификација",
+    "Personal access token" : "Личен токен за пристап",
     "Login" : "Најава",
     "Password" : "Лозинка",
     "Connected as {user}" : "Поврзан како {user}",

@@ -1,4 +1,5 @@
 { "translations": {
+    "Personal access token" : "Token de acceso personal",
     "Login" : "Inicio de sesión",
     "Password" : "Contraseña",
     "View only" : "Solo ver",

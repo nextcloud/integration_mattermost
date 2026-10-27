@@ -3,6 +3,7 @@
     "Bad credentials" : "Gölluð auðkenni",
     "OAuth access token refused" : "OAuth-aðgangsteikni hafnað",
     "Connected accounts" : "Tengdir aðgangar",
+    "Personal access token" : "Persónulegt aðgangsteikn",
     "Login" : "Innskráning",
     "Password" : "Lykilorð",
     "Connected as {user}" : "Tengt sem {user}",

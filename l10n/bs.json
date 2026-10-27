@@ -1,4 +1,5 @@
 { "translations": {
+    "Personal access token" : "Lični pristupni token",
     "Login" : "Login",
     "Password" : "Lozinka",
     "Edit" : "Izmjeni",
