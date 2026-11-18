@@ -18,6 +18,8 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use OC\User\NoUserException;
 use OCA\Mattermost\AppInfo\Application;
+use OCA\Mattermost\AuditLog\AuditLogger;
+use OCA\Mattermost\AuditLog\Operation;
 use OCP\AppFramework\Services\IAppConfig;
 use OCP\Constants;
 use OCP\Files\File;
@@ -53,6 +55,7 @@ class MattermostAPIService {
 		private IURLGenerator $urlGenerator,
 		private ICrypto $crypto,
 		private NetworkService $networkService,
+		private readonly AuditLogger $auditLogger,
 		IClientService $clientService,
 	) {
 		$this->client = $clientService->newClient();
@@ -482,6 +485,9 @@ class MattermostAPIService {
 
 			if (isset($sendResult['file_infos']) && is_array($sendResult['file_infos']) && count($sendResult['file_infos']) > 0) {
 				$remoteFileId = $sendResult['file_infos'][0]['id'] ?? 0;
+				$this->auditLogger->log(Operation::FileSent, 'User sent a file to Mattermost', [
+					'file' => $fileId
+				]);
 				return [
 					'remote_file_id' => $remoteFileId,
 				];
@@ -695,6 +701,10 @@ class MattermostAPIService {
 			} else {
 				$token = $response->getHeader('Token');
 				if ($token) {
+					$this->auditLogger->log(Operation::AccountConnected, 'User connected a Mattermost account', [
+						'url' => $baseUrl
+					]);
+
 					return [
 						'token' => $token,
 						'info' => json_decode($body, true),
@@ -706,5 +716,6 @@ class MattermostAPIService {
 			$this->logger->error('Mattermost login error : ' . $e->getMessage(), ['app' => Application::APP_ID]);
 			return ['error' => $e->getMessage()];
 		}
+
 	}
 }

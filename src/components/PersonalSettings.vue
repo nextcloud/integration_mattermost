@@ -106,79 +106,6 @@
 				type="info">
 				{{ t('integration_mattermost', 'Warning, everything you type in the search bar will be sent to Mattermost.') }}
 			</NcNoteCard>
-			<br>
-			<div id="mattermost-webhooks-block">
-				<NcNoteCard type="info">
-					{{ t('integration_mattermost', 'If you have configured the Nextcloud integration in Mattermost, it will automatically remotely configure those webhooks.') }}
-					{{ t('integration_mattermost', 'This section does not require to be connected to Mattermost from Nextcloud.') }}
-					<br>
-					{{ t('integration_mattermost', 'NOTE: Webhooks feature has been disabled indefinitely until Mattermost implements it from their end.') }}
-				</NcNoteCard>
-				<NcFormBoxSwitch
-					v-model="state.webhooks_enabled"
-					disabled
-					@update:model-value="onCheckboxChanged($event, 'webhooks_enabled')">
-					{{ t('integration_mattermost', 'Enable webhooks') }}
-				</NcFormBoxSwitch>
-				<div v-if="state.webhooks_enabled" id="webhook-fields">
-					<NcTextField
-						v-model="state.calendar_event_created_webhook"
-						:label="t('integration_mattermost', 'Calendar event created webhook URL')"
-						:placeholder="'https://my.mattermost.org/webhook...'"
-						:show-trailing-button="!!state.calendar_event_created_webhook"
-						@trailing-button-click="state.calendar_event_created_webhook = ''; onInput()"
-						@update:model-value="onInput">
-						<template #icon>
-							<WebhookIcon :size="20" />
-						</template>
-					</NcTextField>
-					<NcTextField
-						v-model="state.calendar_event_updated_webhook"
-						:label="t('integration_mattermost', 'Calendar event updated webhook URL')"
-						:placeholder="'https://my.mattermost.org/webhook...'"
-						:show-trailing-button="!!state.calendar_event_updated_webhook"
-						@trailing-button-click="state.calendar_event_updated_webhook = ''; onInput()"
-						@update:model-value="onInput">
-						<template #icon>
-							<WebhookIcon :size="20" />
-						</template>
-					</NcTextField>
-					<NcTextField
-						v-model="state.daily_summary_webhook"
-						:label="t('integration_mattermost', 'Daily summary webhook URL')"
-						:placeholder="'https://my.mattermost.org/webhook...'"
-						:show-trailing-button="!!state.daily_summary_webhook"
-						@trailing-button-click="state.daily_summary_webhook = ''; onInput()"
-						@update:model-value="onInput">
-						<template #icon>
-							<WebhookIcon :size="20" />
-						</template>
-					</NcTextField>
-					<NcTextField
-						v-model="state.imminent_events_webhook"
-						:label="t('integration_mattermost', 'Upcoming events webhook URL')"
-						:placeholder="'https://my.mattermost.org/webhook...'"
-						:show-trailing-button="!!state.imminent_events_webhook"
-						@trailing-button-click="state.imminent_events_webhook = ''; onInput()"
-						@update:model-value="onInput">
-						<template #icon>
-							<WebhookIcon :size="20" />
-						</template>
-					</NcTextField>
-					<NcTextField
-						v-model="state.webhook_secret"
-						type="password"
-						:label="t('integration_mattermost', 'Webhook secret')"
-						:placeholder="'https://my.mattermost.org/webhook...'"
-						:show-trailing-button="!!state.webhook_secret"
-						@trailing-button-click="state.webhook_secret = ''; onInput()"
-						@update:model-value="onInput">
-						<template #icon>
-							<KeyOutlineIcon :size="20" />
-						</template>
-					</NcTextField>
-				</div>
-			</div>
 		</div>
 	</div>
 </template>
@@ -189,7 +116,6 @@ import AccountOutlineIcon from 'vue-material-design-icons/AccountOutline.vue'
 import KeyOutlineIcon from 'vue-material-design-icons/KeyOutline.vue'
 import OpenInNewIcon from 'vue-material-design-icons/OpenInNew.vue'
 import CloseIcon from 'vue-material-design-icons/Close.vue'
-import WebhookIcon from 'vue-material-design-icons/Webhook.vue'
 import EarthIcon from 'vue-material-design-icons/Earth.vue'
 import CheckIcon from 'vue-material-design-icons/Check.vue'
 
@@ -223,7 +149,6 @@ export default {
 		NcLoadingIcon,
 		OpenInNewIcon,
 		CloseIcon,
-		WebhookIcon,
 		EarthIcon,
 		CheckIcon,
 		LockOutlineIcon,
@@ -293,18 +218,6 @@ export default {
 		},
 		onNavigationChange(newValue) {
 			this.saveOptions({ navigation_enabled: newValue ? '1' : '0' }, false)
-		},
-		onInput() {
-			this.loading = true
-			delay(() => {
-				this.saveOptions({
-					webhook_secret: this.state.webhook_secret,
-					calendar_event_created_webhook: this.state.calendar_event_created_webhook,
-					calendar_event_updated_webhook: this.state.calendar_event_updated_webhook,
-					daily_summary_webhook: this.state.daily_summary_webhook,
-					imminent_events_webhook: this.state.imminent_events_webhook,
-				}, false)
-			}, 2000)()
 		},
 		onSensitiveInput() {
 			this.loading = true

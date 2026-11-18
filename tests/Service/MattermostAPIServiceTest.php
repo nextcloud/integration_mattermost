@@ -3,6 +3,7 @@
 namespace OCA\Mattermost\Tests;
 
 use DateTime;
+use OCA\Mattermost\AuditLog\AuditLogger;
 use OCA\Mattermost\Service\MattermostAPIService;
 use OCA\Mattermost\Service\NetworkService;
 use OCP\AppFramework\Services\IAppConfig;
@@ -10,6 +11,7 @@ use OCP\Constants;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
+use OCP\Files\IUserFolder;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -43,6 +45,8 @@ class MattermostAPIServiceTest extends TestCase {
 	private $clientService;
 	/** @var NetworkService|MockObject */
 	private $networkService;
+	/** @var AuditLogger|MockObject */
+	private $auditLogger;
 
 	private const MATTERMOST_URL = 'https://mattermost.example.com';
 	private const MATTERMOST_USERID = 'else';
@@ -60,6 +64,7 @@ class MattermostAPIServiceTest extends TestCase {
 		$this->urlGenerator = $this->createMock(IURLGenerator::class);
 		$this->clientService = $this->createMock(IClientService::class);
 		$this->networkService = $this->createMock(NetworkService::class);
+		$this->auditLogger = $this->createMock(AuditLogger::class);
 		$this->crypto = $this->createMock(ICrypto::class);
 
 		$this->service = new MattermostAPIService(
@@ -72,6 +77,7 @@ class MattermostAPIServiceTest extends TestCase {
 			$this->urlGenerator,
 			$this->crypto,
 			$this->networkService,
+			$this->auditLogger,
 			$this->clientService,
 		);
 	}
@@ -690,7 +696,7 @@ class MattermostAPIServiceTest extends TestCase {
 		$this->setupCommonMocks(true);
 
 		$file = $this->createMock(File::class);
-		$userFolder = $this->createMock(Folder::class);
+		$userFolder = $this->createUserFolderMock();
 		$share = $this->createMock(IShare::class);
 
 		$this->appConfig->method('getAppValueString')->with('oauth_instance_url')->willReturn(static::MATTERMOST_URL);
@@ -733,5 +739,16 @@ class MattermostAPIServiceTest extends TestCase {
 			($nFiles === 0 && $result['error'])
 			|| ($nFiles > 0 && !$result['error'])
 		);
+	}
+
+	/**
+	 * IRootFolder::getUserFolder() returns IUserFolder (introduced in Nextcloud 36)
+	 * but Folder on older server versions, so mock the one available.
+	 */
+	private function createUserFolderMock(): Folder {
+		$class = interface_exists(IUserFolder::class)
+			? IUserFolder::class
+			: Folder::class;
+		return $this->createMock($class);
 	}
 }

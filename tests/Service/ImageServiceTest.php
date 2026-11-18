@@ -8,6 +8,7 @@ use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IMimeTypeDetector;
 use OCP\Files\IRootFolder;
+use OCP\Files\IUserFolder;
 use OCP\Files\SimpleFS\ISimpleFile;
 use OCP\IPreview;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -68,7 +69,7 @@ class ImageServiceTest extends TestCase {
 		$mimeTypeIcon = 'somethingsomethingicon';
 
 		$file = $this->createMock(File::class);
-		$userFolder = $this->createMock(Folder::class);
+		$userFolder = $this->createUserFolderMock();
 		$previewFile = $this->createMock(ISimpleFile::class);
 
 		$this->rootFolder->method('getUserFolder')->with($userId)->willReturn($userFolder);
@@ -93,5 +94,16 @@ class ImageServiceTest extends TestCase {
 		} else {
 			static::assertNull($returnedFilePreview);
 		}
+	}
+
+	/**
+	 * IRootFolder::getUserFolder() returns IUserFolder (introduced in Nextcloud 36)
+	 * but Folder on older server versions, so mock the one available.
+	 */
+	private function createUserFolderMock(): Folder {
+		$class = interface_exists(IUserFolder::class)
+			? IUserFolder::class
+			: Folder::class;
+		return $this->createMock($class);
 	}
 }

@@ -11,12 +11,8 @@
 namespace OCA\Mattermost\AppInfo;
 
 use Closure;
-use OCA\DAV\Events\CalendarObjectCreatedEvent;
-use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
 use OCA\Mattermost\Dashboard\MattermostWidget;
-use OCA\Mattermost\Listener\CalendarObjectCreatedListener;
-use OCA\Mattermost\Listener\CalendarObjectUpdatedListener;
 use OCA\Mattermost\Reference\MessageReferenceProvider;
 use OCA\Mattermost\Search\MattermostSearchMessagesProvider;
 use OCP\AppFramework\App;
@@ -37,14 +33,6 @@ class Application extends App implements IBootstrap {
 
 	public const INTEGRATION_USER_AGENT = 'Nextcloud Mattermost integration';
 
-	public const WEBHOOKS_ENABLED_CONFIG_KEY = 'webhooks_enabled';
-	public const CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY = 'calendar_event_created_webhook';
-	public const CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY = 'calendar_event_updated_webhook';
-	public const DAILY_SUMMARY_WEBHOOK_CONFIG_KEY = 'daily_summary_webhook';
-	public const DAILY_SUMMARY_WEBHOOK_LAST_DATE_CONFIG_KEY = 'daily_summary_webhook_last_date';
-	public const IMMINENT_EVENTS_WEBHOOK_CONFIG_KEY = 'imminent_events_webhook';
-	public const IMMINENT_EVENTS_WEBHOOK_LAST_TS_CONFIG_KEY = 'imminent_events_webhook_last_ts';
-	public const WEBHOOK_SECRET_CONFIG_KEY = 'webhook_secret';
 	/**
 	 * @var mixed
 	 */
@@ -62,10 +50,6 @@ class Application extends App implements IBootstrap {
 	public function register(IRegistrationContext $context): void {
 		$context->registerDashboardWidget(MattermostWidget::class);
 		$context->registerSearchProvider(MattermostSearchMessagesProvider::class);
-
-		// event based webhooks
-		$context->registerEventListener(CalendarObjectCreatedEvent::class, CalendarObjectCreatedListener::class);
-		$context->registerEventListener(CalendarObjectUpdatedEvent::class, CalendarObjectUpdatedListener::class);
 
 		$context->registerReferenceProvider(MessageReferenceProvider::class);
 	}

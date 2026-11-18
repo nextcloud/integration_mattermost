@@ -14,6 +14,8 @@ namespace OCA\Mattermost\Controller;
 
 use DateTime;
 use OCA\Mattermost\AppInfo\Application;
+use OCA\Mattermost\AuditLog\AuditLogger;
+use OCA\Mattermost\AuditLog\Operation;
 use OCA\Mattermost\Service\MattermostAPIService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -44,6 +46,7 @@ class ConfigController extends Controller {
 		private IInitialState $initialStateService,
 		private ICrypto $crypto,
 		private MattermostAPIService $mattermostAPIService,
+		private readonly AuditLogger $auditLogger,
 		private ?string $userId,
 	) {
 		parent::__construct($appName, $request);
@@ -149,71 +152,11 @@ class ConfigController extends Controller {
 				$result['user_id'] = '';
 				$result['user_name'] = '';
 				$result['user_displayname'] = '';
+				$this->auditLogger->log(Operation::AccountDisconnected, 'User disconnected a Mattermost account');
 			}
 			// if the token is set, cleanup refresh token and expiration date
 			$this->config->deleteUserValue($this->userId, Application::APP_ID, 'refresh_token');
 			$this->config->deleteUserValue($this->userId, Application::APP_ID, 'token_expires_at');
-		}
-		return new DataResponse($result);
-	}
-
-	/**
-	 * @param string|null $calendar_event_updated_url
-	 * @param string|null $calendar_event_created_url
-	 * @param string|null $daily_summary_url
-	 * @param string|null $imminent_events_url
-	 * @param bool|null $enabled
-	 * @param string|null $webhook_secret
-	 * @return DataResponse
-	 * @throws PreConditionNotMetException
-	 */
-	#[NoAdminRequired]
-	#[NoCSRFRequired]
-	public function setWebhooksConfig(
-		?string $calendar_event_updated_url = null,
-		?string $calendar_event_created_url = null,
-		?string $daily_summary_url = null,
-		?string $imminent_events_url = null,
-		?bool $enabled = null,
-		?string $webhook_secret = null,
-	): DataResponse {
-		$result = [];
-		if ($calendar_event_created_url !== null) {
-			$result['calendar_event_created_url'] = $calendar_event_created_url;
-			$this->config->setUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY, $calendar_event_created_url);
-		}
-		if ($calendar_event_updated_url !== null) {
-			$result['calendar_event_updated_url'] = $calendar_event_updated_url;
-			$this->config->setUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY, $calendar_event_updated_url);
-		}
-		if ($daily_summary_url !== null) {
-			$result['daily_summary_url'] = $daily_summary_url;
-			$this->config->setUserValue($this->userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_CONFIG_KEY, $daily_summary_url);
-		}
-		if ($imminent_events_url !== null) {
-			$result['imminent_events_url'] = $imminent_events_url;
-			$this->config->setUserValue($this->userId, Application::APP_ID, Application::IMMINENT_EVENTS_WEBHOOK_CONFIG_KEY, $imminent_events_url);
-		}
-		if ($enabled !== null) {
-			$result['enabled'] = $enabled;
-			$this->config->setUserValue($this->userId, Application::APP_ID, Application::WEBHOOKS_ENABLED_CONFIG_KEY, $enabled ? '1' : '0');
-		}
-		if ($webhook_secret !== null) {
-			$result['webhook_secret'] = $webhook_secret;
-			$this->config->setUserValue($this->userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY, $webhook_secret);
-		}
-		if (empty(array_keys($result))) {
-			$result = [
-				'error' => 'You must set at least one valid setting.',
-				'valid_keys' => [
-					'enabled',
-					'webhook_secret',
-					'calendar_event_created_url',
-					'calendar_event_updated_url',
-					'daily_summary_url',
-				],
-			];
-			return new DataResponse($result, Http::STATUS_BAD_REQUEST);
 		}
 		return new DataResponse($result);
 	}
@@ -262,7 +205,14 @@ class ConfigController extends Controller {
 			if (in_array($key, ['client_id', 'client_secret', 'oauth_instance_url'], true)) {
 				return new DataResponse([], Http::STATUS_BAD_REQUEST);
 			}
+
 			$this->appConfig->setAppValueString($key, $value, lazy: true);
+
+			$this->auditLogger->log(Operation::AdminConfigUpdated, 'Mattermost admin setting %s was set to %s', [
+				'configKey' => $key,
+				'configValue' => $value,
+			]);
+
 		}
 		return new DataResponse([]);
 	}
@@ -281,6 +231,10 @@ class ConfigController extends Controller {
 			} else {
 				$this->appConfig->setAppValueString($key, $value, lazy: true);
 			}
+
+			$this->auditLogger->log(Operation::AdminConfigUpdated, 'Sensitive Mattermost admin setting %s was changed', [
+				'configKey' => $key
+			]);
 		}
 		return new DataResponse([]);
 	}
@@ -342,6 +296,9 @@ class ConfigController extends Controller {
 				$encryptedRefreshToken = $refreshToken === '' ? '' : $this->crypto->encrypt($refreshToken);
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $encryptedRefreshToken);
 				$userInfo = $this->storeUserInfo();
+				$this->auditLogger->log(Operation::AccountConnected, 'User connected a Mattermost account via OAuth', [
+					'url' => $mattermostUrl
+				]);
 				$usePopup = $this->appConfig->getAppValueString('use_popup', '0', lazy: true) === '1';
 				if ($usePopup) {
 					return new RedirectResponse(
