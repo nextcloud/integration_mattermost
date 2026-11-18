@@ -11,12 +11,8 @@
 namespace OCA\Mattermost\AppInfo;
 
 use Closure;
-use OCA\DAV\Events\CalendarObjectCreatedEvent;
-use OCA\DAV\Events\CalendarObjectUpdatedEvent;
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
 use OCA\Mattermost\Dashboard\MattermostWidget;
-use OCA\Mattermost\Listener\CalendarObjectCreatedListener;
-use OCA\Mattermost\Listener\CalendarObjectUpdatedListener;
 use OCA\Mattermost\Reference\MessageReferenceProvider;
 use OCA\Mattermost\Search\MattermostSearchMessagesProvider;
 use OCP\AppFramework\App;

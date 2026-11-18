@@ -18,6 +18,6 @@ enum Operation: string {
 	case AccountConnected = 'integration_mattermost.account.connected';
 	case AccountDisconnected = 'integration_mattermost.account.disconnected';
 	case AdminConfigUpdated = 'integration_mattermost.admin_config.updated';
-    case FileSent = 'integration_mattermost.file.sent';
+	case FileSent = 'integration_mattermost.file.sent';
 
 }

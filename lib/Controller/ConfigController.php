@@ -206,7 +206,6 @@ class ConfigController extends Controller {
 				return new DataResponse([], Http::STATUS_BAD_REQUEST);
 			}
 
-			
 			$this->appConfig->setAppValueString($key, $value, lazy: true);
 
 			$this->auditLogger->log(Operation::AdminConfigUpdated, 'Mattermost admin setting %s was set to %s', [

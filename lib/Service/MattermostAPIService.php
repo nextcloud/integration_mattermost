@@ -717,6 +717,5 @@ class MattermostAPIService {
 			return ['error' => $e->getMessage()];
 		}
 
-		
 	}
 }
