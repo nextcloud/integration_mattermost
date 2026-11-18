@@ -14,6 +14,8 @@ namespace OCA\Mattermost\Controller;
 
 use DateTime;
 use OCA\Mattermost\AppInfo\Application;
+use OCA\Mattermost\AuditLog\AuditLogger;
+use OCA\Mattermost\AuditLog\Operation;
 use OCA\Mattermost\Service\MattermostAPIService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -44,6 +46,7 @@ class ConfigController extends Controller {
 		private IInitialState $initialStateService,
 		private ICrypto $crypto,
 		private MattermostAPIService $mattermostAPIService,
+		private readonly AuditLogger $auditLogger,
 		private ?string $userId,
 	) {
 		parent::__construct($appName, $request);
@@ -149,6 +152,7 @@ class ConfigController extends Controller {
 				$result['user_id'] = '';
 				$result['user_name'] = '';
 				$result['user_displayname'] = '';
+				$this->auditLogger->log(Operation::AccountDisconnected, 'User disconnected a Mattermost account');
 			}
 			// if the token is set, cleanup refresh token and expiration date
 			$this->config->deleteUserValue($this->userId, Application::APP_ID, 'refresh_token');
@@ -262,7 +266,15 @@ class ConfigController extends Controller {
 			if (in_array($key, ['client_id', 'client_secret', 'oauth_instance_url'], true)) {
 				return new DataResponse([], Http::STATUS_BAD_REQUEST);
 			}
+
+			
 			$this->appConfig->setAppValueString($key, $value, lazy: true);
+
+			$this->auditLogger->log(Operation::AdminConfigUpdated, 'Mattermost admin setting %s was set to %s', [
+				'configKey' => $key,
+				'configValue' => $value,
+			]);
+
 		}
 		return new DataResponse([]);
 	}
@@ -281,6 +293,10 @@ class ConfigController extends Controller {
 			} else {
 				$this->appConfig->setAppValueString($key, $value, lazy: true);
 			}
+
+			$this->auditLogger->log(Operation::AdminConfigUpdated, 'Sensitive Mattermost admin setting %s was changed', [
+				'configKey' => $key
+			]);
 		}
 		return new DataResponse([]);
 	}
@@ -342,6 +358,9 @@ class ConfigController extends Controller {
 				$encryptedRefreshToken = $refreshToken === '' ? '' : $this->crypto->encrypt($refreshToken);
 				$this->config->setUserValue($this->userId, Application::APP_ID, 'refresh_token', $encryptedRefreshToken);
 				$userInfo = $this->storeUserInfo();
+				$this->auditLogger->log(Operation::AccountConnected, 'User connected a Mattermost account via OAuth', [
+					'url' => $mattermostUrl
+				]);
 				$usePopup = $this->appConfig->getAppValueString('use_popup', '0', lazy: true) === '1';
 				if ($usePopup) {
 					return new RedirectResponse(
