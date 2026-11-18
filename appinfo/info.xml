@@ -22,14 +22,6 @@ and a unified search provider for messages. It also lets you send files to Matte
 	<dependencies>
 		<nextcloud min-version="33" max-version="35"/>
 	</dependencies>
-	<background-jobs>
-		<job>OCA\Mattermost\BackgroundJob\DailySummaryWebhook</job>
-		<job>OCA\Mattermost\BackgroundJob\ImminentEventsWebhook</job>
-	</background-jobs>
-	<commands>
-		<command>OCA\Mattermost\Command\DailySummary</command>
-		<command>OCA\Mattermost\Command\ImminentEvents</command>
-	</commands>
 	<settings>
 		<admin>OCA\Mattermost\Settings\Admin</admin>
 		<admin-section>OCA\Mattermost\Settings\AdminSection</admin-section>

@@ -43,14 +43,6 @@ class Personal implements ISettings {
 		$oauthUrl = $this->appConfig->getAppValueString('oauth_instance_url', lazy: true);
 		$usePopup = $this->appConfig->getAppValueString('use_popup', '0', lazy: true);
 
-		// webhooks
-		$webhooksEnabled = $this->config->getUserValue($this->userId, Application::APP_ID, 'webhooks_enabled', '0') === '1';
-		$webhookSecret = $this->config->getUserValue($this->userId, Application::APP_ID, Application::WEBHOOK_SECRET_CONFIG_KEY);
-		$calEventAddedWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY);
-		$calEventEditedWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, Application::CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY);
-		$dailySummaryWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, Application::DAILY_SUMMARY_WEBHOOK_CONFIG_KEY);
-		$imminentEventsWebhook = $this->config->getUserValue($this->userId, Application::APP_ID, Application::IMMINENT_EVENTS_WEBHOOK_CONFIG_KEY);
-
 		$userConfig = [
 			// Do not expose the saved token to the user
 			'token' => $token !== '' ? 'dummyTokenContent' : '',
@@ -66,12 +58,6 @@ class Personal implements ISettings {
 			'search_messages_enabled' => $searchMessagesEnabled,
 			'navigation_enabled' => $navigationEnabled,
 			'file_action_enabled' => $fileActionEnabled,
-			Application::WEBHOOKS_ENABLED_CONFIG_KEY => $webhooksEnabled,
-			Application::WEBHOOK_SECRET_CONFIG_KEY => $webhookSecret,
-			Application::CALENDAR_EVENT_CREATED_WEBHOOK_CONFIG_KEY => $calEventAddedWebhook,
-			Application::CALENDAR_EVENT_UPDATED_WEBHOOK_CONFIG_KEY => $calEventEditedWebhook,
-			Application::DAILY_SUMMARY_WEBHOOK_CONFIG_KEY => $dailySummaryWebhook,
-			Application::IMMINENT_EVENTS_WEBHOOK_CONFIG_KEY => $imminentEventsWebhook,
 		];
 		$this->initialStateService->provideInitialState('user-config', $userConfig);
 		return new TemplateResponse(Application::APP_ID, 'personalSettings');
