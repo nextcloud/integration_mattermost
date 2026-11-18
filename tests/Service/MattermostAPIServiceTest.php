@@ -3,6 +3,7 @@
 namespace OCA\Mattermost\Tests;
 
 use DateTime;
+use OCA\Mattermost\AuditLog\AuditLogger;
 use OCA\Mattermost\Service\MattermostAPIService;
 use OCA\Mattermost\Service\NetworkService;
 use OCP\AppFramework\Services\IAppConfig;
@@ -43,6 +44,8 @@ class MattermostAPIServiceTest extends TestCase {
 	private $clientService;
 	/** @var NetworkService|MockObject */
 	private $networkService;
+	/** @var AuditLogger|MockObject */
+	private $auditLogger;
 
 	private const MATTERMOST_URL = 'https://mattermost.example.com';
 	private const MATTERMOST_USERID = 'else';
@@ -60,6 +63,7 @@ class MattermostAPIServiceTest extends TestCase {
 		$this->urlGenerator = $this->createMock(IURLGenerator::class);
 		$this->clientService = $this->createMock(IClientService::class);
 		$this->networkService = $this->createMock(NetworkService::class);
+		$this->auditLogger = $this->createMock(AuditLogger::class);
 		$this->crypto = $this->createMock(ICrypto::class);
 
 		$this->service = new MattermostAPIService(
@@ -72,6 +76,7 @@ class MattermostAPIServiceTest extends TestCase {
 			$this->urlGenerator,
 			$this->crypto,
 			$this->networkService,
+			$this->auditLogger,
 			$this->clientService,
 		);
 	}
